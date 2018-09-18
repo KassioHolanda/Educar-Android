@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="0.01mm"
+    app:cardCornerRadius="0dp">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="6dp">/>
+
+        <TextView
+            android:id="@+id/idalunonota_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="id"
+            android:textColor="#222"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/nomealuno_frequencia_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:text="nomeAluno"
+            android:textColor="#222"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/presenca_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorPrimary"
+            android:checked="true" />
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

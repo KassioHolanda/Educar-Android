@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.android.educar.educar">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name="com.orm.SugarApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".app.LoginActivity" />
+        <activity
+            android:name=".app.UnidadeActivity"
+            android:label="Escolas" >
+        </activity>
+        <activity
+            android:name=".app.TurmaActivity"
+            android:label="Turmas"
+            android:parentActivityName=".app.UnidadeActivity" />
+        <activity
+            android:name=".app.DisciplinaActivity"
+            android:label="Disciplinas"
+            android:parentActivityName=".app.TurmaActivity" />
+        <activity
+            android:name=".app.AulaActivity"
+            android:label="Alunos"
+            android:parentActivityName=".app.DisciplinaActivity" />
+        <activity android:name=".app.LoadingActivity"
+            android:theme="@style/AppCompat.TelaCheia">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".app.ConfiguracoesActivity"
+            android:label="Configurações"
+            android:parentActivityName=".app.UnidadeActivity" />
+        <activity
+            android:name=".app.DetalheAlunoActivity"
+            android:label="Detalhes Aluno"
+            android:parentActivityName=".app.AulaActivity" />
+        <activity
+            android:name=".app.AulaAcoesActivity"
+            android:label=""
+            android:parentActivityName=".app.DisciplinaActivity" />
+        <activity
+            android:name=".app.NotaFragmentActivity"
+            android:label="Notas"
+            android:parentActivityName=".app.AulaAcoesActivity" />
+        <activity
+            android:name=".app.OcorrenciaActivity"
+            android:label="Ocorrências"
+            android:parentActivityName=".app.AulaAcoesActivity" />
+        <activity
+            android:name=".app.FrequenciaActivity"
+            android:label="Nova Frequêcia"
+            android:parentActivityName=".app.AulaAcoesActivity" />
+    </application>
+
+</manifest>
