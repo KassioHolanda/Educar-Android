@@ -32,7 +32,7 @@ public class UtilsFunctions {
 
     public static boolean consultarUsuarioLogado(Context context) {
         Preferences preferences = new Preferences(context);
-        if (preferences.getSavedBoolean("logado")) {
+        if (preferences.getSavedBoolean(Messages.USUARIO_LOGADO)) {
             return true;
         }
         return false;
