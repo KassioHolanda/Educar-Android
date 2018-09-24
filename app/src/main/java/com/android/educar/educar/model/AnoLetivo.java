@@ -1,0 +1,66 @@
+package com.android.educar.educar.model;
+
+import com.google.gson.annotations.SerializedName;
+
+import java.util.Date;
+
+public class AnoLetivo {
+    private long id;
+    private String descricao;
+    @SerializedName("datainicio")
+    private Date dataInicio;
+    @SerializedName("datafinal")
+    private Date dataFinal;
+    @SerializedName("fechadonota")
+    private boolean fechadoNota;
+
+    public AnoLetivo() {
+    }
+
+    public AnoLetivo(String descricao, Date dataInicio, Date dataFinal, boolean fechadoNota) {
+        this.descricao = descricao;
+        this.dataInicio = dataInicio;
+        this.dataFinal = dataFinal;
+        this.fechadoNota = fechadoNota;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public Date getDataInicio() {
+        return dataInicio;
+    }
+
+    public void setDataInicio(Date dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+
+    public Date getDataFinal() {
+        return dataFinal;
+    }
+
+    public void setDataFinal(Date dataFinal) {
+        this.dataFinal = dataFinal;
+    }
+
+    public boolean isFechadoNota() {
+        return fechadoNota;
+    }
+
+    public void setFechadoNota(boolean fechadoNota) {
+        this.fechadoNota = fechadoNota;
+    }
+}
