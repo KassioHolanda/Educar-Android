@@ -8,48 +8,53 @@ import java.util.List;
 
 public class Unidade {
 
-    @SerializedName("pk")
-    private long pk;
-    @SerializedName("nome_unidade")
-    private String nomeUnidade;
-    @SerializedName("minhas_turmas")
-    private List<Turma> minhasTurmas;
+    @SerializedName("id")
+    private long id;
+    @SerializedName("abreviacao")
+    private String abreviacao;
+    @SerializedName("cnpj")
+    private String cnpj;
+    @SerializedName("nome")
+    private String nome;
 
     public Unidade() {
     }
 
-    public Unidade(String nomeUnidade) {
-        this.pk = pk;
-        this.nomeUnidade = nomeUnidade;
-        this.minhasTurmas = new ArrayList<>();
+    public Unidade(String abreviacao, String cnpj, String nome) {
+        this.abreviacao = abreviacao;
+        this.cnpj = cnpj;
+        this.nome = nome;
     }
 
-    public long getPk() {
-        return pk;
+    public long getId() {
+        return id;
     }
 
-    public String getNomeUnidade() {
-        return nomeUnidade;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public List<Turma> getMinhasTurmas() {
-        return minhasTurmas;
+    public String getAbreviacao() {
+        return abreviacao;
     }
 
-    public void setPk(long pk) {
-        this.pk = pk;
+    public void setAbreviacao(String abreviacao) {
+        this.abreviacao = abreviacao;
     }
 
-    public void setNomeUnidade(String nomeUnidade) {
-        this.nomeUnidade = nomeUnidade;
+    public String getCnpj() {
+        return cnpj;
     }
 
-    public void setMinhasTurmas(List<Turma> minhasTurmas) {
-        this.minhasTurmas = minhasTurmas;
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
 
-    @Override
-    public String toString() {
-        return this.nomeUnidade;
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }
