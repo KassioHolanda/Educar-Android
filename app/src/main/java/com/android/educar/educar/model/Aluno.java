@@ -9,18 +9,14 @@ public class Aluno {
     private long pk;
     @SerializedName("nome_aluno")
     private String nomeAluno;
-    @SerializedName("turma")
-    private long turma;
     @SerializedName("quantidade_faltas")
     private int quantidadeFalta;
 
     public Aluno() {
     }
 
-    public Aluno(long pk, String nomeAluno, long turma, int quantidadeFalta) {
-        this.pk = pk;
+    public Aluno(String nomeAluno, int quantidadeFalta) {
         this.nomeAluno = nomeAluno;
-        this.turma = turma;
         this.quantidadeFalta = quantidadeFalta;
     }
 
@@ -32,9 +28,6 @@ public class Aluno {
         return nomeAluno;
     }
 
-    public long getTurma() {
-        return turma;
-    }
 
     public int getQuantidadeFalta() {
         return quantidadeFalta;
@@ -48,9 +41,6 @@ public class Aluno {
         this.nomeAluno = nomeAluno;
     }
 
-    public void setTurma(long turma) {
-        this.turma = turma;
-    }
 
     public void setQuantidadeFalta(int quantidadeFalta) {
         this.quantidadeFalta = quantidadeFalta;

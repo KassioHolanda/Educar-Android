@@ -6,21 +6,27 @@ import android.util.Log;
 import com.android.educar.educar.dao.AlunoDAO;
 import com.android.educar.educar.dao.ClassDAO;
 import com.android.educar.educar.dao.DisciplinaDAO;
+import com.android.educar.educar.dao.ProfessorDAO;
+import com.android.educar.educar.dao.TurmaAlunoDAO;
 import com.android.educar.educar.dao.TurmaDAO;
 import com.android.educar.educar.dao.UnidadeDAO;
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.Disciplina;
+import com.android.educar.educar.model.Professor;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.TurmaAluno;
 import com.android.educar.educar.model.Unidade;
+import com.android.educar.educar.model.UnidadeProfessor;
 import com.android.educar.educar.service.APIService;
 import com.android.educar.educar.service.ListaAlunosAPI;
 import com.android.educar.educar.service.ListaDisciplinasAPI;
 import com.android.educar.educar.service.ListaTurmaAPI;
 import com.android.educar.educar.service.ListaUnidadesAPI;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,6 +38,8 @@ public class CarregarDados {
     private ClassDAO classDAO;
     private AlunoDAO alunoDAO;
     private DisciplinaDAO disciplinaDAO;
+    private TurmaAlunoDAO turmaAlunoDAO;
+    private ProfessorDAO professorDAO;
 
     public CarregarDados(Context context) {
         apiService = new APIService("");
@@ -40,23 +48,20 @@ public class CarregarDados {
         turmaDAO = new TurmaDAO(context);
         disciplinaDAO = new DisciplinaDAO(context);
         alunoDAO = new AlunoDAO(context);
+        turmaAlunoDAO = new TurmaAlunoDAO(context);
+        professorDAO = new ProfessorDAO(context);
     }
 
     public void carregarDados() {
-        carregarUnidadesAPI();
-        carregarTurmasAPI();
-        carregarDisciplinasAPI();
-        carregarAlunosAPI();
-
-    }
-
-    public void turmaAluno() {
-        for (int i = 0; i < alunoDAO.alunos().size() - 3; i++) {
-            TurmaAluno turmaAluno = new TurmaAluno();
-            turmaAluno.setAluno(alunoDAO.alunos().get(i).getPk());
-            turmaAluno.setTurma(1);
-            classDAO.addTurmaAluno(turmaAluno);
-        }
+//        carregarUnidadesAPI();
+//        carregarTurmasAPI();
+//        carregarDisciplinasAPI();
+//        carregarAlunosAPI();
+        salvarUniadadesBD();
+        salvarTurmasBD();
+        salvarDisciplinaBD();
+        salvarAlunoBD();
+        turmaAluno();
     }
 
     public void carregarUnidadesAPI() {
@@ -117,7 +122,7 @@ public class CarregarDados {
 
     public void salvarAlunoBD(List<Aluno> alunos) {
         for (int i = 0; i < alunos.size(); i++) {
-            classDAO.addAluno(alunos.get(i));
+            alunoDAO.addAluno(alunos.get(i));
             Log.i("DISCIPLINA", "Aluno " + alunos.get(i) + " add");
         }
     }
@@ -158,4 +163,83 @@ public class CarregarDados {
         });
 
     }
+
+    public void salvarProfessoresBD() {
+        Professor professor = null;
+        try {
+            professor = new Professor("Kassio Holanda", "06365717342", UtilsFunctions.criptografaSenha("1"));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        classDAO.addProfessor(professor);
+    }
+
+    public void salvarUniadadesBD() {
+        Unidade unidade1 = new Unidade("EMEF ALCIDES SOTERO DE ASSUNCAO");
+        Unidade unidade2 = new Unidade("EMEF ALICE MENDES");
+        Unidade unidade3 = new Unidade("EMEF ANGELICA MARIA DOS SANTOS");
+        unidadeDAO.addUnidade(unidade1);
+        unidadeDAO.addUnidade(unidade2);
+        unidadeDAO.addUnidade(unidade3);
+    }
+
+    public void salvarUnidadeProfessor() {
+        UnidadeProfessor unidadeProfessor = null;
+//        unidadeProfessor = new UnidadeProfessor()
+    }
+
+    public void salvarTurmasBD() {
+//        long unidade, String descricao, String turno
+        Turma turma1 = new Turma(1, "MA10", "Tarde");
+        Turma turma2 = new Turma(1, "MT02", "Tarde");
+        Turma turma3 = new Turma(1, "TA01", "Tarde");
+        Turma turma4 = new Turma(1, "MA201", "Tarde");
+        turmaDAO.addTurma(turma1);
+        turmaDAO.addTurma(turma2);
+        turmaDAO.addTurma(turma3);
+        turmaDAO.addTurma(turma4);
+    }
+
+    public void salvarAlunoBD() {
+//        String nomeAluno, long turma, int quantidadeFalta
+        Aluno aluno1 = new Aluno("CLEICIANE DOS SANTOS MELO", 0);
+        Aluno aluno2 = new Aluno("KAYLANE VITORIA MELO DE OLIVEIRA", 0);
+        Aluno aluno3 = new Aluno("LUAN GOMES DE ASSUNCAO", 0);
+        Aluno aluno4 = new Aluno("LUIS OTAVIO BEZERRA DA SILVA", 0);
+        Aluno aluno5 = new Aluno("MARIA GABRIELY ALVES MELO", 0);
+        Aluno aluno6 = new Aluno("MAXSUEL ASSUNCAO MUNIZ", 0);
+        Aluno aluno7 = new Aluno("PEDRO HENRIQUE SILVA OLIVEIRA", 0);
+        Aluno aluno8 = new Aluno("REGISLANE BRANDAO DE SOUSA", 0);
+
+        alunoDAO.addAluno(aluno1);
+        alunoDAO.addAluno(aluno2);
+        alunoDAO.addAluno(aluno3);
+        alunoDAO.addAluno(aluno4);
+        alunoDAO.addAluno(aluno5);
+        alunoDAO.addAluno(aluno6);
+        alunoDAO.addAluno(aluno7);
+        alunoDAO.addAluno(aluno8);
+    }
+
+    public void turmaAluno() {
+        for (int i = 0; i < alunoDAO.alunos().size() - 3; i++) {
+            TurmaAluno turmaAluno = new TurmaAluno();
+            turmaAluno.setAluno(alunoDAO.alunos().get(i).getPk());
+            turmaAluno.setTurma(1);
+            turmaAlunoDAO.addTurmaAluno(turmaAluno);
+        }
+    }
+
+    public void salvarDisciplinaBD() {
+        Disciplina disciplina1 = new Disciplina(1, "Português");
+        Disciplina disciplina2 = new Disciplina(1, "Matematica");
+        Disciplina disciplina3 = new Disciplina(1, "Engenharia");
+        Disciplina disciplina4 = new Disciplina(1, "Fisica");
+
+        disciplinaDAO.addDisiciplina(disciplina1);
+        disciplinaDAO.addDisiciplina(disciplina2);
+        disciplinaDAO.addDisiciplina(disciplina3);
+        disciplinaDAO.addDisiciplina(disciplina4);
+    }
+
 }

@@ -14,6 +14,7 @@ import java.util.List;
 
 public class ProfessorDAO extends SQLiteOpenHelper {
     private Context context;
+    private ClassDAO classDAO;
 
     public ProfessorDAO(Context context) {
         super(context, ClassDAO.BD_CLIENT, null, ClassDAO.VERSAO_BD);

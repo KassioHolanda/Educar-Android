@@ -13,10 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AlunoDAO extends SQLiteOpenHelper {
-
+    private Context context;
 
     public AlunoDAO(Context context) {
         super(context, ClassDAO.BD_CLIENT, null, ClassDAO.VERSAO_BD);
+        this.context = context;
     }
 
 
@@ -28,6 +29,20 @@ public class AlunoDAO extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    public void addAluno(Aluno aluno) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("nome", aluno.getNomeAluno());
+            contentValues.put("quantidade_falta", aluno.getQuantidadeFalta());
+            db.insert("tb_aluno", null, contentValues);
+            Log.i("SALVAR_BD", "Dados inseridos com sucesso!");
+            db.close();
+        } catch (Exception e) {
+
+        }
     }
 
     public Aluno selecionarAluno(long aluno) {
@@ -74,18 +89,5 @@ public class AlunoDAO extends SQLiteOpenHelper {
         return alunos;
     }
 
-    public void addAluno(Aluno aluno) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        try {
-            ContentValues contentValues = new ContentValues();
-            contentValues.put("nome", aluno.getNomeAluno());
-            contentValues.put("quantidade_falta", aluno.getQuantidadeFalta());
-            db.insert("tb_aluno", null, contentValues);
-            Log.i("SALVAR_BD", "Dados inseridos com sucesso!");
-            db.close();
-        } catch (Exception e) {
-
-        }
-    }
 
 }

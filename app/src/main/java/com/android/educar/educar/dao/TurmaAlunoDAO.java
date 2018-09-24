@@ -1,10 +1,12 @@
 package com.android.educar.educar.dao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.TurmaAluno;
@@ -69,5 +71,28 @@ public class TurmaAlunoDAO extends SQLiteOpenHelper {
             }
         }
         return alunos;
+    }
+
+    public void addTurmaAluno(TurmaAluno turmaAluno) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("aluno_id", turmaAluno.getAluno());
+            contentValues.put("turma_id", turmaAluno.getTurma());
+            db.insert("tb_turmaaluno", null, contentValues);
+            Log.i("SALVAR_BD", "Dados inseridos com sucesso!");
+            db.close();
+        } catch (Exception e) {
+            Toast.makeText(context, "Ocorreu um erro, Solicitar Administrador!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void removeTurmaAluno() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "delete from tb_turmaaluno";
+//        db.delete("tb_professor", "pk = ?", new String[]{String.valueOf(professor.getPk())});
+        db.rawQuery(query, null);
+        Log.i("DELETE", "Dados removidos");
+        db.close();
     }
 }

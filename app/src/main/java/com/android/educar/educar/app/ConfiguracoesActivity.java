@@ -55,7 +55,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         sincronizarBanco.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                carregarDados.carregarDados();
+                carregarDados.carregarDados();
             }
         });
 

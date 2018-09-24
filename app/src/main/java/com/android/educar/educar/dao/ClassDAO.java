@@ -37,6 +37,7 @@ public class ClassDAO extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE funcionario (pk INTEGER PRIMARY KEY AUTOINCREMENT, cpf TEXT, senha text,nome TEXT)");
         db.execSQL("CREATE TABLE tb_professor (pk INTEGER PRIMARY KEY AUTOINCREMENT, cpf TEXT, senha text,nome TEXT)");
         db.execSQL("CREATE TABLE tb_unidade (pk INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT)");
         db.execSQL("CREATE TABLE tb_turma (pk INTEGER PRIMARY KEY AUTOINCREMENT, descricao TEXT, turno TEXT, unidade_id int not null references tb_unidade)");
@@ -56,45 +57,45 @@ public class ClassDAO extends SQLiteOpenHelper {
 
     }
 
-//    public List<Professor> selecionarUnidadeProfessor(long professor) {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.query("tb_unidadeprofessor", new String[]{"pk", "professor_id", "unidade_id"},
-//                "professor_id=?", new String[]{String.valueOf(professor)},
-//                null, null, null, null);
-//
-//        List<UnidadeProfessor> list = new ArrayList<>();
-//        UnidadeProfessor unidadeProfessor = new UnidadeProfessor();
-//        cursor.moveToFirst();
-//        if (cursor.isFirst()) {
-//            do {
-//                unidadeProfessor.setPk(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
-//                unidadeProfessor.setProfessor(Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow("turma_id"))));
-//                unidadeProfessor.setUnidade(Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow("aluno_id"))));
-//                list.add(unidadeProfessor);
-//            } while (cursor.moveToNext());
-//        }
-//
-//        cursor.close();
-//        return recuperarUnidade(list);
-//    }
-//
-//    public List<Professor> recuperarUnidade(List<UnidadeProfessor> unidadeProfessors) {
-//
-//        List<Professor> professors = new ArrayList<>();
-//        List<Professor> professorsBD = this.professores();
-//
-//        for (int j = 0; j < unidadeProfessors.size(); j++) {
-//            Log.i("INFO turma", "" + unidadeProfessors.get(j).getProfessor());
-//            for (int i = 0; i < professorsBD.size(); i++) {
-//                Log.i("INFO aluno", "" + professorsBD.get(i).getPk());
-//                if (unidadeProfessors.get(j).getProfessor() == professorsBD.get(i).getPk()) {
-//                    professors.add(professorsBD.get(j));
-//                }
-//            }
-//        }
-//
-//        return professors;
-//    }
+    public List<Professor> selecionarUnidadeProfessor(long professor) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("tb_unidadeprofessor", new String[]{"pk", "professor_id", "unidade_id"},
+                "professor_id=?", new String[]{String.valueOf(professor)},
+                null, null, null, null);
+
+        List<UnidadeProfessor> list = new ArrayList<>();
+        UnidadeProfessor unidadeProfessor = new UnidadeProfessor();
+        cursor.moveToFirst();
+        if (cursor.isFirst()) {
+            do {
+                unidadeProfessor.setPk(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
+                unidadeProfessor.setProfessor(Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow("turma_id"))));
+                unidadeProfessor.setUnidade(Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow("aluno_id"))));
+                list.add(unidadeProfessor);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return recuperarUnidade(list);
+    }
+
+    public List<Professor> recuperarUnidade(List<UnidadeProfessor> unidadeProfessors) {
+
+        List<Professor> professors = new ArrayList<>();
+        List<Professor> professorsBD = this.professores();
+
+        for (int j = 0; j < unidadeProfessors.size(); j++) {
+            Log.i("INFO turma", "" + unidadeProfessors.get(j).getProfessor());
+            for (int i = 0; i < professorsBD.size(); i++) {
+                Log.i("INFO aluno", "" + professorsBD.get(i).getPk());
+                if (unidadeProfessors.get(j).getProfessor() == professorsBD.get(i).getPk()) {
+                    professors.add(professorsBD.get(j));
+                }
+            }
+        }
+
+        return professors;
+    }
 
     public List<Frequencia> frequencias() {
         List<Frequencia> frequencias = new ArrayList<>();
@@ -144,51 +145,51 @@ public class ClassDAO extends SQLiteOpenHelper {
     }
 
 
-//    public List<Aluno> alunos() {
-//        List<Aluno> alunos = new ArrayList<>();
-//        String query = "SELECT * FROM tb_aluno";
-//
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        Cursor cursor = db.rawQuery(query, null);
-//
-//        cursor.moveToFirst();
-//        if (cursor.isFirst()) {
-//            do {
-//                Aluno aluno = new Aluno();
-//                aluno.setPk(Long.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
-//                aluno.setNomeAluno(cursor.getString(cursor.getColumnIndexOrThrow("nome")));
-//                aluno.setQuantidadeFalta(cursor.getInt(cursor.getColumnIndexOrThrow("quantidade_falta")));
-//
-//                alunos.add(aluno);
-//
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        return alunos;
-//    }
+    public List<Aluno> alunos() {
+        List<Aluno> alunos = new ArrayList<>();
+        String query = "SELECT * FROM tb_aluno";
 
-//    public List<Disciplina> disciplinas() {
-//        List<Disciplina> disciplinas = new ArrayList<>();
-//        String query = "SELECT * FROM tb_disciplina";
-//
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        Cursor cursor = db.rawQuery(query, null);
-//
-//        cursor.moveToFirst();
-//        if (cursor.isFirst()) {
-//            do {
-//                Disciplina disciplina = new Disciplina();
-//                disciplina.setPk(Long.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
-//                disciplina.setNome(cursor.getString(cursor.getColumnIndexOrThrow("nome")));
-//                disciplina.setProfessor(Long.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("professor_id"))));
-//
-//                disciplinas.add(disciplina);
-//
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        return disciplinas;
-//    }
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        cursor.moveToFirst();
+        if (cursor.isFirst()) {
+            do {
+                Aluno aluno = new Aluno();
+                aluno.setPk(Long.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
+                aluno.setNomeAluno(cursor.getString(cursor.getColumnIndexOrThrow("nome")));
+                aluno.setQuantidadeFalta(cursor.getInt(cursor.getColumnIndexOrThrow("quantidade_falta")));
+
+                alunos.add(aluno);
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return alunos;
+    }
+
+    public List<Disciplina> disciplinas() {
+        List<Disciplina> disciplinas = new ArrayList<>();
+        String query = "SELECT * FROM tb_disciplina";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        cursor.moveToFirst();
+        if (cursor.isFirst()) {
+            do {
+                Disciplina disciplina = new Disciplina();
+                disciplina.setPk(Long.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
+                disciplina.setNome(cursor.getString(cursor.getColumnIndexOrThrow("nome")));
+                disciplina.setProfessor(Long.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("professor_id"))));
+
+                disciplinas.add(disciplina);
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return disciplinas;
+    }
 
     public List<Aula> aulas() {
         List<Aula> aulas = new ArrayList<>();
@@ -257,56 +258,56 @@ public class ClassDAO extends SQLiteOpenHelper {
         }
     }
 
-//    public void addDisiciplina(Disciplina disciplina) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        try {
-//            ContentValues contentValues = new ContentValues();
-//            contentValues.put("nome", disciplina.getNome());
-//            contentValues.put("professor_id", disciplina.getProfessor());
-//            db.insert("tb_disciplina", null, contentValues);
-//            Log.i("SALVAR_BD", "Dados inseridos com sucesso!");
-//            db.close();
-//        } catch (Exception e) {
-//
-//        }
-//    }
+    public void addDisiciplina(Disciplina disciplina) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("nome", disciplina.getNome());
+            contentValues.put("professor_id", disciplina.getProfessor());
+            db.insert("tb_disciplina", null, contentValues);
+            Log.i("SALVAR_BD", "Dados inseridos com sucesso!");
+            db.close();
+        } catch (Exception e) {
 
-//    public void addProfessor(Professor professor) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        try {
-//            ContentValues contentValues = new ContentValues();
-//            contentValues.put("cpf", professor.getCpf());
-//            contentValues.put("nome", professor.getNome());
-//            contentValues.put("senha", professor.getSenha());
-//            db.insert("tb_professor", null, contentValues);
-//            Log.i("SALVAR_BD", "Dados inseridos com sucesso!");
-//            db.close();
-//        } catch (Exception e) {
-//
-//        }
-//    }
+        }
+    }
 
-//    public void addTurma(Turma turma) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        try {
-//            ContentValues contentValues = new ContentValues();
-//            contentValues.put("descricao", turma.getDescricao());
-//            contentValues.put("turno", turma.getTurno());
-//            contentValues.put("unidade_id", turma.getUnidade());
-//
-//            db.insert("tb_turma", null, contentValues);
-//            Log.i("SALVAR_BD", "Dados inseridos com sucesso!");
-//            db.close();
-//        } catch (Exception e) {
-//        }
-//
-//    }
+    public void addProfessor(Professor professor) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("cpf", professor.getCpf());
+            contentValues.put("nome", professor.getNome());
+            contentValues.put("senha", professor.getSenha());
+            db.insert("tb_professor", null, contentValues);
+            Log.i("SALVAR_BD", "Dados inseridos com sucesso!");
+            db.close();
+        } catch (Exception e) {
 
-//    public void removeProfessor(Professor professor) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        db.delete("tb_professor", "pk = ?", new String[]{String.valueOf(professor.getPk())});
-//        db.close();
-//    }
+        }
+    }
+
+    public void addTurma(Turma turma) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("descricao", turma.getDescricao());
+            contentValues.put("turno", turma.getTurno());
+            contentValues.put("unidade_id", turma.getUnidade());
+
+            db.insert("tb_turma", null, contentValues);
+            Log.i("SALVAR_BD", "Dados inseridos com sucesso!");
+            db.close();
+        } catch (Exception e) {
+        }
+
+    }
+
+    public void removeProfessor(Professor professor) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("tb_professor", "pk = ?", new String[]{String.valueOf(professor.getPk())});
+        db.close();
+    }
 
     public void removeTurmaAluno() {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -317,70 +318,70 @@ public class ClassDAO extends SQLiteOpenHelper {
         db.close();
     }
 
-//    public List<Disciplina> selecionarDisciplinasProfessor(long professor) {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.query("tb_disciplina", new String[]{"pk", "nome", "professor_id"},
-//                "professor_id = ?", new String[]{String.valueOf(professor)},
-//                null, null, null, null);
-//
-//        List<Disciplina> disciplinas = new ArrayList<>();
-//        cursor.moveToFirst();
-//        if (cursor.isFirst()) {
-//            do {
-//                Disciplina disciplina = new Disciplina();
-//                disciplina.setPk(Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
-//                disciplina.setNome(cursor.getString(Integer.valueOf(cursor.getColumnIndexOrThrow("nome"))));
-//                disciplina.setProfessor(cursor.getLong(Integer.valueOf(cursor.getColumnIndexOrThrow("professor_id"))));
-//
-//                disciplinas.add(disciplina);
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        return disciplinas;
-//    }
+    public List<Disciplina> selecionarDisciplinasProfessor(long professor) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("tb_disciplina", new String[]{"pk", "nome", "professor_id"},
+                "professor_id = ?", new String[]{String.valueOf(professor)},
+                null, null, null, null);
+
+        List<Disciplina> disciplinas = new ArrayList<>();
+        cursor.moveToFirst();
+        if (cursor.isFirst()) {
+            do {
+                Disciplina disciplina = new Disciplina();
+                disciplina.setPk(Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
+                disciplina.setNome(cursor.getString(Integer.valueOf(cursor.getColumnIndexOrThrow("nome"))));
+                disciplina.setProfessor(cursor.getLong(Integer.valueOf(cursor.getColumnIndexOrThrow("professor_id"))));
+
+                disciplinas.add(disciplina);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return disciplinas;
+    }
 
 
-//    public Aluno selecionarAluno(long aluno) {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.query("tb_aluno", new String[]{"pk", "nome", "quantidade_falta"},
-//                "pk=?", new String[]{String.valueOf(aluno)},
-//                null, null, null, null);
-//
-//        Aluno aluno1 = new Aluno();
-//        cursor.moveToFirst();
-//        if (cursor.isFirst()) {
-//            do {
-//
-//                aluno1.setPk(Long.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
-//                aluno1.setNomeAluno(cursor.getString(cursor.getColumnIndexOrThrow("nome")));
-//                aluno1.setQuantidadeFalta(cursor.getInt(cursor.getColumnIndexOrThrow("quantidade_falta")));
-//
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        return aluno1;
-//    }
+    public Aluno selecionarAluno(long aluno) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("tb_aluno", new String[]{"pk", "nome", "quantidade_falta"},
+                "pk=?", new String[]{String.valueOf(aluno)},
+                null, null, null, null);
 
-//    public Disciplina selecionarDiscipina(long disciplina) {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.query("tb_disciplina", new String[]{"pk", "nome", "professor_id"},
-//                "pk = ?", new String[]{String.valueOf(disciplina)},
-//                null, null, null, null);
-//
-//        Disciplina disciplina1 = new Disciplina();
-//        cursor.moveToFirst();
-//        if (cursor.isFirst()) {
-//            do {
-//
-//                disciplina1.setPk(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
-//                disciplina1.setProfessor(Long.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("professor_id"))));
-//                disciplina1.setNome(cursor.getString(cursor.getColumnIndexOrThrow("nome")));
-//
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        return disciplina1;
-//    }
+        Aluno aluno1 = new Aluno();
+        cursor.moveToFirst();
+        if (cursor.isFirst()) {
+            do {
+
+                aluno1.setPk(Long.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
+                aluno1.setNomeAluno(cursor.getString(cursor.getColumnIndexOrThrow("nome")));
+                aluno1.setQuantidadeFalta(cursor.getInt(cursor.getColumnIndexOrThrow("quantidade_falta")));
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return aluno1;
+    }
+
+    public Disciplina selecionarDiscipina(long disciplina) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("tb_disciplina", new String[]{"pk", "nome", "professor_id"},
+                "pk = ?", new String[]{String.valueOf(disciplina)},
+                null, null, null, null);
+
+        Disciplina disciplina1 = new Disciplina();
+        cursor.moveToFirst();
+        if (cursor.isFirst()) {
+            do {
+
+                disciplina1.setPk(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
+                disciplina1.setProfessor(Long.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("professor_id"))));
+                disciplina1.setNome(cursor.getString(cursor.getColumnIndexOrThrow("nome")));
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return disciplina1;
+    }
 
     public List<Turma> turmasUnidade(long unidade) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -406,97 +407,97 @@ public class ClassDAO extends SQLiteOpenHelper {
     }
 
 
-//    public Professor selecionarProfessor(long professor) {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.query("tb_professor", new String[]{"pk", "cpf", "nome", "senha"},
-//                "pk=?", new String[]{String.valueOf(professor)},
-//                null, null, null, null);
-//
-//        Professor professor1 = new Professor();
-//        cursor.moveToFirst();
-//        if (cursor.isFirst()) {
-//            do {
-//                professor1.setPk(Long.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
-//                professor1.setCpf(cursor.getString(Integer.valueOf(cursor.getColumnIndexOrThrow("cpf"))));
-//                professor1.setNome(cursor.getString(Integer.valueOf(cursor.getColumnIndexOrThrow("nome"))));
-//                professor1.setSenha(cursor.getString(Integer.valueOf(cursor.getColumnIndexOrThrow("senha"))));
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        return professor1;
-//    }
-//
-//
-//    public void atualizarProfessor(Professor professor) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put("cpf", professor.getCpf());
-//        contentValues.put("nome", professor.getNome());
-//        contentValues.put("senha", professor.getSenha());
-//        Log.i("SENHAPROFESSOR", "Senha " + professor.getSenha());
-//        db.update("tb_professor", contentValues, "pk = ?", new String[]{String.valueOf(professor.getPk())});
-//    }
-//
-//    public List<Professor> professores() {
-//        List<Professor> listaProfessores = new ArrayList<>();
-//        String query = "SELECT * FROM tb_professor";
-//
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        Cursor cursor = db.rawQuery(query, null);
-//
-//        cursor.moveToFirst();
-//        if (cursor.isFirst()) {
-//            do {
-//                Professor professor = new Professor();
-//                professor.setPk(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
-//                professor.setNome(cursor.getString(cursor.getColumnIndexOrThrow("nome")));
-//                professor.setCpf(cursor.getString(cursor.getColumnIndexOrThrow("cpf")));
-//
-//                listaProfessores.add(professor);
-//
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        return listaProfessores;
-//    }
+    public Professor selecionarProfessor(long professor) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("tb_professor", new String[]{"pk", "cpf", "nome", "senha"},
+                "pk=?", new String[]{String.valueOf(professor)},
+                null, null, null, null);
+
+        Professor professor1 = new Professor();
+        cursor.moveToFirst();
+        if (cursor.isFirst()) {
+            do {
+                professor1.setPk(Long.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
+                professor1.setCpf(cursor.getString(Integer.valueOf(cursor.getColumnIndexOrThrow("cpf"))));
+                professor1.setNome(cursor.getString(Integer.valueOf(cursor.getColumnIndexOrThrow("nome"))));
+                professor1.setSenha(cursor.getString(Integer.valueOf(cursor.getColumnIndexOrThrow("senha"))));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return professor1;
+    }
 
 
-//    public List<Turma> turmas() {
-//        List<Turma> turmas = new ArrayList<>();
-//        String query = "SELECT * FROM tb_turma";
-//
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        Cursor cursor = db.rawQuery(query, null);
-//
-//        cursor.moveToFirst();
-//        if (cursor.isFirst()) {
-//            do {
-//                Turma turma = new Turma();
-//                turma.setPk(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
-//                turma.setDescricao(cursor.getString(cursor.getColumnIndexOrThrow("descricao")));
-//                turma.setTurno(cursor.getString(cursor.getColumnIndexOrThrow("turno")));
-//                turma.setUnidade(Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow("unidade_id"))));
-//
-//                turmas.add(turma);
-//
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        return turmas;
-//    }
+    public void atualizarProfessor(Professor professor) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("cpf", professor.getCpf());
+        contentValues.put("nome", professor.getNome());
+        contentValues.put("senha", professor.getSenha());
+        Log.i("SENHAPROFESSOR", "Senha " + professor.getSenha());
+        db.update("tb_professor", contentValues, "pk = ?", new String[]{String.valueOf(professor.getPk())});
+    }
 
-//    public void addUnidade(Unidade unidade) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        try {
-//            ContentValues contentValues = new ContentValues();
-//            contentValues.put("nome", unidade.getNomeUnidade());
-//            db.insert("tb_unidade", null, contentValues);
-//            Log.i("SALVAR_BD", "Dados inseridos com sucesso!");
-//            db.close();
-//        } catch (Exception e) {
-//            Toast.makeText(context, "Ocorreu um erro, Solicitar Administrador!", Toast.LENGTH_LONG).show();
-//        }
-//    }
+    public List<Professor> professores() {
+        List<Professor> listaProfessores = new ArrayList<>();
+        String query = "SELECT * FROM tb_professor";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        cursor.moveToFirst();
+        if (cursor.isFirst()) {
+            do {
+                Professor professor = new Professor();
+                professor.setPk(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
+                professor.setNome(cursor.getString(cursor.getColumnIndexOrThrow("nome")));
+                professor.setCpf(cursor.getString(cursor.getColumnIndexOrThrow("cpf")));
+
+                listaProfessores.add(professor);
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return listaProfessores;
+    }
+
+
+    public List<Turma> turmas() {
+        List<Turma> turmas = new ArrayList<>();
+        String query = "SELECT * FROM tb_turma";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        cursor.moveToFirst();
+        if (cursor.isFirst()) {
+            do {
+                Turma turma = new Turma();
+                turma.setPk(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
+                turma.setDescricao(cursor.getString(cursor.getColumnIndexOrThrow("descricao")));
+                turma.setTurno(cursor.getString(cursor.getColumnIndexOrThrow("turno")));
+                turma.setUnidade(Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow("unidade_id"))));
+
+                turmas.add(turma);
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return turmas;
+    }
+
+    public void addUnidade(Unidade unidade) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("nome", unidade.getNomeUnidade());
+            db.insert("tb_unidade", null, contentValues);
+            Log.i("SALVAR_BD", "Dados inseridos com sucesso!");
+            db.close();
+        } catch (Exception e) {
+            Toast.makeText(context, "Ocorreu um erro, Solicitar Administrador!", Toast.LENGTH_LONG).show();
+        }
+    }
 
     public void addTurmaAluno(TurmaAluno turmaAluno) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -512,119 +513,119 @@ public class ClassDAO extends SQLiteOpenHelper {
         }
     }
 
-//    public List<Aluno> selecionarTurmaAluno(long turma) {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.query("tb_turmaaluno", new String[]{"pk", "aluno_id", "turma_id"},
-//                "turma_id=?", new String[]{String.valueOf(turma)},
-//                null, null, null, null);
-//
-//        List<TurmaAluno> list = new ArrayList<>();
-//        TurmaAluno turmaAluno = new TurmaAluno();
-//        cursor.moveToFirst();
-//        if (cursor.isFirst()) {
-//            do {
-//                turmaAluno.setPk(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
-//                turmaAluno.setTurma(Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow("turma_id"))));
-//                turmaAluno.setAluno(Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow("aluno_id"))));
-//                list.add(turmaAluno);
-//            } while (cursor.moveToNext());
-//        }
-//
-//        cursor.close();
-//        return recuperarAlunos(list);
-//    }
+    public List<Aluno> selecionarTurmaAluno(long turma) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("tb_turmaaluno", new String[]{"pk", "aluno_id", "turma_id"},
+                "turma_id=?", new String[]{String.valueOf(turma)},
+                null, null, null, null);
 
-//    public List<Aluno> recuperarAlunos(List<TurmaAluno> turmaAlunos) {
-//
-//        List<Aluno> alunos = new ArrayList<>();
-//        for (int j = 0; j < turmaAlunos.size(); j++) {
-//            Log.i("INFO turma", "" + turmaAlunos.get(j).getAluno());
-//            for (int i = 0; i < this.alunos().size(); i++) {
-//                Log.i("INFO aluno", "" + this.alunos().get(i).getPk());
-//                if (turmaAlunos.get(j).getAluno() == this.alunos().get(i).getPk()) {
-//                    alunos.add(this.alunos().get(j));
-//                }
-//            }
-//        }
-//
-//        return alunos;
-//    }
+        List<TurmaAluno> list = new ArrayList<>();
+        TurmaAluno turmaAluno = new TurmaAluno();
+        cursor.moveToFirst();
+        if (cursor.isFirst()) {
+            do {
+                turmaAluno.setPk(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
+                turmaAluno.setTurma(Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow("turma_id"))));
+                turmaAluno.setAluno(Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow("aluno_id"))));
+                list.add(turmaAluno);
+            } while (cursor.moveToNext());
+        }
 
-//    public void removeUnidade(long unidadePk) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        db.delete("tb_unidade", "pk = ?", new String[]{String.valueOf(unidadePk)});
-//        db.close();
-//    }
+        cursor.close();
+        return recuperarAlunos(list);
+    }
 
-//    public Unidade selecionarUnidade(long unidadePk) {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.query("tb_unidade", new String[]{"pk", "nome"},
-//                "pk=?", new String[]{String.valueOf(unidadePk)},
-//                null, null, null, null);
-//
-//        Unidade unidade = new Unidade();
-//        cursor.moveToFirst();
-//        if (cursor.isFirst()) {
-//            do {
-//                unidade.setPk(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
-//                unidade.setNomeUnidade(cursor.getString(cursor.getColumnIndexOrThrow("nome")));
-//
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        return unidade;
-//    }
+    public List<Aluno> recuperarAlunos(List<TurmaAluno> turmaAlunos) {
 
-//    public Turma selecionarTurma(long turma) {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.query("tb_turma", new String[]{"pk", "descricao", "turno", "unidade_id"},
-//                "pk=?", new String[]{String.valueOf(turma)},
-//                null, null, null, null);
-//
-//        Turma turma1 = new Turma();
-//        cursor.moveToFirst();
-//        if (cursor.isFirst()) {
-//            do {
-//                turma1.setPk(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
-//                turma1.setDescricao(cursor.getString(cursor.getColumnIndexOrThrow("descricao")));
-//                turma1.setTurno(cursor.getString(cursor.getColumnIndexOrThrow("turno")));
-//                turma1.setUnidade(Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow("unidade_id"))));
-//
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        return turma1;
-//    }
+        List<Aluno> alunos = new ArrayList<>();
+        for (int j = 0; j < turmaAlunos.size(); j++) {
+            Log.i("INFO turma", "" + turmaAlunos.get(j).getAluno());
+            for (int i = 0; i < this.alunos().size(); i++) {
+                Log.i("INFO aluno", "" + this.alunos().get(i).getPk());
+                if (turmaAlunos.get(j).getAluno() == this.alunos().get(i).getPk()) {
+                    alunos.add(this.alunos().get(j));
+                }
+            }
+        }
 
-//    public void atualizarUnidade(Unidade unidade) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put("nome", unidade.getNomeUnidade());
-//
-//        db.update("tb_unidade", contentValues, "pk = ?", new String[]{String.valueOf(unidade.getPk())});
-//    }
+        return alunos;
+    }
 
-//    public List<Unidade> unidades() {
-//        List<Unidade> listaUnidades = new ArrayList<>();
-//
-//        String query = "SELECT * FROM tb_unidade";
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        Cursor cursor = db.rawQuery(query, null);
-//
-//        cursor.moveToFirst();
-//        if (cursor.isFirst()) {
-//            do {
-//                Unidade unidade = new Unidade();
-//                unidade.setPk(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
-//                unidade.setNomeUnidade(cursor.getString(cursor.getColumnIndexOrThrow("nome")));
-//
-//                listaUnidades.add(unidade);
-//
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        return listaUnidades;
-//    }
+    public void removeUnidade(long unidadePk) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("tb_unidade", "pk = ?", new String[]{String.valueOf(unidadePk)});
+        db.close();
+    }
+
+    public Unidade selecionarUnidade(long unidadePk) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("tb_unidade", new String[]{"pk", "nome"},
+                "pk=?", new String[]{String.valueOf(unidadePk)},
+                null, null, null, null);
+
+        Unidade unidade = new Unidade();
+        cursor.moveToFirst();
+        if (cursor.isFirst()) {
+            do {
+                unidade.setPk(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
+                unidade.setNomeUnidade(cursor.getString(cursor.getColumnIndexOrThrow("nome")));
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return unidade;
+    }
+
+    public Turma selecionarTurma(long turma) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("tb_turma", new String[]{"pk", "descricao", "turno", "unidade_id"},
+                "pk=?", new String[]{String.valueOf(turma)},
+                null, null, null, null);
+
+        Turma turma1 = new Turma();
+        cursor.moveToFirst();
+        if (cursor.isFirst()) {
+            do {
+                turma1.setPk(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
+                turma1.setDescricao(cursor.getString(cursor.getColumnIndexOrThrow("descricao")));
+                turma1.setTurno(cursor.getString(cursor.getColumnIndexOrThrow("turno")));
+                turma1.setUnidade(Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow("unidade_id"))));
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return turma1;
+    }
+
+    public void atualizarUnidade(Unidade unidade) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("nome", unidade.getNomeUnidade());
+
+        db.update("tb_unidade", contentValues, "pk = ?", new String[]{String.valueOf(unidade.getPk())});
+    }
+
+    public List<Unidade> unidades() {
+        List<Unidade> listaUnidades = new ArrayList<>();
+
+        String query = "SELECT * FROM tb_unidade";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        cursor.moveToFirst();
+        if (cursor.isFirst()) {
+            do {
+                Unidade unidade = new Unidade();
+                unidade.setPk(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("pk"))));
+                unidade.setNomeUnidade(cursor.getString(cursor.getColumnIndexOrThrow("nome")));
+
+                listaUnidades.add(unidade);
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return listaUnidades;
+    }
 
     public List<Nota> notas() {
         List<Nota> notas = new ArrayList<>();

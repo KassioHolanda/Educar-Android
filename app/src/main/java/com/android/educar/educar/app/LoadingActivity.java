@@ -16,6 +16,7 @@ import com.android.educar.educar.dao.ProfessorDAO;
 import com.android.educar.educar.model.Professor;
 import com.android.educar.educar.service.APIService;
 import com.android.educar.educar.service.ListaProfessoresAPI;
+import com.android.educar.educar.utils.CarregarDados;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
@@ -66,7 +67,8 @@ public class LoadingActivity extends AppCompatActivity {
 
     public void verificarConexao() {
         if (isConnect(getApplicationContext())) {
-//            carregarUsuarioAPI();
+//            CarregarDados carregarDados = new CarregarDados(getApplicationContext());
+//            carregarDados.salvarProfessoresBD();
             Toast.makeText(getApplicationContext(), "Seu Dispositivo está Conectado!", Toast.LENGTH_LONG).show();
 //            nextActivity();
         } else {
@@ -99,29 +101,5 @@ public class LoadingActivity extends AppCompatActivity {
         utilsFunctions = new UtilsFunctions();
         messages = new Messages();
         progressDialog = UtilsFunctions.progressDialog(getApplicationContext(), "Carregando...");
-    }
-
-    public void carregarUsuarioAPI() {
-        Call<ListaProfessoresAPI> listaProfessoresAPICall = apiService.getProfessorEndPoint().professores();
-        listaProfessoresAPICall.enqueue(new Callback<ListaProfessoresAPI>() {
-            @Override
-            public void onResponse(Call<ListaProfessoresAPI> call, Response<ListaProfessoresAPI> response) {
-                if (response.isSuccessful()) {
-                    professorList = response.body().getResults();
-                    salvarUsuariosAPI(professorList);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ListaProfessoresAPI> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "" + messages.ERROR_CONECTION, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public void salvarUsuariosAPI(List<Professor> professores) {
-        for (int i = 0; i < professores.size(); i++) {
-            professorDAO.addProfessor(professores.get(i));
-        }
     }
 }

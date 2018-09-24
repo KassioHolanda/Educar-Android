@@ -23,6 +23,7 @@ import com.android.educar.educar.R;
 import com.android.educar.educar.app.DetalheAlunoActivity;
 import com.android.educar.educar.dao.ClassDAO;
 import com.android.educar.educar.dao.DisciplinaDAO;
+import com.android.educar.educar.dao.OcorrenciaDAO;
 import com.android.educar.educar.dao.TurmaAlunoDAO;
 import com.android.educar.educar.dao.TurmaDAO;
 import com.android.educar.educar.dao.UnidadeDAO;
@@ -63,6 +64,7 @@ public class OcorrenciaFragment extends Fragment {
     private UnidadeDAO unidadeDAO;
     private DisciplinaDAO disciplinaDAO;
     private TurmaDAO turmaDAO;
+    private OcorrenciaDAO ocorrenciaDAO;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,6 +83,7 @@ public class OcorrenciaFragment extends Fragment {
         unidadeDAO = new UnidadeDAO(getContext());
         disciplinaDAO = new DisciplinaDAO(getContext());
         turmaDAO = new TurmaDAO(getContext());
+        ocorrenciaDAO = new OcorrenciaDAO(getContext());
 
         preferences = new Preferences(getContext());
         utilsFunctions = new UtilsFunctions();
@@ -181,7 +184,7 @@ public class OcorrenciaFragment extends Fragment {
                         Ocorrencia ocorrencia1 = new Ocorrencia();
                         ocorrencia1.setAluno(preferences.getSavedLong("id_aluno"));
                         ocorrencia1.setDescricao(ocorrencia.getText().toString());
-                        classDAO.adicionarOcorrencia(ocorrencia1);
+                        ocorrenciaDAO.adicionarOcorrencia(ocorrencia1);
                         Toast.makeText(getContext(), "Ocorrência Salva!", Toast.LENGTH_SHORT).show();
                     }
                 }).setNegativeButton("Cancelar", null).show();

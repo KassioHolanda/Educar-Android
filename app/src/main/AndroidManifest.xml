@@ -16,8 +16,7 @@
         <activity android:name=".app.LoginActivity" />
         <activity
             android:name=".app.UnidadeActivity"
-            android:label="Escolas" >
-        </activity>
+            android:label="Escolas"></activity>
         <activity
             android:name=".app.TurmaActivity"
             android:label="Turmas"
@@ -30,11 +29,12 @@
             android:name=".app.AulaActivity"
             android:label="Alunos"
             android:parentActivityName=".app.DisciplinaActivity" />
-        <activity android:name=".app.LoadingActivity"
+        <activity
+            android:name=".app.LoadingActivity"
             android:theme="@style/AppCompat.TelaCheia">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
@@ -48,7 +48,9 @@
         <activity
             android:name=".app.AulaAcoesActivity"
             android:label=""
-            android:parentActivityName=".app.DisciplinaActivity" />
+            android:parentActivityName=".app.DisciplinaActivity">
+
+        </activity>
         <activity
             android:name=".app.NotaFragmentActivity"
             android:label="Notas"
