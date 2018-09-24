@@ -7,45 +7,31 @@ public class Disciplina {
 
     @SerializedName("pk")
     private long pk;
-    @SerializedName("professor")
-    private long professor;
-    @SerializedName("nome")
-    private String nome;
+    @SerializedName("descricao")
+    private String desceicao;
+    private long codigo;
 
     public Disciplina() {
     }
 
-    public Disciplina(long professor, String nome) {
-        this.professor = professor;
-        this.nome = nome;
+    public Disciplina(String desceicao, long codigo) {
+        this.desceicao = desceicao;
+        this.codigo = codigo;
     }
 
-    public long getPk() {
-        return pk;
+    public String getDesceicao() {
+        return desceicao;
     }
 
-    public long getProfessor() {
-        return professor;
+    public void setDesceicao(String desceicao) {
+        this.desceicao = desceicao;
     }
 
-    public String getNome() {
-        return nome;
+    public long getCodigo() {
+        return codigo;
     }
 
-    @Override
-    public String toString() {
-        return this.nome;
-    }
-
-    public void setPk(long pk) {
-        this.pk = pk;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setProfessor(long professor) {
-        this.professor = professor;
+    public void setCodigo(long codigo) {
+        this.codigo = codigo;
     }
 }
