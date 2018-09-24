@@ -7,70 +7,80 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Turma {
-    @SerializedName("pk")
-    private long pk;
-    @SerializedName("unidade")
-    private long unidade;
-    @SerializedName("descricao")
+
+    private long id;
     private String descricao;
-    @SerializedName("turno")
     private String turno;
-    @SerializedName("meus_alunos")
-    private List<Aluno> meusAlunos;
+    private long sala;
+    private long anoletivo;
+    private long serie;
+    private String nivel;
 
     public Turma() {
     }
 
-    public Turma(long unidade, String descricao, String turno) {
-        this.pk = pk;
-        this.unidade = unidade;
+    public Turma(String descricao, String turno, long sala, long anoletivo, long serie, String nivel) {
         this.descricao = descricao;
         this.turno = turno;
-        this.meusAlunos = new ArrayList<>();
+        this.sala = sala;
+        this.anoletivo = anoletivo;
+        this.serie = serie;
+        this.nivel = nivel;
     }
 
-    public long getPk() {
-        return pk;
+    public long getId() {
+        return id;
     }
 
-    public long getUnidade() {
-        return unidade;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getDescricao() {
         return descricao;
     }
 
-    public String getTurno() {
-        return turno;
-    }
-
-    public List<Aluno> getMeusAlunos() {
-        return meusAlunos;
-    }
-
-    public void setPk(long pk) {
-        this.pk = pk;
-    }
-
-    public void setUnidade(long unidade) {
-        this.unidade = unidade;
-    }
-
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public String getTurno() {
+        return turno;
     }
 
     public void setTurno(String turno) {
         this.turno = turno;
     }
 
-    public void setMeusAlunos(List<Aluno> meusAlunos) {
-        this.meusAlunos = meusAlunos;
+    public long getSala() {
+        return sala;
     }
 
-    @Override
-    public String toString() {
-        return this.descricao;
+    public void setSala(long sala) {
+        this.sala = sala;
+    }
+
+    public long getAnoletivo() {
+        return anoletivo;
+    }
+
+    public void setAnoletivo(long anoletivo) {
+        this.anoletivo = anoletivo;
+    }
+
+    public long getSerie() {
+        return serie;
+    }
+
+    public void setSerie(long serie) {
+        this.serie = serie;
+    }
+
+    public String getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(String nivel) {
+        this.nivel = nivel;
     }
 }
