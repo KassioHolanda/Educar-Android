@@ -175,12 +175,12 @@ public class CarregarDados {
     }
 
     public void salvarUniadadesBD() {
-        Unidade unidade1 = new Unidade("EMEF ALCIDES SOTERO DE ASSUNCAO");
-        Unidade unidade2 = new Unidade("EMEF ALICE MENDES");
-        Unidade unidade3 = new Unidade("EMEF ANGELICA MARIA DOS SANTOS");
-        unidadeDAO.addUnidade(unidade1);
-        unidadeDAO.addUnidade(unidade2);
-        unidadeDAO.addUnidade(unidade3);
+//        Unidade unidade1 = new Unidade("EMEF ALCIDES SOTERO DE ASSUNCAO");
+//        Unidade unidade2 = new Unidade("EMEF ALICE MENDES");
+//        Unidade unidade3 = new Unidade("EMEF ANGELICA MARIA DOS SANTOS");
+//        unidadeDAO.addUnidade(unidade1);
+//        unidadeDAO.addUnidade(unidade2);
+//        unidadeDAO.addUnidade(unidade3);
     }
 
     public void salvarUnidadeProfessor() {
@@ -190,14 +190,14 @@ public class CarregarDados {
 
     public void salvarTurmasBD() {
 //        long unidade, String descricao, String turno
-        Turma turma1 = new Turma(1, "MA10", "Tarde");
-        Turma turma2 = new Turma(1, "MT02", "Tarde");
-        Turma turma3 = new Turma(1, "TA01", "Tarde");
-        Turma turma4 = new Turma(1, "MA201", "Tarde");
-        turmaDAO.addTurma(turma1);
-        turmaDAO.addTurma(turma2);
-        turmaDAO.addTurma(turma3);
-        turmaDAO.addTurma(turma4);
+//        Turma turma1 = new Turma(1, "MA10", "Tarde");
+//        Turma turma2 = new Turma(1, "MT02", "Tarde");
+//        Turma turma3 = new Turma(1, "TA01", "Tarde");
+//        Turma turma4 = new Turma(1, "MA201", "Tarde");
+//        turmaDAO.addTurma(turma1);
+//        turmaDAO.addTurma(turma2);
+//        turmaDAO.addTurma(turma3);
+//        turmaDAO.addTurma(turma4);
     }
 
     public void salvarAlunoBD() {
@@ -231,15 +231,15 @@ public class CarregarDados {
     }
 
     public void salvarDisciplinaBD() {
-        Disciplina disciplina1 = new Disciplina(1, "Português");
-        Disciplina disciplina2 = new Disciplina(1, "Matematica");
-        Disciplina disciplina3 = new Disciplina(1, "Engenharia");
-        Disciplina disciplina4 = new Disciplina(1, "Fisica");
-
-        disciplinaDAO.addDisiciplina(disciplina1);
-        disciplinaDAO.addDisiciplina(disciplina2);
-        disciplinaDAO.addDisiciplina(disciplina3);
-        disciplinaDAO.addDisiciplina(disciplina4);
+//        Disciplina disciplina1 = new Disciplina(1, "Português");
+//        Disciplina disciplina2 = new Disciplina(1, "Matematica");
+//        Disciplina disciplina3 = new Disciplina(1, "Engenharia");
+//        Disciplina disciplina4 = new Disciplina(1, "Fisica");
+//
+//        disciplinaDAO.addDisiciplina(disciplina1);
+//        disciplinaDAO.addDisiciplina(disciplina2);
+//        disciplinaDAO.addDisiciplina(disciplina3);
+//        disciplinaDAO.addDisiciplina(disciplina4);
     }
 
 }
