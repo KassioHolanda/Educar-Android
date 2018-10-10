@@ -4,7 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-public class AnoLetivo {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class AnoLetivo extends RealmObject {
+
+    @PrimaryKey
     private long id;
     private String descricao;
     @SerializedName("datainicio")
@@ -62,5 +67,10 @@ public class AnoLetivo {
 
     public void setFechadoNota(boolean fechadoNota) {
         this.fechadoNota = fechadoNota;
+    }
+
+    @Override
+    public String toString() {
+        return this.descricao;
     }
 }

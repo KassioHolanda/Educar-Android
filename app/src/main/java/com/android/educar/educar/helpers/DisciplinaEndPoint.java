@@ -10,10 +10,10 @@ import retrofit2.http.Path;
 
 public interface DisciplinaEndPoint {
 
-    @GET("disciplinas/")
+    @GET("disciplina/")
     Call<ListaDisciplinasAPI> disciplinas();
 
-    @GET("disciplinas/{pk}")
+    @GET("disciplina/{pk}")
     Call<Disciplina> getDisciplina(@Path("pk") long pk);
 
 }

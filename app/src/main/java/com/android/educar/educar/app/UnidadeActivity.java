@@ -2,23 +2,25 @@ package com.android.educar.educar.app;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.dao.ClassDAO;
-import com.android.educar.educar.dao.ProfessorDAO;
-import com.android.educar.educar.dao.UnidadeDAO;
+import com.android.educar.educar.chamadas.DisciplinaMB;
+import com.android.educar.educar.chamadas.FuncionarioEscolaMB;
+import com.android.educar.educar.chamadas.LocalEscolaMB;
+import com.android.educar.educar.chamadas.TurmaMB;
+import com.android.educar.educar.chamadas.UnidadeMB;
+import com.android.educar.educar.model.FuncionarioEscola;
 import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
@@ -30,18 +32,25 @@ import android.app.ProgressDialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+
 public class UnidadeActivity extends AppCompatActivity {
 
-    private ClassDAO classDAO;
-    private UnidadeDAO unidadeDAO;
     private ListView unidades;
     private Preferences preferences;
     private Messages messages;
     private List<Unidade> unidadesList;
     private ArrayAdapter<Unidade> unidadeArrayAdapter;
     private ProgressDialog progressDialog;
+    private FloatingActionButton sincronizarDados;
+    private Realm realm;
 
-    private ProfessorDAO professorDAO;
+    private TurmaMB turmaMB;
+    private UnidadeMB unidadeMB;
+    private DisciplinaMB disciplinaMB;
+    private FuncionarioEscolaMB funcionarioEscola;
+    private LocalEscolaMB localEscolaMB;
 
 
     @Override
@@ -51,29 +60,41 @@ public class UnidadeActivity extends AppCompatActivity {
         bindind();
         setupInit();
         onClickItem();
+        configRealm();
+        recuperarDadosRealm();
         atualizarAdapterListaUnidades(unidadesList);
-
-//        bemVindo();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        atualizarAdapterListaUnidades(unidadesList);
     }
 
-    public void bemVindo() {
-        Toast.makeText(getApplicationContext(), "Bem Vindo " + professorDAO.selecionarProfessor(preferences.getSavedLong(messages.ID_USUARIO)).getNome(), Toast.LENGTH_SHORT).show();
+    public void configRealm() {
+        Realm.init(this);
+        realm = Realm.getDefaultInstance();
     }
 
     public void bindind() {
         unidades = findViewById(R.id.unidades_list_view_id);
+        sincronizarDados = findViewById(R.id.sincronizar_dados);
+    }
+
+    public void recuperarDadosRealm() {
+        RealmResults<FuncionarioEscola> funcionarioEscolas = realm.where(FuncionarioEscola.class).equalTo("funcionario", preferences.getSavedLong("id_funcionario")).findAll();
+//        final RealmResults<Unidade> unidades = realm.where(Unidade.class).findAll();
+        for (int i = 0; i < funcionarioEscolas.size(); i++) {
+            Unidade unidade = realm.where(Unidade.class).equalTo("id", funcionarioEscolas.get(i).getUnidade()).findFirst();
+            unidadesList.add(unidade);
+        }
+//        this.unidadesList = unidades;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_search, menu);
-
         getMenuInflater().inflate(R.menu.menu_item_configuracoes, menu);
         getMenuInflater().inflate(R.menu.menu_item_sair, menu);
         getMenuInflater().inflate(R.menu.menu_dados_alunos, menu);
@@ -93,7 +114,6 @@ public class UnidadeActivity extends AppCompatActivity {
                 return false;
             }
         });
-
         return true;
     }
 
@@ -107,6 +127,7 @@ public class UnidadeActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), ConfiguracoesActivity.class));
                 break;
             case R.id.sair_id:
+                preferences.saveBoolean("logado", false);
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 onStop();
                 break;
@@ -119,8 +140,24 @@ public class UnidadeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Unidade unidade = (Unidade) unidades.getItemAtPosition(position);
-                preferences.saveLong(messages.ID_UNIDADE, unidade.getPk());
+                preferences.saveLong(messages.ID_UNIDADE, unidade.getId());
                 nextAcivity();
+            }
+        });
+
+        sincronizarDados.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                progressDialog.show();
+
+                unidadeMB.unidadesAPI();
+                turmaMB.turmasAPI();
+                turmaMB.gradeCursoAPI();
+                disciplinaMB.disciplinasAPI();
+                funcionarioEscola.funcionariosEscola();
+                localEscolaMB.localEscolaAPI();
+//                progressDialog.hide();
+                onResume();
             }
         });
     }
@@ -130,14 +167,15 @@ public class UnidadeActivity extends AppCompatActivity {
     }
 
     public void setupInit() {
-        professorDAO = new ProfessorDAO(getApplicationContext());
         progressDialog = UtilsFunctions.progressDialog(this, "Aguarde...");
-        unidadeDAO = new UnidadeDAO(getApplicationContext());
-        classDAO = new ClassDAO(getApplicationContext());
         preferences = new Preferences(this);
         messages = new Messages();
         unidadesList = new ArrayList<>();
-        unidadesList = unidadeDAO.unidades();
+        unidadeMB = new UnidadeMB(getApplicationContext());
+        turmaMB = new TurmaMB(getApplicationContext());
+        disciplinaMB = new DisciplinaMB(getApplicationContext());
+        funcionarioEscola = new FuncionarioEscolaMB(getApplicationContext());
+        localEscolaMB = new LocalEscolaMB(getApplicationContext());
     }
 
     public void atualizarAdapterListaUnidades(List<Unidade> unidades) {

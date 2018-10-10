@@ -1,6 +1,11 @@
 package com.android.educar.educar.model;
 
-public class FuncionarioEscola {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class FuncionarioEscola extends RealmObject {
+
+    @PrimaryKey
     private long id;
     private Boolean ativo;
     private long unidade;
@@ -8,12 +13,6 @@ public class FuncionarioEscola {
 
     public FuncionarioEscola() {
 
-    }
-
-    public FuncionarioEscola(Boolean ativo, long unidade, long funcionario) {
-        this.ativo = ativo;
-        this.unidade = unidade;
-        this.funcionario = funcionario;
     }
 
     public long getId() {

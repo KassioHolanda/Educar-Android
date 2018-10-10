@@ -13,6 +13,6 @@ public interface NotaEndPoint {
     Call<Nota> notas();
 
     @GET("notas/{pk}")
-    Call<Nota> getNota(@Path("pk") long pk);
+    Call<Nota> getNota(@Path("id") long id);
 
 }

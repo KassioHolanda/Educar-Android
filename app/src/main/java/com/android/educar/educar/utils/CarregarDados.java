@@ -3,13 +3,13 @@ package com.android.educar.educar.utils;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.educar.educar.dao.AlunoDAO;
-import com.android.educar.educar.dao.ClassDAO;
-import com.android.educar.educar.dao.DisciplinaDAO;
-import com.android.educar.educar.dao.ProfessorDAO;
-import com.android.educar.educar.dao.TurmaAlunoDAO;
-import com.android.educar.educar.dao.TurmaDAO;
-import com.android.educar.educar.dao.UnidadeDAO;
+//import com.android.educar.educar.dao.AlunoDAO;
+//import com.android.educar.educar.dao.ClassDAO;
+//import com.android.educar.educar.dao.DisciplinaDAO;
+//import com.android.educar.educar.dao.ProfessorDAO;
+//import com.android.educar.educar.dao.TurmaAlunoDAO;
+//import com.android.educar.educar.dao.TurmaDAO;
+//import com.android.educar.educar.dao.UnidadeDAO;
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.Professor;
@@ -33,23 +33,23 @@ import retrofit2.Response;
 
 public class CarregarDados {
     private APIService apiService;
-    private UnidadeDAO unidadeDAO;
-    private TurmaDAO turmaDAO;
-    private ClassDAO classDAO;
-    private AlunoDAO alunoDAO;
-    private DisciplinaDAO disciplinaDAO;
-    private TurmaAlunoDAO turmaAlunoDAO;
-    private ProfessorDAO professorDAO;
+//    private UnidadeDAO unidadeDAO;
+//    private TurmaDAO turmaDAO;
+//    private ClassDAO classDAO;
+//    private AlunoDAO alunoDAO;
+//    private DisciplinaDAO disciplinaDAO;
+//    private TurmaAlunoDAO turmaAlunoDAO;
+//    private ProfessorDAO professorDAO;
 
     public CarregarDados(Context context) {
         apiService = new APIService("");
-        unidadeDAO = new UnidadeDAO(context);
-        classDAO = new ClassDAO(context);
-        turmaDAO = new TurmaDAO(context);
-        disciplinaDAO = new DisciplinaDAO(context);
-        alunoDAO = new AlunoDAO(context);
-        turmaAlunoDAO = new TurmaAlunoDAO(context);
-        professorDAO = new ProfessorDAO(context);
+//        unidadeDAO = new UnidadeDAO(context);
+//        classDAO = new ClassDAO(context);
+//        turmaDAO = new TurmaDAO(context);
+//        disciplinaDAO = new DisciplinaDAO(context);
+//        alunoDAO = new AlunoDAO(context);
+//        turmaAlunoDAO = new TurmaAlunoDAO(context);
+//        professorDAO = new ProfessorDAO(context);
     }
 
     public void carregarDados() {
@@ -103,26 +103,26 @@ public class CarregarDados {
 
     public void salvarTurmaBD(List<Turma> turmas) {
         for (int i = 0; i < turmas.size(); i++) {
-            turmaDAO.addTurma(turmas.get(i));
+//            turmaDAO.addTurma(turmas.get(i));
         }
     }
 
     public void salvarUnidadeBD(List<Unidade> unidades) {
         for (int i = 0; i < unidades.size(); i++) {
-            unidadeDAO.addUnidade(unidades.get(i));
+//            unidadeDAO.addUnidade(unidades.get(i));
         }
     }
 
     public void salvarDisciplinaBD(List<Disciplina> disciplinas) {
         for (int i = 0; i < disciplinas.size(); i++) {
-            disciplinaDAO.addDisiciplina(disciplinas.get(i));
-            Log.i("DISCIPLINA", "Disciplina " + disciplinas.get(i) + " add");
+//            disciplinaDAO.addDisiciplina(disciplinas.get(i));
+//            Log.i("DISCIPLINA", "Disciplina " + disciplinas.get(i) + " add");
         }
     }
 
     public void salvarAlunoBD(List<Aluno> alunos) {
         for (int i = 0; i < alunos.size(); i++) {
-            alunoDAO.addAluno(alunos.get(i));
+//            alunoDAO.addAluno(alunos.get(i));
             Log.i("DISCIPLINA", "Aluno " + alunos.get(i) + " add");
         }
     }
@@ -171,7 +171,7 @@ public class CarregarDados {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        classDAO.addProfessor(professor);
+//        classDAO.addProfessor(professor);
     }
 
     public void salvarUniadadesBD() {
@@ -211,23 +211,23 @@ public class CarregarDados {
         Aluno aluno7 = new Aluno("PEDRO HENRIQUE SILVA OLIVEIRA", 0);
         Aluno aluno8 = new Aluno("REGISLANE BRANDAO DE SOUSA", 0);
 
-        alunoDAO.addAluno(aluno1);
-        alunoDAO.addAluno(aluno2);
-        alunoDAO.addAluno(aluno3);
-        alunoDAO.addAluno(aluno4);
-        alunoDAO.addAluno(aluno5);
-        alunoDAO.addAluno(aluno6);
-        alunoDAO.addAluno(aluno7);
-        alunoDAO.addAluno(aluno8);
+//        alunoDAO.addAluno(aluno1);
+//        alunoDAO.addAluno(aluno2);
+//        alunoDAO.addAluno(aluno3);
+//        alunoDAO.addAluno(aluno4);
+//        alunoDAO.addAluno(aluno5);
+//        alunoDAO.addAluno(aluno6);
+//        alunoDAO.addAluno(aluno7);
+//        alunoDAO.addAluno(aluno8);
     }
 
     public void turmaAluno() {
-        for (int i = 0; i < alunoDAO.alunos().size() - 3; i++) {
-            TurmaAluno turmaAluno = new TurmaAluno();
-            turmaAluno.setAluno(alunoDAO.alunos().get(i).getPk());
-            turmaAluno.setTurma(1);
-            turmaAlunoDAO.addTurmaAluno(turmaAluno);
-        }
+//        for (int i = 0; i < alunoDAO.alunos().size() - 3; i++) {
+//            TurmaAluno turmaAluno = new TurmaAluno();
+//            turmaAluno.setAluno(alunoDAO.alunos().get(i).getPk());
+//            turmaAluno.setTurma(1);
+//            turmaAlunoDAO.addTurmaAluno(turmaAluno);
+//        }
     }
 
     public void salvarDisciplinaBD() {

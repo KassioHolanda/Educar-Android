@@ -13,10 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.dao.ClassDAO;
-import com.android.educar.educar.dao.DisciplinaDAO;
-import com.android.educar.educar.dao.TurmaDAO;
-import com.android.educar.educar.dao.UnidadeDAO;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.Frequencia;
 import com.android.educar.educar.model.Turma;
@@ -28,11 +24,6 @@ public class AulaAcoesActivity extends AppCompatActivity {
     private TextView disciplina;
     private TextView turma;
     private Preferences preferences;
-//    private ClassDAO classDAO;
-
-    private UnidadeDAO unidadeDAO;
-    private TurmaDAO turmaDAO;
-    private DisciplinaDAO disciplinaDAO;
 
     private Unidade unidadeSelecionada;
     private Turma turmaSelecionada;
@@ -55,21 +46,17 @@ public class AulaAcoesActivity extends AppCompatActivity {
 
     public void setupInit() {
 
-        turmaDAO = new TurmaDAO(getApplicationContext());
-        unidadeDAO = new UnidadeDAO(getApplicationContext());
-        disciplinaDAO = new DisciplinaDAO(getApplicationContext());
-
         preferences = new Preferences(getApplicationContext());
 //        classDAO = new ClassDAO(getApplicationContext());
-        unidadeSelecionada = unidadeDAO.selecionarUnidade(preferences.getSavedLong("id_unidade"));
-        turmaSelecionada = turmaDAO.selecionarTurma(preferences.getSavedLong("id_turma"));
-        disciplinaSelecionada = disciplinaDAO.selecionarDiscipina(preferences.getSavedLong("id_disciplina"));
+//        unidadeSelecionada = unidadeDAO.selecionarUnidade(preferences.getSavedLong("id_unidade"));
+//        turmaSelecionada = turmaDAO.selecionarTurma(preferences.getSavedLong("id_turma"));
+//        disciplinaSelecionada = disciplinaDAO.selecionarDiscipina(preferences.getSavedLong("id_disciplina"));
     }
 
     public void atualizarDados() {
-        unidade.setText(unidadeSelecionada.getNomeUnidade());
-        turma.setText(turmaSelecionada.getDescricao());
-        disciplina.setText(disciplinaSelecionada.getNome());
+//        unidade.setText(unidadeSelecionada.getNomeUnidade());
+//        turma.setText(turmaSelecionada.getDescricao());
+//        disciplina.setText(disciplinaSelecionada.getNome());
     }
 
     public void clickOnItem() {

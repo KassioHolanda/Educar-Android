@@ -1,6 +1,11 @@
 package com.android.educar.educar.model;
 
-public class Serie {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Serie extends RealmObject {
+
+    @PrimaryKey
     private long id;
     private String descricao;
     private String nivel;

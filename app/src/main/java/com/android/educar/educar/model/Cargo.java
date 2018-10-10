@@ -1,6 +1,8 @@
 package com.android.educar.educar.model;
 
-public class Cargo {
+import io.realm.RealmObject;
+
+public class Cargo extends RealmObject {
     private long id;
     private String abreviacao;
     private String descricao;
@@ -35,5 +37,10 @@ public class Cargo {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    @Override
+    public String toString() {
+        return this.descricao;
     }
 }

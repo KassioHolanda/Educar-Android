@@ -6,8 +6,12 @@ import com.orm.SugarRecord;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Turma {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
+public class Turma extends RealmObject{
+
+    @PrimaryKey
     private long id;
     private String descricao;
     private String turno;
@@ -17,15 +21,7 @@ public class Turma {
     private String nivel;
 
     public Turma() {
-    }
 
-    public Turma(String descricao, String turno, long sala, long anoletivo, long serie, String nivel) {
-        this.descricao = descricao;
-        this.turno = turno;
-        this.sala = sala;
-        this.anoletivo = anoletivo;
-        this.serie = serie;
-        this.nivel = nivel;
     }
 
     public long getId() {
@@ -82,5 +78,10 @@ public class Turma {
 
     public void setNivel(String nivel) {
         this.nivel = nivel;
+    }
+
+    @Override
+    public String toString() {
+        return this.getDescricao();
     }
 }

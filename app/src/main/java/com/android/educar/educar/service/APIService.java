@@ -1,20 +1,21 @@
 package com.android.educar.educar.service;
 
 import com.android.educar.educar.helpers.AlunoEndPoint;
-import com.android.educar.educar.helpers.AulaEndPoint;
 import com.android.educar.educar.helpers.DisciplinaEndPoint;
 import com.android.educar.educar.helpers.FrequenciaEndPoint;
 import com.android.educar.educar.helpers.FuncionarioEndPoint;
+import com.android.educar.educar.helpers.FuncionarioEscolaEndPoint;
+import com.android.educar.educar.helpers.GradeCursoEndPoint;
+import com.android.educar.educar.helpers.LocalEscolaEndPoint;
+import com.android.educar.educar.helpers.PessoaFisicaEndPoint;
 import com.android.educar.educar.helpers.ProfessorEndPoint;
 import com.android.educar.educar.helpers.TurmaEndPoint;
 import com.android.educar.educar.helpers.UnidadeEndPoint;
-import com.android.educar.educar.model.Professor;
-
-import java.io.IOException;
+import com.android.educar.educar.model.GradeCurso;
+import com.android.educar.educar.model.LocalEscola;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -23,17 +24,20 @@ public class APIService {
     public static String TAG = APIService.class.getSimpleName();
 
     public static final String BASE_URL = "http://10.20.30.162:8000/";
-    //    public static final String BASE_URL = "http://192.168.0.103:8000/";
+    //    public static final String BASE_URL = "http://192.168.0.10:8000/";
     private Retrofit retrofit;
     private Interceptor interceptor;
     private AlunoEndPoint alunoEndPoint;
-    private AulaEndPoint aulaEndPoint;
     private DisciplinaEndPoint disciplinaEndPoint;
     private FrequenciaEndPoint frequenciaEndPoint;
     private ProfessorEndPoint professorEndPoint;
     private TurmaEndPoint turmaEndPoint;
     private UnidadeEndPoint unidadeEndPoint;
     private FuncionarioEndPoint funcionarioEndPoint;
+    private PessoaFisicaEndPoint pessoaFisicaEndPoint;
+    private GradeCursoEndPoint gradeCursoEndPoint;
+    private FuncionarioEscolaEndPoint funcionarioEscolaEndPoint;
+    private LocalEscolaEndPoint localEscolaEndPoint;
 
     public APIService(String token) {
 
@@ -50,7 +54,6 @@ public class APIService {
                 .build();
 
         alunoEndPoint = retrofit.create(AlunoEndPoint.class);
-        aulaEndPoint = retrofit.create(AulaEndPoint.class);
         disciplinaEndPoint = retrofit.create(DisciplinaEndPoint.class);
         frequenciaEndPoint = retrofit.create(FrequenciaEndPoint.class);
         professorEndPoint = retrofit.create(ProfessorEndPoint.class);
@@ -58,14 +61,15 @@ public class APIService {
         unidadeEndPoint = retrofit.create(UnidadeEndPoint.class);
 
         funcionarioEndPoint = retrofit.create(FuncionarioEndPoint.class);
+        pessoaFisicaEndPoint = retrofit.create(PessoaFisicaEndPoint.class);
+
+        gradeCursoEndPoint = retrofit.create(GradeCursoEndPoint.class);
+        funcionarioEscolaEndPoint = retrofit.create(FuncionarioEscolaEndPoint.class);
+        localEscolaEndPoint = retrofit.create(LocalEscolaEndPoint.class);
     }
 
     public AlunoEndPoint getAlunoEndPoint() {
         return alunoEndPoint;
-    }
-
-    public AulaEndPoint getAulaEndPoint() {
-        return aulaEndPoint;
     }
 
     public DisciplinaEndPoint getDisciplinaEndPoint() {
@@ -90,5 +94,21 @@ public class APIService {
 
     public FuncionarioEndPoint getFuncionarioEndPoint() {
         return funcionarioEndPoint;
+    }
+
+    public PessoaFisicaEndPoint getPessoaFisicaEndPoint() {
+        return pessoaFisicaEndPoint;
+    }
+
+    public GradeCursoEndPoint getGradeCursoEndPoint() {
+        return gradeCursoEndPoint;
+    }
+
+    public FuncionarioEscolaEndPoint getFuncionarioEscolaEndPoint() {
+        return funcionarioEscolaEndPoint;
+    }
+
+    public LocalEscolaEndPoint getLocalEscolaEndPoint() {
+        return localEscolaEndPoint;
     }
 }

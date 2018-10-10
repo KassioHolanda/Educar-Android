@@ -21,20 +21,11 @@ import android.widget.Toast;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.app.DetalheAlunoActivity;
-import com.android.educar.educar.dao.ClassDAO;
-import com.android.educar.educar.dao.DisciplinaDAO;
-import com.android.educar.educar.dao.OcorrenciaDAO;
-import com.android.educar.educar.dao.TurmaAlunoDAO;
-import com.android.educar.educar.dao.TurmaDAO;
-import com.android.educar.educar.dao.UnidadeDAO;
 import com.android.educar.educar.model.Aluno;
-import com.android.educar.educar.model.Bimestre;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.Ocorrencia;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
-import com.android.educar.educar.utils.CarregarDados;
-import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
@@ -54,17 +45,10 @@ public class OcorrenciaFragment extends Fragment {
     private Disciplina disciplinaSelecionada;
     private Turma turmaSelecionada;
 
-    private ClassDAO classDAO;
 
     private LinearLayout cardUnidade;
     private LinearLayout cardTurma;
     private LinearLayout cardDisciplina;
-
-    private TurmaAlunoDAO turmaAlunoDAO;
-    private UnidadeDAO unidadeDAO;
-    private DisciplinaDAO disciplinaDAO;
-    private TurmaDAO turmaDAO;
-    private OcorrenciaDAO ocorrenciaDAO;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,26 +62,26 @@ public class OcorrenciaFragment extends Fragment {
     }
 
     public void setupInit() {
-
-        turmaAlunoDAO = new TurmaAlunoDAO(getContext());
-        unidadeDAO = new UnidadeDAO(getContext());
-        disciplinaDAO = new DisciplinaDAO(getContext());
-        turmaDAO = new TurmaDAO(getContext());
-        ocorrenciaDAO = new OcorrenciaDAO(getContext());
+//
+//        turmaAlunoDAO = new TurmaAlunoDAO(getContext());
+//        unidadeDAO = new UnidadeDAO(getContext());
+//        disciplinaDAO = new DisciplinaDAO(getContext());
+//        turmaDAO = new TurmaDAO(getContext());
+//        ocorrenciaDAO = new OcorrenciaDAO(getContext());
 
         preferences = new Preferences(getContext());
         utilsFunctions = new UtilsFunctions();
 
-        classDAO = new ClassDAO(getContext());
+//        classDAO = new ClassDAO(getContext());
 
 //        CarregarDados carregarDados = new CarregarDados(getContext());
 //        carregarDados.turmaAluno();
 
-        atualizarLista(turmaAlunoDAO.selecionarTurmaAluno(preferences.getSavedLong("id_turma")));
-
-        unidadeSelecionada = unidadeDAO.selecionarUnidade(preferences.getSavedLong("id_unidade"));
-        turmaSelecionada = turmaDAO.selecionarTurma(preferences.getSavedLong("id_turma"));
-        disciplinaSelecionada = disciplinaDAO.selecionarDiscipina(preferences.getSavedLong("id_disciplina"));
+//        atualizarLista(turmaAlunoDAO.selecionarTurmaAluno(preferences.getSavedLong("id_turma")));
+//
+//        unidadeSelecionada = unidadeDAO.selecionarUnidade(preferences.getSavedLong("id_unidade"));
+//        turmaSelecionada = turmaDAO.selecionarTurma(preferences.getSavedLong("id_turma"));
+//        disciplinaSelecionada = disciplinaDAO.selecionarDiscipina(preferences.getSavedLong("id_disciplina"));
 
         registerForContextMenu(alunos);
     }
@@ -146,8 +130,8 @@ public class OcorrenciaFragment extends Fragment {
         cardDisciplina.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(getView(), "" + disciplinaSelecionada.getNome(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(getView(), "" + disciplinaSelecionada.getNome(), Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
 
             }
         });
@@ -155,8 +139,8 @@ public class OcorrenciaFragment extends Fragment {
         cardUnidade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(getView(), "" + unidadeSelecionada.getNomeUnidade(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(getView(), "" + unidadeSelecionada.getNomeUnidade(), Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
 
             }
         });
@@ -184,7 +168,7 @@ public class OcorrenciaFragment extends Fragment {
                         Ocorrencia ocorrencia1 = new Ocorrencia();
                         ocorrencia1.setAluno(preferences.getSavedLong("id_aluno"));
                         ocorrencia1.setDescricao(ocorrencia.getText().toString());
-                        ocorrenciaDAO.adicionarOcorrencia(ocorrencia1);
+//                        ocorrenciaDAO.adicionarOcorrencia(ocorrencia1);
                         Toast.makeText(getContext(), "Ocorrência Salva!", Toast.LENGTH_SHORT).show();
                     }
                 }).setNegativeButton("Cancelar", null).show();
@@ -192,8 +176,8 @@ public class OcorrenciaFragment extends Fragment {
     }
 
     public void atualizarDadosTela() {
-        unidadeSelecionadaAula.setText(unidadeSelecionada.getNomeUnidade());
+//        unidadeSelecionadaAula.setText(unidadeSelecionada.getNomeUnidade());
         turmaSelecionadaAula.setText(turmaSelecionada.getDescricao());
-        disciplinaSelecionadaAula.setText(disciplinaSelecionada.getNome());
+//        disciplinaSelecionadaAula.setText(disciplinaSelecionada.getNome());
     }
 }

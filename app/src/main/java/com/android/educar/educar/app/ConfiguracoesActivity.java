@@ -8,8 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.dao.ClassDAO;
-import com.android.educar.educar.dao.ProfessorDAO;
+//import com.android.educar.educar.dao.ClassDAO;
+//import com.android.educar.educar.dao.ProfessorDAO;
 import com.android.educar.educar.model.Professor;
 import com.android.educar.educar.utils.CarregarDados;
 import com.android.educar.educar.utils.Messages;
@@ -34,7 +34,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     private EditText senha;
 //    private ClassDAO classDAO;
 
-    private ProfessorDAO professorDAO;
+//    private ProfessorDAO professorDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +62,13 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         alterarSenha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Professor professor = professorDAO.selecionarProfessor(preferences.getSavedLong("id_usuario"));
-                try {
-                    professor.setSenha(UtilsFunctions.criptografaSenha(senha.getText().toString()));
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-                professorDAO.atualizarProfessor(professor);
+//                Professor professor = professorDAO.selecionarProfessor(preferences.getSavedLong("id_usuario"));
+//                try {
+//                    professor.setSenha(UtilsFunctions.criptografaSenha(senha.getText().toString()));
+//                } catch (NoSuchAlgorithmException e) {
+//                    e.printStackTrace();
+//                }
+//                professorDAO.atualizarProfessor(professor);
             }
         });
     }
@@ -82,7 +82,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     public void setupInit() {
 //        classDAO = new ClassDAO(this);
         professorList = new ArrayList<>();
-        professorDAO = new ProfessorDAO(getApplicationContext());
+//        professorDAO = new ProfessorDAO(getApplicationContext());
         preferences = new Preferences(this);
         utilsFunctions = new UtilsFunctions();
         messages = new Messages();

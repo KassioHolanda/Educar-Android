@@ -11,8 +11,8 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.dao.ClassDAO;
-import com.android.educar.educar.dao.ProfessorDAO;
+import com.android.educar.educar.chamadas.FuncionarioMB;
+import com.android.educar.educar.chamadas.PessoaFisicaMB;
 import com.android.educar.educar.model.Professor;
 import com.android.educar.educar.service.APIService;
 import com.android.educar.educar.service.ListaProfessoresAPI;
@@ -31,22 +31,22 @@ import retrofit2.Response;
 public class LoadingActivity extends AppCompatActivity {
 
     private Preferences preferences;
-    private APIService apiService;
+    //    private APIService apiService;
     private UtilsFunctions utilsFunctions;
     private ProgressDialog progressDialog;
     private List<Professor> professorList;
     private Messages messages;
     private List<Professor> professores;
-//    private ClassDAO ClassDAO;
 
-    private ProfessorDAO professorDAO;
+
+    private FuncionarioMB funcionarioMB;
+    private PessoaFisicaMB pessoaFisicaMB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
         setupInit();
-//        settings();
         verificarConexao();
         mostrarLogo();
     }
@@ -65,15 +65,25 @@ public class LoadingActivity extends AppCompatActivity {
         }, 4000);
     }
 
+    public void sincronizarUsuariosRealm() {
+//        if (preferences.getSavedBoolean("sync")) {
+//
+//        } else {
+        progressDialog.show();
+        pessoaFisicaMB.pessoaFisicaAPI();
+        funcionarioMB.funcionariosAPI();
+
+        progressDialog.hide();
+//            preferences.saveBoolean("sync", true);
+//            Toast.makeText(getApplicationContext(), "Seu dispositivo precisa estar concectado para sincronizar", Toast.LENGTH_LONG).show();
+//        }
+    }
+
     public void verificarConexao() {
         if (isConnect(getApplicationContext())) {
-//            CarregarDados carregarDados = new CarregarDados(getApplicationContext());
-//            carregarDados.salvarProfessoresBD();
             Toast.makeText(getApplicationContext(), "Seu Dispositivo está Conectado!", Toast.LENGTH_LONG).show();
-//            nextActivity();
         } else {
             Toast.makeText(getApplicationContext(), "Seu Dispositivo está Desconectado!", Toast.LENGTH_LONG).show();
-            nextActivity();
         }
         preferences.saveBoolean("connection", isConnect(getApplicationContext()));
     }
@@ -93,13 +103,15 @@ public class LoadingActivity extends AppCompatActivity {
     }
 
     public void setupInit() {
-//        ClassDAO = new ClassDAO(getApplicationContext());
-        professorDAO = new ProfessorDAO(getApplicationContext());
-        professorList = new ArrayList<>();
         preferences = new Preferences(this);
-        apiService = new APIService("");
+//        apiService = new APIService("");
         utilsFunctions = new UtilsFunctions();
         messages = new Messages();
-        progressDialog = UtilsFunctions.progressDialog(getApplicationContext(), "Carregando...");
+        progressDialog = UtilsFunctions.progressDialog(this, "Carregando...");
+
+        funcionarioMB = new FuncionarioMB(this);
+        pessoaFisicaMB = new PessoaFisicaMB(this);
+
+        sincronizarUsuariosRealm();
     }
 }

@@ -6,24 +6,18 @@ import com.orm.SugarRecord;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Unidade {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-    @SerializedName("id")
+public class Unidade extends RealmObject{
+
+    @PrimaryKey
     private long id;
-    @SerializedName("abreviacao")
     private String abreviacao;
-    @SerializedName("cnpj")
     private String cnpj;
-    @SerializedName("nome")
     private String nome;
 
     public Unidade() {
-    }
-
-    public Unidade(String abreviacao, String cnpj, String nome) {
-        this.abreviacao = abreviacao;
-        this.cnpj = cnpj;
-        this.nome = nome;
     }
 
     public long getId() {
@@ -56,5 +50,10 @@ public class Unidade {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    @Override
+    public String toString() {
+        return this.nome;
     }
 }

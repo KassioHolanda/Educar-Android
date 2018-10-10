@@ -13,5 +13,5 @@ public interface ProfessorEndPoint {
     Call<ListaProfessoresAPI> professores();
 
     @GET("professores/{pk}")
-    Call<Professor> getProfessor(@Path("pk") long pk);
+    Call<Professor> getProfessor(@Path("id") long id);
 }

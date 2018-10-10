@@ -4,11 +4,18 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-public class Funcionario {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Funcionario extends RealmObject {
+
+    @PrimaryKey
     private long id;
+    @SerializedName("escolaridade")
     private String escolaridade;
     @SerializedName("pessoafisica")
-    private long pessoaFisica;
+    private long pessoaFisicaId;
+    @SerializedName("cargo")
     private long cargo;
     @SerializedName("cargahoraria")
     private String cargaHoraria;
@@ -16,17 +23,11 @@ public class Funcionario {
     private Date dataAdmissao;
     @SerializedName("statusfuncionario")
     private String statusFuncionario;
+    @SerializedName("situacaofuncional")
+    private String situacaoFuncional;
+
 
     public Funcionario() {
-    }
-
-    public Funcionario(String escolaridade, long pessoaFisica, long cargo, String cargaHoraria, Date dataAdmissao, String statusFuncionario) {
-        this.escolaridade = escolaridade;
-        this.pessoaFisica = pessoaFisica;
-        this.cargo = cargo;
-        this.cargaHoraria = cargaHoraria;
-        this.dataAdmissao = dataAdmissao;
-        this.statusFuncionario = statusFuncionario;
     }
 
     public long getId() {
@@ -45,12 +46,12 @@ public class Funcionario {
         this.escolaridade = escolaridade;
     }
 
-    public long getPessoaFisica() {
-        return pessoaFisica;
+    public long getPessoaFisicaId() {
+        return pessoaFisicaId;
     }
 
-    public void setPessoaFisica(long pessoaFisica) {
-        this.pessoaFisica = pessoaFisica;
+    public void setPessoaFisicaId(long pessoaFisicaId) {
+        this.pessoaFisicaId = pessoaFisicaId;
     }
 
     public long getCargo() {
@@ -83,5 +84,13 @@ public class Funcionario {
 
     public void setStatusFuncionario(String statusFuncionario) {
         this.statusFuncionario = statusFuncionario;
+    }
+
+    public String getSituacaoFuncional() {
+        return situacaoFuncional;
+    }
+
+    public void setSituacaoFuncional(String situacaoFuncional) {
+        this.situacaoFuncional = situacaoFuncional;
     }
 }

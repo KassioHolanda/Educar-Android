@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.model.Aluno;
-import com.android.educar.educar.model.Aula;
 import com.android.educar.educar.model.Frequencia;
 
 import java.util.ArrayList;

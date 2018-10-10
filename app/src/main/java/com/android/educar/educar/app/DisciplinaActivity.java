@@ -17,11 +17,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.dao.ClassDAO;
-import com.android.educar.educar.dao.DisciplinaDAO;
-import com.android.educar.educar.dao.ProfessorDAO;
-import com.android.educar.educar.dao.TurmaDAO;
-import com.android.educar.educar.dao.UnidadeDAO;
+//import com.android.educar.educar.dao.ClassDAO;
+//import com.android.educar.educar.dao.DisciplinaDAO;
+//import com.android.educar.educar.dao.ProfessorDAO;
+//import com.android.educar.educar.dao.TurmaDAO;
+//import com.android.educar.educar.dao.UnidadeDAO;
 import com.android.educar.educar.helpers.DisciplinaEndPoint;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.Professor;
@@ -33,7 +33,11 @@ import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class DisciplinaActivity extends AppCompatActivity {
 
@@ -54,10 +58,13 @@ public class DisciplinaActivity extends AppCompatActivity {
     private LinearLayout unidadeDisciplina;
     private LinearLayout turmaDisciplina;
 
-    private UnidadeDAO unidadeDAO;
-    private DisciplinaDAO disciplinaDAO;
-    private ProfessorDAO professorDAO;
-    private TurmaDAO turmaDAO;
+    private Realm realm;
+    private List<Disciplina> disciplinasLista;
+
+//    private UnidadeDAO unidadeDAO;
+//    private DisciplinaDAO disciplinaDAO;
+//    private ProfessorDAO professorDAO;
+//    private TurmaDAO turmaDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +73,22 @@ public class DisciplinaActivity extends AppCompatActivity {
         binding();
         setupInit();
         onClickItem();
+
+        configRealm();
+        recuperarDadosRealm();
         atualizarDadosTela();
+    }
+
+    public void configRealm() {
+        Realm.init(this);
+        realm = Realm.getDefaultInstance();
+    }
+
+    public void recuperarDadosRealm() {
+        final RealmResults<Disciplina> disciplinasLista = realm.where(Disciplina.class).findAll();
+        unidadeSelecionada = realm.where(Unidade.class).equalTo("id", preferences.getSavedLong(messages.ID_UNIDADE)).findFirst();
+        turmaSelecionada = realm.where(Turma.class).equalTo("id", preferences.getSavedLong(messages.ID_TURMA)).findFirst();
+        this.disciplinasLista = disciplinasLista;
     }
 
     public void binding() {
@@ -77,13 +99,12 @@ public class DisciplinaActivity extends AppCompatActivity {
         turmaDisciplina = findViewById(R.id.turma_disciplina_id);
     }
 
-
     public void onClickItem() {
         disciplinas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Disciplina disciplina = (Disciplina) disciplinas.getItemAtPosition(position);
-                preferences.saveLong("id_disciplina", disciplina.getPk());
+//                preferences.saveLong("id_disciplina", disciplina.getPk());
                 nextActivity();
             }
         });
@@ -91,7 +112,7 @@ public class DisciplinaActivity extends AppCompatActivity {
         unidadeDisciplina.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, "" + unidadeSelecionada.getNomeUnidade(), Snackbar.LENGTH_SHORT).show();
+//                Snackbar.make(v, "" + unidadeSelecionada.getNomeUnidade(), Snackbar.LENGTH_SHORT).show();
             }
         });
 
@@ -109,34 +130,28 @@ public class DisciplinaActivity extends AppCompatActivity {
 
     public void setupInit() {
         preferences = new Preferences(this);
-//        classDAO = new ClassDAO(getApplicationContext());
-
-        professorDAO = new ProfessorDAO(getApplicationContext());
-        unidadeDAO = new UnidadeDAO(getApplicationContext());
-        turmaDAO = new TurmaDAO(getApplicationContext());
-        disciplinaDAO = new DisciplinaDAO(getApplicationContext());
-
         apiService = new APIService("");
         utilsFunctions = new UtilsFunctions();
         messages = new Messages();
         recuperarDados();
-        atualizarAdapterListaDisciplinas(disciplinasList);
+        disciplinasLista = new ArrayList<>();
+//        atualizarAdapterListaDisciplinas(disciplinasList);
     }
 
     public void recuperarDados() {
-        professorLogado = professorDAO.selecionarProfessor(preferences.getSavedLong("id_usuario"));
-        unidadeSelecionada = unidadeDAO.selecionarUnidade(preferences.getSavedLong("id_unidade"));
-        turmaSelecionada = turmaDAO.selecionarTurma(preferences.getSavedLong("id_turma"));
-        disciplinasList = disciplinaDAO.selecionarDisciplinasProfessor(preferences.getSavedLong("id_usuario"));
+//        professorLogado = professorDAO.selecionarProfessor(preferences.getSavedLong("id_usuario"));
+//        unidadeSelecionada = unidadeDAO.selecionarUnidade(preferences.getSavedLong("id_unidade"));
+//        turmaSelecionada = turmaDAO.selecionarTurma(preferences.getSavedLong("id_turma"));
+//        disciplinasList = disciplinaDAO.selecionarDisciplinasProfessor(preferences.getSavedLong("id_usuario"));
     }
 
-    public void atualizarAdapterListaDisciplinas(List<Disciplina> disciplinas) {
-        disciplinaArrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, disciplinas);
+    public void atualizarAdapterListaDisciplinas() {
+        disciplinaArrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, disciplinasLista);
         this.disciplinas.setAdapter(disciplinaArrayAdapter);
     }
 
     public void atualizarDadosTela() {
-        unidadeSelecionadaDisciplina.setText(unidadeSelecionada.getNomeUnidade());
+        unidadeSelecionadaDisciplina.setText(unidadeSelecionada.getAbreviacao());
         turmaSelecionaDisciplina.setText(turmaSelecionada.getDescricao());
     }
 
@@ -182,5 +197,17 @@ public class DisciplinaActivity extends AppCompatActivity {
             }
         });
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        atualizarAdapterListaDisciplinas();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close();
     }
 }

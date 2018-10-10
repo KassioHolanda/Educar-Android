@@ -4,27 +4,22 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-public class PessoaFisica {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class PessoaFisica extends RealmObject {
+    @PrimaryKey
     private long id;
     private String cpf;
     private String nacionalidade;
     private String sexo;
     private String email;
     private String senha;
-    private Date dataNascimento;
+    private String dataNascimento;
     private String rg;
+    private String nome;
 
     public PessoaFisica() {
-    }
-
-    public PessoaFisica(String cpf, String nacionalidade, String sexo, String email, String senha, Date dataNascimento, String rg) {
-        this.cpf = cpf;
-        this.nacionalidade = nacionalidade;
-        this.sexo = sexo;
-        this.email = email;
-        this.senha = senha;
-        this.dataNascimento = dataNascimento;
-        this.rg = rg;
     }
 
     public long getId() {
@@ -75,11 +70,11 @@ public class PessoaFisica {
         this.senha = senha;
     }
 
-    public Date getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -89,5 +84,13 @@ public class PessoaFisica {
 
     public void setRg(String rg) {
         this.rg = rg;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }

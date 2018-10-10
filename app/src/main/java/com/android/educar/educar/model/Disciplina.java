@@ -3,28 +3,30 @@ package com.android.educar.educar.model;
 import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
 
-public class Disciplina {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-    @SerializedName("pk")
-    private long pk;
-    @SerializedName("descricao")
-    private String desceicao;
+public class Disciplina extends RealmObject{
+
+    @PrimaryKey
+    private long id;
+    private String descricao;
     private long codigo;
 
     public Disciplina() {
     }
 
     public Disciplina(String desceicao, long codigo) {
-        this.desceicao = desceicao;
+        this.descricao = desceicao;
         this.codigo = codigo;
     }
 
     public String getDesceicao() {
-        return desceicao;
+        return descricao;
     }
 
-    public void setDesceicao(String desceicao) {
-        this.desceicao = desceicao;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public long getCodigo() {
@@ -33,5 +35,22 @@ public class Disciplina {
 
     public void setCodigo(long codigo) {
         this.codigo = codigo;
+    }
+
+    @Override
+    public String toString() {
+        return this.descricao;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getDescricao() {
+        return descricao;
     }
 }
