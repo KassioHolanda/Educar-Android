@@ -14,30 +14,19 @@ import com.android.educar.educar.R;
 import com.android.educar.educar.chamadas.FuncionarioMB;
 import com.android.educar.educar.chamadas.PessoaFisicaMB;
 import com.android.educar.educar.model.Professor;
-import com.android.educar.educar.service.APIService;
-import com.android.educar.educar.service.ListaProfessoresAPI;
-import com.android.educar.educar.utils.CarregarDados;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
-
-import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class LoadingActivity extends AppCompatActivity {
 
     private Preferences preferences;
-    //    private APIService apiService;
     private UtilsFunctions utilsFunctions;
     private ProgressDialog progressDialog;
     private List<Professor> professorList;
     private Messages messages;
     private List<Professor> professores;
-
 
     private FuncionarioMB funcionarioMB;
     private PessoaFisicaMB pessoaFisicaMB;
@@ -70,6 +59,7 @@ public class LoadingActivity extends AppCompatActivity {
 //
 //        } else {
         progressDialog.show();
+
         pessoaFisicaMB.pessoaFisicaAPI();
         funcionarioMB.funcionariosAPI();
 
@@ -104,9 +94,9 @@ public class LoadingActivity extends AppCompatActivity {
 
     public void setupInit() {
         preferences = new Preferences(this);
-//        apiService = new APIService("");
         utilsFunctions = new UtilsFunctions();
         messages = new Messages();
+
         progressDialog = UtilsFunctions.progressDialog(this, "Carregando...");
 
         funcionarioMB = new FuncionarioMB(this);

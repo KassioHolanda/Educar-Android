@@ -16,13 +16,9 @@ public class Disciplina extends RealmObject{
     public Disciplina() {
     }
 
-    public Disciplina(String desceicao, long codigo) {
-        this.descricao = desceicao;
+    public Disciplina(String descricao, long codigo) {
+        this.descricao = descricao;
         this.codigo = codigo;
-    }
-
-    public String getDesceicao() {
-        return descricao;
     }
 
     public void setDescricao(String descricao) {

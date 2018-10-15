@@ -52,7 +52,7 @@ public class DisciplinaMB {
         realm.beginTransaction();
         for (int i = 0; i < disciplinas.size(); i++) {
             realm.copyToRealmOrUpdate(disciplinas.get(i));
-            Log.i("disciplinas", "" + disciplinas.get(i).getDesceicao());
+            Log.i("disciplinas", "" + disciplinas.get(i).getDescricao());
         }
         realm.commitTransaction();
     }

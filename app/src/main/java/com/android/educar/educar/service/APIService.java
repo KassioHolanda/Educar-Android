@@ -9,6 +9,7 @@ import com.android.educar.educar.helpers.GradeCursoEndPoint;
 import com.android.educar.educar.helpers.LocalEscolaEndPoint;
 import com.android.educar.educar.helpers.PessoaFisicaEndPoint;
 import com.android.educar.educar.helpers.ProfessorEndPoint;
+import com.android.educar.educar.helpers.SerieDisciplinaEndPoint;
 import com.android.educar.educar.helpers.TurmaEndPoint;
 import com.android.educar.educar.helpers.UnidadeEndPoint;
 import com.android.educar.educar.model.GradeCurso;
@@ -24,7 +25,7 @@ public class APIService {
     public static String TAG = APIService.class.getSimpleName();
 
     public static final String BASE_URL = "http://10.20.30.162:8000/";
-    //    public static final String BASE_URL = "http://192.168.0.10:8000/";
+    //    public static final String BASE_URL = "http://192.168.0.107:8000/";
     private Retrofit retrofit;
     private Interceptor interceptor;
     private AlunoEndPoint alunoEndPoint;
@@ -38,6 +39,7 @@ public class APIService {
     private GradeCursoEndPoint gradeCursoEndPoint;
     private FuncionarioEscolaEndPoint funcionarioEscolaEndPoint;
     private LocalEscolaEndPoint localEscolaEndPoint;
+    private SerieDisciplinaEndPoint serieDisciplinaEndPoint;
 
     public APIService(String token) {
 
@@ -66,6 +68,8 @@ public class APIService {
         gradeCursoEndPoint = retrofit.create(GradeCursoEndPoint.class);
         funcionarioEscolaEndPoint = retrofit.create(FuncionarioEscolaEndPoint.class);
         localEscolaEndPoint = retrofit.create(LocalEscolaEndPoint.class);
+
+        serieDisciplinaEndPoint = retrofit.create(SerieDisciplinaEndPoint.class);
     }
 
     public AlunoEndPoint getAlunoEndPoint() {
@@ -110,5 +114,9 @@ public class APIService {
 
     public LocalEscolaEndPoint getLocalEscolaEndPoint() {
         return localEscolaEndPoint;
+    }
+
+    public SerieDisciplinaEndPoint getSerieDisciplinaEndPoint() {
+        return serieDisciplinaEndPoint;
     }
 }

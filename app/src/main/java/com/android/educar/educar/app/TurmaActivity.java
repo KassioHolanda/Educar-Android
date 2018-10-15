@@ -73,11 +73,12 @@ public class TurmaActivity extends AppCompatActivity {
     public void recuperarTurmas() {
 
         RealmResults<LocalEscola> localEscolas = realm.where(LocalEscola.class).equalTo("unidade", preferences.getSavedLong("id_unidade")).findAll();
-        this.localEscolas = localEscolas;
+
+        long idUnidade = preferences.getSavedLong("id_unidade");
 
         List<Turma> turmasEscola = new ArrayList<>();
-        
-        for (int i = 0; i < this.localEscolas.size(); i++) {
+
+        for (int i = 0; i < localEscolas.size(); i++) {
             Turma turma = realm.where(Turma.class).equalTo("sala", localEscolas.get(i).getId()).findFirst();
             if (turma != null) {
                 turmasEscola.add(turma);
@@ -88,14 +89,20 @@ public class TurmaActivity extends AppCompatActivity {
             GradeCurso gradeCursos = realm.where(GradeCurso.class)
                     .equalTo("turma", turmasEscola.get(i).getId())
                     .equalTo("professor", preferences.getSavedLong("id_funcionario")).findFirst();
-            if (gradeCursos != null)
-                turmaList.add(realm.where(Turma.class).equalTo("id", turmasEscola.get(i).getId()).findFirst());
-        }
 
-        if (gradeCursos.size() == 0) {
-            alertaInformacaoSemTurmas();
+            long idturma = turmasEscola.get(i).getId();
+            long idfuncionario = preferences.getSavedLong("id_funcionario");
+
+            if (gradeCursos != null) {
+                turmaList.add(realm.where(Turma.class).equalTo("id", turmasEscola.get(i).getId()).findFirst());
+            }
         }
     }
+
+//        if (gradeCursos.size() == 0) {
+//            alertaInformacaoSemTurmas();
+//        }
+
 
     public void configRealm() {
         Realm.init(this);
@@ -103,9 +110,7 @@ public class TurmaActivity extends AppCompatActivity {
     }
 
     public void recuperarDadosRealm() {
-        final RealmResults<Turma> turmaList = realm.where(Turma.class).findAll();
         unidadeSelecionada = realm.where(Unidade.class).equalTo("id", preferences.getSavedLong(messages.ID_UNIDADE)).findFirst();
-//        this.turmaList = turmaList;
     }
 
     public void setupInit() {
@@ -116,9 +121,6 @@ public class TurmaActivity extends AppCompatActivity {
         gradeCursos = new ArrayList<>();
         localEscolas = new ArrayList<>();
 
-
-//        unidadeSelecionada = unidadeDAO.selecionarUnidade(preferences.getSavedLong("id_unidade"));
-//        atualizarAdapterListaTurmas(classDAO.turmasUnidade(preferences.getSavedLong("id_unidade")));
     }
 
     public void onClickItem() {
@@ -126,7 +128,7 @@ public class TurmaActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Turma turma = (Turma) turmas.getItemAtPosition(position);
-//                preferences.saveLong("id_turma", turma.getPk());
+                preferences.saveLong("id_turma", turma.getId());
                 nextAcitivity();
             }
         });
@@ -134,7 +136,7 @@ public class TurmaActivity extends AppCompatActivity {
         unidade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Snackbar.make(v, ""+unidadeSelecionada.getNomeUnidade(), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(v, ""+unidadeSelecionada.getNome(), Snackbar.LENGTH_SHORT).show();
             }
         });
     }

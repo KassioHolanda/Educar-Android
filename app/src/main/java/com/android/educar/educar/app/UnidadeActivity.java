@@ -18,6 +18,7 @@ import com.android.educar.educar.R;
 import com.android.educar.educar.chamadas.DisciplinaMB;
 import com.android.educar.educar.chamadas.FuncionarioEscolaMB;
 import com.android.educar.educar.chamadas.LocalEscolaMB;
+import com.android.educar.educar.chamadas.SerieDisciplinaMB;
 import com.android.educar.educar.chamadas.TurmaMB;
 import com.android.educar.educar.chamadas.UnidadeMB;
 import com.android.educar.educar.model.FuncionarioEscola;
@@ -27,6 +28,7 @@ import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
 import android.app.ProgressDialog;
+import android.widget.ProgressBar;
 
 
 import java.util.ArrayList;
@@ -51,7 +53,7 @@ public class UnidadeActivity extends AppCompatActivity {
     private DisciplinaMB disciplinaMB;
     private FuncionarioEscolaMB funcionarioEscola;
     private LocalEscolaMB localEscolaMB;
-
+    private SerieDisciplinaMB serieDisciplinaMB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +90,7 @@ public class UnidadeActivity extends AppCompatActivity {
             Unidade unidade = realm.where(Unidade.class).equalTo("id", funcionarioEscolas.get(i).getUnidade()).findFirst();
             unidadesList.add(unidade);
         }
+
 //        this.unidadesList = unidades;
     }
 
@@ -156,6 +159,7 @@ public class UnidadeActivity extends AppCompatActivity {
                 disciplinaMB.disciplinasAPI();
                 funcionarioEscola.funcionariosEscola();
                 localEscolaMB.localEscolaAPI();
+                serieDisciplinaMB.serieDisciplina();
 //                progressDialog.hide();
                 onResume();
             }
@@ -168,14 +172,17 @@ public class UnidadeActivity extends AppCompatActivity {
 
     public void setupInit() {
         progressDialog = UtilsFunctions.progressDialog(this, "Aguarde...");
+
         preferences = new Preferences(this);
         messages = new Messages();
         unidadesList = new ArrayList<>();
+
         unidadeMB = new UnidadeMB(getApplicationContext());
         turmaMB = new TurmaMB(getApplicationContext());
         disciplinaMB = new DisciplinaMB(getApplicationContext());
         funcionarioEscola = new FuncionarioEscolaMB(getApplicationContext());
         localEscolaMB = new LocalEscolaMB(getApplicationContext());
+        serieDisciplinaMB = new SerieDisciplinaMB(getApplicationContext());
     }
 
     public void atualizarAdapterListaUnidades(List<Unidade> unidades) {
