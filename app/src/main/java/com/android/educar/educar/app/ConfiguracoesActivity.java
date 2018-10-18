@@ -11,12 +11,10 @@ import com.android.educar.educar.R;
 //import com.android.educar.educar.dao.ClassDAO;
 //import com.android.educar.educar.dao.ProfessorDAO;
 import com.android.educar.educar.model.Professor;
-import com.android.educar.educar.utils.CarregarDados;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +27,6 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private List<Professor> professores;
     private Button sincronizarBanco;
-    private CarregarDados carregarDados;
     private Button alterarSenha;
     private EditText senha;
 //    private ClassDAO classDAO;
@@ -52,12 +49,6 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         alterarSenha = findViewById(R.id.alterar_senha_id);
         senha = findViewById(R.id.nova_senha_id);
 
-        sincronizarBanco.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                carregarDados.carregarDados();
-            }
-        });
 
         alterarSenha.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +78,5 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         utilsFunctions = new UtilsFunctions();
         messages = new Messages();
         progressDialog = UtilsFunctions.progressDialog(getApplicationContext(), "Carregando...");
-        carregarDados = new CarregarDados(getApplicationContext());
     }
 }

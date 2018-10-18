@@ -9,10 +9,10 @@ import retrofit2.http.Path;
 
 public interface AlunoEndPoint {
 
-    @GET("alunos/")
+    @GET("aluno/")
     Call<ListaAlunosAPI> alunos();
 
-    @GET("alunos/{pk}")
-    Call<Aluno> getAluno(@Path("pk") long pk);
+    @GET("aluno/{id}")
+    Call<Aluno> getAluno(@Path("id") long id);
 
 }

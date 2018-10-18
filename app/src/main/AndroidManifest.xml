@@ -25,10 +25,6 @@
             android:label="Disciplinas"
             android:parentActivityName=".app.TurmaActivity" />
         <activity
-            android:name=".app.AulaActivity"
-            android:label="Alunos"
-            android:parentActivityName=".app.DisciplinaActivity" />
-        <activity
             android:name=".app.LoadingActivity"
             android:theme="@style/AppCompat.TelaCheia">
             <intent-filter>

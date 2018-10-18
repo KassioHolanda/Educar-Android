@@ -3,51 +3,36 @@ package com.android.educar.educar.model;
 import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
 
+import java.util.Date;
 
-public class Aluno {
-    @SerializedName("pk")
-    private long pk;
-    @SerializedName("nome_aluno")
-    private String nomeAluno;
-    @SerializedName("quantidade_faltas")
-    private int quantidadeFalta;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+
+public class Aluno extends RealmObject {
+    @PrimaryKey
+    @SerializedName("pessoafisica")
+    private long pessoaFisica;
+    @SerializedName("datacadastro")
+    private Date dataCadastro;
 
     public Aluno() {
     }
 
-    public Aluno(String nomeAluno, int quantidadeFalta) {
-        this.nomeAluno = nomeAluno;
-        this.quantidadeFalta = quantidadeFalta;
+    public long getPessoaFisica() {
+        return pessoaFisica;
     }
 
-    public long getPk() {
-        return pk;
+    public void setPessoaFisica(long pessoaFisica) {
+        this.pessoaFisica = pessoaFisica;
     }
 
-    public String getNomeAluno() {
-        return nomeAluno;
+    public Date getDataCadastro() {
+        return dataCadastro;
     }
 
-
-    public int getQuantidadeFalta() {
-        return quantidadeFalta;
-    }
-
-    public void setPk(long pk) {
-        this.pk = pk;
-    }
-
-    public void setNomeAluno(String nomeAluno) {
-        this.nomeAluno = nomeAluno;
-    }
-
-
-    public void setQuantidadeFalta(int quantidadeFalta) {
-        this.quantidadeFalta = quantidadeFalta;
-    }
-
-    @Override
-    public String toString() {
-        return this.nomeAluno;
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
     }
 }
+

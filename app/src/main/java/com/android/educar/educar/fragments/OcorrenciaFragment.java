@@ -122,7 +122,7 @@ public class OcorrenciaFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Aluno aluno = (Aluno) alunos.getItemAtPosition(position);
-                preferences.saveLong("id_aluno", aluno.getPk());
+//                preferences.saveLong("id_aluno", aluno.getPk());
                 novaOcorrencia();
             }
         });

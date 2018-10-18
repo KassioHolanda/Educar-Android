@@ -72,8 +72,8 @@ public class NotaAdapter extends RecyclerView.Adapter<NotaAdapter.ViewHolder> {
         final Aluno aluno = alunos.get(position);
 //        List<Nota> notas = classDAO.notas();
 
-        holder.nomeAluno.setText(alunos.get(position).getNomeAluno());
-        holder.idAluno.setText("" + alunos.get(position).getPk());
+//        holder.nomeAluno.setText(alunos.get(position).getNomeAluno());
+//        holder.idAluno.setText("" + alunos.get(position).getPk());
 //        holder.notaAluno.setText("" + classDAO.selecionarNotaAluno(alunos.get(position).getPk()).getNota());
 
         holder.addNota.setOnClickListener(new View.OnClickListener() {
