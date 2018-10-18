@@ -1,18 +1,12 @@
 package com.android.educar.educar.fragments;
 
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -21,13 +15,7 @@ import android.widget.Toast;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.adapter.NotaAdapter;
-import com.android.educar.educar.dao.ClassDAO;
-import com.android.educar.educar.dao.DisciplinaDAO;
-import com.android.educar.educar.dao.TurmaAlunoDAO;
-import com.android.educar.educar.dao.TurmaDAO;
-import com.android.educar.educar.dao.UnidadeDAO;
 import com.android.educar.educar.model.Aluno;
-import com.android.educar.educar.model.Bimestre;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
@@ -36,10 +24,7 @@ import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class NotaFragment extends Fragment {
 
@@ -56,17 +41,17 @@ public class NotaFragment extends Fragment {
     private Disciplina disciplinaSelecionada;
     private Turma turmaSelecionada;
 
-    private ClassDAO classDAO;
+//    private ClassDAO classDAO;
 
     private LinearLayout layoutUnidade;
     private LinearLayout layoutTurma;
     private LinearLayout layoutDisciplina;
 
 
-    private TurmaAlunoDAO turmaAlunoDAO;
-    private UnidadeDAO unidadeDAO;
-    private DisciplinaDAO disciplinaDAO;
-    private TurmaDAO turmaDAO;
+//    private TurmaAlunoDAO turmaAlunoDAO;
+//    private UnidadeDAO unidadeDAO;
+//    private DisciplinaDAO disciplinaDAO;
+//    private TurmaDAO turmaDAO;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,7 +68,7 @@ public class NotaFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        atualizarAdapterFrequencia(turmaAlunoDAO.selecionarTurmaAluno(preferences.getSavedLong("id_turma")));
+//        atualizarAdapterFrequencia(turmaAlunoDAO.selecionarTurmaAluno(preferences.getSavedLong("id_turma")));
     }
 
     public void binding(View view) {
@@ -99,16 +84,16 @@ public class NotaFragment extends Fragment {
 
     public void setupInit() {
 
-        turmaAlunoDAO = new TurmaAlunoDAO(getContext());
-        unidadeDAO = new UnidadeDAO(getContext());
-        disciplinaDAO = new DisciplinaDAO(getContext());
-        turmaDAO = new TurmaDAO(getContext());
+//        turmaAlunoDAO = new TurmaAlunoDAO(getContext());
+//        unidadeDAO = new UnidadeDAO(getContext());
+//        disciplinaDAO = new DisciplinaDAO(getContext());
+//        turmaDAO = new TurmaDAO(getContext());
 
         preferences = new Preferences(getContext());
         apiService = new APIService("");
         utilsFunctions = new UtilsFunctions();
 
-        classDAO = new ClassDAO(getContext());
+//        classDAO = new ClassDAO(getContext());
 
 //        bimestres = classDAO.bimestres();
 //        numeroBimestre = new HashMap<>();
@@ -119,9 +104,9 @@ public class NotaFragment extends Fragment {
 //        numeroBimestre.put(4, Messages.QUARTO_SEMESTRE);
 
 
-        unidadeSelecionada = unidadeDAO.selecionarUnidade(preferences.getSavedLong("id_unidade"));
-        turmaSelecionada = turmaDAO.selecionarTurma(preferences.getSavedLong("id_turma"));
-        disciplinaSelecionada = disciplinaDAO.selecionarDiscipina(preferences.getSavedLong("id_disciplina"));
+//        unidadeSelecionada = unidadeDAO.selecionarUnidade(preferences.getSavedLong("id_unidade"));
+//        turmaSelecionada = turmaDAO.selecionarTurma(preferences.getSavedLong("id_turma"));
+//        disciplinaSelecionada = disciplinaDAO.selecionarDiscipina(preferences.getSavedLong("id_disciplina"));
     }
 
     public void onClickItem() {
@@ -135,14 +120,14 @@ public class NotaFragment extends Fragment {
         layoutDisciplina.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(getView(), "" + disciplinaSelecionada.getNome(), Toast.LENGTH_SHORT).show();
+//                Snackbar.make(getView(), "" + disciplinaSelecionada.getNome(), Toast.LENGTH_SHORT).show();
             }
         });
 
         layoutUnidade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(getView(), "" + unidadeSelecionada.getNomeUnidade(), Toast.LENGTH_SHORT).show();
+//                Snackbar.make(getView(), "" + unidadeSelecionada.getNomeUnidade(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -154,24 +139,24 @@ public class NotaFragment extends Fragment {
     }
 
     public void atualizarDadosTela() {
-        unidadeSelecionadaAula.setText(unidadeSelecionada.getNomeUnidade());
+//        unidadeSelecionadaAula.setText(unidadeSelecionada.getNomeUnidade());
         turmaSelecionadaAula.setText(turmaSelecionada.getDescricao());
-        disciplinaSelecionadaAula.setText(disciplinaSelecionada.getNome());
+//        disciplinaSelecionadaAula.setText(disciplinaSelecionada.getNome());
     }
 
     public void consultarBimestre() {
-        List<Bimestre> bimestres = classDAO.bimestres();
-        if (bimestres.size() == 0) {
-            Bimestre bimestre1 = new Bimestre();
-            bimestre1.setDescricao(Messages.PRIMEIRO_SEMESTRE);
-            bimestre1.setAnoLetivo(2018);
-            classDAO.adicionarBimestre(bimestre1);
-            preferences.saveString("bimestre", bimestre1.getDescricao());
-            preferences.saveLong("id_bimestre", bimestre1.getPk());
-        } else {
-            Bimestre bimestre1 = bimestres.get(0);
-            preferences.saveString("bimestre", bimestre1.getDescricao());
-            preferences.saveLong("id_bimestre", bimestre1.getPk());
-        }
+//        List<Bimestre> bimestres = classDAO.bimestres();
+//        if (bimestres.size() == 0) {
+//            Bimestre bimestre1 = new Bimestre();
+//            bimestre1.setDescricao(Messages.PRIMEIRO_SEMESTRE);
+//            bimestre1.setAnoLetivo(2018);
+//            classDAO.adicionarBimestre(bimestre1);
+//            preferences.saveString("bimestre", bimestre1.getDescricao());
+//            preferences.saveLong("id_bimestre", bimestre1.getPk());
+//        } else {
+//            Bimestre bimestre1 = bimestres.get(0);
+//            preferences.saveString("bimestre", bimestre1.getDescricao());
+//            preferences.saveLong("id_bimestre", bimestre1.getPk());
+//        }
     }
 }

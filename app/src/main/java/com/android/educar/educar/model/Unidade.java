@@ -6,50 +6,54 @@ import com.orm.SugarRecord;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Unidade {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-    @SerializedName("pk")
-    private long pk;
-    @SerializedName("nome_unidade")
-    private String nomeUnidade;
-    @SerializedName("minhas_turmas")
-    private List<Turma> minhasTurmas;
+public class Unidade extends RealmObject{
+
+    @PrimaryKey
+    private long id;
+    private String abreviacao;
+    private String cnpj;
+    private String nome;
 
     public Unidade() {
     }
 
-    public Unidade(String nomeUnidade) {
-        this.pk = pk;
-        this.nomeUnidade = nomeUnidade;
-        this.minhasTurmas = new ArrayList<>();
+    public long getId() {
+        return id;
     }
 
-    public long getPk() {
-        return pk;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public String getNomeUnidade() {
-        return nomeUnidade;
+    public String getAbreviacao() {
+        return abreviacao;
     }
 
-    public List<Turma> getMinhasTurmas() {
-        return minhasTurmas;
+    public void setAbreviacao(String abreviacao) {
+        this.abreviacao = abreviacao;
     }
 
-    public void setPk(long pk) {
-        this.pk = pk;
+    public String getCnpj() {
+        return cnpj;
     }
 
-    public void setNomeUnidade(String nomeUnidade) {
-        this.nomeUnidade = nomeUnidade;
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
 
-    public void setMinhasTurmas(List<Turma> minhasTurmas) {
-        this.minhasTurmas = minhasTurmas;
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     @Override
     public String toString() {
-        return this.nomeUnidade;
+        return this.nome;
     }
 }

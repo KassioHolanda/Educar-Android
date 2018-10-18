@@ -9,10 +9,10 @@ import retrofit2.http.Path;
 
 public interface UnidadeEndPoint {
 
-    @GET("unidades/")
+    @GET("unidade/")
     Call<ListaUnidadesAPI> unidades();
 
-    @GET("unidades/{pk}")
+    @GET("unidade/{pk}")
     Call<Unidade> getUnidade(@Path("pk") long pk);
 
 }

@@ -11,41 +11,31 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.dao.ClassDAO;
-import com.android.educar.educar.dao.ProfessorDAO;
+import com.android.educar.educar.chamadas.FuncionarioMB;
+import com.android.educar.educar.chamadas.PessoaFisicaMB;
 import com.android.educar.educar.model.Professor;
-import com.android.educar.educar.service.APIService;
-import com.android.educar.educar.service.ListaProfessoresAPI;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
-
-import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class LoadingActivity extends AppCompatActivity {
 
     private Preferences preferences;
-    private APIService apiService;
     private UtilsFunctions utilsFunctions;
     private ProgressDialog progressDialog;
     private List<Professor> professorList;
     private Messages messages;
     private List<Professor> professores;
-//    private ClassDAO ClassDAO;
 
-    private ProfessorDAO professorDAO;
+    private FuncionarioMB funcionarioMB;
+    private PessoaFisicaMB pessoaFisicaMB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
         setupInit();
-//        settings();
         verificarConexao();
         mostrarLogo();
     }
@@ -64,14 +54,26 @@ public class LoadingActivity extends AppCompatActivity {
         }, 4000);
     }
 
+    public void sincronizarUsuariosRealm() {
+//        if (preferences.getSavedBoolean("sync")) {
+//
+//        } else {
+        progressDialog.show();
+
+        pessoaFisicaMB.pessoaFisicaAPI();
+        funcionarioMB.funcionariosAPI();
+
+        progressDialog.hide();
+//            preferences.saveBoolean("sync", true);
+//            Toast.makeText(getApplicationContext(), "Seu dispositivo precisa estar concectado para sincronizar", Toast.LENGTH_LONG).show();
+//        }
+    }
+
     public void verificarConexao() {
         if (isConnect(getApplicationContext())) {
-//            carregarUsuarioAPI();
             Toast.makeText(getApplicationContext(), "Seu Dispositivo está Conectado!", Toast.LENGTH_LONG).show();
-//            nextActivity();
         } else {
             Toast.makeText(getApplicationContext(), "Seu Dispositivo está Desconectado!", Toast.LENGTH_LONG).show();
-            nextActivity();
         }
         preferences.saveBoolean("connection", isConnect(getApplicationContext()));
     }
@@ -91,37 +93,15 @@ public class LoadingActivity extends AppCompatActivity {
     }
 
     public void setupInit() {
-//        ClassDAO = new ClassDAO(getApplicationContext());
-        professorDAO = new ProfessorDAO(getApplicationContext());
-        professorList = new ArrayList<>();
         preferences = new Preferences(this);
-        apiService = new APIService("");
         utilsFunctions = new UtilsFunctions();
         messages = new Messages();
-        progressDialog = UtilsFunctions.progressDialog(getApplicationContext(), "Carregando...");
-    }
 
-    public void carregarUsuarioAPI() {
-        Call<ListaProfessoresAPI> listaProfessoresAPICall = apiService.getProfessorEndPoint().professores();
-        listaProfessoresAPICall.enqueue(new Callback<ListaProfessoresAPI>() {
-            @Override
-            public void onResponse(Call<ListaProfessoresAPI> call, Response<ListaProfessoresAPI> response) {
-                if (response.isSuccessful()) {
-                    professorList = response.body().getResults();
-                    salvarUsuariosAPI(professorList);
-                }
-            }
+        progressDialog = UtilsFunctions.progressDialog(this, "Carregando...");
 
-            @Override
-            public void onFailure(Call<ListaProfessoresAPI> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "" + messages.ERROR_CONECTION, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+        funcionarioMB = new FuncionarioMB(this);
+        pessoaFisicaMB = new PessoaFisicaMB(this);
 
-    public void salvarUsuariosAPI(List<Professor> professores) {
-        for (int i = 0; i < professores.size(); i++) {
-            professorDAO.addProfessor(professores.get(i));
-        }
+        sincronizarUsuariosRealm();
     }
 }

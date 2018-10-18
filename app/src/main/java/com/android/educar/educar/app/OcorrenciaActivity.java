@@ -18,7 +18,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.dao.ClassDAO;
 import com.android.educar.educar.fragments.NotaFragment;
 import com.android.educar.educar.fragments.OcorrenciaFragment;
 import com.android.educar.educar.model.Aluno;

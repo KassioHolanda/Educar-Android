@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.model.Aluno;
-import com.android.educar.educar.model.Aula;
 import com.android.educar.educar.model.Frequencia;
 
 import java.util.ArrayList;
@@ -61,11 +60,11 @@ public class FrequenciaAdapter extends RecyclerView.Adapter<FrequenciaAdapter.Vi
         final Frequencia frequencia = new Frequencia();
         frequencia.setPresente(holder.presenca.isChecked());
         frequencia.setAula(1);
-        frequencia.setAluno(alunos.get(position).getPk());
+//        frequencia.setAluno(alunos.get(position).getPk());
 
 
-        holder.nomeAluno.setText(alunos.get(position).getNomeAluno());
-        holder.idAluno.setText("" + alunos.get(position).getPk());
+//        holder.nomeAluno.setText(alunos.get(position).getNomeAluno());
+//        holder.idAluno.setText("" + alunos.get(position).getPk());
         holder.presenca.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

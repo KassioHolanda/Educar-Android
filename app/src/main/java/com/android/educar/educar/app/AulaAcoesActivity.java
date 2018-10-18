@@ -13,26 +13,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.dao.ClassDAO;
-import com.android.educar.educar.dao.DisciplinaDAO;
-import com.android.educar.educar.dao.TurmaDAO;
-import com.android.educar.educar.dao.UnidadeDAO;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.Frequencia;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.utils.Preferences;
 
+import io.realm.Realm;
+
 public class AulaAcoesActivity extends AppCompatActivity {
     private TextView unidade;
     private TextView disciplina;
     private TextView turma;
     private Preferences preferences;
-//    private ClassDAO classDAO;
-
-    private UnidadeDAO unidadeDAO;
-    private TurmaDAO turmaDAO;
-    private DisciplinaDAO disciplinaDAO;
 
     private Unidade unidadeSelecionada;
     private Turma turmaSelecionada;
@@ -42,34 +35,34 @@ public class AulaAcoesActivity extends AppCompatActivity {
     private LinearLayout paginaFrequencia;
     private FloatingActionButton floatingActionButton;
 
+    private Realm realm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aula_acoes);
         settings();
         binding();
+        configRealm();
         setupInit();
         atualizarDados();
         clickOnItem();
     }
 
     public void setupInit() {
-
-        turmaDAO = new TurmaDAO(getApplicationContext());
-        unidadeDAO = new UnidadeDAO(getApplicationContext());
-        disciplinaDAO = new DisciplinaDAO(getApplicationContext());
-
         preferences = new Preferences(getApplicationContext());
-//        classDAO = new ClassDAO(getApplicationContext());
-        unidadeSelecionada = unidadeDAO.selecionarUnidade(preferences.getSavedLong("id_unidade"));
-        turmaSelecionada = turmaDAO.selecionarTurma(preferences.getSavedLong("id_turma"));
-        disciplinaSelecionada = disciplinaDAO.selecionarDiscipina(preferences.getSavedLong("id_disciplina"));
+    }
+
+
+    public void configRealm() {
+        Realm.init(this);
+        realm = Realm.getDefaultInstance();
     }
 
     public void atualizarDados() {
-        unidade.setText(unidadeSelecionada.getNomeUnidade());
-        turma.setText(turmaSelecionada.getDescricao());
-        disciplina.setText(disciplinaSelecionada.getNome());
+        unidade.setText(realm.where(Unidade.class).equalTo("id", preferences.getSavedLong("id_unidade")).findFirst().getAbreviacao());
+        turma.setText(realm.where(Turma.class).equalTo("id", preferences.getSavedLong("id_turma")).findFirst().getDescricao());
+        disciplina.setText(realm.where(Disciplina.class).equalTo("id", preferences.getSavedLong("id_disciplina")).findFirst().getDescricao());
     }
 
     public void clickOnItem() {

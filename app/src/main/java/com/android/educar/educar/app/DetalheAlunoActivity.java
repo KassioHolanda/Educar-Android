@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.widget.EditText;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.dao.AlunoDAO;
-import com.android.educar.educar.dao.ClassDAO;
-import com.android.educar.educar.dao.DisciplinaDAO;
-import com.android.educar.educar.dao.UnidadeDAO;
+//import com.android.educar.educar.dao.AlunoDAO;
+//import com.android.educar.educar.dao.ClassDAO;
+//import com.android.educar.educar.dao.DisciplinaDAO;
+//import com.android.educar.educar.dao.UnidadeDAO;
 import com.android.educar.educar.utils.Preferences;
 
 
@@ -21,9 +21,9 @@ public class DetalheAlunoActivity extends AppCompatActivity {
     //    private ClassDAO classDAO;
     private Preferences preferences;
 
-    private AlunoDAO alunoDAO;
-    private DisciplinaDAO disciplinaDAO;
-    private UnidadeDAO unidadeDAO;
+//    private AlunoDAO alunoDAO;
+//    private DisciplinaDAO disciplinaDAO;
+//    private UnidadeDAO unidadeDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,17 +44,17 @@ public class DetalheAlunoActivity extends AppCompatActivity {
     public void setupInit() {
 //        classDAO = new ClassDAO(getApplicationContext());
 
-        alunoDAO = new AlunoDAO(getApplicationContext());
-        disciplinaDAO = new DisciplinaDAO(getApplicationContext());
-        unidadeDAO = new UnidadeDAO(getApplicationContext());
+//        alunoDAO = new AlunoDAO(getApplicationContext());
+//        disciplinaDAO = new DisciplinaDAO(getApplicationContext());
+//        unidadeDAO = new UnidadeDAO(getApplicationContext());
 
         preferences = new Preferences(getApplicationContext());
     }
 
     public void atualizarDados() {
-        nome.setText(alunoDAO.selecionarAluno(preferences.getSavedLong("id_aluno")).getNomeAluno());
+//        nome.setText(alunoDAO.selecionarAluno(preferences.getSavedLong("id_aluno")).getNomeAluno());
         id.setText("" + preferences.getSavedLong("id_aluno"));
-        turma.setText(disciplinaDAO.selecionarDiscipina(preferences.getSavedLong("id_disciplina")).getNome());
-        unidade.setText(unidadeDAO.selecionarUnidade(preferences.getSavedLong("id_unidade")).getNomeUnidade());
+//        turma.setText(disciplinaDAO.selecionarDiscipina(preferences.getSavedLong("id_disciplina")).getNome());
+//        unidade.setText(unidadeDAO.selecionarUnidade(preferences.getSavedLong("id_unidade")).getNomeUnidade());
     }
 }

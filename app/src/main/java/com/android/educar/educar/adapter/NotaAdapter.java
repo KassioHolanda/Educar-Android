@@ -4,41 +4,23 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.app.DetalheAlunoActivity;
 import com.android.educar.educar.app.NotaFragmentActivity;
-import com.android.educar.educar.dao.AlunoDAO;
-import com.android.educar.educar.dao.ClassDAO;
-import com.android.educar.educar.dao.DisciplinaDAO;
-import com.android.educar.educar.dao.NotaDAO;
-import com.android.educar.educar.fragments.NotaFragment;
-import com.android.educar.educar.fragments.OcorrenciaFragment;
 import com.android.educar.educar.model.Aluno;
-import com.android.educar.educar.model.Aula;
-import com.android.educar.educar.model.Bimestre;
 import com.android.educar.educar.model.Nota;
-import com.android.educar.educar.model.Unidade;
-import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class NotaAdapter extends RecyclerView.Adapter<NotaAdapter.ViewHolder> {
@@ -46,10 +28,10 @@ public class NotaAdapter extends RecyclerView.Adapter<NotaAdapter.ViewHolder> {
     private final Context context;
     private final List<Aluno> alunos;
     private Preferences preferences;
-    private AlunoDAO alunoDAO;
-    private NotaDAO notaDAO;
-    private ClassDAO classDAO;
-    private DisciplinaDAO disciplinaDAO;
+//    private AlunoDAO alunoDAO;
+//    private NotaDAO notaDAO;
+//    private ClassDAO classDAO;
+//    private DisciplinaDAO disciplinaDAO;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         protected TextView nomeAluno;
@@ -69,10 +51,10 @@ public class NotaAdapter extends RecyclerView.Adapter<NotaAdapter.ViewHolder> {
     public NotaAdapter(Context context, List<Aluno> alunos) {
         this.context = context;
         this.alunos = alunos;
-        this.classDAO = new ClassDAO(context);
-        this.alunoDAO = new AlunoDAO(context);
-        this.notaDAO = new NotaDAO(context);
-        this.disciplinaDAO = new DisciplinaDAO(context);
+//        this.classDAO = new ClassDAO(context);
+//        this.alunoDAO = new AlunoDAO(context);
+//        this.notaDAO = new NotaDAO(context);
+//        this.disciplinaDAO = new DisciplinaDAO(context);
     }
 
     @NonNull
@@ -88,17 +70,17 @@ public class NotaAdapter extends RecyclerView.Adapter<NotaAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull final NotaAdapter.ViewHolder holder, final int position) {
         final Aluno aluno = alunos.get(position);
-        List<Nota> notas = classDAO.notas();
+//        List<Nota> notas = classDAO.notas();
 
-        holder.nomeAluno.setText(alunos.get(position).getNomeAluno());
-        holder.idAluno.setText("" + alunos.get(position).getPk());
-        holder.notaAluno.setText("" + classDAO.selecionarNotaAluno(alunos.get(position).getPk()).getNota());
+//        holder.nomeAluno.setText(alunos.get(position).getNomeAluno());
+//        holder.idAluno.setText("" + alunos.get(position).getPk());
+//        holder.notaAluno.setText("" + classDAO.selecionarNotaAluno(alunos.get(position).getPk()).getNota());
 
         holder.addNota.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 preferences = new Preferences(context);
-                preferences.saveLong("id_aluno", alunoDAO.selecionarAluno(alunos.get(position).getPk()).getPk());
+//                preferences.saveLong("id_aluno", alunoDAO.selecionarAluno(alunos.get(position).getPk()).getPk());
                 adicionarNota();
             }
         });
@@ -119,7 +101,7 @@ public class NotaAdapter extends RecyclerView.Adapter<NotaAdapter.ViewHolder> {
 
 
     public void adicionarNota() {
-        classDAO = new ClassDAO(context);
+//        classDAO = new ClassDAO(context);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
 
@@ -133,8 +115,8 @@ public class NotaAdapter extends RecyclerView.Adapter<NotaAdapter.ViewHolder> {
         disciplina.setEnabled(false);
         aluno.setEnabled(false);
 
-        aluno.setText(alunoDAO.selecionarAluno(preferences.getSavedLong("id_aluno")).getNomeAluno());
-        disciplina.setText(disciplinaDAO.selecionarDiscipina(preferences.getSavedLong("id_disciplina")).getNome());
+//        aluno.setText(alunoDAO.selecionarAluno(preferences.getSavedLong("id_aluno")).getNomeAluno());
+//        disciplina.setText(disciplinaDAO.selecionarDiscipina(preferences.getSavedLong("id_disciplina")).getNome());
         bimestre.setText(preferences.getSavedString("bimestre"));
 
         builder.setView(viewDialog).setTitle("Inserir Nota!")
@@ -151,8 +133,8 @@ public class NotaAdapter extends RecyclerView.Adapter<NotaAdapter.ViewHolder> {
                             nota1.setDisciplina(preferences.getSavedLong("id_disciplina"));
                             nota1.setBimestre(preferences.getSavedLong("id_bimestre"));
                             nota1.setNota(Float.parseFloat(nota.getText().toString()));
-                            classDAO.adicionarNota(nota1);
-                            Toast.makeText(context, "O Aluno " + alunoDAO.selecionarAluno(preferences.getSavedLong("id_aluno")).getNomeAluno() + " Tirou a Nota " + nota.getText().toString(), Toast.LENGTH_SHORT).show();
+//                            classDAO.adicionarNota(nota1);
+//                            Toast.makeText(context, "O Aluno " + alunoDAO.selecionarAluno(preferences.getSavedLong("id_aluno")).getNomeAluno() + " Tirou a Nota " + nota.getText().toString(), Toast.LENGTH_SHORT).show();
                             atualizarFragment();
                         }
                     }

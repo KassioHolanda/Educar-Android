@@ -3,49 +3,50 @@ package com.android.educar.educar.model;
 import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
 
-public class Disciplina {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-    @SerializedName("pk")
-    private long pk;
-    @SerializedName("professor")
-    private long professor;
-    @SerializedName("nome")
-    private String nome;
+public class Disciplina extends RealmObject{
+
+    @PrimaryKey
+    private long id;
+    private String descricao;
+    private long codigo;
 
     public Disciplina() {
     }
 
-    public Disciplina(long professor, String nome) {
-        this.professor = professor;
-        this.nome = nome;
+    public Disciplina(String descricao, long codigo) {
+        this.descricao = descricao;
+        this.codigo = codigo;
     }
 
-    public long getPk() {
-        return pk;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
-    public long getProfessor() {
-        return professor;
+    public long getCodigo() {
+        return codigo;
     }
 
-    public String getNome() {
-        return nome;
+    public void setCodigo(long codigo) {
+        this.codigo = codigo;
     }
 
     @Override
     public String toString() {
-        return this.nome;
+        return this.descricao;
     }
 
-    public void setPk(long pk) {
-        this.pk = pk;
+    public long getId() {
+        return id;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setProfessor(long professor) {
-        this.professor = professor;
+    public String getDescricao() {
+        return descricao;
     }
 }

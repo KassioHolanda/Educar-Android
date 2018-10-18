@@ -43,7 +43,7 @@ public class OcorrenciaAdapter extends RecyclerView.Adapter<OcorrenciaAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull OcorrenciaAdapter.ViewHolder holder, int position) {
-        holder.nomeAluno.setText(alunos.get(position).getNomeAluno());
+//        holder.nomeAluno.setText(alunos.get(position).getNomeAluno());
     }
 
     @Override

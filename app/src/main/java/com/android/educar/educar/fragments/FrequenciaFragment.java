@@ -15,11 +15,6 @@ import android.widget.Toast;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.adapter.FrequenciaAdapter;
-import com.android.educar.educar.dao.ClassDAO;
-import com.android.educar.educar.dao.DisciplinaDAO;
-import com.android.educar.educar.dao.TurmaAlunoDAO;
-import com.android.educar.educar.dao.TurmaDAO;
-import com.android.educar.educar.dao.UnidadeDAO;
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.Turma;
@@ -49,10 +44,6 @@ public class FrequenciaFragment extends Fragment {
     private LinearLayout turmaFrequencia;
     private LinearLayout disciplinaFrequencia;
 
-    private TurmaAlunoDAO turmaAlunoDAO;
-    private UnidadeDAO unidadeDAO;
-    private DisciplinaDAO disciplinaDAO;
-    private TurmaDAO turmaDAO;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,20 +68,20 @@ public class FrequenciaFragment extends Fragment {
 
     public void setupInit() {
 
-        turmaAlunoDAO = new TurmaAlunoDAO(getContext());
-        unidadeDAO = new UnidadeDAO(getContext());
-        disciplinaDAO = new DisciplinaDAO(getContext());
-        turmaDAO = new TurmaDAO(getContext());
+//        turmaAlunoDAO = new TurmaAlunoDAO(getContext());
+//        unidadeDAO = new UnidadeDAO(getContext());
+//        disciplinaDAO = new DisciplinaDAO(getContext());
+//        turmaDAO = new TurmaDAO(getContext());
 
         preferences = new Preferences(getContext());
         apiService = new APIService("");
         utilsFunctions = new UtilsFunctions();
 //        classDAO = new ClassDAO(getContext());
-        atualizarAdapterFrequencia(turmaAlunoDAO.selecionarTurmaAluno(preferences.getSavedLong("id_turma")));
+//        atualizarAdapterFrequencia(turmaAlunoDAO.selecionarTurmaAluno(preferences.getSavedLong("id_turma")));
 
-        unidadeSelecionada = unidadeDAO.selecionarUnidade(preferences.getSavedLong("id_unidade"));
-        disciplinaSelecionada = disciplinaDAO.selecionarDiscipina(preferences.getSavedLong("id_disciplina"));
-        turmaSelecionada = turmaDAO.selecionarTurma(preferences.getSavedLong("id_turma"));
+//        unidadeSelecionada = unidadeDAO.selecionarUnidade(preferences.getSavedLong("id_unidade"));
+//        disciplinaSelecionada = disciplinaDAO.selecionarDiscipina(preferences.getSavedLong("id_disciplina"));
+//        turmaSelecionada = turmaDAO.selecionarTurma(preferences.getSavedLong("id_turma"));
     }
 
     public void onClickItem() {
@@ -105,14 +96,14 @@ public class FrequenciaFragment extends Fragment {
         unidadeFrequecia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(getView(), "" + unidadeSelecionada.getNomeUnidade(), Snackbar.LENGTH_SHORT).show();
+//                Snackbar.make(getView(), "" + unidadeSelecionada.getNomeUnidade(), Snackbar.LENGTH_SHORT).show();
             }
         });
 
         disciplinaFrequencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(getView(), "" + disciplinaSelecionada.getNome(), Snackbar.LENGTH_SHORT).show();
+//                Snackbar.make(getView(), "" + disciplinaSelecionada.getNome(), Snackbar.LENGTH_SHORT).show();
             }
         });
 
@@ -131,8 +122,8 @@ public class FrequenciaFragment extends Fragment {
     }
 
     public void atualizarDadosTela() {
-        unidadeSelecionadaAula.setText(unidadeSelecionada.getNomeUnidade());
+//        unidadeSelecionadaAula.setText(unidadeSelecionada.getNomeUnidade());
         turmaSelecionadaAula.setText(turmaSelecionada.getDescricao());
-        disciplinaSelecionadaAula.setText(disciplinaSelecionada.getNome());
+//        disciplinaSelecionadaAula.setText(disciplinaSelecionada.getNome());
     }
 }

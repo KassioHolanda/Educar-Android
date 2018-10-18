@@ -9,10 +9,10 @@ import retrofit2.http.Path;
 
 public interface TurmaEndPoint {
 
-    @GET("turmas/")
+    @GET("turma/")
     Call<ListaTurmaAPI> turmas();
 
-    @GET("turmas/{pk}")
-    Call<Turma> getTurma(@Path("pk") long pk);
+    @GET("turma/{pk}")
+    Call<Turma> getTurma(@Path("id") long id);
 
 }
