@@ -11,6 +11,7 @@ import com.android.educar.educar.helpers.FuncionarioEscolaEndPoint;
 import com.android.educar.educar.helpers.GradeCursoEndPoint;
 import com.android.educar.educar.helpers.LocalEscolaEndPoint;
 import com.android.educar.educar.helpers.MatriculaEndPoint;
+import com.android.educar.educar.helpers.OcorrenciaEndPoint;
 import com.android.educar.educar.helpers.PessoaFisicaEndPoint;
 import com.android.educar.educar.helpers.ProfessorEndPoint;
 import com.android.educar.educar.helpers.SerieDisciplinaEndPoint;
@@ -20,6 +21,7 @@ import com.android.educar.educar.model.AlunoFrequenciaMes;
 import com.android.educar.educar.model.GradeCurso;
 import com.android.educar.educar.model.LocalEscola;
 import com.android.educar.educar.model.Matricula;
+import com.android.educar.educar.model.Ocorrencia;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -30,8 +32,8 @@ public class APIService {
 
     public static String TAG = APIService.class.getSimpleName();
 
-//    public static final String BASE_URL = "http://10.20.30.205:8000/";
-        public static final String BASE_URL = "http://192.168.0.103:8000/";
+    //    public static final String BASE_URL = "http://10.20.30.205:8000/";
+    public static final String BASE_URL = "http://192.168.0.103:8000/";
     private Retrofit retrofit;
     private Interceptor interceptor;
     private AlunoEndPoint alunoEndPoint;
@@ -48,6 +50,7 @@ public class APIService {
     private SerieDisciplinaEndPoint serieDisciplinaEndPoint;
     private MatriculaEndPoint matriculaEndPoint;
     private AlunoFrequenciaMesEndPoint alunoFrequenciaMesEndPoint;
+    private OcorrenciaEndPoint ocorrenciaEndPoint;
 
     public APIService(String token) {
 
@@ -78,6 +81,8 @@ public class APIService {
 
         matriculaEndPoint = retrofit.create(MatriculaEndPoint.class);
         alunoFrequenciaMesEndPoint = retrofit.create(AlunoFrequenciaMesEndPoint.class);
+
+        ocorrenciaEndPoint = retrofit.create(OcorrenciaEndPoint.class);
     }
 
     public AlunoEndPoint getAlunoEndPoint() {
@@ -130,5 +135,13 @@ public class APIService {
 
     public MatriculaEndPoint getMatriculaEndPoint() {
         return matriculaEndPoint;
+    }
+
+    public AlunoFrequenciaMesEndPoint getAlunoFrequenciaMesEndPoint() {
+        return alunoFrequenciaMesEndPoint;
+    }
+
+    public OcorrenciaEndPoint getOcorrenciaEndPoint() {
+        return ocorrenciaEndPoint;
     }
 }
