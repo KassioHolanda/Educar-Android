@@ -17,13 +17,19 @@ import com.android.educar.educar.R;
 import com.android.educar.educar.adapter.FrequenciaAdapter;
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.Disciplina;
+import com.android.educar.educar.model.Matricula;
+import com.android.educar.educar.model.PessoaFisica;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.service.APIService;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class FrequenciaFragment extends Fragment {
 
@@ -37,12 +43,15 @@ public class FrequenciaFragment extends Fragment {
     private Unidade unidadeSelecionada;
     private Disciplina disciplinaSelecionada;
     private Turma turmaSelecionada;
-//    private ClassDAO classDAO;
     private Button salvarFrequencia;
 
     private LinearLayout unidadeFrequecia;
     private LinearLayout turmaFrequencia;
     private LinearLayout disciplinaFrequencia;
+
+    private List<PessoaFisica> pessoaFisicas;
+
+    private Realm realm;
 
 
     @Override
@@ -50,8 +59,11 @@ public class FrequenciaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_frequencia, container, false);
         bindind(view);
         setupInit();
-        atualizarDadosTela();
+        configRealm();
         onClickItem();
+        recuperarDadosRealm();
+        atualizarDadosTela();
+        recuperarAlunosRealm();
         return view;
     }
 
@@ -66,23 +78,42 @@ public class FrequenciaFragment extends Fragment {
         disciplinaFrequencia = view.findViewById(R.id.frequencia_disciplina_id);
     }
 
-    public void setupInit() {
-
-//        turmaAlunoDAO = new TurmaAlunoDAO(getContext());
-//        unidadeDAO = new UnidadeDAO(getContext());
-//        disciplinaDAO = new DisciplinaDAO(getContext());
-//        turmaDAO = new TurmaDAO(getContext());
-
-        preferences = new Preferences(getContext());
-        apiService = new APIService("");
-        utilsFunctions = new UtilsFunctions();
-//        classDAO = new ClassDAO(getContext());
-//        atualizarAdapterFrequencia(turmaAlunoDAO.selecionarTurmaAluno(preferences.getSavedLong("id_turma")));
-
-//        unidadeSelecionada = unidadeDAO.selecionarUnidade(preferences.getSavedLong("id_unidade"));
-//        disciplinaSelecionada = disciplinaDAO.selecionarDiscipina(preferences.getSavedLong("id_disciplina"));
-//        turmaSelecionada = turmaDAO.selecionarTurma(preferences.getSavedLong("id_turma"));
+    public void configRealm() {
+        Realm.init(getContext());
+        realm = Realm.getDefaultInstance();
     }
+
+    public void setupInit() {
+        preferences = new Preferences(getContext());
+        utilsFunctions = new UtilsFunctions();
+//        atualizarAdapterFrequencia(turmaAlunoDAO.selecionarTurmaAluno(preferences.getSavedLong("id_turma")));
+    }
+
+    public void recuperarAlunosRealm() {
+        List<Aluno> alunos = new ArrayList<>();
+        pessoaFisicas = new ArrayList<>();
+
+
+//        long idturma = preferences.getSavedLong("id_turma");
+        RealmResults<Matricula> matriculas = realm.where(Matricula.class).findAll();
+
+        for (int i = 0; i < matriculas.size(); i++) {
+            Aluno aluno = realm.where(Aluno.class).equalTo("id", matriculas.get(i).getAluno()).findFirst();
+            if (aluno != null) {
+                alunos.add(aluno);
+            }
+        }
+
+        for (int i = 0; i < 10; i++) {
+            PessoaFisica pessoaFisica = realm.where(PessoaFisica.class).equalTo("id", alunos.get(i).getPessoaFisica()).findFirst();
+            if (pessoaFisica != null) {
+                pessoaFisicas.add(pessoaFisica);
+            }
+        }
+
+        atualizarAdapterFrequencia(pessoaFisicas);
+    }
+
 
     public void onClickItem() {
         salvarFrequencia.setOnClickListener(new View.OnClickListener() {
@@ -96,14 +127,14 @@ public class FrequenciaFragment extends Fragment {
         unidadeFrequecia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Snackbar.make(getView(), "" + unidadeSelecionada.getNomeUnidade(), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(getView(), "" + unidadeSelecionada.getAbreviacao(), Snackbar.LENGTH_SHORT).show();
             }
         });
 
         disciplinaFrequencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Snackbar.make(getView(), "" + disciplinaSelecionada.getNome(), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(getView(), "" + disciplinaSelecionada.getDescricao(), Snackbar.LENGTH_SHORT).show();
             }
         });
 
@@ -115,15 +146,21 @@ public class FrequenciaFragment extends Fragment {
         });
     }
 
-    public void atualizarAdapterFrequencia(List<Aluno> alunos) {
-        FrequenciaAdapter frequenciaAdapter = new FrequenciaAdapter(getContext(), alunos);
+    public void atualizarAdapterFrequencia(List<PessoaFisica> pessoaFisicas) {
+        FrequenciaAdapter frequenciaAdapter = new FrequenciaAdapter(getContext(), pessoaFisicas);
         alunosFrequencia.setAdapter(frequenciaAdapter);
         alunosFrequencia.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     public void atualizarDadosTela() {
-//        unidadeSelecionadaAula.setText(unidadeSelecionada.getNomeUnidade());
+        unidadeSelecionadaAula.setText(unidadeSelecionada.getAbreviacao());
         turmaSelecionadaAula.setText(turmaSelecionada.getDescricao());
-//        disciplinaSelecionadaAula.setText(disciplinaSelecionada.getNome());
+        disciplinaSelecionadaAula.setText(disciplinaSelecionada.getDescricao());
+    }
+
+    public void recuperarDadosRealm() {
+        unidadeSelecionada = realm.where(Unidade.class).equalTo("id", preferences.getSavedLong("id_unidade")).findFirst();
+        turmaSelecionada = realm.where(Turma.class).equalTo("id", preferences.getSavedLong("id_turma")).findFirst();
+        disciplinaSelecionada = realm.where(Disciplina.class).equalTo("id", preferences.getSavedLong("id_disciplina")).findFirst();
     }
 }

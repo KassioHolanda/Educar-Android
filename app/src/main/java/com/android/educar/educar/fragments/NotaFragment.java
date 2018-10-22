@@ -17,6 +17,8 @@ import com.android.educar.educar.R;
 import com.android.educar.educar.adapter.NotaAdapter;
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.Disciplina;
+import com.android.educar.educar.model.Matricula;
+import com.android.educar.educar.model.PessoaFisica;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.service.APIService;
@@ -24,7 +26,11 @@ import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class NotaFragment extends Fragment {
 
@@ -41,17 +47,12 @@ public class NotaFragment extends Fragment {
     private Disciplina disciplinaSelecionada;
     private Turma turmaSelecionada;
 
-//    private ClassDAO classDAO;
-
     private LinearLayout layoutUnidade;
     private LinearLayout layoutTurma;
     private LinearLayout layoutDisciplina;
 
-
-//    private TurmaAlunoDAO turmaAlunoDAO;
-//    private UnidadeDAO unidadeDAO;
-//    private DisciplinaDAO disciplinaDAO;
-//    private TurmaDAO turmaDAO;
+    private Realm realm;
+    private List<PessoaFisica> pessoaFisicas;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,9 +60,12 @@ public class NotaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_nota, container, false);
         binding(view);
         setupInit();
+        configRealm();
+        recuperarDadosRealm();
         atualizarDadosTela();
         consultarBimestre();
         onClickItem();
+        recuperarAlunosRealm();
         return view;
     }
 
@@ -69,6 +73,11 @@ public class NotaFragment extends Fragment {
     public void onResume() {
         super.onResume();
 //        atualizarAdapterFrequencia(turmaAlunoDAO.selecionarTurmaAluno(preferences.getSavedLong("id_turma")));
+    }
+
+    public void configRealm() {
+        Realm.init(getContext());
+        realm = Realm.getDefaultInstance();
     }
 
     public void binding(View view) {
@@ -82,13 +91,34 @@ public class NotaFragment extends Fragment {
         layoutTurma = view.findViewById(R.id.layout_turma_nota_id);
     }
 
+    public void recuperarAlunosRealm() {
+        List<Aluno> alunos = new ArrayList<>();
+        pessoaFisicas = new ArrayList<>();
+
+        RealmResults<Matricula> matriculas = realm.where(Matricula.class).findAll();
+
+        for (int i = 0; i < matriculas.size(); i++) {
+            Aluno aluno = realm.where(Aluno.class).equalTo("id", matriculas.get(i).getAluno()).findFirst();
+            matriculas.get(i).getAluno();
+
+            if (aluno != null) {
+                alunos.add(aluno);
+            }
+        }
+
+        for (int i = 0; i < 10; i++) {
+            PessoaFisica pessoaFisica = realm.where(PessoaFisica.class).equalTo("id", alunos.get(i).getPessoaFisica()).findFirst();
+            alunos.get(i).getPessoaFisica();
+
+            if (pessoaFisica != null) {
+                pessoaFisicas.add(pessoaFisica);
+            }
+        }
+
+        atualizarAdapterFrequencia(pessoaFisicas);
+    }
+
     public void setupInit() {
-
-//        turmaAlunoDAO = new TurmaAlunoDAO(getContext());
-//        unidadeDAO = new UnidadeDAO(getContext());
-//        disciplinaDAO = new DisciplinaDAO(getContext());
-//        turmaDAO = new TurmaDAO(getContext());
-
         preferences = new Preferences(getContext());
         apiService = new APIService("");
         utilsFunctions = new UtilsFunctions();
@@ -132,16 +162,10 @@ public class NotaFragment extends Fragment {
         });
     }
 
-    public void atualizarAdapterFrequencia(List<Aluno> alunos) {
-        NotaAdapter notaFragment = new NotaAdapter(getContext(), alunos);
+    public void atualizarAdapterFrequencia(List<PessoaFisica> pessoaFisicas) {
+        NotaAdapter notaFragment = new NotaAdapter(getContext(), pessoaFisicas);
         notasAluno.setAdapter(notaFragment);
         notasAluno.setLayoutManager(new LinearLayoutManager(getContext()));
-    }
-
-    public void atualizarDadosTela() {
-//        unidadeSelecionadaAula.setText(unidadeSelecionada.getNomeUnidade());
-        turmaSelecionadaAula.setText(turmaSelecionada.getDescricao());
-//        disciplinaSelecionadaAula.setText(disciplinaSelecionada.getNome());
     }
 
     public void consultarBimestre() {
@@ -158,5 +182,18 @@ public class NotaFragment extends Fragment {
 //            preferences.saveString("bimestre", bimestre1.getDescricao());
 //            preferences.saveLong("id_bimestre", bimestre1.getPk());
 //        }
+    }
+
+
+    public void atualizarDadosTela() {
+        unidadeSelecionadaAula.setText(unidadeSelecionada.getAbreviacao());
+        turmaSelecionadaAula.setText(turmaSelecionada.getDescricao());
+        disciplinaSelecionadaAula.setText(disciplinaSelecionada.getDescricao());
+    }
+
+    public void recuperarDadosRealm() {
+        unidadeSelecionada = realm.where(Unidade.class).equalTo("id", preferences.getSavedLong("id_unidade")).findFirst();
+        turmaSelecionada = realm.where(Turma.class).equalTo("id", preferences.getSavedLong("id_turma")).findFirst();
+        disciplinaSelecionada = realm.where(Disciplina.class).equalTo("id", preferences.getSavedLong("id_disciplina")).findFirst();
     }
 }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.android.educar.educar.R;
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.Frequencia;
+import com.android.educar.educar.model.PessoaFisica;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.List;
 public class FrequenciaAdapter extends RecyclerView.Adapter<FrequenciaAdapter.ViewHolder> {
 
     private final Context context;
-    private final List<Aluno> alunos;
+    private final List<PessoaFisica> pessoaFisicas;
     private final List<Frequencia> frequencias;
     private FrequenciaAdapter.ViewHolder holder;
     private Frequencia frequencia;
@@ -39,9 +40,9 @@ public class FrequenciaAdapter extends RecyclerView.Adapter<FrequenciaAdapter.Vi
         }
     }
 
-    public FrequenciaAdapter(Context context, List<Aluno> alunos) {
+    public FrequenciaAdapter(Context context, List<PessoaFisica> pessoaFisicas) {
         this.context = context;
-        this.alunos = alunos;
+        this.pessoaFisicas = pessoaFisicas;
         frequencias = new ArrayList<>();
     }
 
@@ -63,7 +64,7 @@ public class FrequenciaAdapter extends RecyclerView.Adapter<FrequenciaAdapter.Vi
 //        frequencia.setAluno(alunos.get(position).getPk());
 
 
-//        holder.nomeAluno.setText(alunos.get(position).getNomeAluno());
+        holder.nomeAluno.setText(pessoaFisicas.get(position).getNome());
 //        holder.idAluno.setText("" + alunos.get(position).getPk());
         holder.presenca.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -76,7 +77,7 @@ public class FrequenciaAdapter extends RecyclerView.Adapter<FrequenciaAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return alunos.size();
+        return pessoaFisicas.size();
     }
 
 }

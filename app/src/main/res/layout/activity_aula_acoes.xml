@@ -120,8 +120,8 @@
             <ImageView
                 android:layout_width="55dp"
                 android:layout_height="55dp"
-                android:layout_marginRight="15dp"
                 android:layout_marginTop="6dp"
+                android:layout_marginRight="15dp"
                 android:background="@drawable/border_color" />
 
             <LinearLayout
@@ -177,7 +177,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Ocorrência"
+                    android:text="Notificações"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -185,7 +185,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Adicione uma ocorrência ao aluno!"
+                    android:text="Adicione uma notificação ao aluno!"
                     android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
@@ -200,11 +200,11 @@
             android:id="@+id/fab_home_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             android:layout_gravity="bottom|right"
-            android:layout_marginBottom="20dp"
             android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
             android:src="@drawable/home_outline" />
     </RelativeLayout>
 

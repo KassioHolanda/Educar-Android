@@ -13,6 +13,6 @@ public interface MatriculaEndPoint {
     @GET("matricula/")
     Call<ListaMatriculaAPI> matriculas();
 
-    @GET("matricula/{pk}")
+    @GET("matricula/{id}")
     Call<Matricula> getMatricula(@Path("id") long id);
 }

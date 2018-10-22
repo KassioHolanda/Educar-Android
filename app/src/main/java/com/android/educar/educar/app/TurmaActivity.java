@@ -74,7 +74,7 @@ public class TurmaActivity extends AppCompatActivity {
 
         RealmResults<LocalEscola> localEscolas = realm.where(LocalEscola.class).equalTo("unidade", preferences.getSavedLong("id_unidade")).findAll();
 
-        long idUnidade = preferences.getSavedLong("id_unidade");
+//        long idUnidade = preferences.getSavedLong("id_unidade");
 
         List<Turma> turmasEscola = new ArrayList<>();
 
@@ -90,8 +90,8 @@ public class TurmaActivity extends AppCompatActivity {
                     .equalTo("turma", turmasEscola.get(i).getId())
                     .equalTo("professor", preferences.getSavedLong("id_funcionario")).findFirst();
 
-            long idturma = turmasEscola.get(i).getId();
-            long idfuncionario = preferences.getSavedLong("id_funcionario");
+//            long idturma = turmasEscola.get(i).getId();
+//            long idfuncionario = preferences.getSavedLong("id_funcionario");
 
             if (gradeCursos != null) {
                 turmaList.add(realm.where(Turma.class).equalTo("id", turmasEscola.get(i).getId()).findFirst());

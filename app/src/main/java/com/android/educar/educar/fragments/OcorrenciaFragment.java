@@ -62,13 +62,6 @@ public class OcorrenciaFragment extends Fragment {
     }
 
     public void setupInit() {
-//
-//        turmaAlunoDAO = new TurmaAlunoDAO(getContext());
-//        unidadeDAO = new UnidadeDAO(getContext());
-//        disciplinaDAO = new DisciplinaDAO(getContext());
-//        turmaDAO = new TurmaDAO(getContext());
-//        ocorrenciaDAO = new OcorrenciaDAO(getContext());
-
         preferences = new Preferences(getContext());
         utilsFunctions = new UtilsFunctions();
 
@@ -177,7 +170,7 @@ public class OcorrenciaFragment extends Fragment {
 
     public void atualizarDadosTela() {
 //        unidadeSelecionadaAula.setText(unidadeSelecionada.getNomeUnidade());
-        turmaSelecionadaAula.setText(turmaSelecionada.getDescricao());
+//        turmaSelecionadaAula.setText(turmaSelecionada.getDescricao());
 //        disciplinaSelecionadaAula.setText(disciplinaSelecionada.getNome());
     }
 }

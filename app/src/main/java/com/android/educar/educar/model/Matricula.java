@@ -16,6 +16,7 @@ public class Matricula extends RealmObject {
     private String statusMatricula;
     @SerializedName("datamatricula")
     private Date dataMatricula;
+    private long turma;
     @SerializedName("statusatual")
     private String statusAtual;
 
@@ -28,6 +29,14 @@ public class Matricula extends RealmObject {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getTurma() {
+        return turma;
+    }
+
+    public void setTurma(long turma) {
+        this.turma = turma;
     }
 
     public long getAluno() {

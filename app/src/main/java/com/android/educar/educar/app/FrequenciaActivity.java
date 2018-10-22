@@ -13,8 +13,20 @@ import android.view.MenuItem;
 import com.android.educar.educar.R;
 import com.android.educar.educar.fragments.FrequenciaFragment;
 import com.android.educar.educar.fragments.OcorrenciaFragment;
+import com.android.educar.educar.model.Aluno;
+import com.android.educar.educar.model.Matricula;
+import com.android.educar.educar.model.PessoaFisica;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class FrequenciaActivity extends AppCompatActivity {
+
+    private Realm realm;
+    private List<PessoaFisica> pessoaFisicas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

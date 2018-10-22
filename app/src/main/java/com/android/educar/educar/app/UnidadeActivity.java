@@ -15,9 +15,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.android.educar.educar.R;
+import com.android.educar.educar.chamadas.AlunoMB;
 import com.android.educar.educar.chamadas.DisciplinaMB;
 import com.android.educar.educar.chamadas.FuncionarioEscolaMB;
 import com.android.educar.educar.chamadas.LocalEscolaMB;
+import com.android.educar.educar.chamadas.MatriculaMB;
 import com.android.educar.educar.chamadas.SerieDisciplinaMB;
 import com.android.educar.educar.chamadas.TurmaMB;
 import com.android.educar.educar.chamadas.UnidadeMB;
@@ -54,6 +56,8 @@ public class UnidadeActivity extends AppCompatActivity {
     private FuncionarioEscolaMB funcionarioEscola;
     private LocalEscolaMB localEscolaMB;
     private SerieDisciplinaMB serieDisciplinaMB;
+    private AlunoMB alunoMB;
+    private MatriculaMB matriculaMB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,13 +89,12 @@ public class UnidadeActivity extends AppCompatActivity {
 
     public void recuperarDadosRealm() {
         RealmResults<FuncionarioEscola> funcionarioEscolas = realm.where(FuncionarioEscola.class).equalTo("funcionario", preferences.getSavedLong("id_funcionario")).findAll();
-//        final RealmResults<Unidade> unidades = realm.where(Unidade.class).findAll();
         for (int i = 0; i < funcionarioEscolas.size(); i++) {
             Unidade unidade = realm.where(Unidade.class).equalTo("id", funcionarioEscolas.get(i).getUnidade()).findFirst();
-            unidadesList.add(unidade);
+            if (unidade != null) {
+                unidadesList.add(unidade);
+            }
         }
-
-//        this.unidadesList = unidades;
     }
 
     @Override
@@ -151,7 +154,7 @@ public class UnidadeActivity extends AppCompatActivity {
         sincronizarDados.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                progressDialog.show();
+                progressDialog.show();
 
                 unidadeMB.unidadesAPI();
                 turmaMB.turmasAPI();
@@ -160,8 +163,11 @@ public class UnidadeActivity extends AppCompatActivity {
                 funcionarioEscola.funcionariosEscola();
                 localEscolaMB.localEscolaAPI();
                 serieDisciplinaMB.serieDisciplina();
-//                progressDialog.hide();
-                onResume();
+                alunoMB.alunosAPI();
+                matriculaMB.matriculaAPI();
+
+                progressDialog.hide();
+//                onResume();
             }
         });
     }
@@ -183,6 +189,8 @@ public class UnidadeActivity extends AppCompatActivity {
         funcionarioEscola = new FuncionarioEscolaMB(getApplicationContext());
         localEscolaMB = new LocalEscolaMB(getApplicationContext());
         serieDisciplinaMB = new SerieDisciplinaMB(getApplicationContext());
+        alunoMB = new AlunoMB(getApplicationContext());
+        matriculaMB = new MatriculaMB(getApplicationContext());
     }
 
     public void atualizarAdapterListaUnidades(List<Unidade> unidades) {
