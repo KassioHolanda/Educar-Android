@@ -16,10 +16,12 @@ import android.widget.ListView;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.chamadas.AlunoMB;
+import com.android.educar.educar.chamadas.AnoLetivoMB;
 import com.android.educar.educar.chamadas.DisciplinaMB;
 import com.android.educar.educar.chamadas.FuncionarioEscolaMB;
 import com.android.educar.educar.chamadas.LocalEscolaMB;
 import com.android.educar.educar.chamadas.MatriculaMB;
+import com.android.educar.educar.chamadas.OcorrenciaMB;
 import com.android.educar.educar.chamadas.SerieDisciplinaMB;
 import com.android.educar.educar.chamadas.TurmaMB;
 import com.android.educar.educar.chamadas.UnidadeMB;
@@ -30,7 +32,6 @@ import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
 import android.app.ProgressDialog;
-import android.widget.ProgressBar;
 
 
 import java.util.ArrayList;
@@ -58,6 +59,8 @@ public class UnidadeActivity extends AppCompatActivity {
     private SerieDisciplinaMB serieDisciplinaMB;
     private AlunoMB alunoMB;
     private MatriculaMB matriculaMB;
+    private OcorrenciaMB ocorrenciaMB;
+    private AnoLetivoMB anoLetivoMB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,19 +157,24 @@ public class UnidadeActivity extends AppCompatActivity {
         sincronizarDados.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressDialog.show();
+                if (preferences.getSavedBoolean("connection")) {
+                    progressDialog.show();
 
-                unidadeMB.unidadesAPI();
-                turmaMB.turmasAPI();
-                turmaMB.gradeCursoAPI();
-                disciplinaMB.disciplinasAPI();
-                funcionarioEscola.funcionariosEscola();
-                localEscolaMB.localEscolaAPI();
-                serieDisciplinaMB.serieDisciplina();
-                alunoMB.alunosAPI();
-                matriculaMB.matriculaAPI();
+                    unidadeMB.unidadesAPI();
+                    turmaMB.turmasAPI();
+                    turmaMB.gradeCursoAPI();
+                    disciplinaMB.disciplinasAPI();
+                    funcionarioEscola.funcionariosEscola();
+                    localEscolaMB.localEscolaAPI();
+                    serieDisciplinaMB.serieDisciplina();
+                    alunoMB.alunosAPI();
+                    matriculaMB.matriculaAPI();
+                    anoLetivoMB.anoLetivoAPI();
+                    ocorrenciaMB = new OcorrenciaMB(getApplicationContext());
+                    progressDialog.hide();
 
-                progressDialog.hide();
+                    onStart();
+                }
 //                onResume();
             }
         });
@@ -191,6 +199,7 @@ public class UnidadeActivity extends AppCompatActivity {
         serieDisciplinaMB = new SerieDisciplinaMB(getApplicationContext());
         alunoMB = new AlunoMB(getApplicationContext());
         matriculaMB = new MatriculaMB(getApplicationContext());
+        anoLetivoMB = new AnoLetivoMB(getApplicationContext());
     }
 
     public void atualizarAdapterListaUnidades(List<Unidade> unidades) {

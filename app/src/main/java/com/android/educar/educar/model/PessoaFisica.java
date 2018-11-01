@@ -93,4 +93,9 @@ public class PessoaFisica extends RealmObject {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
+    @Override
+    public String toString() {
+        return this.nome;
+    }
 }

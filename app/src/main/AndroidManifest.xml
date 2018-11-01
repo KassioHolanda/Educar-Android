@@ -28,18 +28,14 @@
             android:name=".app.LoadingActivity"
             android:theme="@style/AppCompat.TelaCheia">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".app.ConfiguracoesActivity"
             android:label="Configurações"
             android:parentActivityName=".app.UnidadeActivity" />
-        <activity
-            android:name=".app.DetalheAlunoActivity"
-            android:label="Detalhes Aluno"
-            android:parentActivityName=".app.AulaActivity" />
         <activity
             android:name=".app.AulaAcoesActivity"
             android:label=""
@@ -52,7 +48,7 @@
             android:parentActivityName=".app.AulaAcoesActivity" />
         <activity
             android:name=".app.OcorrenciaActivity"
-            android:label="Ocorrências"
+            android:label="Notificações"
             android:parentActivityName=".app.AulaAcoesActivity" />
         <activity
             android:name=".app.FrequenciaActivity"

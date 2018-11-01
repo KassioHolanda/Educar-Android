@@ -68,6 +68,7 @@
             android:id="@+id/frequencias_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:background="@drawable/margem"
             android:orientation="horizontal"
             android:padding="10dp">
@@ -113,6 +114,7 @@
             android:id="@+id/notas_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:background="@drawable/margem"
             android:orientation="horizontal"
             android:padding="10dp">

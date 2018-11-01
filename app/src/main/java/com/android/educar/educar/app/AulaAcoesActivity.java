@@ -60,7 +60,7 @@ public class AulaAcoesActivity extends AppCompatActivity {
     }
 
     public void atualizarDados() {
-        unidade.setText(realm.where(Unidade.class).equalTo("id", preferences.getSavedLong("id_unidade")).findFirst().getAbreviacao());
+        unidade.setText(realm.where(Unidade.class).equalTo("id", preferences.getSavedLong("id_unidade")).findFirst().getNome());
         turma.setText(realm.where(Turma.class).equalTo("id", preferences.getSavedLong("id_turma")).findFirst().getDescricao());
         disciplina.setText(realm.where(Disciplina.class).equalTo("id", preferences.getSavedLong("id_disciplina")).findFirst().getDescricao());
     }

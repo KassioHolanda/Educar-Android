@@ -2,6 +2,7 @@ package com.android.educar.educar.helpers;
 
 import com.android.educar.educar.model.Nota;
 import com.android.educar.educar.model.Ocorrencia;
+import com.android.educar.educar.service.ListaOcorrenciaAPI;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -11,7 +12,7 @@ import retrofit2.http.Path;
 
 public interface OcorrenciaEndPoint {
     @GET("ocorrencia/")
-    Call<Ocorrencia> ocorrencias();
+    Call<ListaOcorrenciaAPI> ocorrencias();
 
     @GET("ocorrencia/{id}")
     Call<Ocorrencia> getOcorrencias(@Path("id") long id);

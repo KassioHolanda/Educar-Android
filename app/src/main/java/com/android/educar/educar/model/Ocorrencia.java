@@ -1,7 +1,9 @@
 package com.android.educar.educar.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Unique;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import io.realm.RealmObject;
@@ -11,6 +13,7 @@ public class Ocorrencia extends RealmObject {
 
     @PrimaryKey
     private long id;
+    private Date datahora;
     @SerializedName("datahoracadastro")
     private Date dataHoraCadastro;
     @SerializedName("funcioanrioescola")
@@ -25,8 +28,39 @@ public class Ocorrencia extends RealmObject {
     private long anoLetivo;
     private long funcionario;
     private long unidade;
+    @SerializedName("enviadosms")
+    private boolean enviadoSms;
+    @SerializedName("dataenviosms")
+    private Date dataEnvioSms;
+    @SerializedName("resumosms")
+    private String resumoSms;
+    private String observacao;
+    @SerializedName("numerotelefone")
+    private int numeroTelefone;
+    private boolean novo;
 
     public Ocorrencia() {
+        novo = false;
+    }
+
+    public Ocorrencia(long id, Date datahora, Date dataHoraCadastro, long funcionarioEscola, String descricao, long matriculaAluno, long tipoOcorrencia, long aluno, long anoLetivo, long funcionario, long unidade, boolean enviadoSms, Date dataEnvioSms, String resumoSms, String observacao, int numeroTelefone, boolean novo) {
+        this.id = id;
+        this.datahora = datahora;
+        this.dataHoraCadastro = dataHoraCadastro;
+        this.funcionarioEscola = funcionarioEscola;
+        this.descricao = descricao;
+        this.matriculaAluno = matriculaAluno;
+        this.tipoOcorrencia = tipoOcorrencia;
+        this.aluno = aluno;
+        this.anoLetivo = anoLetivo;
+        this.funcionario = funcionario;
+        this.unidade = unidade;
+        this.enviadoSms = enviadoSms;
+        this.dataEnvioSms = dataEnvioSms;
+        this.resumoSms = resumoSms;
+        this.observacao = observacao;
+        this.numeroTelefone = numeroTelefone;
+        this.novo = novo;
     }
 
     public long getId() {
@@ -35,14 +69,6 @@ public class Ocorrencia extends RealmObject {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Date getDataHoraCadastro() {
-        return dataHoraCadastro;
-    }
-
-    public void setDataHoraCadastro(Date dataHoraCadastro) {
-        this.dataHoraCadastro = dataHoraCadastro;
     }
 
     public long getFuncionarioEscola() {
@@ -107,5 +133,69 @@ public class Ocorrencia extends RealmObject {
 
     public void setUnidade(long unidade) {
         this.unidade = unidade;
+    }
+
+    public Date getDataHoraCadastro() {
+        return dataHoraCadastro;
+    }
+
+    public void setDataHoraCadastro(Date dataHoraCadastro) {
+        this.dataHoraCadastro = dataHoraCadastro;
+    }
+
+    public Date getDatahora() {
+        return datahora;
+    }
+
+    public void setDatahora(Date datahora) {
+        this.datahora = datahora;
+    }
+
+    public boolean isEnviadoSms() {
+        return enviadoSms;
+    }
+
+    public void setEnviadoSms(boolean enviadoSms) {
+        this.enviadoSms = enviadoSms;
+    }
+
+    public Date getDataEnvioSms() {
+        return dataEnvioSms;
+    }
+
+    public void setDataEnvioSms(Date dataEnvioSms) {
+        this.dataEnvioSms = dataEnvioSms;
+    }
+
+    public String getResumoSms() {
+        return resumoSms;
+    }
+
+    public void setResumoSms(String resumoSms) {
+        this.resumoSms = resumoSms;
+    }
+
+    public String getObservacao() {
+        return observacao;
+    }
+
+    public void setObservacao(String observacao) {
+        this.observacao = observacao;
+    }
+
+    public int getNumeroTelefone() {
+        return numeroTelefone;
+    }
+
+    public void setNumeroTelefone(int numeroTelefone) {
+        this.numeroTelefone = numeroTelefone;
+    }
+
+    public boolean isNovo() {
+        return novo;
+    }
+
+    public void setNovo(boolean novo) {
+        this.novo = novo;
     }
 }

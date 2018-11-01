@@ -17,6 +17,7 @@ import com.android.educar.educar.model.Professor;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
+
 import java.util.List;
 
 public class LoadingActivity extends AppCompatActivity {
@@ -40,10 +41,6 @@ public class LoadingActivity extends AppCompatActivity {
         mostrarLogo();
     }
 
-    public void settings() {
-        getSupportActionBar().hide();
-    }
-
     public void mostrarLogo() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -55,18 +52,16 @@ public class LoadingActivity extends AppCompatActivity {
     }
 
     public void sincronizarUsuariosRealm() {
-//        if (preferences.getSavedBoolean("sync")) {
-//
-//        } else {
-        progressDialog.show();
+        if (preferences.getSavedBoolean("logado")) {
+            nextActivity();
+        }
 
-        pessoaFisicaMB.pessoaFisicaAPI();
-        funcionarioMB.funcionariosAPI();
-
-        progressDialog.hide();
-//            preferences.saveBoolean("sync", true);
-//            Toast.makeText(getApplicationContext(), "Seu dispositivo precisa estar concectado para sincronizar", Toast.LENGTH_LONG).show();
-//        }
+        if (preferences.getSavedBoolean("connection")) {
+            progressDialog.show();
+            pessoaFisicaMB.pessoaFisicaAPI();
+            funcionarioMB.funcionariosAPI();
+            progressDialog.hide();
+        }
     }
 
     public void verificarConexao() {

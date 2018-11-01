@@ -29,11 +29,16 @@ public class TipoOcorrencia extends RealmObject {
         this.descricao = descricao;
     }
 
-    public int getCodigo() {
-        return codigo;
-    }
+//    public int getCodigo() {
+//        return codigo;
+//    }
+//
+//    public void setCodigo(int codigo) {
+//        this.codigo = codigo;
+//    }
 
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
+    @Override
+    public String toString() {
+        return this.descricao;
     }
 }

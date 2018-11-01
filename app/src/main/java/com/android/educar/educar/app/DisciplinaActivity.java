@@ -163,7 +163,7 @@ public class DisciplinaActivity extends AppCompatActivity {
     }
 
     public void atualizarDadosTela() {
-        unidadeSelecionadaDisciplina.setText(unidadeSelecionada.getAbreviacao());
+        unidadeSelecionadaDisciplina.setText(unidadeSelecionada.getNome());
         turmaSelecionaDisciplina.setText(turmaSelecionada.getDescricao());
     }
 

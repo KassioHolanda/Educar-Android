@@ -129,6 +129,7 @@ public class TurmaActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Turma turma = (Turma) turmas.getItemAtPosition(position);
                 preferences.saveLong("id_turma", turma.getId());
+                preferences.saveLong("id_anoletivo", turma.getAnoletivo());
                 nextAcitivity();
             }
         });
@@ -136,7 +137,7 @@ public class TurmaActivity extends AppCompatActivity {
         unidade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, ""+unidadeSelecionada.getNome(), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(v, "" + unidadeSelecionada.getNome(), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -151,7 +152,7 @@ public class TurmaActivity extends AppCompatActivity {
     }
 
     public void atualizarDadosTela() {
-        unidadeSelecionadaTurma.setText(unidadeSelecionada.getAbreviacao());
+        unidadeSelecionadaTurma.setText(unidadeSelecionada.getNome());
     }
 
     public void alertaInformacao() {
