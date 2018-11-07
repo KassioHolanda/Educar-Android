@@ -58,8 +58,10 @@ public class LoadingActivity extends AppCompatActivity {
 
         if (preferences.getSavedBoolean("connection")) {
             progressDialog.show();
+
             pessoaFisicaMB.pessoaFisicaAPI();
             funcionarioMB.funcionariosAPI();
+
             progressDialog.hide();
         }
     }

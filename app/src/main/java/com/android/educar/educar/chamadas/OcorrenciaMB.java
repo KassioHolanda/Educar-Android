@@ -9,14 +9,20 @@ import com.android.educar.educar.model.TipoOcorrencia;
 import com.android.educar.educar.service.APIService;
 import com.android.educar.educar.service.ListaOcorrenciaAPI;
 import com.android.educar.educar.service.ListaTipoOcorrenciaAPI;
+import com.android.educar.educar.utils.APIError;
+import com.android.educar.educar.utils.UtilsFunctions;
 
+import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Converter;
 import retrofit2.Response;
 
 public class OcorrenciaMB {
@@ -27,7 +33,7 @@ public class OcorrenciaMB {
 
     public OcorrenciaMB(Context context) {
         this.context = context;
-        apiService = new APIService();
+        apiService = new APIService("");
         configRealm();
         salvarDadosOcorrenciaApiBancoDeDados();
         salvarDadosTipoOcorrenciaApiBancoDeDados();
@@ -77,9 +83,11 @@ public class OcorrenciaMB {
         ocorrenciaCall.enqueue(new Callback<Ocorrencia>() {
             @Override
             public void onResponse(Call<Ocorrencia> call, Response<Ocorrencia> response) {
+                if (response.code() == 400) {
+                    Toast.makeText(context, "" + response.errorBody().toString(), Toast.LENGTH_SHORT).show();
+                    Log.i("ERRO OCORRENCIA", response.errorBody().toString());
+                }
                 if (response.isSuccessful()) {
-                    Toast.makeText(context, "" + response.message(), Toast.LENGTH_SHORT).show();
-                } else {
                     Toast.makeText(context, "" + response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -117,26 +125,25 @@ public class OcorrenciaMB {
             if (ocorrencias.get(i).isNovo()) {
 
                 ocorrencias.get(i).setNovo(false);
-//                Ocorrencia ocorrencia1 = new Ocorrencia();
-//                ocorrencia1.setDatahora(ocorrencias.get(i).getDatahora());
-//                ocorrencia1.setDataHoraCadastro(ocorrencias.get(i).getDataHoraCadastro());
-//                ocorrencia1.setDescricao(ocorrencias.get(i).getDescricao());
-//                ocorrencia1.setEnviadoSms(ocorrencias.get(i).isEnviadoSms());
-//                ocorrencia1.setResumoSms(ocorrencias.get(i).getResumoSms());
-//                ocorrencia1.setObservacao(ocorrencias.get(i).getObservacao());
-//                ocorrencia1.setNumeroTelefone(ocorrencias.get(i).getNumeroTelefone());
-//                ocorrencia1.setFuncionarioEscola(ocorrencias.get(i).getFuncionarioEscola());
-//                ocorrencia1.setMatriculaAluno(ocorrencias.get(i).getMatriculaAluno());
-//                ocorrencia1.setTipoOcorrencia(ocorrencias.get(i).getTipoOcorrencia());
-//                ocorrencia1.setAluno(ocorrencias.get(i).getAluno());
-//                ocorrencia1.setFuncionario(ocorrencias.get(i).getFuncionario());
-//                ocorrencia1.setUnidade(ocorrencias.get(i).getUnidade());
-//                ocorrencia1.setAnoLetivo(ocorrencias.get(i).getAnoLetivo());
+                Ocorrencia ocorrencia1 = new Ocorrencia();
+                ocorrencia1.setDatahora(ocorrencias.get(i).getDatahora());
+                ocorrencia1.setDataHoraCadastro(ocorrencias.get(i).getDataHoraCadastro());
+                ocorrencia1.setDescricao(ocorrencias.get(i).getDescricao());
+                ocorrencia1.setEnviadoSms(ocorrencias.get(i).isEnviadoSms());
+                ocorrencia1.setResumoSms(ocorrencias.get(i).getResumoSms());
+                ocorrencia1.setObservacao(ocorrencias.get(i).getObservacao());
+                ocorrencia1.setNumeroTelefone(ocorrencias.get(i).getNumeroTelefone());
+                ocorrencia1.setFuncionarioEscola(ocorrencias.get(i).getFuncionarioEscola());
+                ocorrencia1.setMatriculaAluno(ocorrencias.get(i).getMatriculaAluno());
+                ocorrencia1.setTipoOcorrencia(ocorrencias.get(i).getTipoOcorrencia());
+                ocorrencia1.setAluno(ocorrencias.get(i).getAluno());
+                ocorrencia1.setFuncionario(ocorrencias.get(i).getFuncionario());
+                ocorrencia1.setUnidade(ocorrencias.get(i).getUnidade());
+                ocorrencia1.setAnoLetivo(ocorrencias.get(i).getAnoLetivo());
 
-                postOcorrenciaAPI(ocorrencias.get(i));
+                postOcorrenciaAPI(ocorrencia1);
             }
         }
         realm.commitTransaction();
     }
-
 }

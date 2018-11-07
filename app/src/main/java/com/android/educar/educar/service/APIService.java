@@ -27,6 +27,7 @@ import com.android.educar.educar.model.Ocorrencia;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -35,7 +36,7 @@ public class APIService {
     public static String TAG = APIService.class.getSimpleName();
 
     public static final String BASE_URL = "http://10.20.30.205:8000/";
-//    public static final String BASE_URL = "http://192.168.3.2:8000/";
+    //    public static final String BASE_URL = "http://192.168.3.2:8000/";
     //    public static final String BASE_URL = "http://192.168.0.103:8000/";
     private Retrofit retrofit;
     private Interceptor interceptor;
@@ -102,9 +103,13 @@ public class APIService {
 
         OkHttpClient httpClient = builderCliente.build();
 
+//        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+//        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+//        httpClient.interceptors().add(logging);
+
         Retrofit.Builder builder = new Retrofit.Builder();
         retrofit = builder.baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
-//               .client(httpClient)
+                .client(httpClient)
                 .build();
 
         alunoEndPoint = retrofit.create(AlunoEndPoint.class);
@@ -195,5 +200,9 @@ public class APIService {
 
     public AnoLetivoEndPoint getAnoLetivoEndPoint() {
         return anoLetivoEndPoint;
+    }
+
+    public Retrofit getRetrofit() {
+        return retrofit;
     }
 }

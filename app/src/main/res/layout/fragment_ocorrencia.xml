@@ -88,7 +88,6 @@
                         android:id="@+id/turma_selecionada_aula_ocorrencia_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
                         android:fontFamily="sans-serif-condensed"
                         android:text="turma"
                         android:textColor="@color/colorTextTabs"

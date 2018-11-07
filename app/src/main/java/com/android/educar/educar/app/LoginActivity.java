@@ -73,7 +73,6 @@ public class LoginActivity extends AppCompatActivity {
 //        pessoaFisicas.size();
 //        Toast.makeText(getApplicationContext(), "" + pessoaFisicas.size(), Toast.LENGTH_LONG).show();
         this.pessoaFisicas = pessoaFisicas;
-
     }
 
     public void limpar() {

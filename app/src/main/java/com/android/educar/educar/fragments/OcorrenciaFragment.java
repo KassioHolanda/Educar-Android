@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.educar.educar.R;
+import com.android.educar.educar.app.DetalheAlunoActivity;
 import com.android.educar.educar.chamadas.OcorrenciaMB;
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.AnoLetivo;
@@ -117,7 +118,7 @@ public class OcorrenciaFragment extends Fragment {
         detalhar.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-//                startActivity(new Intent(getContext(), DetalheAlunoActivity.class));
+                startActivity(new Intent(getContext(), DetalheAlunoActivity.class));
                 return false;
             }
         });
@@ -210,6 +211,7 @@ public class OcorrenciaFragment extends Fragment {
     }
 
     public void salvarOcorrenciaRealm(TipoOcorrencia tipoOcorrencia, String descricao) {
+        realm.beginTransaction();
         Ocorrencia ocorrencia = new Ocorrencia(
                 realm.where(Ocorrencia.class).findAll().size() + 1,
                 new Date(),
@@ -225,9 +227,11 @@ public class OcorrenciaFragment extends Fragment {
                 preferences.getSavedLong("id_funcionario"),
                 preferences.getSavedLong("id_unidade"), false, null, null, null, 0, true);
 
-        realm.beginTransaction();
+
         realm.copyToRealmOrUpdate(ocorrencia);
         realm.commitTransaction();
+
+        new OcorrenciaMB(getContext());
     }
 
     public void recuperarRegistrosAluno(long idPessoaFisica) {
