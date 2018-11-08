@@ -47,7 +47,7 @@ public class UtilsFunctions {
     }
 
     public static APIError parseError(Response<?> response) {
-        APIService apiService = new APIService();
+        APIService apiService = new APIService("");
         Converter<ResponseBody, APIError> converter = apiService.getRetrofit().responseBodyConverter(APIError.class, new Annotation[0]);
 
         APIError error;

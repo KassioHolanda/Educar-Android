@@ -24,14 +24,14 @@
             android:name=".app.DisciplinaActivity"
             android:label="Disciplinas"
             android:parentActivityName=".app.TurmaActivity" />
-        <activity
+        <activity456789
             android:name=".app.LoadingActivity"
             android:theme="@style/AppCompat.TelaCheia">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity456789>
         <activity
             android:name=".app.ConfiguracoesActivity"
             android:label="Configurações"
@@ -40,7 +40,6 @@
             android:name=".app.AulaAcoesActivity"
             android:label=""
             android:parentActivityName=".app.DisciplinaActivity">
-
         </activity>
         <activity
             android:name=".app.NotaFragmentActivity"

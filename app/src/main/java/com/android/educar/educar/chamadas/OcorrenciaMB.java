@@ -121,27 +121,28 @@ public class OcorrenciaMB {
     public void publicarDados() {
         realm.beginTransaction();
         RealmResults<Ocorrencia> ocorrencias = realm.where(Ocorrencia.class).findAll();
+
         for (int i = 0; i < ocorrencias.size(); i++) {
             if (ocorrencias.get(i).isNovo()) {
 
                 ocorrencias.get(i).setNovo(false);
-//                Ocorrencia ocorrencia1 = new Ocorrencia();
-//                ocorrencia1.setDatahora(ocorrencias.get(i).getDatahora());
-//                ocorrencia1.setDataHoraCadastro(ocorrencias.get(i).getDataHoraCadastro());
-//                ocorrencia1.setDescricao(ocorrencias.get(i).getDescricao());
-//                ocorrencia1.setEnviadoSms(ocorrencias.get(i).isEnviadoSms());
-//                ocorrencia1.setResumoSms(ocorrencias.get(i).getResumoSms());
-//                ocorrencia1.setObservacao(ocorrencias.get(i).getObservacao());
-//                ocorrencia1.setNumeroTelefone(ocorrencias.get(i).getNumeroTelefone());
-//                ocorrencia1.setFuncionarioEscola(ocorrencias.get(i).getFuncionarioEscola());
-//                ocorrencia1.setMatriculaAluno(ocorrencias.get(i).getMatriculaAluno());
-//                ocorrencia1.setTipoOcorrencia(ocorrencias.get(i).getTipoOcorrencia());
-//                ocorrencia1.setAluno(ocorrencias.get(i).getAluno());
-//                ocorrencia1.setFuncionario(ocorrencias.get(i).getFuncionario());
-//                ocorrencia1.setUnidade(ocorrencias.get(i).getUnidade());
-//                ocorrencia1.setAnoLetivo(ocorrencias.get(i).getAnoLetivo());
+                Ocorrencia ocorrencia1 = new Ocorrencia();
+                ocorrencia1.setDatahora(ocorrencias.get(i).getDatahora());
+                ocorrencia1.setDatahoracadastro(ocorrencias.get(i).getDatahoracadastro());
+                ocorrencia1.setDescricao(ocorrencias.get(i).getDescricao());
+                ocorrencia1.setEnviadoSms(ocorrencias.get(i).isEnviadoSms());
+                ocorrencia1.setResumoSms(ocorrencias.get(i).getResumoSms());
+                ocorrencia1.setObservacao(ocorrencias.get(i).getObservacao());
+                ocorrencia1.setNumeroTelefone(ocorrencias.get(i).getNumeroTelefone());
+                ocorrencia1.setFuncionarioEscola(ocorrencias.get(i).getFuncionarioEscola());
+                ocorrencia1.setMatriculaAluno(ocorrencias.get(i).getMatriculaAluno());
+                ocorrencia1.setTipoOcorrencia(ocorrencias.get(i).getTipoOcorrencia());
+                ocorrencia1.setAluno(ocorrencias.get(i).getAluno());
+                ocorrencia1.setFuncionario(ocorrencias.get(i).getFuncionario());
+                ocorrencia1.setUnidade(ocorrencias.get(i).getUnidade());
+                ocorrencia1.setAnoLetivo(ocorrencias.get(i).getAnoLetivo());
 
-                postOcorrenciaAPI(ocorrencias.get(i));
+                postOcorrenciaAPI(ocorrencia1);
             }
         }
         realm.commitTransaction();

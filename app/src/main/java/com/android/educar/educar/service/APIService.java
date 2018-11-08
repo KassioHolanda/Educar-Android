@@ -35,7 +35,8 @@ public class APIService {
 
     public static String TAG = APIService.class.getSimpleName();
 
-    public static final String BASE_URL = "http://10.20.30.205:8000/";
+        public static final String BASE_URL = "http://10.20.30.205:8000/";
+//    public static final String BASE_URL = "http://192.168.0.106:8000/";
     //    public static final String BASE_URL = "http://192.168.3.2:8000/";
     //    public static final String BASE_URL = "http://192.168.0.103:8000/";
     private Retrofit retrofit;
@@ -58,42 +59,6 @@ public class APIService {
     private TipoOcorrenciaEndPoint tipoOcorrenciaEndPoint;
     private AnoLetivoEndPoint anoLetivoEndPoint;
 
-    public APIService() {
-
-//        this.interceptor = new InterceptadorMuralAPI("token " + token);
-//
-//        OkHttpClient.Builder builderCliente = new OkHttpClient.Builder();
-//        builderCliente.interceptors().add(this.interceptor);
-
-//        OkHttpClient httpClient = builderCliente.build();
-
-        Retrofit.Builder builder = new Retrofit.Builder();
-        retrofit = builder.baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
-//               .client(httpClient)
-                .build();
-
-        alunoEndPoint = retrofit.create(AlunoEndPoint.class);
-        disciplinaEndPoint = retrofit.create(DisciplinaEndPoint.class);
-        frequenciaEndPoint = retrofit.create(FrequenciaEndPoint.class);
-        professorEndPoint = retrofit.create(ProfessorEndPoint.class);
-        turmaEndPoint = retrofit.create(TurmaEndPoint.class);
-        unidadeEndPoint = retrofit.create(UnidadeEndPoint.class);
-        funcionarioEndPoint = retrofit.create(FuncionarioEndPoint.class);
-        pessoaFisicaEndPoint = retrofit.create(PessoaFisicaEndPoint.class);
-        gradeCursoEndPoint = retrofit.create(GradeCursoEndPoint.class);
-        funcionarioEscolaEndPoint = retrofit.create(FuncionarioEscolaEndPoint.class);
-        localEscolaEndPoint = retrofit.create(LocalEscolaEndPoint.class);
-        serieDisciplinaEndPoint = retrofit.create(SerieDisciplinaEndPoint.class);
-
-        matriculaEndPoint = retrofit.create(MatriculaEndPoint.class);
-        alunoFrequenciaMesEndPoint = retrofit.create(AlunoFrequenciaMesEndPoint.class);
-
-        ocorrenciaEndPoint = retrofit.create(OcorrenciaEndPoint.class);
-        tipoOcorrenciaEndPoint = retrofit.create(TipoOcorrenciaEndPoint.class);
-
-        anoLetivoEndPoint = retrofit.create(AnoLetivoEndPoint.class);
-    }
-
     public APIService(String token) {
 
         this.interceptor = new InterceptadorMuralAPI("token " + token);
@@ -101,11 +66,13 @@ public class APIService {
         OkHttpClient.Builder builderCliente = new OkHttpClient.Builder();
         builderCliente.interceptors().add(this.interceptor);
 
-        OkHttpClient httpClient = builderCliente.build();
+//        OkHttpClient httpClient = builderCliente.build();
 
-//        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-//        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-//        httpClient.interceptors().add(logging);
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient httpClient = new OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .build();
 
         Retrofit.Builder builder = new Retrofit.Builder();
         retrofit = builder.baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())

@@ -13,10 +13,9 @@ public class Ocorrencia extends RealmObject {
 
     @PrimaryKey
     private long id;
-    private Date datahora;
-    @SerializedName("datahoracadastro")
-    private Date dataHoraCadastro;
-    @SerializedName("funcioanrioescola")
+    private String datahora;
+    private String datahoracadastro;
+    @SerializedName("funcionarioescola")
     private long funcionarioEscola;
     private String descricao;
     @SerializedName("matriculaaluno")
@@ -43,10 +42,10 @@ public class Ocorrencia extends RealmObject {
         novo = false;
     }
 
-    public Ocorrencia(long id, Date datahora, Date dataHoraCadastro, long funcionarioEscola, String descricao, long matriculaAluno, long tipoOcorrencia, long aluno, long anoLetivo, long funcionario, long unidade, boolean enviadoSms, Date dataEnvioSms, String resumoSms, String observacao, int numeroTelefone, boolean novo) {
+    public Ocorrencia(long id, String datahora, String dataHoraCadastro, long funcionarioEscola, String descricao, long matriculaAluno, long tipoOcorrencia, long aluno, long anoLetivo, long funcionario, long unidade, boolean enviadoSms, Date dataEnvioSms, String resumoSms, String observacao, int numeroTelefone, boolean novo) {
         this.id = id;
         this.datahora = datahora;
-        this.dataHoraCadastro = dataHoraCadastro;
+        this.datahoracadastro = dataHoraCadastro;
         this.funcionarioEscola = funcionarioEscola;
         this.descricao = descricao;
         this.matriculaAluno = matriculaAluno;
@@ -135,20 +134,20 @@ public class Ocorrencia extends RealmObject {
         this.unidade = unidade;
     }
 
-    public Date getDataHoraCadastro() {
-        return dataHoraCadastro;
-    }
-
-    public void setDataHoraCadastro(Date dataHoraCadastro) {
-        this.dataHoraCadastro = dataHoraCadastro;
-    }
-
-    public Date getDatahora() {
+    public String getDatahora() {
         return datahora;
     }
 
-    public void setDatahora(Date datahora) {
+    public void setDatahora(String datahora) {
         this.datahora = datahora;
+    }
+
+    public String getDatahoracadastro() {
+        return datahoracadastro;
+    }
+
+    public void setDatahoracadastro(String datahoracadastro) {
+        this.datahoracadastro = datahoracadastro;
     }
 
     public boolean isEnviadoSms() {

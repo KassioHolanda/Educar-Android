@@ -37,7 +37,9 @@ import com.android.educar.educar.service.APIService;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -60,7 +62,6 @@ public class OcorrenciaFragment extends Fragment {
     private Unidade unidadeSelecionada;
     private Disciplina disciplinaSelecionada;
     private Turma turmaSelecionada;
-
 
     private LinearLayout cardUnidade;
     private LinearLayout cardTurma;
@@ -212,10 +213,12 @@ public class OcorrenciaFragment extends Fragment {
 
     public void salvarOcorrenciaRealm(TipoOcorrencia tipoOcorrencia, String descricao) {
         realm.beginTransaction();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
         Ocorrencia ocorrencia = new Ocorrencia(
                 realm.where(Ocorrencia.class).findAll().size() + 1,
-                new Date(),
-                new Date(),
+                simpleDateFormat.format(new Date()),
+                simpleDateFormat.format(new Date()),
                 realm.where(FuncionarioEscola.class)
                         .equalTo("funcionario", preferences.getSavedLong("id_funcionario"))
                         .equalTo("unidade", preferences.getSavedLong("id_unidade")).findFirst().getId(),
@@ -227,11 +230,8 @@ public class OcorrenciaFragment extends Fragment {
                 preferences.getSavedLong("id_funcionario"),
                 preferences.getSavedLong("id_unidade"), false, null, null, null, 0, true);
 
-
         realm.copyToRealmOrUpdate(ocorrencia);
         realm.commitTransaction();
-
-        new OcorrenciaMB(getContext());
     }
 
     public void recuperarRegistrosAluno(long idPessoaFisica) {

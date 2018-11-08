@@ -2,12 +2,13 @@ package com.android.educar.educar.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Comparator;
 import java.util.Date;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class PessoaFisica extends RealmObject {
+public class PessoaFisica extends RealmObject implements Comparator {
     @PrimaryKey
     private long id;
     private String cpf;
@@ -97,5 +98,10 @@ public class PessoaFisica extends RealmObject {
     @Override
     public String toString() {
         return this.nome;
+    }
+
+    @Override
+    public int compare(Object o, Object t1) {
+        return 0;
     }
 }
