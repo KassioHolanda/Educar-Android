@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,16 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.chamadas.AlunoMB;
-import com.android.educar.educar.chamadas.AnoLetivoMB;
-import com.android.educar.educar.chamadas.DisciplinaMB;
-import com.android.educar.educar.chamadas.FuncionarioEscolaMB;
-import com.android.educar.educar.chamadas.LocalEscolaMB;
-import com.android.educar.educar.chamadas.MatriculaMB;
-import com.android.educar.educar.chamadas.OcorrenciaMB;
-import com.android.educar.educar.chamadas.SerieDisciplinaMB;
-import com.android.educar.educar.chamadas.TurmaMB;
-import com.android.educar.educar.chamadas.UnidadeMB;
+import com.android.educar.educar.bo.SincronizarAPiParaRealmBO;
 import com.android.educar.educar.model.FuncionarioEscola;
 import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.utils.Messages;
@@ -32,6 +22,7 @@ import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
 import android.app.ProgressDialog;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -51,16 +42,7 @@ public class UnidadeActivity extends AppCompatActivity {
     private FloatingActionButton sincronizarDados;
     private Realm realm;
 
-    private TurmaMB turmaMB;
-    private UnidadeMB unidadeMB;
-    private DisciplinaMB disciplinaMB;
-    private FuncionarioEscolaMB funcionarioEscola;
-    private LocalEscolaMB localEscolaMB;
-    private SerieDisciplinaMB serieDisciplinaMB;
-    private AlunoMB alunoMB;
-    private MatriculaMB matriculaMB;
-    private OcorrenciaMB ocorrenciaMB;
-    private AnoLetivoMB anoLetivoMB;
+    private SincronizarAPiParaRealmBO sincronizarAPiParaRealmBO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +50,9 @@ public class UnidadeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_unidade);
         bindind();
         setupInit();
-        onClickItem();
         configRealm();
         recuperarDadosRealm();
+        onClickItem();
         atualizarAdapterListaUnidades(unidadesList);
     }
 
@@ -102,27 +84,9 @@ public class UnidadeActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.menu_search, menu);
         getMenuInflater().inflate(R.menu.menu_item_configuracoes, menu);
         getMenuInflater().inflate(R.menu.menu_item_sair, menu);
         getMenuInflater().inflate(R.menu.menu_dados_alunos, menu);
-
-        MenuItem menuItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) menuItem.getActionView();
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                unidadeArrayAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
         return true;
     }
 
@@ -136,7 +100,7 @@ public class UnidadeActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), ConfiguracoesActivity.class));
                 break;
             case R.id.sair_id:
-                preferences.saveBoolean("logado", false);
+                preferences.saveBoolean(messages.USUARIO_LOGADO, false);
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 onStop();
                 break;
@@ -157,25 +121,14 @@ public class UnidadeActivity extends AppCompatActivity {
         sincronizarDados.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (preferences.getSavedBoolean("connection")) {
-                    progressDialog.show();
-
-                    unidadeMB.unidadesAPI();
-                    turmaMB.turmasAPI();
-                    turmaMB.gradeCursoAPI();
-                    disciplinaMB.disciplinasAPI();
-                    funcionarioEscola.funcionariosEscola();
-                    localEscolaMB.localEscolaAPI();
-                    serieDisciplinaMB.serieDisciplina();
-                    alunoMB.alunosAPI();
-                    matriculaMB.matriculaAPI();
-                    anoLetivoMB.anoLetivoAPI();
-                    ocorrenciaMB = new OcorrenciaMB(getApplicationContext());
-                    progressDialog.hide();
-
-                    onStart();
+                if (UtilsFunctions.isConnect(getApplicationContext())) {
+                    sincronizar();
+                    sincronizarAPiParaRealmBO.sincronizarRealmComAPi();
+                    sincronizarAPiParaRealmBO.sincronizarAPiComRealm();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Sem Conexão!", Toast.LENGTH_SHORT).show();
                 }
-//                onResume();
+                startActivity(new Intent(getApplicationContext(), UnidadeActivity.class));
             }
         });
     }
@@ -186,20 +139,14 @@ public class UnidadeActivity extends AppCompatActivity {
 
     public void setupInit() {
         progressDialog = UtilsFunctions.progressDialog(this, "Aguarde...");
-
         preferences = new Preferences(this);
         messages = new Messages();
+        sincronizarAPiParaRealmBO = new SincronizarAPiParaRealmBO(getApplicationContext());
         unidadesList = new ArrayList<>();
+    }
 
-        unidadeMB = new UnidadeMB(getApplicationContext());
-        turmaMB = new TurmaMB(getApplicationContext());
-        disciplinaMB = new DisciplinaMB(getApplicationContext());
-        funcionarioEscola = new FuncionarioEscolaMB(getApplicationContext());
-        localEscolaMB = new LocalEscolaMB(getApplicationContext());
-        serieDisciplinaMB = new SerieDisciplinaMB(getApplicationContext());
-        alunoMB = new AlunoMB(getApplicationContext());
-        matriculaMB = new MatriculaMB(getApplicationContext());
-        anoLetivoMB = new AnoLetivoMB(getApplicationContext());
+    public void sincronizar() {
+
     }
 
     public void atualizarAdapterListaUnidades(List<Unidade> unidades) {

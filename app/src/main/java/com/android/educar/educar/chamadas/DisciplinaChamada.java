@@ -2,33 +2,25 @@ package com.android.educar.educar.chamadas;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
-import com.android.educar.educar.model.Disciplina;
-import com.android.educar.educar.model.PessoaFisica;
+import com.android.educar.educar.bo.RealmBO;
 import com.android.educar.educar.service.APIService;
 import com.android.educar.educar.service.ListaDisciplinasAPI;
-import com.android.educar.educar.service.ListaPessoaFisicaAPI;
 
-import java.util.List;
-
-import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DisciplinaMB {
-    private Realm realm;
+public class DisciplinaChamada {
     private Context context;
     private APIService apiService;
+    private RealmBO realmBO;
 
-    public DisciplinaMB(Context context) {
+    public DisciplinaChamada(Context context) {
+        this.context = context;
         apiService = new APIService("");
-        configRealm();
-    }
-
-    public void configRealm() {
-        Realm.init(context);
-        realm = Realm.getDefaultInstance();
+        realmBO = new RealmBO(context);
     }
 
     public void disciplinasAPI() {
@@ -37,23 +29,15 @@ public class DisciplinaMB {
             @Override
             public void onResponse(Call<ListaDisciplinasAPI> call, Response<ListaDisciplinasAPI> response) {
                 if (response.isSuccessful()) {
-                    salvarDisiciplina(response.body().getResults());
+                    realmBO.salvarDisciplinasRealm(response.body().getResults());
                 }
             }
 
             @Override
             public void onFailure(Call<ListaDisciplinasAPI> call, Throwable t) {
-
+                Log.i("ERRO API", t.getMessage());
+//                Toast.makeText(context, "Ocorreu um Erro! Verifique sua Conexão", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public void salvarDisiciplina(final List<Disciplina> disciplinas) {
-        realm.beginTransaction();
-        for (int i = 0; i < disciplinas.size(); i++) {
-            realm.copyToRealmOrUpdate(disciplinas.get(i));
-            Log.i("disciplinas", "" + disciplinas.get(i).getDescricao());
-        }
-        realm.commitTransaction();
     }
 }

@@ -2,23 +2,16 @@ package com.android.educar.educar.app;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.chamadas.FuncionarioMB;
-import com.android.educar.educar.chamadas.PessoaFisicaMB;
 import com.android.educar.educar.model.Funcionario;
 import com.android.educar.educar.model.PessoaFisica;
-import com.android.educar.educar.service.APIService;
-import com.android.educar.educar.service.ListaPessoaFisicaAPI;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
@@ -28,11 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -60,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         limpar();
         verificarUsuarioLogado();
         configRealm();
-        carregarUsuarios();
+        carregarUsuariosBandoDeDadosRealm();
     }
 
     public void configRealm() {
@@ -68,10 +57,8 @@ public class LoginActivity extends AppCompatActivity {
         realm = Realm.getDefaultInstance();
     }
 
-    public void carregarUsuarios() {
+    public void carregarUsuariosBandoDeDadosRealm() {
         final RealmResults<PessoaFisica> pessoaFisicas = realm.where(PessoaFisica.class).findAll();
-//        pessoaFisicas.size();
-//        Toast.makeText(getApplicationContext(), "" + pessoaFisicas.size(), Toast.LENGTH_LONG).show();
         this.pessoaFisicas = pessoaFisicas;
     }
 
@@ -136,9 +123,8 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Funcionario não Encontrado!", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
-
+            Toast.makeText(getApplicationContext(), "Ocorreu um Erro, Solicite Administrador!", Toast.LENGTH_LONG).show();
         }
-
     }
 
     public void verificarUsuario() {

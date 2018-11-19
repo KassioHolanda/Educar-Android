@@ -2,7 +2,9 @@ package com.android.educar.educar.chamadas;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.android.educar.educar.bo.RealmBO;
 import com.android.educar.educar.model.GradeCurso;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
@@ -18,19 +20,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TurmaMB {
-    private Realm realm;
+public class TurmaChamada {
     private Context context;
     private APIService apiService;
+    private RealmBO realmBO;
 
-    public TurmaMB(Context context) {
+    public TurmaChamada(Context context) {
+        this.context = context;
         apiService = new APIService("");
-        configRealm();
-    }
+        realmBO = new RealmBO(context);
 
-    public void configRealm() {
-        Realm.init(context);
-        realm = Realm.getDefaultInstance();
     }
 
     public void gradeCursoAPI() {
@@ -39,13 +38,14 @@ public class TurmaMB {
             @Override
             public void onResponse(Call<ListaGradeCursoAPI> call, Response<ListaGradeCursoAPI> response) {
                 if (response.isSuccessful()) {
-                    salvarGradeCurso(response.body().getResults());
+                    realmBO.salvarGradeCursoRealm(response.body().getResults());
                 }
             }
 
             @Override
             public void onFailure(Call<ListaGradeCursoAPI> call, Throwable t) {
-
+                Log.i("ERRO API", t.getMessage());
+//                Toast.makeText(context, "Ocorreu um Erro! Verifique sua Conexão", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -56,7 +56,7 @@ public class TurmaMB {
             @Override
             public void onResponse(Call<ListaTurmaAPI> call, Response<ListaTurmaAPI> response) {
                 if (response.isSuccessful()) {
-                    salvarTurma(response.body().getResults());
+                    realmBO.salvarTurmaRealm(response.body().getResults());
                 }
             }
 
@@ -67,21 +67,5 @@ public class TurmaMB {
         });
     }
 
-    public void salvarGradeCurso(List<GradeCurso> gradeCursos) {
-        realm.beginTransaction();
-        for (int i = 0; i < gradeCursos.size(); i++) {
-            realm.copyToRealmOrUpdate(gradeCursos.get(i));
-            Log.i("gradecurso", "" + gradeCursos.get(i).getId());
-        }
-        realm.commitTransaction();
-    }
 
-    public void salvarTurma(List<Turma> turmas) {
-        realm.beginTransaction();
-        for (int i = 0; i < turmas.size(); i++) {
-            realm.copyToRealmOrUpdate(turmas.get(i));
-            Log.i("turma", "" + turmas.get(i).getDescricao());
-        }
-        realm.commitTransaction();
-    }
 }

@@ -72,7 +72,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
     public void alertaInformacao() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Informações!");
-        builder.setMessage("Selecione um Aluno e adicione uma ocorrência ao mesmo!");
+        builder.setMessage("Selecione um Aluno e adicione uma Notificação ao mesmo!");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

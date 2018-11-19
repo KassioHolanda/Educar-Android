@@ -18,12 +18,7 @@ public class DetalheAlunoActivity extends AppCompatActivity {
   private EditText id;
   private EditText unidade;
   private EditText turma;
-  //    private ClassDAO classDAO;
   private Preferences preferences;
-
-//    private AlunoDAO alunoDAO;
-//    private DisciplinaDAO disciplinaDAO;
-//    private UnidadeDAO unidadeDAO;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +37,6 @@ public class DetalheAlunoActivity extends AppCompatActivity {
   }
 
   public void setupInit() {
-//        classDAO = new ClassDAO(getApplicationContext());
-
-//        alunoDAO = new AlunoDAO(getApplicationContext());
-//        disciplinaDAO = new DisciplinaDAO(getApplicationContext());
-//        unidadeDAO = new UnidadeDAO(getApplicationContext());
-
     preferences = new Preferences(getApplicationContext());
   }
 

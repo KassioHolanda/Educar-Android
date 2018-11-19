@@ -13,7 +13,7 @@ public interface DisciplinaEndPoint {
     @GET("disciplina/")
     Call<ListaDisciplinasAPI> disciplinas();
 
-    @GET("disciplina/{pk}")
-    Call<Disciplina> getDisciplina(@Path("pk") long pk);
+    @GET("disciplina/{id}")
+    Call<Disciplina> getDisciplina(@Path("id") long id);
 
 }

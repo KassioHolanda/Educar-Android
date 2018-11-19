@@ -2,7 +2,9 @@ package com.android.educar.educar.chamadas;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.android.educar.educar.bo.RealmBO;
 import com.android.educar.educar.model.PessoaFisica;
 import com.android.educar.educar.model.SerieDisciplina;
 import com.android.educar.educar.service.APIService;
@@ -17,22 +19,21 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SerieDisciplinaMB {
+public class SerieDisciplinaChamada {
     private Context context;
     private APIService apiService;
-    private Realm realm;
-    private RealmConfiguration realmConfiguration;
+    private RealmBO realmBO;
 
-    public SerieDisciplinaMB(Context context) {
+    public SerieDisciplinaChamada(Context context) {
         this.context = context;
         apiService = new APIService("");
-        configRealm();
+        realmBO = new RealmBO(context);
     }
 
 
     public void configRealm() {
         Realm.init(context);
-        realm = Realm.getDefaultInstance();
+        realmBO = new RealmBO(context);
     }
 
     public void serieDisciplina() {
@@ -42,23 +43,17 @@ public class SerieDisciplinaMB {
             @Override
             public void onResponse(Call<ListaSerieDisciplinaAPI> call, Response<ListaSerieDisciplinaAPI> response) {
                 if (response.isSuccessful()) {
-                    serieDisciplinaBD(response.body().getResults());
+                    realmBO.serieDisciplinaRealm(response.body().getResults());
                 }
             }
 
             @Override
             public void onFailure(Call<ListaSerieDisciplinaAPI> call, Throwable t) {
-
+                Log.i("ERRO API", t.getMessage());
+//                Toast.makeText(context, "Ocorreu um Erro! Verifique sua Conexão", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public void serieDisciplinaBD(final List<SerieDisciplina> serieDisciplinas) {
-        realm.beginTransaction();
-        for (int i = 0; i < serieDisciplinas.size(); i++) {
-            realm.copyToRealmOrUpdate(serieDisciplinas.get(i));
-            Log.i("seriedisciplina", "" + serieDisciplinas.get(i).getId());
-        }
-        realm.commitTransaction();
-    }
+
 }

@@ -9,6 +9,7 @@
     tools:context=".app.UnidadeActivity">
 
     <ListView
+        android:layout_marginTop="4dp"
         android:id="@+id/unidades_list_view_id"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,9 +20,9 @@
         android:id="@+id/sincronizar_dados"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:adjustViewBounds="false"

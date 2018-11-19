@@ -14,4 +14,5 @@ public class Messages {
   public static final String SEGUNDO_SEMESTRE = "Segundo Semestre";
   public static final String TERCEIRO_SEMESTRE = "Terceiro Semestre";
   public static final String QUARTO_SEMESTRE = "Quarto Semestre";
+  public static final String CONEXAO = "connection";
 }

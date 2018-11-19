@@ -9,7 +9,7 @@ import java.util.List;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Unidade extends RealmObject{
+public class Unidade extends RealmObject {
 
     @PrimaryKey
     private long id;

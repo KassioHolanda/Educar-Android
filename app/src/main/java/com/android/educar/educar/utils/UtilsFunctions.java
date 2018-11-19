@@ -2,6 +2,8 @@ package com.android.educar.educar.utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.android.educar.educar.service.APIService;
 
@@ -59,5 +61,15 @@ public class UtilsFunctions {
         }
 
         return error;
+    }
+
+    public static boolean isConnect(Context contexto) {
+        ConnectivityManager cm = (ConnectivityManager) contexto.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if ((netInfo != null) && (netInfo.isConnectedOrConnecting()) && (netInfo.isAvailable())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

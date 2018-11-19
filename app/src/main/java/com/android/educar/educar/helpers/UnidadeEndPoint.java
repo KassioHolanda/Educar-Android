@@ -12,7 +12,7 @@ public interface UnidadeEndPoint {
     @GET("unidade/")
     Call<ListaUnidadesAPI> unidades();
 
-    @GET("unidade/{pk}")
-    Call<Unidade> getUnidade(@Path("pk") long pk);
+    @GET("unidade/{id}")
+    Call<Unidade> getUnidade(@Path("id") long id);
 
 }

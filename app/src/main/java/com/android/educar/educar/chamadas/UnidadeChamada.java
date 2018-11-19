@@ -2,7 +2,9 @@ package com.android.educar.educar.chamadas;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.android.educar.educar.bo.RealmBO;
 import com.android.educar.educar.model.PessoaFisica;
 import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.service.APIService;
@@ -17,19 +19,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UnidadeMB {
-    private Realm realm;
+public class UnidadeChamada {
     private Context context;
     private APIService apiService;
+    private RealmBO realmBO;
 
-    public UnidadeMB(Context context) {
+    public UnidadeChamada(Context context) {
         apiService = new APIService("");
-        configRealm();
-    }
-
-    public void configRealm() {
-        Realm.init(context);
-        realm = Realm.getDefaultInstance();
+        realmBO = new RealmBO(context);
     }
 
     public void unidadesAPI() {
@@ -38,24 +35,15 @@ public class UnidadeMB {
             @Override
             public void onResponse(Call<ListaUnidadesAPI> call, Response<ListaUnidadesAPI> response) {
                 if (response.isSuccessful()) {
-                    salvarUnidade(response.body().getResults());
+                    realmBO.salvarUnidadeRealm(response.body().getResults());
                 }
             }
 
             @Override
             public void onFailure(Call<ListaUnidadesAPI> call, Throwable t) {
-
+                Log.i("ERRO API", t.getMessage());
+//                Toast.makeText(context, "Ocorreu um Erro! Verifique sua Conexão", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-
-    public void salvarUnidade(List<Unidade> unidades) {
-        realm.beginTransaction();
-        for (int i = 0; i < unidades.size(); i++) {
-            realm.copyToRealmOrUpdate(unidades.get(i));
-            Log.i("unidade", "" + unidades.get(i).getAbreviacao());
-        }
-        realm.commitTransaction();
     }
 }

@@ -47,7 +47,6 @@ public class TurmaActivity extends AppCompatActivity {
     private Realm realm;
     private Messages messages;
     private List<GradeCurso> gradeCursos;
-
     private List<LocalEscola> localEscolas;
 
     @Override
@@ -73,9 +72,7 @@ public class TurmaActivity extends AppCompatActivity {
     public void recuperarTurmas() {
 
         RealmResults<LocalEscola> localEscolas = realm.where(LocalEscola.class).equalTo("unidade", preferences.getSavedLong("id_unidade")).findAll();
-
 //        long idUnidade = preferences.getSavedLong("id_unidade");
-
         List<Turma> turmasEscola = new ArrayList<>();
 
         for (int i = 0; i < localEscolas.size(); i++) {
@@ -103,7 +100,6 @@ public class TurmaActivity extends AppCompatActivity {
 //            alertaInformacaoSemTurmas();
 //        }
 
-
     public void configRealm() {
         Realm.init(this);
         realm = Realm.getDefaultInstance();
@@ -120,7 +116,6 @@ public class TurmaActivity extends AppCompatActivity {
         messages = new Messages();
         gradeCursos = new ArrayList<>();
         localEscolas = new ArrayList<>();
-
     }
 
     public void onClickItem() {
@@ -177,7 +172,6 @@ public class TurmaActivity extends AppCompatActivity {
                 finish();
             }
         }).show();
-
     }
 
     @Override
@@ -195,21 +189,6 @@ public class TurmaActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_search, menu);
         getMenuInflater().inflate(R.menu.menu_dados_alunos, menu);
 
-        MenuItem menuItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) menuItem.getActionView();
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                turmaArrayAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
         return true;
     }
 }

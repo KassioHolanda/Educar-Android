@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.app.DetalheAlunoActivity;
-import com.android.educar.educar.chamadas.OcorrenciaMB;
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.AnoLetivo;
 import com.android.educar.educar.model.Disciplina;
@@ -33,21 +32,16 @@ import com.android.educar.educar.model.PessoaFisica;
 import com.android.educar.educar.model.TipoOcorrencia;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
-import com.android.educar.educar.service.APIService;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class OcorrenciaFragment extends Fragment {
 
@@ -205,7 +199,7 @@ public class OcorrenciaFragment extends Fragment {
 
                         salvarOcorrenciaRealm(tipoOcorrencia, ocorrenciaText.getText().toString());
 
-                        Toast.makeText(getContext(), "Ocorrência Salva!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Notificação Salva!", Toast.LENGTH_SHORT).show();
                     }
                 }).setNegativeButton("Cancelar", null).show();
 
