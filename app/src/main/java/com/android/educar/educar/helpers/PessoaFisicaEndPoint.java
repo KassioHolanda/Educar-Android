@@ -10,9 +10,11 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface PessoaFisicaEndPoint {
-    @GET("pessoafisica/")
-    Call<ListaPessoaFisicaAPI> pessoasFisicas();
+    @GET("pessoafisica/?page={numeroPagina}")
+    Call<ListaPessoaFisicaAPI> pessoasFisicas(@Path("numeroPagina") int numeroPagina);
 
     @GET("pessoafisica/{id}")
     Call<PessoaFisica> getPessoaFisica(@Path("id") long id);
+
+
 }

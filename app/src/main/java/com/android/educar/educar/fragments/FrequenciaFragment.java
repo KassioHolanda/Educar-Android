@@ -93,9 +93,7 @@ public class FrequenciaFragment extends Fragment {
         List<Aluno> alunos = new ArrayList<>();
         pessoaFisicas = new ArrayList<>();
 
-
-//        long idturma = preferences.getSavedLong("id_turma");
-        RealmResults<Matricula> matriculas = realm.where(Matricula.class).findAll();
+        RealmResults<Matricula> matriculas = realm.where(Matricula.class).equalTo("turma", preferences.getSavedLong("id_turma")).findAll();
 
         for (int i = 0; i < matriculas.size(); i++) {
             Aluno aluno = realm.where(Aluno.class).equalTo("id", matriculas.get(i).getAluno()).findFirst();
@@ -104,7 +102,7 @@ public class FrequenciaFragment extends Fragment {
             }
         }
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < alunos.size(); i++) {
             PessoaFisica pessoaFisica = realm.where(PessoaFisica.class).equalTo("id", alunos.get(i).getPessoaFisica()).findFirst();
             if (pessoaFisica != null) {
                 pessoaFisicas.add(pessoaFisica);
@@ -113,7 +111,6 @@ public class FrequenciaFragment extends Fragment {
 
         atualizarAdapterFrequencia(pessoaFisicas);
     }
-
 
     public void onClickItem() {
         salvarFrequencia.setOnClickListener(new View.OnClickListener() {

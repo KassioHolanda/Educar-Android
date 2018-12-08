@@ -5,78 +5,87 @@ import android.util.Log;
 
 import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.service.APIService;
-import com.android.educar.educar.service.ListaPerfilAPI;
-import com.android.educar.educar.service.ListaPessoaFisicaAPI;
-import com.android.educar.educar.service.ListaUsuariosAPI;
+import com.android.educar.educar.service.ListaSerieAPI;
+import com.android.educar.educar.service.ListaSerieDisciplinaAPI;
+import com.android.educar.educar.service.ListaSerieTurmaAPI;
 
-
+import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PessoaChamada {
-
+public class SerieChamada {
     private Context context;
     private APIService apiService;
     private RealmObjectsDAO realmObjectsDAO;
 
-    public PessoaChamada(Context context) {
+    public SerieChamada(Context context) {
         this.context = context;
         apiService = new APIService("");
         realmObjectsDAO = new RealmObjectsDAO(context);
     }
 
-    public void pessoaFisicaAPI() {
-        Call<ListaPessoaFisicaAPI> listaProfessoresAPICall = apiService.getPessoaFisicaEndPoint().pessoasFisicas(1);
-        listaProfessoresAPICall.enqueue(new Callback<ListaPessoaFisicaAPI>() {
+
+    public void configRealm() {
+        Realm.init(context);
+        realmObjectsDAO = new RealmObjectsDAO(context);
+    }
+
+    public void serieDisciplina() {
+        Call<ListaSerieDisciplinaAPI> listaSerieDisciplinaAPICall = apiService.getSerieDisciplinaEndPoint().serieDisciplinas();
+
+        listaSerieDisciplinaAPICall.enqueue(new Callback<ListaSerieDisciplinaAPI>() {
             @Override
-            public void onResponse(Call<ListaPessoaFisicaAPI> call, Response<ListaPessoaFisicaAPI> response) {
+            public void onResponse(Call<ListaSerieDisciplinaAPI> call, Response<ListaSerieDisciplinaAPI> response) {
                 if (response.isSuccessful()) {
                     realmObjectsDAO.salvarListaRealm(response.body().getResults());
                 }
             }
 
             @Override
-            public void onFailure(Call<ListaPessoaFisicaAPI> call, Throwable t) {
+            public void onFailure(Call<ListaSerieDisciplinaAPI> call, Throwable t) {
                 Log.i("ERRO API", t.getMessage());
 //                Toast.makeText(context, "Ocorreu um Erro! Verifique sua Conexão", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public void recuperarUsuariosAPI() {
-        Call<ListaUsuariosAPI> listaProfessoresAPICall = apiService.getUsuarioEndPoint().usuarios();
-        listaProfessoresAPICall.enqueue(new Callback<ListaUsuariosAPI>() {
+    public void recuperarSerieTurmaAPI() {
+        Call<ListaSerieTurmaAPI> listaSerieDisciplinaAPICall = apiService.getSerieTurmaEndPoint().seriesturma();
+
+        listaSerieDisciplinaAPICall.enqueue(new Callback<ListaSerieTurmaAPI>() {
             @Override
-            public void onResponse(Call<ListaUsuariosAPI> call, Response<ListaUsuariosAPI> response) {
+            public void onResponse(Call<ListaSerieTurmaAPI> call, Response<ListaSerieTurmaAPI> response) {
                 if (response.isSuccessful()) {
                     realmObjectsDAO.salvarListaRealm(response.body().getResults());
                 }
             }
 
             @Override
-            public void onFailure(Call<ListaUsuariosAPI> call, Throwable t) {
+            public void onFailure(Call<ListaSerieTurmaAPI> call, Throwable t) {
                 Log.i("ERRO API", t.getMessage());
 //                Toast.makeText(context, "Ocorreu um Erro! Verifique sua Conexão", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public void recuperarPerfilAPI() {
-        Call<ListaPerfilAPI> listaProfessoresAPICall = apiService.getPerfilEndPoint().perfis();
-        listaProfessoresAPICall.enqueue(new Callback<ListaPerfilAPI>() {
+    public void recuperarSerieAPI() {
+        Call<ListaSerieAPI> listaSerieDisciplinaAPICall = apiService.getSerieEndPoint().series();
+
+        listaSerieDisciplinaAPICall.enqueue(new Callback<ListaSerieAPI>() {
             @Override
-            public void onResponse(Call<ListaPerfilAPI> call, Response<ListaPerfilAPI> response) {
+            public void onResponse(Call<ListaSerieAPI> call, Response<ListaSerieAPI> response) {
                 if (response.isSuccessful()) {
                     realmObjectsDAO.salvarListaRealm(response.body().getResults());
                 }
             }
 
             @Override
-            public void onFailure(Call<ListaPerfilAPI> call, Throwable t) {
+            public void onFailure(Call<ListaSerieAPI> call, Throwable t) {
                 Log.i("ERRO API", t.getMessage());
 //                Toast.makeText(context, "Ocorreu um Erro! Verifique sua Conexão", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 }

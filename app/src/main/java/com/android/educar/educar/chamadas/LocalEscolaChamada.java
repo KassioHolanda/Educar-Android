@@ -2,9 +2,8 @@ package com.android.educar.educar.chamadas;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.android.educar.educar.bo.RealmBO;
+import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.service.APIService;
 import com.android.educar.educar.service.ListaLocalEscolaAPI;
 
@@ -15,12 +14,12 @@ import retrofit2.Response;
 public class LocalEscolaChamada {
     private Context context;
     private APIService apiService;
-    private RealmBO realmBO;
+    private RealmObjectsDAO realmObjectsDAO;
 
     public LocalEscolaChamada(Context context) {
         this.context = context;
         apiService = new APIService("");
-        realmBO = new RealmBO(context);
+        realmObjectsDAO = new RealmObjectsDAO(context);
     }
 
     public void localEscolaAPI() {
@@ -29,7 +28,7 @@ public class LocalEscolaChamada {
             @Override
             public void onResponse(Call<ListaLocalEscolaAPI> call, Response<ListaLocalEscolaAPI> response) {
                 if (response.isSuccessful()) {
-                    realmBO.salvarLocalEscolaRealm(response.body().getResults());
+                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
                 }
             }
 

@@ -1,14 +1,12 @@
 package com.android.educar.educar.service;
 
-import android.opengl.Matrix;
-
 import com.android.educar.educar.helpers.AlunoEndPoint;
 import com.android.educar.educar.helpers.AlunoFrequenciaMesEndPoint;
 import com.android.educar.educar.helpers.AlunoNotaMesEndPoint;
 import com.android.educar.educar.helpers.AnoLetivoEndPoint;
 import com.android.educar.educar.helpers.BimestreEndPoint;
 import com.android.educar.educar.helpers.DisciplinaEndPoint;
-import com.android.educar.educar.helpers.DisiciplinaAlunoEndPoint;
+import com.android.educar.educar.helpers.DisciplinaAlunoEndPoint;
 import com.android.educar.educar.helpers.FrequenciaEndPoint;
 import com.android.educar.educar.helpers.FuncionarioEndPoint;
 import com.android.educar.educar.helpers.FuncionarioEscolaEndPoint;
@@ -20,19 +18,13 @@ import com.android.educar.educar.helpers.PerfilEndPoint;
 import com.android.educar.educar.helpers.PessoaFisicaEndPoint;
 import com.android.educar.educar.helpers.ProfessorEndPoint;
 import com.android.educar.educar.helpers.SerieDisciplinaEndPoint;
+import com.android.educar.educar.helpers.SerieEndPoint;
+import com.android.educar.educar.helpers.SerieTurmaEndPoint;
 import com.android.educar.educar.helpers.SituacaoTurmaMesEndPoint;
 import com.android.educar.educar.helpers.TipoOcorrenciaEndPoint;
 import com.android.educar.educar.helpers.TurmaEndPoint;
 import com.android.educar.educar.helpers.UnidadeEndPoint;
 import com.android.educar.educar.helpers.UsuarioEndPoint;
-import com.android.educar.educar.model.AlunoFrequenciaMes;
-import com.android.educar.educar.model.AlunoNotaMes;
-import com.android.educar.educar.model.GradeCurso;
-import com.android.educar.educar.model.LocalEscola;
-import com.android.educar.educar.model.Matricula;
-import com.android.educar.educar.model.Ocorrencia;
-import com.android.educar.educar.model.Perfil;
-import com.android.educar.educar.model.SituacaoTurmaMes;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -44,8 +36,8 @@ public class APIService {
 
     public static String TAG = APIService.class.getSimpleName();
 
-    public static final String BASE_URL = "http://10.20.30.205:8000/";
-    //    public static final String BASE_URL = "http://192.168.0.106:8000/";
+    public static final String BASE_URL = "http://10.20.30.46:8000/";
+//        public static final String BASE_URL = "http://192.168.0.106:8000/";
     //    public static final String BASE_URL = "http://192.168.3.2:8000/";
     //    public static final String BASE_URL = "http://192.168.0.103:8000/";
     private Retrofit retrofit;
@@ -68,13 +60,15 @@ public class APIService {
     private TipoOcorrenciaEndPoint tipoOcorrenciaEndPoint;
     private AnoLetivoEndPoint anoLetivoEndPoint;
 
-    private DisiciplinaAlunoEndPoint disiciplinaAlunoEndPoint;
+    private DisciplinaAlunoEndPoint disciplinaAlunoEndPoint;
     private PerfilEndPoint perfilEndPoint;
     private SituacaoTurmaMesEndPoint situacaoTurmaMesEndPoint;
     private UsuarioEndPoint usuarioEndPoint;
     private AlunoNotaMesEndPoint alunoNotaMesEndPoint;
 
     private BimestreEndPoint bimestreEndPoint;
+    private SerieTurmaEndPoint serieTurmaEndPoint;
+    private SerieEndPoint serieEndPoint;
 
     public APIService(String token) {
 
@@ -117,13 +111,15 @@ public class APIService {
 
         anoLetivoEndPoint = retrofit.create(AnoLetivoEndPoint.class);
 
-        disiciplinaAlunoEndPoint = retrofit.create(DisiciplinaAlunoEndPoint.class);
+        disciplinaAlunoEndPoint = retrofit.create(DisciplinaAlunoEndPoint.class);
         perfilEndPoint = retrofit.create(PerfilEndPoint.class);
         situacaoTurmaMesEndPoint = retrofit.create(SituacaoTurmaMesEndPoint.class);
         usuarioEndPoint = retrofit.create(UsuarioEndPoint.class);
         alunoNotaMesEndPoint = retrofit.create(AlunoNotaMesEndPoint.class);
 
         bimestreEndPoint = retrofit.create(BimestreEndPoint.class);
+        serieTurmaEndPoint = retrofit.create(SerieTurmaEndPoint.class);
+        serieEndPoint = retrofit.create(SerieEndPoint.class);
     }
 
     public AlunoEndPoint getAlunoEndPoint() {
@@ -194,8 +190,8 @@ public class APIService {
         return anoLetivoEndPoint;
     }
 
-    public DisiciplinaAlunoEndPoint getDisiciplinaAlunoEndPoint() {
-        return disiciplinaAlunoEndPoint;
+    public DisciplinaAlunoEndPoint getDisciplinaAlunoEndPoint() {
+        return disciplinaAlunoEndPoint;
     }
 
     public PerfilEndPoint getPerfilEndPoint() {
@@ -216,6 +212,14 @@ public class APIService {
 
     public BimestreEndPoint getBimestreEndPoint() {
         return bimestreEndPoint;
+    }
+
+    public SerieTurmaEndPoint getSerieTurmaEndPoint() {
+        return serieTurmaEndPoint;
+    }
+
+    public SerieEndPoint getSerieEndPoint() {
+        return serieEndPoint;
     }
 
     public Retrofit getRetrofit() {

@@ -1,5 +1,7 @@
 package com.android.educar.educar.model;
 
+import android.renderscript.Short3;
+
 import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
 
@@ -9,16 +11,19 @@ import java.util.List;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Turma extends RealmObject{
+public class Turma extends RealmObject {
 
     @PrimaryKey
     private long id;
     private String descricao;
     private String turno;
     private long sala;
-    private long anoletivo;
+    @SerializedName("anoletivo")
+    private long anoLetivo;
     private long serie;
     private String nivel;
+    @SerializedName("statusturma")
+    private String statusTurma;
 
     public Turma() {
 
@@ -56,12 +61,12 @@ public class Turma extends RealmObject{
         this.sala = sala;
     }
 
-    public long getAnoletivo() {
-        return anoletivo;
+    public long getAnoLetivo() {
+        return anoLetivo;
     }
 
-    public void setAnoletivo(long anoletivo) {
-        this.anoletivo = anoletivo;
+    public void setAnoLetivo(long anoLetivo) {
+        this.anoLetivo = anoLetivo;
     }
 
     public long getSerie() {
@@ -83,5 +88,13 @@ public class Turma extends RealmObject{
     @Override
     public String toString() {
         return this.getDescricao();
+    }
+
+    public String getStatusTurma() {
+        return statusTurma;
+    }
+
+    public void setStatusTurma(String statusTurma) {
+        this.statusTurma = statusTurma;
     }
 }

@@ -2,9 +2,8 @@ package com.android.educar.educar.chamadas;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.android.educar.educar.bo.RealmBO;
+import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.service.APIService;
 import com.android.educar.educar.service.ListaMatriculaAPI;
 
@@ -15,12 +14,12 @@ import retrofit2.Response;
 public class MatriculaChamada {
     private Context context;
     private APIService apiService;
-    private RealmBO realmBO;
+    private RealmObjectsDAO realmObjectsDAO;
 
     public MatriculaChamada(Context context) {
         this.context = context;
         apiService = new APIService("");
-        realmBO = new RealmBO(context);
+        realmObjectsDAO = new RealmObjectsDAO(context);
     }
 
     public void matriculaAPI() {
@@ -29,7 +28,7 @@ public class MatriculaChamada {
             @Override
             public void onResponse(Call<ListaMatriculaAPI> call, Response<ListaMatriculaAPI> response) {
                 if (response.isSuccessful()) {
-                    realmBO.salvarMatriculaRealm(response.body().getResults());
+                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
                 }
             }
 

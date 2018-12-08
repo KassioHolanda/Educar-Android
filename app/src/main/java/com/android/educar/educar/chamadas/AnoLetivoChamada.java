@@ -2,9 +2,8 @@ package com.android.educar.educar.chamadas;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.android.educar.educar.bo.RealmBO;
+import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.service.APIService;
 import com.android.educar.educar.service.ListaAnoLetivoAPI;
 import com.android.educar.educar.service.ListaBimestreAPI;
@@ -15,14 +14,14 @@ import retrofit2.Response;
 
 public class AnoLetivoChamada {
 
-    private RealmBO realmBO;
+    private RealmObjectsDAO realmObjectsDAO;
     private Context context;
     private APIService apiService;
 
     public AnoLetivoChamada(Context context) {
         this.context = context;
         apiService = new APIService("");
-        realmBO = new RealmBO(context);
+        realmObjectsDAO = new RealmObjectsDAO(context);
     }
 
     public void anoLetivoAPI() {
@@ -31,7 +30,7 @@ public class AnoLetivoChamada {
             @Override
             public void onResponse(Call<ListaAnoLetivoAPI> call, Response<ListaAnoLetivoAPI> response) {
                 if (response.isSuccessful()) {
-                    realmBO.salvaAnoLetivoRealm(response.body().getResults());
+                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
                 }
             }
 
@@ -49,7 +48,7 @@ public class AnoLetivoChamada {
             @Override
             public void onResponse(Call<ListaBimestreAPI> call, Response<ListaBimestreAPI> response) {
                 if (response.isSuccessful()) {
-                    realmBO.salvarBimestreRealm(response.body().getResults());
+                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
                 }
             }
 

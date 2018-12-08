@@ -32,6 +32,8 @@ public class DisciplinaAluno extends RealmObject {
     private Float notaAntigaProvaFinal;
     @SerializedName("usuarioatualizacaoprovafinal")
     private long usuarioAtualizacaoProvaFinal;
+    @SerializedName("statusatual")
+    private String statusAtual;
 
     public DisciplinaAluno() {
     }
@@ -146,5 +148,11 @@ public class DisciplinaAluno extends RealmObject {
         this.usuarioAtualizacaoProvaFinal = usuarioAtualizacaoProvaFinal;
     }
 
+    public String getStatusAtual() {
+        return statusAtual;
+    }
 
+    public void setStatusAtual(String statusAtual) {
+        this.statusAtual = statusAtual;
+    }
 }

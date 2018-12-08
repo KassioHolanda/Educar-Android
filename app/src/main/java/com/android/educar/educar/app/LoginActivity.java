@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.android.educar.educar.R;
 import com.android.educar.educar.model.Funcionario;
 import com.android.educar.educar.model.PessoaFisica;
+import com.android.educar.educar.model.Usuario;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
@@ -37,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     private Realm realm;
     private PessoaFisica pessoaFisica;
     private Funcionario funcionario;
+    private Usuario usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         messages = new Messages();
         utilsFunctions = new UtilsFunctions();
         pessoaFisica = new PessoaFisica();
+        usuario = new Usuario();
     }
 
     private void binding() {
@@ -101,10 +104,18 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    public void recuperarUsuario() {
+        usuario = realm.where(Usuario.class).equalTo("pessoaFisica", pessoaFisica.getId()).findFirst();
+        if (usuario != null) {
+            preferences.saveLong("id_usuario", usuario.getId());
+        }
+    }
+
     public void recuperarPessoaFisica() {
         pessoaFisica = realm.where(PessoaFisica.class).equalTo("cpf", cpf.getText().toString()).findFirst();
         if (pessoaFisica != null) {
             recuperarFuncionario();
+            recuperarUsuario();
         } else {
             Toast.makeText(getApplicationContext(), "CPF não encontrado!", Toast.LENGTH_LONG).show();
         }
@@ -115,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
             funcionario = realm.where(Funcionario.class).equalTo("pessoaFisicaId", pessoaFisica.getId()).findFirst();
             if (funcionario != null) {
                 if (funcionario.getCargo() == 5) {
-                    verificarUsuario();
+                    salvarDadosUsuarioLogin();
                 } else {
                     Toast.makeText(getApplicationContext(), "Usuario não é um Professor!", Toast.LENGTH_LONG).show();
                 }
@@ -127,12 +138,11 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void verificarUsuario() {
+    public void salvarDadosUsuarioLogin() {
         if (pessoaFisica.getCpf() != null) {
             preferences.saveLong("id_pessoafisica", pessoaFisica.getId());
             preferences.saveLong("id_funcionario", funcionario.getId());
             preferences.saveBoolean("logado", true);
-            progressDialog.hide();
             nextActivity();
         }
     }

@@ -12,6 +12,7 @@ import java.lang.annotation.Annotation;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
@@ -71,5 +72,10 @@ public class UtilsFunctions {
         } else {
             return false;
         }
+    }
+
+    public static SimpleDateFormat formatoDataPadrao() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        return simpleDateFormat;
     }
 }

@@ -19,6 +19,7 @@ public class Matricula extends RealmObject {
     private long turma;
     @SerializedName("statusatual")
     private String statusAtual;
+    private long serie;
 
     public Matricula() {
     }
@@ -69,5 +70,13 @@ public class Matricula extends RealmObject {
 
     public void setStatusAtual(String statusAtual) {
         this.statusAtual = statusAtual;
+    }
+
+    public long getSerie() {
+        return serie;
+    }
+
+    public void setSerie(long serie) {
+        this.serie = serie;
     }
 }

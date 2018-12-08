@@ -1,4 +1,4 @@
-package com.android.educar.educar.bo;
+package com.android.educar.educar.mb;
 
 import android.content.Context;
 
@@ -9,62 +9,71 @@ import com.android.educar.educar.chamadas.FuncionarioEscolaChamada;
 import com.android.educar.educar.chamadas.LocalEscolaChamada;
 import com.android.educar.educar.chamadas.MatriculaChamada;
 import com.android.educar.educar.chamadas.OcorrenciaChamada;
-import com.android.educar.educar.chamadas.SerieDisciplinaChamada;
+import com.android.educar.educar.chamadas.SerieChamada;
 import com.android.educar.educar.chamadas.TurmaChamada;
 import com.android.educar.educar.chamadas.UnidadeChamada;
-import com.android.educar.educar.mb.SincronizarOcorrenciaMB;
 
-public class SincronizarAPiParaRealmBO {
+public class SincronizarComAPiMB {
 
     private TurmaChamada turmaChamada;
     private UnidadeChamada unidadeChamada;
     private DisciplinaChamada disciplinaChamada;
     private FuncionarioEscolaChamada funcionarioEscola;
     private LocalEscolaChamada localEscolaChamada;
-    private SerieDisciplinaChamada serieDisciplinaChamada;
+    private SerieChamada serieChamada;
     private AlunoChamada alunoChamada;
     private MatriculaChamada matriculaChamada;
     private OcorrenciaChamada ocorrenciaChamada;
     private AnoLetivoChamada anoLetivoChamada;
 
-    private SincronizarOcorrenciaMB sincronizarOcorrenciaMB;
 
-    public SincronizarAPiParaRealmBO(Context context) {
+    public SincronizarComAPiMB(Context context) {
         unidadeChamada = new UnidadeChamada(context);
         turmaChamada = new TurmaChamada(context);
         disciplinaChamada = new DisciplinaChamada(context);
         funcionarioEscola = new FuncionarioEscolaChamada(context);
         localEscolaChamada = new LocalEscolaChamada(context);
-        serieDisciplinaChamada = new SerieDisciplinaChamada(context);
+        serieChamada = new SerieChamada(context);
         alunoChamada = new AlunoChamada(context);
         matriculaChamada = new MatriculaChamada(context);
         anoLetivoChamada = new AnoLetivoChamada(context);
         ocorrenciaChamada = new OcorrenciaChamada(context);
-
-        sincronizarOcorrenciaMB = new SincronizarOcorrenciaMB(context);
     }
 
     public void sincronizarRealmComAPi() {
         unidadeChamada.unidadesAPI();
+
         turmaChamada.turmasAPI();
         turmaChamada.gradeCursoAPI();
+        turmaChamada.recuperarSituacaoTurmaMesAPI();
+
         disciplinaChamada.disciplinasAPI();
         funcionarioEscola.funcionariosEscola();
         localEscolaChamada.localEscolaAPI();
-        serieDisciplinaChamada.serieDisciplina();
-        alunoChamada.alunosAPI();
-        alunoChamada.recuperarAlunoNotaMesAPI();
+
+        serieChamada.serieDisciplina();
+        serieChamada.recuperarSerieAPI();
+        serieChamada.recuperarSerieTurmaAPI();
+
+        alunoChamada.recuperarTodosAlunosAPI();
+        alunoChamada.recuperarTodosAlunoNotaMesAPI();
+        alunoChamada.recuperarTodasDisciplinaAlunoAPI();
+
         matriculaChamada.matriculaAPI();
+
         anoLetivoChamada.anoLetivoAPI();
         anoLetivoChamada.recuperarBimestreAPI();
 
-        ocorrenciaChamada.salvarDadosOcorrenciaApiBancoDeDados();
-        ocorrenciaChamada.salvarDadosTipoOcorrenciaApiBancoDeDados();
+        ocorrenciaChamada.recuperarTodasOcorrenciasAPI();
+        ocorrenciaChamada.recuperarTodosTiposOcorrenciaAPI();
 
     }
 
     public void sincronizarAPiComRealm() {
-        sincronizarOcorrenciaMB.publicarDadosRealmParaAPI();
+//        sincronizarOcorrenciaMB.publicarDadosRealmParaAPI();
+//        sincronizarNotaMB.publicarDadosRealmParaAPI();
 
+        alunoChamada.publicarDadosRealmParaAPI();
+        ocorrenciaChamada.publicarOcorrenciaAPI();
     }
 }

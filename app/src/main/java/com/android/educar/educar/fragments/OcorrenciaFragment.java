@@ -123,7 +123,7 @@ public class OcorrenciaFragment extends Fragment {
         List<Aluno> alunos = new ArrayList<>();
         List<PessoaFisica> pessoaFisicas = new ArrayList<>();
 
-        RealmResults<Matricula> matriculas = realm.where(Matricula.class).findAll();
+        RealmResults<Matricula> matriculas = realm.where(Matricula.class).equalTo("turma", preferences.getSavedLong("id_turma")).findAll();
 
         for (int i = 0; i < matriculas.size(); i++) {
             Aluno aluno = realm.where(Aluno.class).equalTo("id", matriculas.get(i).getAluno()).findFirst();
@@ -132,12 +132,13 @@ public class OcorrenciaFragment extends Fragment {
             }
         }
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < alunos.size(); i++) {
             PessoaFisica pessoaFisica = realm.where(PessoaFisica.class).equalTo("id", alunos.get(i).getPessoaFisica()).findFirst();
             if (pessoaFisica != null) {
                 pessoaFisicas.add(pessoaFisica);
             }
         }
+
         atualizarLista(pessoaFisicas);
     }
 
@@ -232,7 +233,7 @@ public class OcorrenciaFragment extends Fragment {
         Aluno aluno = realm.where(Aluno.class).equalTo("pessoaFisica", idPessoaFisica).findFirst();
         Matricula matricula = realm.where(Matricula.class).equalTo("aluno", aluno.getId()).findFirst();
         Turma turma = realm.where(Turma.class).equalTo("id", preferences.getSavedLong("id_turma")).findFirst();
-        AnoLetivo anoLetivo = realm.where(AnoLetivo.class).equalTo("id", turma.getAnoletivo()).findFirst();
+        AnoLetivo anoLetivo = realm.where(AnoLetivo.class).equalTo("id", turma.getAnoLetivo()).findFirst();
 
         preferences.saveLong("id_anoletivo", anoLetivo.getId());
         preferences.saveLong("id_aluno", aluno.getId());

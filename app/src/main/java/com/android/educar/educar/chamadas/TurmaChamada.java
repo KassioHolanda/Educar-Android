@@ -2,20 +2,16 @@ package com.android.educar.educar.chamadas;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.android.educar.educar.bo.RealmBO;
-import com.android.educar.educar.model.GradeCurso;
-import com.android.educar.educar.model.Turma;
-import com.android.educar.educar.model.Unidade;
+import com.android.educar.educar.dao.RealmObjectsDAO;
+import com.android.educar.educar.model.SituacaoTurmaMes;
 import com.android.educar.educar.service.APIService;
 import com.android.educar.educar.service.ListaGradeCursoAPI;
+import com.android.educar.educar.service.ListaSituacaoTurmaMesAPI;
 import com.android.educar.educar.service.ListaTurmaAPI;
-import com.android.educar.educar.service.ListaUnidadesAPI;
-
-import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,14 +19,21 @@ import retrofit2.Response;
 public class TurmaChamada {
     private Context context;
     private APIService apiService;
-    private RealmBO realmBO;
+    private RealmObjectsDAO realmObjectsDAO;
+    private Realm realm;
 
     public TurmaChamada(Context context) {
         this.context = context;
         apiService = new APIService("");
-        realmBO = new RealmBO(context);
-
+        realmObjectsDAO = new RealmObjectsDAO(context);
+        configRealm();
     }
+
+    public void configRealm() {
+        Realm.init(context);
+        realm = Realm.getDefaultInstance();
+    }
+
 
     public void gradeCursoAPI() {
         Call<ListaGradeCursoAPI> listaGradeCursoAPICall = apiService.getGradeCursoEndPoint().gradeCursos();
@@ -38,7 +41,7 @@ public class TurmaChamada {
             @Override
             public void onResponse(Call<ListaGradeCursoAPI> call, Response<ListaGradeCursoAPI> response) {
                 if (response.isSuccessful()) {
-                    realmBO.salvarGradeCursoRealm(response.body().getResults());
+                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
                 }
             }
 
@@ -56,7 +59,7 @@ public class TurmaChamada {
             @Override
             public void onResponse(Call<ListaTurmaAPI> call, Response<ListaTurmaAPI> response) {
                 if (response.isSuccessful()) {
-                    realmBO.salvarTurmaRealm(response.body().getResults());
+                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
                 }
             }
 
@@ -67,5 +70,48 @@ public class TurmaChamada {
         });
     }
 
+    public void recuperarSituacaoTurmaMesAPI() {
+        Call<ListaSituacaoTurmaMesAPI> listaUnidadesAPICall = apiService.getSituacaoTurmaMesEndPoint().situacoes();
+        listaUnidadesAPICall.enqueue(new Callback<ListaSituacaoTurmaMesAPI>() {
+            @Override
+            public void onResponse(Call<ListaSituacaoTurmaMesAPI> call, Response<ListaSituacaoTurmaMesAPI> response) {
+                if (response.isSuccessful()) {
+                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
+                }
+            }
 
+            @Override
+            public void onFailure(Call<ListaSituacaoTurmaMesAPI> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void postSituacaoTurmaMesAPI(SituacaoTurmaMes situacaoTurmaMes) {
+        Call<SituacaoTurmaMes> situacaoTurmaMesCall = apiService.getSituacaoTurmaMesEndPoint().postSituacaoTurmaMes(situacaoTurmaMes);
+        situacaoTurmaMesCall.enqueue(new Callback<SituacaoTurmaMes>() {
+            @Override
+            public void onResponse(Call<SituacaoTurmaMes> call, Response<SituacaoTurmaMes> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<SituacaoTurmaMes> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void publicarSituacaoTurmaMes() {
+        RealmResults<SituacaoTurmaMes> situacaoTurmaMes = realm.where(SituacaoTurmaMes.class).findAll();
+
+        for (int i = 0; i < situacaoTurmaMes.size(); i++) {
+            if (situacaoTurmaMes.get(i).isNovo()) {
+                realm.beginTransaction();
+                postSituacaoTurmaMesAPI(situacaoTurmaMes.get(i));
+                situacaoTurmaMes.get(i).setNovo(false);
+                realm.commitTransaction();
+            }
+        }
+    }
 }

@@ -2,19 +2,11 @@ package com.android.educar.educar.chamadas;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.android.educar.educar.bo.RealmBO;
-import com.android.educar.educar.model.PessoaFisica;
-import com.android.educar.educar.model.Unidade;
+import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.service.APIService;
-import com.android.educar.educar.service.ListaPessoaFisicaAPI;
 import com.android.educar.educar.service.ListaUnidadesAPI;
 
-import java.util.List;
-
-import io.realm.Realm;
-import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,11 +14,11 @@ import retrofit2.Response;
 public class UnidadeChamada {
     private Context context;
     private APIService apiService;
-    private RealmBO realmBO;
+    private RealmObjectsDAO realmObjectsDAO;
 
     public UnidadeChamada(Context context) {
         apiService = new APIService("");
-        realmBO = new RealmBO(context);
+        realmObjectsDAO = new RealmObjectsDAO(context);
     }
 
     public void unidadesAPI() {
@@ -35,7 +27,7 @@ public class UnidadeChamada {
             @Override
             public void onResponse(Call<ListaUnidadesAPI> call, Response<ListaUnidadesAPI> response) {
                 if (response.isSuccessful()) {
-                    realmBO.salvarUnidadeRealm(response.body().getResults());
+                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
                 }
             }
 

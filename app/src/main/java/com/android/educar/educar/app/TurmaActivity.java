@@ -72,11 +72,10 @@ public class TurmaActivity extends AppCompatActivity {
     public void recuperarTurmas() {
 
         RealmResults<LocalEscola> localEscolas = realm.where(LocalEscola.class).equalTo("unidade", preferences.getSavedLong("id_unidade")).findAll();
-//        long idUnidade = preferences.getSavedLong("id_unidade");
         List<Turma> turmasEscola = new ArrayList<>();
 
         for (int i = 0; i < localEscolas.size(); i++) {
-            Turma turma = realm.where(Turma.class).equalTo("sala", localEscolas.get(i).getId()).findFirst();
+            Turma turma = realm.where(Turma.class).equalTo("sala", localEscolas.get(i).getId()).equalTo("statusTurma", "CADASTRADA").findFirst();
             if (turma != null) {
                 turmasEscola.add(turma);
             }
@@ -87,18 +86,11 @@ public class TurmaActivity extends AppCompatActivity {
                     .equalTo("turma", turmasEscola.get(i).getId())
                     .equalTo("professor", preferences.getSavedLong("id_funcionario")).findFirst();
 
-//            long idturma = turmasEscola.get(i).getId();
-//            long idfuncionario = preferences.getSavedLong("id_funcionario");
-
             if (gradeCursos != null) {
                 turmaList.add(realm.where(Turma.class).equalTo("id", turmasEscola.get(i).getId()).findFirst());
             }
         }
     }
-
-//        if (gradeCursos.size() == 0) {
-//            alertaInformacaoSemTurmas();
-//        }
 
     public void configRealm() {
         Realm.init(this);
@@ -124,7 +116,8 @@ public class TurmaActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Turma turma = (Turma) turmas.getItemAtPosition(position);
                 preferences.saveLong("id_turma", turma.getId());
-                preferences.saveLong("id_anoletivo", turma.getAnoletivo());
+                preferences.saveLong("id_anoletivo", turma.getAnoLetivo());
+                preferences.saveLong("id_serie", turma.getSerie());
                 nextAcitivity();
             }
         });
@@ -185,10 +178,7 @@ public class TurmaActivity extends AppCompatActivity {
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.menu_search, menu);
         getMenuInflater().inflate(R.menu.menu_dados_alunos, menu);
-
         return true;
     }
 }

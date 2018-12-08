@@ -4,34 +4,43 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.android.educar.educar.bo.RealmBO;
+import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.model.Ocorrencia;
 import com.android.educar.educar.service.APIService;
 import com.android.educar.educar.service.ListaOcorrenciaAPI;
 import com.android.educar.educar.service.ListaTipoOcorrenciaAPI;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class OcorrenciaChamada {
     private Context context;
-    private RealmBO realmBO;
+    private RealmObjectsDAO realmObjectsDAO;
     private APIService apiService;
+    private Realm realm;
 
     public OcorrenciaChamada(Context context) {
         this.context = context;
         apiService = new APIService("");
-        realmBO = new RealmBO(context);
+        realmObjectsDAO = new RealmObjectsDAO(context);
+        configRealm();
     }
 
-    public void salvarDadosOcorrenciaApiBancoDeDados() {
+    public void configRealm() {
+        Realm.init(context);
+        realm = Realm.getDefaultInstance();
+    }
+
+    public void recuperarTodasOcorrenciasAPI() {
         Call<ListaOcorrenciaAPI> listaOcorrenciaAPICall = apiService.getOcorrenciaEndPoint().ocorrencias();
         listaOcorrenciaAPICall.enqueue(new Callback<ListaOcorrenciaAPI>() {
             @Override
             public void onResponse(Call<ListaOcorrenciaAPI> call, Response<ListaOcorrenciaAPI> response) {
                 if (response.isSuccessful()) {
-                    realmBO.salvarOcorrenciaRealm(response.body().getResults());
+                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
                 }
             }
 
@@ -43,12 +52,12 @@ public class OcorrenciaChamada {
         });
     }
 
-    public void salvarDadosTipoOcorrenciaApiBancoDeDados() {
+    public void recuperarTodosTiposOcorrenciaAPI() {
         Call<ListaTipoOcorrenciaAPI> listaTipoOcorrenciaAPICall = apiService.getTipoOcorrenciaEndPoint().tiposOcorrencia();
         listaTipoOcorrenciaAPICall.enqueue(new Callback<ListaTipoOcorrenciaAPI>() {
             @Override
             public void onResponse(Call<ListaTipoOcorrenciaAPI> call, Response<ListaTipoOcorrenciaAPI> response) {
-                realmBO.salvarTiposOcorrenciaRealm(response.body().getResults());
+                realmObjectsDAO.salvarListaRealm(response.body().getResults());
             }
 
             @Override
@@ -79,5 +88,34 @@ public class OcorrenciaChamada {
 //                Toast.makeText(context, "Ocorreu um Erro! Verifique sua Conexão", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void publicarOcorrenciaAPI() {
+        RealmResults<Ocorrencia> ocorrencias = realm.where(Ocorrencia.class).findAll();
+
+        realm.beginTransaction();
+        for (int i = 0; i < ocorrencias.size(); i++) {
+            if (ocorrencias.get(i).isNovo()) {
+                ocorrencias.get(i).setNovo(false);
+                Ocorrencia ocorrencia1 = new Ocorrencia();
+                ocorrencia1.setDatahora(ocorrencias.get(i).getDatahora());
+                ocorrencia1.setDatahoracadastro(ocorrencias.get(i).getDatahoracadastro());
+                ocorrencia1.setDescricao(ocorrencias.get(i).getDescricao());
+                ocorrencia1.setEnviadoSms(ocorrencias.get(i).isEnviadoSms());
+                ocorrencia1.setResumoSms(ocorrencias.get(i).getResumoSms());
+                ocorrencia1.setObservacao(ocorrencias.get(i).getObservacao());
+                ocorrencia1.setNumeroTelefone(ocorrencias.get(i).getNumeroTelefone());
+                ocorrencia1.setFuncionarioEscola(ocorrencias.get(i).getFuncionarioEscola());
+                ocorrencia1.setMatriculaAluno(ocorrencias.get(i).getMatriculaAluno());
+                ocorrencia1.setTipoOcorrencia(ocorrencias.get(i).getTipoOcorrencia());
+                ocorrencia1.setAluno(ocorrencias.get(i).getAluno());
+                ocorrencia1.setFuncionario(ocorrencias.get(i).getFuncionario());
+                ocorrencia1.setUnidade(ocorrencias.get(i).getUnidade());
+                ocorrencia1.setAnoLetivo(ocorrencias.get(i).getAnoLetivo());
+                realmObjectsDAO.salvarRealm(ocorrencias.get(i));
+                postOcorrenciaAPI(ocorrencia1);
+            }
+        }
+        realm.commitTransaction();
     }
 }

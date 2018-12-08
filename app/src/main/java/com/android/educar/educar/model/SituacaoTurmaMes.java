@@ -11,32 +11,34 @@ public class SituacaoTurmaMes extends RealmObject {
     @PrimaryKey
     private long id;
     @SerializedName("datahora")
-    private Date dataHora;
+    private String dataHora;
     private String status;
-    private long tuma;
+    private long turma;
     @SerializedName("quantidadeaproados")
     private int quantidadeAprovados;
     @SerializedName("quantidadereprovados")
     private int quantidadeReprovados;
     private long bimestre;
+    private boolean novo;
 
     public SituacaoTurmaMes() {
     }
 
-    public SituacaoTurmaMes(Date dataHora, String status, long tuma, int quantidadeAprovados, int quantidadeReprovados, long bimestre) {
+    public SituacaoTurmaMes(String dataHora, String status, long tuma, int quantidadeAprovados, int quantidadeReprovados, long bimestre) {
         this.dataHora = dataHora;
         this.status = status;
-        this.tuma = tuma;
+        this.turma = tuma;
         this.quantidadeAprovados = quantidadeAprovados;
         this.quantidadeReprovados = quantidadeReprovados;
         this.bimestre = bimestre;
+        this.novo = false;
     }
 
-    public Date getDataHora() {
+    public String getDataHora() {
         return dataHora;
     }
 
-    public void setDataHora(Date dataHora) {
+    public void setDataHora(String dataHora) {
         this.dataHora = dataHora;
     }
 
@@ -49,11 +51,11 @@ public class SituacaoTurmaMes extends RealmObject {
     }
 
     public long getTuma() {
-        return tuma;
+        return turma;
     }
 
     public void setTuma(long tuma) {
-        this.tuma = tuma;
+        this.turma = tuma;
     }
 
     public int getQuantidadeAprovados() {
@@ -86,5 +88,21 @@ public class SituacaoTurmaMes extends RealmObject {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getTurma() {
+        return turma;
+    }
+
+    public void setTurma(long turma) {
+        this.turma = turma;
+    }
+
+    public boolean isNovo() {
+        return novo;
+    }
+
+    public void setNovo(boolean novo) {
+        this.novo = novo;
     }
 }

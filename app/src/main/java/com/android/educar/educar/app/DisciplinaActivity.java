@@ -178,6 +178,7 @@ public class DisciplinaActivity extends AppCompatActivity {
         }).show();
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -189,7 +190,6 @@ public class DisciplinaActivity extends AppCompatActivity {
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_search, menu);
         getMenuInflater().inflate(R.menu.menu_dados_alunos, menu);
 
         return true;

@@ -14,7 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.bo.SincronizarAPiParaRealmBO;
+import com.android.educar.educar.bo.RealmObjectsBO;
+import com.android.educar.educar.mb.SincronizarComAPiMB;
 import com.android.educar.educar.model.FuncionarioEscola;
 import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.utils.Messages;
@@ -41,8 +42,9 @@ public class UnidadeActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private FloatingActionButton sincronizarDados;
     private Realm realm;
+    private RealmObjectsBO realmObjectsBO;
 
-    private SincronizarAPiParaRealmBO sincronizarAPiParaRealmBO;
+    private SincronizarComAPiMB sincronizarComAPiMB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,13 +124,12 @@ public class UnidadeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (UtilsFunctions.isConnect(getApplicationContext())) {
-                    sincronizar();
-                    sincronizarAPiParaRealmBO.sincronizarRealmComAPi();
-                    sincronizarAPiParaRealmBO.sincronizarAPiComRealm();
+                    sincronizarComAPiMB.sincronizarRealmComAPi();
+                    sincronizarComAPiMB.sincronizarAPiComRealm();
                 } else {
                     Toast.makeText(getApplicationContext(), "Sem Conexão!", Toast.LENGTH_SHORT).show();
                 }
-                startActivity(new Intent(getApplicationContext(), UnidadeActivity.class));
+//                startActivity(new Intent(getApplicationContext(), UnidadeActivity.class));
             }
         });
     }
@@ -141,12 +142,9 @@ public class UnidadeActivity extends AppCompatActivity {
         progressDialog = UtilsFunctions.progressDialog(this, "Aguarde...");
         preferences = new Preferences(this);
         messages = new Messages();
-        sincronizarAPiParaRealmBO = new SincronizarAPiParaRealmBO(getApplicationContext());
+        sincronizarComAPiMB = new SincronizarComAPiMB(getApplicationContext());
         unidadesList = new ArrayList<>();
-    }
-
-    public void sincronizar() {
-
+        realmObjectsBO = new RealmObjectsBO(getApplicationContext());
     }
 
     public void atualizarAdapterListaUnidades(List<Unidade> unidades) {

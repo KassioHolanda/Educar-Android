@@ -9,11 +9,11 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-public interface DisiciplinaAlunoEndPoint {
-    @GET("disciplinaaluno/")
+public interface DisciplinaAlunoEndPoint {
+    @GET("disciplinaluno/")
     Call<ListaDisciplinaAlunoAPI> disciplinasAluno();
 
-    @GET("disicplinaaluno/{id}")
+    @GET("disciplinaluno/{id}")
     Call<DisciplinaAluno> getDisciplinaAluno(@Path("id") long id);
 
 }

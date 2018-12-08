@@ -1,22 +1,22 @@
 package com.android.educar.educar.service;
 
-import com.android.educar.educar.model.Aluno;
+import com.android.educar.educar.model.SerieTurma;
+import com.android.educar.educar.model.SituacaoTurmaMes;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListaAlunosAPI {
-
+public class ListaSerieTurmaAPI {
     private int count;
     private String next;
     private String previous;
-    private List<Aluno> results;
+    private List<SerieTurma> results;
 
-    public ListaAlunosAPI() {
+    public ListaSerieTurmaAPI() {
         this.results = new ArrayList<>();
     }
 
-    public List<Aluno> getResults() {
+    public List<SerieTurma> getResults() {
         return results;
     }
 
@@ -31,5 +31,4 @@ public class ListaAlunosAPI {
     public String getPrevious() {
         return previous;
     }
-
 }

@@ -2,9 +2,8 @@ package com.android.educar.educar.chamadas;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.android.educar.educar.bo.RealmBO;
+import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.service.APIService;
 import com.android.educar.educar.service.ListaFuncionariosAPI;
 
@@ -15,13 +14,13 @@ import retrofit2.Response;
 public class FuncionarioChamada {
 
     private APIService apiService;
-    private RealmBO realmBO;
+    private RealmObjectsDAO realmObjectsDAO;
     private Context context;
 
     public FuncionarioChamada(Context context) {
         apiService = new APIService("");
         this.context = context;
-        realmBO = new RealmBO(context);
+        realmObjectsDAO = new RealmObjectsDAO(context);
     }
 
     public void funcionariosAPI() {
@@ -30,7 +29,7 @@ public class FuncionarioChamada {
             @Override
             public void onResponse(Call<ListaFuncionariosAPI> call, Response<ListaFuncionariosAPI> response) {
                 if (response.isSuccessful()) {
-                    realmBO.salvarFuncionarioRealm(response.body().getResults());
+                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
 
                 }
             }

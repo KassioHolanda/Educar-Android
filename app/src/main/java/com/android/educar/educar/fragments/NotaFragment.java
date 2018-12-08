@@ -1,6 +1,5 @@
 package com.android.educar.educar.fragments;
 
-
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -19,10 +18,9 @@ import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.Matricula;
 import com.android.educar.educar.model.PessoaFisica;
+import com.android.educar.educar.model.SerieTurma;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
-import com.android.educar.educar.service.APIService;
-import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
@@ -35,7 +33,6 @@ import io.realm.RealmResults;
 public class NotaFragment extends Fragment {
 
     private Preferences preferences;
-    private APIService apiService;
     private UtilsFunctions utilsFunctions;
     private RecyclerView notasAluno;
 
@@ -53,6 +50,7 @@ public class NotaFragment extends Fragment {
 
     private Realm realm;
     private List<PessoaFisica> pessoaFisicas;
+    private SerieTurma serieTurma;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,16 +61,9 @@ public class NotaFragment extends Fragment {
         configRealm();
         recuperarDadosRealm();
         atualizarDadosTela();
-        consultarBimestre();
         onClickItem();
         recuperarAlunosRealm();
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-//        atualizarAdapterFrequencia(turmaAlunoDAO.selecionarTurmaAluno(preferences.getSavedLong("id_turma")));
     }
 
     public void configRealm() {
@@ -95,21 +86,17 @@ public class NotaFragment extends Fragment {
         List<Aluno> alunos = new ArrayList<>();
         pessoaFisicas = new ArrayList<>();
 
-        RealmResults<Matricula> matriculas = realm.where(Matricula.class).findAll();
+        RealmResults<Matricula> matriculas = realm.where(Matricula.class).equalTo("turma", preferences.getSavedLong("id_turma")).findAll();
 
         for (int i = 0; i < matriculas.size(); i++) {
             Aluno aluno = realm.where(Aluno.class).equalTo("id", matriculas.get(i).getAluno()).findFirst();
-            matriculas.get(i).getAluno();
-
             if (aluno != null) {
                 alunos.add(aluno);
             }
         }
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < alunos.size(); i++) {
             PessoaFisica pessoaFisica = realm.where(PessoaFisica.class).equalTo("id", alunos.get(i).getPessoaFisica()).findFirst();
-            alunos.get(i).getPessoaFisica();
-
             if (pessoaFisica != null) {
                 pessoaFisicas.add(pessoaFisica);
             }
@@ -120,23 +107,8 @@ public class NotaFragment extends Fragment {
 
     public void setupInit() {
         preferences = new Preferences(getContext());
-        apiService = new APIService("");
         utilsFunctions = new UtilsFunctions();
-
-//        classDAO = new ClassDAO(getContext());
-
-//        bimestres = classDAO.bimestres();
-//        numeroBimestre = new HashMap<>();
-//
-//        numeroBimestre.put(1, Messages.PRIMEIRO_SEMESTRE);
-//        numeroBimestre.put(2, Messages.SEGUNDO_SEMESTRE);
-//        numeroBimestre.put(3, Messages.TERCEIRO_SEMESTRE);
-//        numeroBimestre.put(4, Messages.QUARTO_SEMESTRE);
-
-
-//        unidadeSelecionada = unidadeDAO.selecionarUnidade(preferences.getSavedLong("id_unidade"));
-//        turmaSelecionada = turmaDAO.selecionarTurma(preferences.getSavedLong("id_turma"));
-//        disciplinaSelecionada = disciplinaDAO.selecionarDiscipina(preferences.getSavedLong("id_disciplina"));
+        serieTurma = new SerieTurma();
     }
 
     public void onClickItem() {
@@ -150,14 +122,14 @@ public class NotaFragment extends Fragment {
         layoutDisciplina.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Snackbar.make(getView(), "" + disciplinaSelecionada.getNome(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(getView(), "" + disciplinaSelecionada.getDescricao(), Toast.LENGTH_SHORT).show();
             }
         });
 
         layoutUnidade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Snackbar.make(getView(), "" + unidadeSelecionada.getNomeUnidade(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(getView(), "" + unidadeSelecionada.getNome(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -167,23 +139,6 @@ public class NotaFragment extends Fragment {
         notasAluno.setAdapter(notaFragment);
         notasAluno.setLayoutManager(new LinearLayoutManager(getContext()));
     }
-
-    public void consultarBimestre() {
-//        List<Bimestre> bimestres = classDAO.bimestres();
-//        if (bimestres.size() == 0) {
-//            Bimestre bimestre1 = new Bimestre();
-//            bimestre1.setDescricao(Messages.PRIMEIRO_SEMESTRE);
-//            bimestre1.setAnoLetivo(2018);
-//            classDAO.adicionarBimestre(bimestre1);
-//            preferences.saveString("bimestre", bimestre1.getDescricao());
-//            preferences.saveLong("id_bimestre", bimestre1.getPk());
-//        } else {
-//            Bimestre bimestre1 = bimestres.get(0);
-//            preferences.saveString("bimestre", bimestre1.getDescricao());
-//            preferences.saveLong("id_bimestre", bimestre1.getPk());
-//        }
-    }
-
 
     public void atualizarDadosTela() {
         unidadeSelecionadaAula.setText(unidadeSelecionada.getAbreviacao());

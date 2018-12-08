@@ -2,9 +2,8 @@ package com.android.educar.educar.chamadas;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.android.educar.educar.bo.RealmBO;
+import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.service.APIService;
 import com.android.educar.educar.service.ListaFuncionarioEscolaAPI;
 
@@ -16,12 +15,12 @@ public class FuncionarioEscolaChamada {
 
     private APIService apiService;
     private Context context;
-    private RealmBO realmBO;
+    private RealmObjectsDAO realmObjectsDAO;
 
     public FuncionarioEscolaChamada(Context context) {
         apiService = new APIService("");
         this.context = context;
-        realmBO = new RealmBO(context);
+        realmObjectsDAO = new RealmObjectsDAO(context);
     }
 
     public void funcionariosEscola() {
@@ -30,7 +29,7 @@ public class FuncionarioEscolaChamada {
             @Override
             public void onResponse(Call<ListaFuncionarioEscolaAPI> call, Response<ListaFuncionarioEscolaAPI> response) {
                 if (response.isSuccessful()) {
-                    realmBO.salvarFuncionarioEscolaRealm(response.body().getResults());
+                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
                 }
             }
 

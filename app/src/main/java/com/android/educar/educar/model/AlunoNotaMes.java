@@ -12,7 +12,6 @@ public class AlunoNotaMes extends RealmObject {
     @PrimaryKey
     private long id;
     private float nota;
-    private int sequencia;
     @SerializedName("disciplinaaluno")
     private long disciplinaAluno;
     @SerializedName("inseridoFechamento")
@@ -22,18 +21,21 @@ public class AlunoNotaMes extends RealmObject {
     @SerializedName("anoletivo")
     private long anoLetivo;
     private long matricula;
+    private long bimestre;
     private long unidade;
     private long disciplina;
-    private Date datahora;
+    private String datahora;
     private long usuario;
+    private boolean novo;
+    private int sequencia;
 
     public AlunoNotaMes() {
     }
 
-    public AlunoNotaMes(long id, float nota, int sequencia, long disciplinaAluno, boolean inseridoFechamento, String tipoLancamentoNota, long anoLetivo, long matricula, long unidade, long disciplina, Date datahora, long usuario) {
+    public AlunoNotaMes(long id, float nota, long disciplinaAluno, boolean inseridoFechamento, String tipoLancamentoNota, long anoLetivo, long matricula, long unidade, long disciplina, String datahora, long usuario, long bimestre) {
         this.id = id;
+        this.bimestre = bimestre;
         this.nota = nota;
-        this.sequencia = sequencia;
         this.disciplinaAluno = disciplinaAluno;
         this.inseridoFechamento = inseridoFechamento;
         this.tipoLancamentoNota = tipoLancamentoNota;
@@ -43,6 +45,7 @@ public class AlunoNotaMes extends RealmObject {
         this.disciplina = disciplina;
         this.datahora = datahora;
         this.usuario = usuario;
+        this.novo = false;
     }
 
     public long getId() {
@@ -59,14 +62,6 @@ public class AlunoNotaMes extends RealmObject {
 
     public void setNota(float nota) {
         this.nota = nota;
-    }
-
-    public int getSequencia() {
-        return sequencia;
-    }
-
-    public void setSequencia(int sequencia) {
-        this.sequencia = sequencia;
     }
 
     public long getDisciplinaAluno() {
@@ -125,11 +120,11 @@ public class AlunoNotaMes extends RealmObject {
         this.disciplina = disciplina;
     }
 
-    public Date getDatahora() {
+    public String getDatahora() {
         return datahora;
     }
 
-    public void setDatahora(Date datahora) {
+    public void setDatahora(String datahora) {
         this.datahora = datahora;
     }
 
@@ -139,6 +134,30 @@ public class AlunoNotaMes extends RealmObject {
 
     public void setUsuario(long usuario) {
         this.usuario = usuario;
+    }
+
+    public boolean isNovo() {
+        return novo;
+    }
+
+    public void setNovo(boolean novo) {
+        this.novo = novo;
+    }
+
+    public long getBimestre() {
+        return bimestre;
+    }
+
+    public void setBimestre(long bimestre) {
+        this.bimestre = bimestre;
+    }
+
+    public int getSequencia() {
+        return sequencia;
+    }
+
+    public void setSequencia(int sequencia) {
+        this.sequencia = sequencia;
     }
 }
 
