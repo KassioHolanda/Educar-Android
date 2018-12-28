@@ -12,20 +12,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.educar.educar.R;
+import com.android.educar.educar.bo.RealmObjectsBO;
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.Frequencia;
+import com.android.educar.educar.model.Matricula;
 import com.android.educar.educar.model.PessoaFisica;
+import com.android.educar.educar.utils.Preferences;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.Realm;
 
 public class FrequenciaAdapter extends RecyclerView.Adapter<FrequenciaAdapter.ViewHolder> {
 
     private final Context context;
     private final List<PessoaFisica> pessoaFisicas;
-    private final List<Frequencia> frequencias;
     private FrequenciaAdapter.ViewHolder holder;
     private Frequencia frequencia;
+    private List<Long> idsAluno;
+    private Preferences preferences;
+    private Realm realm;
+    private RealmObjectsBO realmObjectsBO;
+    private List<Frequencia> frequencias;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         protected TextView nomeAluno;
@@ -40,9 +49,18 @@ public class FrequenciaAdapter extends RecyclerView.Adapter<FrequenciaAdapter.Vi
         }
     }
 
+    public void configRealm() {
+        Realm.init(context);
+        realm = Realm.getDefaultInstance();
+    }
+
     public FrequenciaAdapter(Context context, List<PessoaFisica> pessoaFisicas) {
         this.context = context;
         this.pessoaFisicas = pessoaFisicas;
+        idsAluno = new ArrayList<>();
+        configRealm();
+        realmObjectsBO = new RealmObjectsBO(context);
+        preferences = new Preferences(context);
         frequencias = new ArrayList<>();
     }
 
@@ -56,21 +74,27 @@ public class FrequenciaAdapter extends RecyclerView.Adapter<FrequenciaAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final FrequenciaAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final FrequenciaAdapter.ViewHolder holder, final int position) {
         this.holder = holder;
         final Frequencia frequencia = new Frequencia();
-        frequencia.setPresente(holder.presenca.isChecked());
-        frequencia.setAula(1);
-//        frequencia.setAluno(alunos.get(position).getPk());
 
+        Aluno aluno = realm.where(Aluno.class).equalTo("pessoaFisica", pessoaFisicas.get(position).getId()).findFirst();
+        final Matricula matricula = realm.where(Matricula.class).equalTo("aluno", aluno.getId()).findFirst();
 
         holder.nomeAluno.setText(pessoaFisicas.get(position).getNome());
-//        holder.idAluno.setText("" + alunos.get(position).getPk());
+        holder.idAluno.setText("" + pessoaFisicas.get(position).getId());
+
         holder.presenca.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                frequencia.setPresente(holder.presenca.isChecked());
-                Toast.makeText(context, "Presença " + holder.presenca.isChecked(), Toast.LENGTH_SHORT).show();
+
+                frequencia.setMatricula(matricula.getId());
+                frequencia.setNovo(true);
+                frequencia.setPresenca(holder.presenca.isChecked());
+                frequencias.add(frequencia);
+//                realmObjectsBO.salvarObjetoRealm(frequencia);
+
+                Toast.makeText(context, "Presença " + holder.presenca.isChecked() + " - Aluno: " + holder.nomeAluno, Toast.LENGTH_SHORT).show();
             }
         });
     }

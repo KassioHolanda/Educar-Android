@@ -4,17 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:background="@color/colorPrimaryDark"
+    android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".app.LoginActivity">
+    tools:context=".ui.activities.LoginActivity">
 
     <!--<ImageView-->
-        <!--android:background="@drawable/loagingtela"-->
-        <!--android:layout_width="200dp"-->
-        <!--android:layout_marginBottom="30dp"-->
-        <!--android:layout_height="150dp" />-->
+    <!--android:background="@drawable/logologin"-->
+    <!--android:layout_width="200dp"-->
+    <!--android:layout_marginBottom="30dp"-->
+    <!--android:layout_height="150dp" />-->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="30dp"
+        android:text="E - Ducar"
+        android:textColor="#fff"
+        android:fontFamily=""
+        android:textSize="50sp" />
 
     <EditText
         android:id="@+id/cpf_login_id"
@@ -23,9 +33,9 @@
         android:layout_marginBottom="2dp"
         android:background="#ecf4fc"
         android:hint="CPF"
-        android:textColorHint="@color/colorPrimary"
         android:inputType="number"
         android:padding="10dp"
+        android:textColorHint="@color/colorPrimary"
         android:textSize="16sp" />
 
     <EditText
@@ -35,9 +45,9 @@
         android:layout_marginBottom="16dp"
         android:background="#ecf4fc"
         android:hint="Senha "
-        android:textColorHint="@color/colorPrimary"
         android:inputType="textPassword"
         android:padding="10dp"
+        android:textColorHint="@color/colorPrimary"
         android:textSize="16sp" />
 
     <Button

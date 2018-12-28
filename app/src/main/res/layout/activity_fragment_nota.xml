@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/id_layout_nota"
-    tools:context=".app.NotaFragmentActivity">
+    tools:context=".ui.activities.NotaFragmentActivity">
 
 
 </LinearLayout>

@@ -5,9 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.android.educar.educar.fragments.FrequenciaFragment;
-import com.android.educar.educar.fragments.NotaFragment;
-import com.android.educar.educar.fragments.OcorrenciaFragment;
+import com.android.educar.educar.ui.fragments.FrequenciaFragment;
+import com.android.educar.educar.ui.fragments.NotaFragment;
+import com.android.educar.educar.ui.fragments.OcorrenciaFragment;
 
 public class TabAdapter extends FragmentStatePagerAdapter {
 

@@ -2,16 +2,18 @@ package com.android.educar.educar.mb;
 
 import android.content.Context;
 
-import com.android.educar.educar.chamadas.AlunoChamada;
-import com.android.educar.educar.chamadas.AnoLetivoChamada;
-import com.android.educar.educar.chamadas.DisciplinaChamada;
-import com.android.educar.educar.chamadas.FuncionarioEscolaChamada;
-import com.android.educar.educar.chamadas.LocalEscolaChamada;
-import com.android.educar.educar.chamadas.MatriculaChamada;
-import com.android.educar.educar.chamadas.OcorrenciaChamada;
-import com.android.educar.educar.chamadas.SerieChamada;
-import com.android.educar.educar.chamadas.TurmaChamada;
-import com.android.educar.educar.chamadas.UnidadeChamada;
+import com.android.educar.educar.network.chamadas.AlunoChamada;
+import com.android.educar.educar.network.chamadas.AnoLetivoChamada;
+import com.android.educar.educar.network.chamadas.DisciplinaChamada;
+import com.android.educar.educar.network.chamadas.FuncionarioChamada;
+import com.android.educar.educar.network.chamadas.FuncionarioEscolaChamada;
+import com.android.educar.educar.network.chamadas.LocalEscolaChamada;
+import com.android.educar.educar.network.chamadas.MatriculaChamada;
+import com.android.educar.educar.network.chamadas.OcorrenciaChamada;
+import com.android.educar.educar.network.chamadas.PessoaChamada;
+import com.android.educar.educar.network.chamadas.SerieChamada;
+import com.android.educar.educar.network.chamadas.TurmaChamada;
+import com.android.educar.educar.network.chamadas.UnidadeChamada;
 
 public class SincronizarComAPiMB {
 
@@ -25,6 +27,8 @@ public class SincronizarComAPiMB {
     private MatriculaChamada matriculaChamada;
     private OcorrenciaChamada ocorrenciaChamada;
     private AnoLetivoChamada anoLetivoChamada;
+    private PessoaChamada pessoaChamada;
+    private FuncionarioChamada funcionarioChamada;
 
 
     public SincronizarComAPiMB(Context context) {
@@ -38,6 +42,8 @@ public class SincronizarComAPiMB {
         matriculaChamada = new MatriculaChamada(context);
         anoLetivoChamada = new AnoLetivoChamada(context);
         ocorrenciaChamada = new OcorrenciaChamada(context);
+        funcionarioChamada = new FuncionarioChamada(context);
+        pessoaChamada = new PessoaChamada(context);
     }
 
     public void sincronizarRealmComAPi() {
@@ -73,7 +79,14 @@ public class SincronizarComAPiMB {
 //        sincronizarOcorrenciaMB.publicarDadosRealmParaAPI();
 //        sincronizarNotaMB.publicarDadosRealmParaAPI();
 
-        alunoChamada.publicarDadosRealmParaAPI();
-        ocorrenciaChamada.publicarOcorrenciaAPI();
+//        alunoChamada.publicarDadosRealmParaAPI();
+//        ocorrenciaChamada.publicarOcorrenciaAPI();
+    }
+
+    public void recuperarInformaçõesDeLogin() {
+        pessoaChamada.pessoaFisicaAPI();
+        pessoaChamada.recuperarPerfilAPI();
+        pessoaChamada.recuperarUsuariosAPI();
+        funcionarioChamada.recuperarFuncionariosAPI();
     }
 }

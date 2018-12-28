@@ -1,58 +1,40 @@
 package com.android.educar.educar.model;
 
+import com.android.educar.educar.bo.RealmObjectsBO;
 import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
 
-public class Frequencia {
-    @SerializedName("pk")
-    private long pk;
-    @SerializedName("aluno")
-    private long aluno;
-    @SerializedName("aula")
-    private long aula;
-    @SerializedName("presente")
-    private boolean presente;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
+public class Frequencia extends RealmObject {
+    @PrimaryKey
+    private long id;
+    private long matricula;
+    private boolean presenca;
+    private boolean novo;
 
-    public Frequencia() {
+    public long getMatricula() {
+        return matricula;
     }
 
-    public Frequencia(long aluno, long aula, boolean presente) {
-        this.pk = pk;
-        this.presente = presente;
-        this.aluno = aluno;
-        this.aula = aula;
+    public void setMatricula(long matricula) {
+        this.matricula = matricula;
     }
 
-    public void setPk(long pk) {
-        this.pk = pk;
+    public boolean isPresenca() {
+        return presenca;
     }
 
-    public void setAluno(long aluno) {
-        this.aluno = aluno;
+    public void setPresenca(boolean presenca) {
+        this.presenca = presenca;
     }
 
-    public void setAula(long aula) {
-        this.aula = aula;
+    public boolean isNovo() {
+        return novo;
     }
 
-    public boolean isPresente() {
-        return presente;
-    }
-
-    public void setPresente(boolean presente) {
-        this.presente = presente;
-    }
-
-    public long getPk() {
-        return pk;
-    }
-
-    public long getAluno() {
-        return aluno;
-    }
-
-    public long getAula() {
-        return aula;
+    public void setNovo(boolean novo) {
+        this.novo = novo;
     }
 }

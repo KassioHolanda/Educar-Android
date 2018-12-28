@@ -1,36 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/add_nota_id"
     layout_height="match_parent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="0.01mm"
-    app:cardCornerRadius="0dp">
+    android:layout_marginBottom="0.1pt"
+    android:layout_marginTop="0.1pt"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    app:cardCornerRadius="2dp">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="6dp">/>
+        android:padding="8dp">/>
 
         <TextView
             android:id="@+id/idalunonota_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:text="id"
             android:textColor="#222"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/nomealuno_frequencia_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="9"
+            android:layout_weight="10"
             android:text="nomeAluno"
+            android:textStyle="bold"
             android:textColor="#222"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <CheckBox
             android:id="@+id/presenca_id"

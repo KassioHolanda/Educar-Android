@@ -95,7 +95,6 @@ public class NotaMB {
         } else {
 
             for (int i = 0; i < situacaoTurmaMes.size(); i++) {
-
                 if (situacaoTurmaMes.get(i).getStatus().equals("ABERTO")) {
                     this.idBimestreAtual = situacaoTurmaMes.get(i).getBimestre();
                 } else if (situacaoTurmaMes.get(i).getBimestre() == 5 && situacaoTurmaMes.get(i).getStatus().equals("FECHADO")) {

@@ -7,7 +7,7 @@
     android:background="#3ea9e0"
     android:gravity="center"
     android:padding="50dp"
-    tools:context=".app.LoadingActivity">
+    tools:context=".ui.activities.LoadingActivity">
 
     <ImageView
         android:layout_width="wrap_content"

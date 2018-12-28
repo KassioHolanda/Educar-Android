@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f3f0f2"
+    android:background="#ededed"
     android:orientation="vertical"
-    tools:context=".app.AulaAcoesActivity">
+    tools:context=".ui.activities.AulaAcoesActivity">
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="10dp"
         android:background="@color/colorPrimary">
 
         <LinearLayout
@@ -59,35 +59,26 @@
         android:orientation="vertical"
         android:padding="8dp">
 
-
-        <!--<android.support.v7.widget.CardView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:backgroundTint="#fff">-->
-
-
         <android.support.v7.widget.CardView
 
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:dividerHeight="0.0px"
+            android:layout_height="80dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="2dp"
             app:cardCornerRadius="4dp"
-            app:cardElevation="2dp"
-            app:cardPreventCornerOverlap="false">
+            app:cardElevation="2dp">
 
             <LinearLayout
                 android:id="@+id/frequencias_id"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
                 <ImageView
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
+                    android:layout_gravity="center"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginRight="15dp"
                     android:background="@drawable/account_supervisor_circle" />
 
@@ -101,7 +92,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Frequência"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="#222"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -116,38 +107,26 @@
         </android.support.v7.widget.CardView>
 
 
-        <!--</android.support.v7.widget.CardView>-->
-
-
-        <!--<android.support.v7.widget.CardView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="2dp"-->
-        <!--android:backgroundTint="#fff">-->
-
         <android.support.v7.widget.CardView
 
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:dividerHeight="0.0px"
-            app:cardCornerRadius="4dp"
-            app:cardElevation="2dp"
-            app:cardPreventCornerOverlap="false">
+            android:layout_height="80dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="2dp"
+            app:cardElevation="2dp">
 
             <LinearLayout
                 android:id="@+id/notas_id"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:layout_marginBottom="4dp"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
                 <ImageView
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
                     android:layout_marginTop="6dp"
                     android:layout_marginRight="15dp"
                     android:background="@drawable/border_color" />
@@ -162,7 +141,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Notas"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="#222"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -174,37 +153,25 @@
                 </LinearLayout>
             </LinearLayout>
         </android.support.v7.widget.CardView>
-        <!--</android.support.v7.widget.CardView>-->
-
-        <!--<android.support.v7.widget.CardView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="2dp"-->
-        <!--android:layout_marginBottom="2dp"-->
-        <!--android:backgroundTint="#fff">-->
 
         <android.support.v7.widget.CardView
-
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_marginBottom="6dp"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:dividerHeight="0.0px"
-            app:cardCornerRadius="4dp"
-            app:cardElevation="2dp"
-            app:cardPreventCornerOverlap="false">
+            android:elevation="2dp"
+            app:cardElevation="2dp">
 
             <LinearLayout
                 android:id="@+id/ocorrencias_id"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
                 <ImageView
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
                     android:layout_marginRight="15dp"
                     android:background="@drawable/book_open_page_variant" />
 
@@ -218,7 +185,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Notificações"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="#222"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -230,9 +197,7 @@
                 </LinearLayout>
             </LinearLayout>
         </android.support.v7.widget.CardView>
-        <!--</android.support.v7.widget.CardView>-->
     </LinearLayout>
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -249,6 +214,5 @@
             android:layout_marginBottom="20dp"
             android:src="@drawable/home_outline" />
     </RelativeLayout>
-
 
 </LinearLayout>

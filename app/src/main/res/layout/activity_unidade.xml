@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:background="#ededed"
     android:orientation="vertical"
-    tools:context=".app.UnidadeActivity">
+    tools:context=".ui.activities.UnidadeActivity">
 
     <ListView
         android:layout_marginTop="4dp"

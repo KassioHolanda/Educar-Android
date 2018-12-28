@@ -1,0 +1,62 @@
+package com.android.educar.educar.network.chamadas;
+
+import android.content.Context;
+import android.util.Log;
+
+import com.android.educar.educar.dao.RealmObjectsDAO;
+import com.android.educar.educar.model.Funcionario;
+import com.android.educar.educar.network.service.APIService;
+import com.android.educar.educar.network.service.ListaFuncionariosAPI;
+
+import java.util.List;
+
+import io.realm.Realm;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class FuncionarioChamada {
+
+    private APIService apiService;
+    private RealmObjectsDAO realmObjectsDAO;
+    private Context context;
+    private Realm realm;
+
+    public void configRealm() {
+        Realm.init(context);
+        realm = Realm.getDefaultInstance();
+    }
+
+    public FuncionarioChamada(Context context) {
+        apiService = new APIService("");
+        this.context = context;
+        realmObjectsDAO = new RealmObjectsDAO(context);
+        configRealm();
+    }
+
+    public void recuperarFuncionariosAPI() {
+        final Call<ListaFuncionariosAPI> listaProfessoresAPICall = apiService.getFuncionarioEndPoint().funcionarios();
+        listaProfessoresAPICall.enqueue(new Callback<ListaFuncionariosAPI>() {
+            @Override
+            public void onResponse(Call<ListaFuncionariosAPI> call, Response<ListaFuncionariosAPI> response) {
+                if (response.isSuccessful()) {
+                    salvarFuncionarioRealm(response.body().getResults());
+//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ListaFuncionariosAPI> call, Throwable t) {
+                Log.i("ERRO API", t.getMessage());
+            }
+        });
+    }
+
+    public void salvarFuncionarioRealm(List<Funcionario> funcionarios) {
+        realm.beginTransaction();
+        for (int i = 0; i < funcionarios.size(); i++) {
+            realm.copyToRealmOrUpdate(funcionarios.get(i));
+        }
+        realm.commitTransaction();
+    }
+}

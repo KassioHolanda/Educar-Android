@@ -15,8 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.app.DetalheAlunoActivity;
-import com.android.educar.educar.app.NotaFragmentActivity;
+import com.android.educar.educar.ui.activities.DetalheAlunoActivity;
+import com.android.educar.educar.ui.activities.NotaFragmentActivity;
 import com.android.educar.educar.mb.NotaMB;
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.Bimestre;
@@ -47,8 +47,8 @@ public class NotaAdapter extends RecyclerView.Adapter<NotaAdapter.ViewHolder> {
             super(view);
             nomeAluno = view.findViewById(R.id.nomealuno_nota_id);
             addNota = view.findViewById(R.id.add_nota_id);
-//            idAluno = view.findViewById(R.id.idaluno_nota_id);
-//            notaAluno = view.findViewById(R.id.nota_aluno_id);
+            idAluno = view.findViewById(R.id.idaluno_nota_id);
+            notaAluno = view.findViewById(R.id.nota_aluno_id);
         }
     }
 
@@ -78,8 +78,12 @@ public class NotaAdapter extends RecyclerView.Adapter<NotaAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull final NotaAdapter.ViewHolder holder, final int position) {
 
         holder.nomeAluno.setText(pessoaFisicas.get(position).getNome());
-//        holder.idAluno.setText("" + position);
-//        holder.notaAluno.setText("" + classDAO.selecionarNotaAluno(alunos.get(position).getPk()).getNota());
+        holder.idAluno.setText("" + position);
+        try {
+            holder.notaAluno.setText("" + preferences.getSavedFloat("id_nota_bimestre"));
+        } catch (NullPointerException e) {
+            holder.notaAluno.setText("X");
+        }
 
         holder.addNota.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +126,9 @@ public class NotaAdapter extends RecyclerView.Adapter<NotaAdapter.ViewHolder> {
         disciplina.setEnabled(false);
         aluno.setEnabled(false);
 
-        aluno.setText(realm.where(PessoaFisica.class).equalTo("id", preferences.getSavedLong("id_pessoafisica")).findFirst().getNome());
+        final String nomeAlunoNota = realm.where(PessoaFisica.class).equalTo("id", preferences.getSavedLong("id_pessoafisica")).findFirst().getNome();
+
+        aluno.setText(nomeAlunoNota);
         disciplina.setText(realm.where(Disciplina.class).equalTo("id", preferences.getSavedLong("id_disciplina")).findFirst().getDescricao());
         long idBimestre = notaMB.verificarBimestreAtual();
         bimestre.setText(realm.where(Bimestre.class).equalTo("id", idBimestre).findFirst().getDescricao());
@@ -133,12 +139,12 @@ public class NotaAdapter extends RecyclerView.Adapter<NotaAdapter.ViewHolder> {
                     public void onClick(DialogInterface dialog, int which) {
                         if (nota.getText() == null || nota.getText().length() == 0) {
                             alertaInformacao();
-                        }
-                        else if (Float.valueOf(nota.getText().toString()) > 10) {
+                        } else if (Float.valueOf(nota.getText().toString()) > 10) {
                             alertaInformacao();
                         } else {
                             notaMB.salvarAlunoNotaMes(nota.getText().toString());
-                            Toast.makeText(context, "Nota Inserida!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Nota Inserida ao aluno " + nomeAlunoNota + "!", Toast.LENGTH_SHORT).show();
+                            preferences.saveFloat("id_nota_bimestre", Float.parseFloat(nota.getText().toString()));
                             atualizarFragment();
                         }
                     }

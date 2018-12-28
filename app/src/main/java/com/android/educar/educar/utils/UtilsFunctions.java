@@ -5,7 +5,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.android.educar.educar.service.APIService;
+import com.android.educar.educar.network.service.APIService;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
