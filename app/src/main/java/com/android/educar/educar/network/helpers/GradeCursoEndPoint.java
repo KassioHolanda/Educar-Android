@@ -8,6 +8,7 @@ import com.android.educar.educar.network.service.ListaGradeCursoAPI;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface GradeCursoEndPoint {
     @GET("gradecurso/")
@@ -15,4 +16,7 @@ public interface GradeCursoEndPoint {
 
     @GET("gradecurso/{id}")
     Call<GradeCurso> getGradeCruso(@Path("id") long id);
+
+    @GET("gradecurso/")
+    Call<ListaGradeCursoAPI> gradeCursos(@Query("page")int page);
 }

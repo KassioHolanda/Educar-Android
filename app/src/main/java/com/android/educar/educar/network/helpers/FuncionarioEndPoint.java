@@ -7,6 +7,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface FuncionarioEndPoint {
     @GET("funcionario/")
@@ -14,4 +15,7 @@ public interface FuncionarioEndPoint {
 
     @GET("funcionario/{id}")
     Call<Funcionario> getFuncionario(@Path("id") long id);
+
+    @GET("funcionario/")
+    Call<ListaFuncionariosAPI> funcionarios(@Query("page") int page);
 }

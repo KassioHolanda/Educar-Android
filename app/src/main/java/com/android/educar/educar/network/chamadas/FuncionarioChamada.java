@@ -21,6 +21,7 @@ public class FuncionarioChamada {
     private RealmObjectsDAO realmObjectsDAO;
     private Context context;
     private Realm realm;
+    private int paginaAtual;
 
     public void configRealm() {
         Realm.init(context);
@@ -32,16 +33,22 @@ public class FuncionarioChamada {
         this.context = context;
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
+        paginaAtual = 1;
     }
 
     public void recuperarFuncionariosAPI() {
-        final Call<ListaFuncionariosAPI> listaProfessoresAPICall = apiService.getFuncionarioEndPoint().funcionarios();
+        final Call<ListaFuncionariosAPI> listaProfessoresAPICall = apiService.getFuncionarioEndPoint().funcionarios(paginaAtual);
         listaProfessoresAPICall.enqueue(new Callback<ListaFuncionariosAPI>() {
             @Override
             public void onResponse(Call<ListaFuncionariosAPI> call, Response<ListaFuncionariosAPI> response) {
                 if (response.isSuccessful()) {
-                    salvarFuncionarioRealm(response.body().getResults());
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+                    if (response.body().getNext() != null) {
+                        paginaAtual = paginaAtual + 1;
+                        recuperarFuncionariosAPI();
+                    }
                 }
             }
 
@@ -50,13 +57,5 @@ public class FuncionarioChamada {
                 Log.i("ERRO API", t.getMessage());
             }
         });
-    }
-
-    public void salvarFuncionarioRealm(List<Funcionario> funcionarios) {
-        realm.beginTransaction();
-        for (int i = 0; i < funcionarios.size(); i++) {
-            realm.copyToRealmOrUpdate(funcionarios.get(i));
-        }
-        realm.commitTransaction();
     }
 }

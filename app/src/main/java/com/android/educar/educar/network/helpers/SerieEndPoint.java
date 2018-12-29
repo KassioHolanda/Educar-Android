@@ -8,6 +8,7 @@ import com.android.educar.educar.network.service.ListaSerieTurmaAPI;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface SerieEndPoint {
     @GET("serie/")
@@ -15,4 +16,7 @@ public interface SerieEndPoint {
 
     @GET("serie/{id}")
     Call<Serie> getSerie(@Path("id") long id);
+
+    @GET("serie/")
+    Call<ListaSerieAPI> series(@Query("page")int page);
 }

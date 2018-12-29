@@ -8,6 +8,7 @@ import com.android.educar.educar.network.service.ListaFuncionariosAPI;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface FuncionarioEscolaEndPoint {
     @GET("funcionarioescola/")
@@ -15,4 +16,7 @@ public interface FuncionarioEscolaEndPoint {
 
     @GET("funcionarioescola/{id}")
     Call<FuncionarioEscola> getFuncionarioEscola(@Path("id") long id);
+
+    @GET("funcionarioescola/")
+    Call<ListaFuncionarioEscolaAPI> funcionariosEscola(@Query("page") int page);
 }

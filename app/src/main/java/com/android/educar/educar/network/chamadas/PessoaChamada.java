@@ -1,5 +1,6 @@
 package com.android.educar.educar.network.chamadas;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
@@ -13,6 +14,7 @@ import com.android.educar.educar.network.service.ListaPessoaFisicaAPI;
 import com.android.educar.educar.network.service.ListaUsuariosAPI;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
@@ -27,6 +29,14 @@ public class PessoaChamada {
     private RealmObjectsDAO realmObjectsDAO;
     private Realm realm;
 
+    private List<PessoaFisica> pessoaFisicas;
+
+    private int paginaAtualPessoaFisica;
+    private int paginaAtualPerfil;
+    private int paginaAtualUsuario;
+
+    private int quantidadeDePaginas;
+
     public void configRealm() {
         Realm.init(context);
         realm = Realm.getDefaultInstance();
@@ -37,16 +47,26 @@ public class PessoaChamada {
         apiService = new APIService("");
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
+        paginaAtualPessoaFisica = 1;
+        paginaAtualPerfil = 1;
+        paginaAtualUsuario = 1;
+        pessoaFisicas = new ArrayList<>();
     }
 
+
     public void pessoaFisicaAPI() {
-        Call<ListaPessoaFisicaAPI> listaProfessoresAPICall = apiService.getPessoaFisicaEndPoint().pessoasFisicas();
+        Call<ListaPessoaFisicaAPI> listaProfessoresAPICall = apiService.getPessoaFisicaEndPoint().pessoasFisicasComPaginacao(paginaAtualPessoaFisica);
         listaProfessoresAPICall.enqueue(new Callback<ListaPessoaFisicaAPI>() {
             @Override
             public void onResponse(Call<ListaPessoaFisicaAPI> call, Response<ListaPessoaFisicaAPI> response) {
                 if (response.isSuccessful()) {
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
-                    salvarPessoaFisicaRealm(response.body().getResults());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+                    if (response.body().getNext() != null) {
+                        paginaAtualPessoaFisica = paginaAtualPessoaFisica + 1;
+                        pessoaFisicaAPI();
+                    }
                 }
             }
 
@@ -57,22 +77,19 @@ public class PessoaChamada {
         });
     }
 
-    public void salvarPessoaFisicaRealm(List<PessoaFisica> pessoaFisicas) {
-        for (int i = 0; i < pessoaFisicas.size(); i++) {
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(pessoaFisicas.get(i));
-            realm.commitTransaction();
-        }
-    }
-
     public void recuperarUsuariosAPI() {
-        Call<ListaUsuariosAPI> listaProfessoresAPICall = apiService.getUsuarioEndPoint().usuarios();
+        Call<ListaUsuariosAPI> listaProfessoresAPICall = apiService.getUsuarioEndPoint().usuariosPaginacao(paginaAtualUsuario);
         listaProfessoresAPICall.enqueue(new Callback<ListaUsuariosAPI>() {
             @Override
             public void onResponse(Call<ListaUsuariosAPI> call, Response<ListaUsuariosAPI> response) {
                 if (response.isSuccessful()) {
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
-                    salvarUsuarioaRealm(response.body().getResults());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+                    if (response.body().getNext() != null) {
+                        paginaAtualUsuario = paginaAtualUsuario + 1;
+                        recuperarUsuariosAPI();
+                    }
                 }
             }
 
@@ -83,22 +100,18 @@ public class PessoaChamada {
         });
     }
 
-    public void salvarUsuarioaRealm(List<Usuario> usuarios) {
-        for (int i = 0; i < usuarios.size(); i++) {
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(usuarios.get(i));
-            realm.commitTransaction();
-        }
-    }
-
     public void recuperarPerfilAPI() {
-        Call<ListaPerfilAPI> listaProfessoresAPICall = apiService.getPerfilEndPoint().perfis();
+        Call<ListaPerfilAPI> listaProfessoresAPICall = apiService.getPerfilEndPoint().perfisPaginacao(paginaAtualPerfil);
         listaProfessoresAPICall.enqueue(new Callback<ListaPerfilAPI>() {
             @Override
             public void onResponse(Call<ListaPerfilAPI> call, Response<ListaPerfilAPI> response) {
                 if (response.isSuccessful()) {
-                    salvarPerfilRealm(response.body().getResults());
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    if (response.body().getNext() != null) {
+                        paginaAtualPerfil = paginaAtualPerfil + 1;
+                        recuperarPerfilAPI();
+                    }
                 }
             }
 
@@ -107,13 +120,5 @@ public class PessoaChamada {
                 Log.i("ERRO API", t.getMessage());
             }
         });
-    }
-
-    public void salvarPerfilRealm(List<Perfil> perfils) {
-        for (int i = 0; i < perfils.size(); i++) {
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(perfils.get(i));
-            realm.commitTransaction();
-        }
     }
 }

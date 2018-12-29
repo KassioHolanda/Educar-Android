@@ -20,6 +20,7 @@ public class LocalEscolaChamada {
     private APIService apiService;
     private RealmObjectsDAO realmObjectsDAO;
     private Realm realm;
+    private int paginaAtualLocaisEscola;
 
     public void configRealm() {
         Realm.init(context);
@@ -31,32 +32,29 @@ public class LocalEscolaChamada {
         apiService = new APIService("");
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
+        paginaAtualLocaisEscola = 1;
     }
 
     public void localEscolaAPI() {
-        Call<ListaLocalEscolaAPI> listaProfessoresAPICall = apiService.getLocalEscolaEndPoint().locaisEscola();
+        Call<ListaLocalEscolaAPI> listaProfessoresAPICall = apiService.getLocalEscolaEndPoint().locaisEscola(paginaAtualLocaisEscola);
         listaProfessoresAPICall.enqueue(new Callback<ListaLocalEscolaAPI>() {
             @Override
             public void onResponse(Call<ListaLocalEscolaAPI> call, Response<ListaLocalEscolaAPI> response) {
                 if (response.isSuccessful()) {
-                    salvarLocalEscolaRealm(response.body().getResults());
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+                    if (response.body().getNext() != null) {
+                        paginaAtualLocaisEscola = paginaAtualLocaisEscola + 1;
+                        localEscolaAPI();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<ListaLocalEscolaAPI> call, Throwable t) {
                 Log.i("ERRO API", t.getMessage());
-//                Toast.makeText(context, "Ocorreu um Erro! Verifique sua Conexão", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public void salvarLocalEscolaRealm(List<LocalEscola> localEscolas) {
-        realm.beginTransaction();
-        for (int i = 0; i < localEscolas.size(); i++) {
-            realm.copyToRealmOrUpdate(localEscolas.get(i));
-        }
-        realm.commitTransaction();
     }
 }

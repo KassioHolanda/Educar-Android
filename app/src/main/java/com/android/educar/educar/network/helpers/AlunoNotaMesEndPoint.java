@@ -12,6 +12,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface AlunoNotaMesEndPoint {
     @GET("alunonotames/")
@@ -22,4 +23,7 @@ public interface AlunoNotaMesEndPoint {
 
     @POST("alunonotames/")
     Call<AlunoNotaMes> postAlunoNotaMes(@Body AlunoNotaMes alunoNotaMes);
+
+    @GET("alunonotames/")
+    Call<ListaAlunoNotaMesAPI> alunosNotaMes(@Query("page") int page);
 }

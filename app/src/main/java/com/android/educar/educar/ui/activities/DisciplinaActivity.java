@@ -33,6 +33,8 @@ import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -147,11 +149,10 @@ public class DisciplinaActivity extends AppCompatActivity {
         utilsFunctions = new UtilsFunctions();
         messages = new Messages();
         disciplinasLista = new HashSet<>();
-//        atualizarAdapterListaDisciplinas(disciplinasList);
     }
 
     public void atualizarAdapterListaDisciplinas() {
-        List<Disciplina> disciplinas = new ArrayList<>(disciplinasLista);
+        ArrayList<Disciplina> disciplinas = new ArrayList<>(disciplinasLista);
         disciplinaArrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, disciplinas);
         this.disciplinas.setAdapter(disciplinaArrayAdapter);
     }

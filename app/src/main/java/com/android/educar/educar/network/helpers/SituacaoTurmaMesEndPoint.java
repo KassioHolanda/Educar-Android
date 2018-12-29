@@ -10,6 +10,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface SituacaoTurmaMesEndPoint {
     @GET("situacaoturmames/")
@@ -20,4 +21,7 @@ public interface SituacaoTurmaMesEndPoint {
 
     @POST("situacaoturmames/")
     Call<SituacaoTurmaMes> postSituacaoTurmaMes(@Body SituacaoTurmaMes situacaoTurmaMes);
+
+    @GET("situacaoturmames/")
+    Call<ListaSituacaoTurmaMesAPI> situacoes(@Query("page")int page);
 }

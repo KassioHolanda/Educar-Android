@@ -8,6 +8,7 @@ import com.android.educar.educar.network.service.ListaDisciplinasAPI;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface AlunoFrequenciaMesEndPoint {
 
@@ -16,5 +17,8 @@ public interface AlunoFrequenciaMesEndPoint {
 
     @GET("alunofrequenciames/{id}")
     Call<AlunoFrequenciaMes> getAlunoFrequenciaMes(@Path("id") long id);
+
+    @GET("alunofrequenciames/")
+    Call<ListaAlunoFrequenciaMesAPI> alunosFrequenciaMes(@Query("page") int page);
 
 }

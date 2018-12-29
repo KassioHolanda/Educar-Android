@@ -23,6 +23,8 @@ public class AnoLetivoChamada {
     private Context context;
     private APIService apiService;
     private Realm realm;
+    private int paginaAtualAnoLetivo;
+    private int paginaAtualBimetre;
 
     public void configRealm() {
         Realm.init(context);
@@ -34,16 +36,23 @@ public class AnoLetivoChamada {
         apiService = new APIService("");
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
+        paginaAtualAnoLetivo = 1;
+        paginaAtualBimetre = 1;
     }
 
     public void anoLetivoAPI() {
-        Call<ListaAnoLetivoAPI> listaAnoLetivoAPICall = apiService.getAnoLetivoEndPoint().anosLetivos();
+        Call<ListaAnoLetivoAPI> listaAnoLetivoAPICall = apiService.getAnoLetivoEndPoint().anosLetivos(paginaAtualAnoLetivo);
         listaAnoLetivoAPICall.enqueue(new Callback<ListaAnoLetivoAPI>() {
             @Override
             public void onResponse(Call<ListaAnoLetivoAPI> call, Response<ListaAnoLetivoAPI> response) {
                 if (response.isSuccessful()) {
-                    salvarAnoLetivoRealm(response.body().getResults());
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+                    if (response.body().getNext() != null) {
+                        paginaAtualAnoLetivo = paginaAtualBimetre + 1;
+                        anoLetivoAPI();
+                    }
                 }
             }
 
@@ -54,22 +63,19 @@ public class AnoLetivoChamada {
         });
     }
 
-    public void salvarAnoLetivoRealm(List<AnoLetivo> anoLetivos) {
-        realm.beginTransaction();
-        for (int i = 0; i < anoLetivos.size(); i++) {
-            realm.copyToRealmOrUpdate(anoLetivos.get(i));
-        }
-        realm.commitTransaction();
-    }
-
     public void recuperarBimestreAPI() {
-        Call<ListaBimestreAPI> listaAnoLetivoAPICall = apiService.getBimestreEndPoint().bimestres();
+        Call<ListaBimestreAPI> listaAnoLetivoAPICall = apiService.getBimestreEndPoint().bimestres(paginaAtualBimetre);
         listaAnoLetivoAPICall.enqueue(new Callback<ListaBimestreAPI>() {
             @Override
             public void onResponse(Call<ListaBimestreAPI> call, Response<ListaBimestreAPI> response) {
                 if (response.isSuccessful()) {
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
-                    salvarBimestreRealm(response.body().getResults());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+                    if (response.body().getNext() != null) {
+                        paginaAtualBimetre = paginaAtualBimetre + 1;
+                        recuperarBimestreAPI();
+                    }
                 }
             }
 
@@ -78,13 +84,5 @@ public class AnoLetivoChamada {
                 Log.i("ERRO API", t.getMessage());
             }
         });
-    }
-
-    public void salvarBimestreRealm(List<Bimestre> bimestres) {
-        realm.beginTransaction();
-        for (int i = 0; i < bimestres.size(); i++) {
-            realm.copyToRealmOrUpdate(bimestres.get(i));
-        }
-        realm.commitTransaction();
     }
 }

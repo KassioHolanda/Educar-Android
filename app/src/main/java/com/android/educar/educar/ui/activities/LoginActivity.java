@@ -49,11 +49,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         binding();
         setupInit();
+        verificarUsuarioLogado();
         verificarConexao();
         onClickItem();
         settings();
         limpar();
-        verificarUsuarioLogado();
         configRealm();
     }
 
@@ -71,6 +71,9 @@ public class LoginActivity extends AppCompatActivity {
         if (preferences.getSavedBoolean("logado")) {
             nextActivity();
         }
+
+        if (!preferences.getSavedBoolean("logado"))
+            carregarDadosSync();
     }
 
     public void settings() {
@@ -100,10 +103,7 @@ public class LoginActivity extends AppCompatActivity {
         this.acessarLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show();
-                carregarDadosSync();
                 recuperarPessoaFisica();
-                progressDialog.hide();
             }
         });
     }
@@ -178,10 +178,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void carregarDadosSync() {
-        pessoaChamada.pessoaFisicaAPI();
-        pessoaChamada.recuperarPerfilAPI();
-        pessoaChamada.recuperarUsuariosAPI();
-        funcionarioChamada.recuperarFuncionariosAPI();
+        if (!preferences.getSavedBoolean("sync")) {
+            pessoaChamada.pessoaFisicaAPI();
+            pessoaChamada.recuperarPerfilAPI();
+            pessoaChamada.recuperarUsuariosAPI();
+            funcionarioChamada.recuperarFuncionariosAPI();
+            preferences.saveBoolean("sync", true);
+        }
     }
 
     public void verificarConexao() {
@@ -201,7 +204,6 @@ public class LoginActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                adicionarNota();
             }
 
         }).show();

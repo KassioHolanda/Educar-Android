@@ -76,7 +76,9 @@ public class UnidadeActivity extends AppCompatActivity {
     }
 
     public void recuperarDadosRealm() {
-        RealmResults<FuncionarioEscola> funcionarioEscolas = realm.where(FuncionarioEscola.class).equalTo("funcionario", preferences.getSavedLong("id_funcionario")).findAll();
+
+        RealmResults<FuncionarioEscola> funcionarioEscolas = realm.where(FuncionarioEscola.class)
+                .equalTo("funcionario", preferences.getSavedLong("id_funcionario")).findAll();
         for (int i = 0; i < funcionarioEscolas.size(); i++) {
             Unidade unidade = realm.where(Unidade.class).equalTo("id", funcionarioEscolas.get(i).getUnidade()).findFirst();
             if (unidade != null) {
@@ -99,7 +101,7 @@ public class UnidadeActivity extends AppCompatActivity {
                 alertaInformacao();
                 break;
             case R.id.sair_id:
-                preferences.saveBoolean(messages.USUARIO_LOGADO, false);
+                preferences.saveBoolean("logado", false);
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 onStop();
                 break;
@@ -126,7 +128,6 @@ public class UnidadeActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "Sem Conexão!", Toast.LENGTH_SHORT).show();
                 }
-//                startActivity(new Intent(getApplicationContext(), UnidadeActivity.class));
             }
         });
     }

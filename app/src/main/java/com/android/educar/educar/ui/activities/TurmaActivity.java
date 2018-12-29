@@ -72,27 +72,21 @@ public class TurmaActivity extends AppCompatActivity {
     }
 
     public void recuperarTurmas() {
-
         RealmResults<LocalEscola> localEscolas = realm.where(LocalEscola.class).equalTo("unidade", preferences.getSavedLong("id_unidade")).findAll();
         List<Turma> turmasEscola = new ArrayList<>();
 
         for (int i = 0; i < localEscolas.size(); i++) {
-            Turma turma = realm.where(Turma.class).equalTo("sala", localEscolas.get(i).getId()).equalTo("statusTurma", "CADASTRADA").findFirst();
-            if (turma != null) {
-                turmasEscola.add(turma);
+            List<Turma> turmas = realm.where(Turma.class).equalTo("sala", localEscolas.get(i).getId()).equalTo("statusTurma", "CADASTRADA").findAll();
+            for (int j = 0; j < turmas.size(); j++) {
+                turmasEscola.add(turmas.get(j));
             }
         }
 
         for (int i = 0; i < turmasEscola.size(); i++) {
-
-            long idturrmaescola = turmasEscola.get(i).getId();
-            long idprofessor = preferences.getSavedLong("id_funcionario");
-
-            GradeCurso gradeCursos = realm.where(GradeCurso.class)
+            List<GradeCurso> gradeCursos = realm.where(GradeCurso.class)
                     .equalTo("turma", turmasEscola.get(i).getId())
-                    .equalTo("professor", preferences.getSavedLong("id_funcionario")).findFirst();
-
-            if (gradeCursos != null) {
+                    .equalTo("professor", preferences.getSavedLong("id_funcionario")).findAll();
+            if (gradeCursos.size() > 0) {
                 turmaList.add(realm.where(Turma.class).equalTo("id", turmasEscola.get(i).getId()).findFirst());
             }
         }

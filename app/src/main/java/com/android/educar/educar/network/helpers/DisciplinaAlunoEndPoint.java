@@ -8,6 +8,7 @@ import com.android.educar.educar.network.service.ListaUnidadesAPI;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface DisciplinaAlunoEndPoint {
     @GET("disciplinaluno/")
@@ -15,5 +16,8 @@ public interface DisciplinaAlunoEndPoint {
 
     @GET("disciplinaluno/{id}")
     Call<DisciplinaAluno> getDisciplinaAluno(@Path("id") long id);
+
+    @GET("disciplinaluno/")
+    Call<ListaDisciplinaAlunoAPI> disciplinasAluno(@Query("page") int page);
 
 }

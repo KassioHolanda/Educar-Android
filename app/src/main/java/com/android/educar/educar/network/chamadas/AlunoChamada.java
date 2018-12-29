@@ -25,12 +25,18 @@ public class AlunoChamada {
     private Context context;
     private APIService apiService;
     private RealmObjectsDAO realmObjectsDAO;
+    private int paginaAtualAlunos;
+    private int paginaAtualAlunoNotaMes;
+    private int paginaAtualDisciplinaAluno;
 
     public AlunoChamada(Context context) {
         this.context = context;
         apiService = new APIService("");
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
+        paginaAtualAlunos = 1;
+        paginaAtualAlunoNotaMes = 1;
+        paginaAtualDisciplinaAluno = 1;
     }
 
     public void configRealm() {
@@ -40,85 +46,72 @@ public class AlunoChamada {
 
 
     public void recuperarTodosAlunosAPI() {
-        Call<ListaAlunosAPI> listaAlunosAPICall = apiService.getAlunoEndPoint().alunos();
+        Call<ListaAlunosAPI> listaAlunosAPICall = apiService.getAlunoEndPoint().alunos(paginaAtualAlunos);
         listaAlunosAPICall.enqueue(new Callback<ListaAlunosAPI>() {
             @Override
             public void onResponse(Call<ListaAlunosAPI> call, Response<ListaAlunosAPI> response) {
                 if (response.isSuccessful()) {
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
-                    salvarAlunoRealm(response.body().getResults());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+                    if (response.body().getNext() != null) {
+                        paginaAtualAlunos = paginaAtualAlunos + 1;
+                        recuperarTodosAlunosAPI();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<ListaAlunosAPI> call, Throwable t) {
                 Log.i("ERRO API", t.getMessage());
-//                Toast.makeText(context, "Ocorreu um Erro! Verifique sua Conexão", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public void salvarAlunoRealm(List<Aluno> alunoList) {
-        realm.beginTransaction();
-        for (int i = 0; i < alunoList.size(); i++) {
-            realm.copyToRealmOrUpdate(alunoList.get(i));
-        }
-        realm.commitTransaction();
-    }
-
-
     public void recuperarTodosAlunoNotaMesAPI() {
-        Call<ListaAlunoNotaMesAPI> listaAlunosAPICall = apiService.getAlunoNotaMesEndPoint().alunosNotaMes();
+        Call<ListaAlunoNotaMesAPI> listaAlunosAPICall = apiService.getAlunoNotaMesEndPoint().alunosNotaMes(paginaAtualAlunoNotaMes);
         listaAlunosAPICall.enqueue(new Callback<ListaAlunoNotaMesAPI>() {
             @Override
             public void onResponse(Call<ListaAlunoNotaMesAPI> call, Response<ListaAlunoNotaMesAPI> response) {
                 if (response.isSuccessful()) {
-                    salvarAlunoNotaMesRealm(response.body().getResults());
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+                    if (response.body().getNext() != null) {
+                        paginaAtualAlunoNotaMes = paginaAtualDisciplinaAluno + 1;
+                        recuperarTodosAlunoNotaMesAPI();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<ListaAlunoNotaMesAPI> call, Throwable t) {
                 Log.i("ERRO API", t.getMessage());
-//                Toast.makeText(context, "Ocorreu um Erro! Verifique sua Conexão", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public void salvarAlunoNotaMesRealm(List<AlunoNotaMes> alunoList) {
-        realm.beginTransaction();
-        for (int i = 0; i < alunoList.size(); i++) {
-            realm.copyToRealmOrUpdate(alunoList.get(i));
-        }
-        realm.commitTransaction();
-    }
-
     public void recuperarTodasDisciplinaAlunoAPI() {
-        Call<ListaDisciplinaAlunoAPI> listaAlunosAPICall = apiService.getDisciplinaAlunoEndPoint().disciplinasAluno();
+        Call<ListaDisciplinaAlunoAPI> listaAlunosAPICall = apiService.getDisciplinaAlunoEndPoint().disciplinasAluno(paginaAtualDisciplinaAluno);
         listaAlunosAPICall.enqueue(new Callback<ListaDisciplinaAlunoAPI>() {
             @Override
             public void onResponse(Call<ListaDisciplinaAlunoAPI> call, Response<ListaDisciplinaAlunoAPI> response) {
                 if (response.isSuccessful()) {
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
-                    salvarDisciplinaAlunoRealm(response.body().getResults());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+                    if (response.body().getNext() != null) {
+                        paginaAtualDisciplinaAluno = paginaAtualDisciplinaAluno + 1;
+                        recuperarTodasDisciplinaAlunoAPI();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<ListaDisciplinaAlunoAPI> call, Throwable t) {
                 Log.i("ERRO API", t.getMessage());
-//                Toast.makeText(context, "Ocorreu um Erro! Verifique sua Conexão", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public void salvarDisciplinaAlunoRealm(List<DisciplinaAluno> disciplinaAlunos) {
-        realm.beginTransaction();
-        for (int i = 0; i < disciplinaAlunos.size(); i++) {
-            realm.copyToRealmOrUpdate(disciplinaAlunos.get(i));
-        }
-        realm.commitTransaction();
     }
 
     public void postAlunoNotaMes(AlunoNotaMes alunoNotaMes) {

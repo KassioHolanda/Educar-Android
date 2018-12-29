@@ -93,7 +93,6 @@ public class NotaMB {
             criarNovaSituacaoTurmaMes();
 
         } else {
-
             for (int i = 0; i < situacaoTurmaMes.size(); i++) {
                 if (situacaoTurmaMes.get(i).getStatus().equals("ABERTO")) {
                     this.idBimestreAtual = situacaoTurmaMes.get(i).getBimestre();

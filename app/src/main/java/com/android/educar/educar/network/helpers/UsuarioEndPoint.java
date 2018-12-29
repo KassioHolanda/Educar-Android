@@ -8,6 +8,7 @@ import com.android.educar.educar.network.service.ListaUsuariosAPI;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface UsuarioEndPoint {
     @GET("usuario/")
@@ -15,5 +16,8 @@ public interface UsuarioEndPoint {
 
     @GET("usuario/{id}")
     Call<Usuario> getUsuario(@Path("id") long id);
+
+    @GET("usuario/")
+    Call<ListaUsuariosAPI> usuariosPaginacao(@Query("page") int page);
 
 }

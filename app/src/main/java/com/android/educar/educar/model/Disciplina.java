@@ -1,12 +1,14 @@
 package com.android.educar.educar.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Disciplina extends RealmObject{
+public class Disciplina extends RealmObject implements Comparable{
 
     @PrimaryKey
     private long id;
@@ -48,5 +50,10 @@ public class Disciplina extends RealmObject{
 
     public String getDescricao() {
         return descricao;
+    }
+
+    @Override
+    public int compareTo(@NonNull Object o) {
+        return 0;
     }
 }

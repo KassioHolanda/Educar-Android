@@ -20,6 +20,7 @@ public class MatriculaChamada {
     private APIService apiService;
     private RealmObjectsDAO realmObjectsDAO;
     private Realm realm;
+    private int paginaAtualMatricula;
 
     public void configRealm() {
         Realm.init(context);
@@ -31,16 +32,22 @@ public class MatriculaChamada {
         apiService = new APIService("");
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
+        paginaAtualMatricula = 1;
     }
 
     public void matriculaAPI() {
-        Call<ListaMatriculaAPI> listaProfessoresAPICall = apiService.getMatriculaEndPoint().matriculas();
+        Call<ListaMatriculaAPI> listaProfessoresAPICall = apiService.getMatriculaEndPoint().matriculas(paginaAtualMatricula);
         listaProfessoresAPICall.enqueue(new Callback<ListaMatriculaAPI>() {
             @Override
             public void onResponse(Call<ListaMatriculaAPI> call, Response<ListaMatriculaAPI> response) {
                 if (response.isSuccessful()) {
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
-                    salvarMatriculaRealm(response.body().getResults());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+                    if (response.body().getNext() != null) {
+                        paginaAtualMatricula = paginaAtualMatricula + 1;
+                        matriculaAPI();
+                    }
                 }
             }
 
@@ -49,13 +56,5 @@ public class MatriculaChamada {
                 Log.i("ERRO API", t.getMessage());
             }
         });
-    }
-
-    public void salvarMatriculaRealm(List<Matricula> matriculas) {
-        realm.beginTransaction();
-        for (int i = 0; i < matriculas.size(); i++) {
-            realm.copyToRealmOrUpdate(matriculas.get(i));
-        }
-        realm.commitTransaction();
     }
 }

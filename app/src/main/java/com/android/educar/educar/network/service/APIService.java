@@ -7,7 +7,6 @@ import com.android.educar.educar.network.helpers.AnoLetivoEndPoint;
 import com.android.educar.educar.network.helpers.BimestreEndPoint;
 import com.android.educar.educar.network.helpers.DisciplinaEndPoint;
 import com.android.educar.educar.network.helpers.DisciplinaAlunoEndPoint;
-import com.android.educar.educar.network.helpers.FrequenciaEndPoint;
 import com.android.educar.educar.network.helpers.FuncionarioEndPoint;
 import com.android.educar.educar.network.helpers.FuncionarioEscolaEndPoint;
 import com.android.educar.educar.network.helpers.GradeCursoEndPoint;
@@ -16,7 +15,6 @@ import com.android.educar.educar.network.helpers.MatriculaEndPoint;
 import com.android.educar.educar.network.helpers.OcorrenciaEndPoint;
 import com.android.educar.educar.network.helpers.PerfilEndPoint;
 import com.android.educar.educar.network.helpers.PessoaFisicaEndPoint;
-import com.android.educar.educar.network.helpers.ProfessorEndPoint;
 import com.android.educar.educar.network.helpers.SerieDisciplinaEndPoint;
 import com.android.educar.educar.network.helpers.SerieEndPoint;
 import com.android.educar.educar.network.helpers.SerieTurmaEndPoint;
@@ -42,8 +40,6 @@ public class APIService {
     private Interceptor interceptor;
     private AlunoEndPoint alunoEndPoint;
     private DisciplinaEndPoint disciplinaEndPoint;
-    private FrequenciaEndPoint frequenciaEndPoint;
-    private ProfessorEndPoint professorEndPoint;
     private TurmaEndPoint turmaEndPoint;
     private UnidadeEndPoint unidadeEndPoint;
     private FuncionarioEndPoint funcionarioEndPoint;
@@ -78,7 +74,7 @@ public class APIService {
 //        OkHttpClient httpClient = builderCliente.build();
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-//        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient httpClient = new OkHttpClient.Builder()
                 .addInterceptor(logging)
                 .build();
@@ -90,8 +86,6 @@ public class APIService {
 
         alunoEndPoint = retrofit.create(AlunoEndPoint.class);
         disciplinaEndPoint = retrofit.create(DisciplinaEndPoint.class);
-        frequenciaEndPoint = retrofit.create(FrequenciaEndPoint.class);
-        professorEndPoint = retrofit.create(ProfessorEndPoint.class);
         turmaEndPoint = retrofit.create(TurmaEndPoint.class);
         unidadeEndPoint = retrofit.create(UnidadeEndPoint.class);
         funcionarioEndPoint = retrofit.create(FuncionarioEndPoint.class);
@@ -126,14 +120,6 @@ public class APIService {
 
     public DisciplinaEndPoint getDisciplinaEndPoint() {
         return disciplinaEndPoint;
-    }
-
-    public FrequenciaEndPoint getFrequenciaEndPoint() {
-        return frequenciaEndPoint;
-    }
-
-    public ProfessorEndPoint getProfessorEndPoint() {
-        return professorEndPoint;
     }
 
     public TurmaEndPoint getTurmaEndPoint() {

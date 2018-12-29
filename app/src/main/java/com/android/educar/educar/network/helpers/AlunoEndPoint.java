@@ -6,6 +6,7 @@ import com.android.educar.educar.network.service.ListaAlunosAPI;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface AlunoEndPoint {
 
@@ -14,5 +15,8 @@ public interface AlunoEndPoint {
 
     @GET("aluno/{id}")
     Call<Aluno> getAluno(@Path("id") long id);
+
+    @GET("aluno/")
+    Call<ListaAlunosAPI> alunos(@Query("page") int page);
 
 }

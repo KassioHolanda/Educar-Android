@@ -127,7 +127,6 @@ public class NotaAdapter extends RecyclerView.Adapter<NotaAdapter.ViewHolder> {
         aluno.setEnabled(false);
 
         final String nomeAlunoNota = realm.where(PessoaFisica.class).equalTo("id", preferences.getSavedLong("id_pessoafisica")).findFirst().getNome();
-
         aluno.setText(nomeAlunoNota);
         disciplina.setText(realm.where(Disciplina.class).equalTo("id", preferences.getSavedLong("id_disciplina")).findFirst().getDescricao());
         long idBimestre = notaMB.verificarBimestreAtual();

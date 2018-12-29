@@ -24,6 +24,9 @@ public class SerieChamada {
     private APIService apiService;
     private RealmObjectsDAO realmObjectsDAO;
     private Realm realm;
+    private int paginaAtualSerieDisciplina;
+    private int paginaAtualSerieTurma;
+    private int paginaAtualSerie;
 
 
     public SerieChamada(Context context) {
@@ -31,6 +34,9 @@ public class SerieChamada {
         apiService = new APIService("");
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
+        paginaAtualSerie = 1;
+        paginaAtualSerieDisciplina = 1;
+        paginaAtualSerieTurma = 1;
     }
 
 
@@ -41,14 +47,19 @@ public class SerieChamada {
     }
 
     public void serieDisciplina() {
-        Call<ListaSerieDisciplinaAPI> listaSerieDisciplinaAPICall = apiService.getSerieDisciplinaEndPoint().serieDisciplinas();
+        Call<ListaSerieDisciplinaAPI> listaSerieDisciplinaAPICall = apiService.getSerieDisciplinaEndPoint().serieDisciplinas(paginaAtualSerieDisciplina);
 
         listaSerieDisciplinaAPICall.enqueue(new Callback<ListaSerieDisciplinaAPI>() {
             @Override
             public void onResponse(Call<ListaSerieDisciplinaAPI> call, Response<ListaSerieDisciplinaAPI> response) {
                 if (response.isSuccessful()) {
-                    salvarSerieDisciplinaRealm(response.body().getResults());
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+                    if (response.body().getNext() != null) {
+                        paginaAtualSerieDisciplina = paginaAtualSerieDisciplina + 1;
+                        serieDisciplina();
+                    }
                 }
             }
 
@@ -59,23 +70,20 @@ public class SerieChamada {
         });
     }
 
-    public void salvarSerieDisciplinaRealm(List<SerieDisciplina> SerieDisciplina) {
-        realm.beginTransaction();
-        for (int i = 0; i < SerieDisciplina.size(); i++) {
-            realm.copyToRealmOrUpdate(SerieDisciplina.get(i));
-        }
-        realm.commitTransaction();
-    }
-
     public void recuperarSerieTurmaAPI() {
-        Call<ListaSerieTurmaAPI> listaSerieDisciplinaAPICall = apiService.getSerieTurmaEndPoint().seriesturma();
+        Call<ListaSerieTurmaAPI> listaSerieDisciplinaAPICall = apiService.getSerieTurmaEndPoint().seriesturma(paginaAtualSerieTurma);
 
         listaSerieDisciplinaAPICall.enqueue(new Callback<ListaSerieTurmaAPI>() {
             @Override
             public void onResponse(Call<ListaSerieTurmaAPI> call, Response<ListaSerieTurmaAPI> response) {
                 if (response.isSuccessful()) {
-                    salvarSerieTurmaRealm(response.body().getResults());
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+                    if (response.body().getNext() != null) {
+                        paginaAtualSerieTurma = paginaAtualSerieTurma + 1;
+                        recuperarSerieTurmaAPI();
+                    }
                 }
             }
 
@@ -86,23 +94,20 @@ public class SerieChamada {
         });
     }
 
-    public void salvarSerieTurmaRealm(List<SerieTurma> serieTurmas) {
-        realm.beginTransaction();
-        for (int i = 0; i < serieTurmas.size(); i++) {
-            realm.copyToRealmOrUpdate(serieTurmas.get(i));
-        }
-        realm.commitTransaction();
-    }
-
     public void recuperarSerieAPI() {
-        Call<ListaSerieAPI> listaSerieDisciplinaAPICall = apiService.getSerieEndPoint().series();
+        Call<ListaSerieAPI> listaSerieDisciplinaAPICall = apiService.getSerieEndPoint().series(paginaAtualSerie);
 
         listaSerieDisciplinaAPICall.enqueue(new Callback<ListaSerieAPI>() {
             @Override
             public void onResponse(Call<ListaSerieAPI> call, Response<ListaSerieAPI> response) {
                 if (response.isSuccessful()) {
-                    salvarSerieRealm(response.body().getResults());
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+                    if (response.body().getNext() != null) {
+                        paginaAtualSerie = paginaAtualSerie + 1;
+                        recuperarSerieAPI();
+                    }
                 }
             }
 
@@ -112,14 +117,4 @@ public class SerieChamada {
             }
         });
     }
-
-    public void salvarSerieRealm(List<Serie> serie) {
-        realm.beginTransaction();
-        for (int i = 0; i < serie.size(); i++) {
-            realm.copyToRealmOrUpdate(serie.get(i));
-        }
-        realm.commitTransaction();
-    }
-
-
 }

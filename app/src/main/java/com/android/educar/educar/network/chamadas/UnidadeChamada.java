@@ -20,6 +20,7 @@ public class UnidadeChamada {
     private APIService apiService;
     private RealmObjectsDAO realmObjectsDAO;
     private Realm realm;
+    private int paginaAtualUnidade;
 
     public void configRealm() {
         Realm.init(context);
@@ -30,32 +31,29 @@ public class UnidadeChamada {
         apiService = new APIService("");
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
+        paginaAtualUnidade = 1;
     }
 
     public void unidadesAPI() {
-        Call<ListaUnidadesAPI> listaUnidadesAPICall = apiService.getUnidadeEndPoint().unidades();
+        Call<ListaUnidadesAPI> listaUnidadesAPICall = apiService.getUnidadeEndPoint().unidades(paginaAtualUnidade);
         listaUnidadesAPICall.enqueue(new Callback<ListaUnidadesAPI>() {
             @Override
             public void onResponse(Call<ListaUnidadesAPI> call, Response<ListaUnidadesAPI> response) {
                 if (response.isSuccessful()) {
-                    salvarUnidadeRealm(response.body().getResults());
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+                    if (response.body().getNext() != null) {
+                        paginaAtualUnidade = paginaAtualUnidade + 1;
+                        unidadesAPI();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<ListaUnidadesAPI> call, Throwable t) {
                 Log.i("ERRO API", t.getMessage());
-//                Toast.makeText(context, "Ocorreu um Erro! Verifique sua Conexão", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public void salvarUnidadeRealm(List<Unidade> unidades) {
-        realm.beginTransaction();
-        for (int i = 0; i < unidades.size(); i++) {
-            realm.copyToRealmOrUpdate(unidades.get(i));
-        }
-        realm.commitTransaction();
     }
 }

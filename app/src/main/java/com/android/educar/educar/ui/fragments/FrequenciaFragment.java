@@ -86,7 +86,6 @@ public class FrequenciaFragment extends Fragment {
     public void setupInit() {
         preferences = new Preferences(getContext());
         utilsFunctions = new UtilsFunctions();
-//        atualizarAdapterFrequencia(turmaAlunoDAO.selecionarTurmaAluno(preferences.getSavedLong("id_turma")));
     }
 
     public void recuperarAlunosRealm() {

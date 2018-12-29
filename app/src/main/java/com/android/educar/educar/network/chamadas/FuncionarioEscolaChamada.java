@@ -21,6 +21,7 @@ public class FuncionarioEscolaChamada {
     private Context context;
     private RealmObjectsDAO realmObjectsDAO;
     private Realm realm;
+    private int paginaAtualFuncionarioEscola;
 
     public void configRealm() {
         Realm.init(context);
@@ -32,32 +33,29 @@ public class FuncionarioEscolaChamada {
         this.context = context;
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
+        paginaAtualFuncionarioEscola = 1;
     }
 
     public void funcionariosEscola() {
-        final Call<ListaFuncionarioEscolaAPI> listaFuncionarioEscolaAPICall = apiService.getFuncionarioEscolaEndPoint().funcionariosEscola();
+        final Call<ListaFuncionarioEscolaAPI> listaFuncionarioEscolaAPICall = apiService.getFuncionarioEscolaEndPoint().funcionariosEscola(paginaAtualFuncionarioEscola);
         listaFuncionarioEscolaAPICall.enqueue(new Callback<ListaFuncionarioEscolaAPI>() {
             @Override
             public void onResponse(Call<ListaFuncionarioEscolaAPI> call, Response<ListaFuncionarioEscolaAPI> response) {
                 if (response.isSuccessful()) {
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
-                    salvarFuncionarioEscolaRealm(response.body().getResults());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+                    if (response.body().getNext() !=null) {
+                        paginaAtualFuncionarioEscola = paginaAtualFuncionarioEscola+1;
+                        funcionariosEscola();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<ListaFuncionarioEscolaAPI> call, Throwable t) {
                 Log.i("ERRO API", t.getMessage());
-//                Toast.makeText(context, "Ocorreu um Erro! Verifique sua Conexão", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public void salvarFuncionarioEscolaRealm(List<FuncionarioEscola> funcionarioEscolas) {
-        realm.beginTransaction();
-        for (int i = 0; i < funcionarioEscolas.size(); i++) {
-            realm.copyToRealmOrUpdate(funcionarioEscolas.get(i));
-        }
-        realm.commitTransaction();
     }
 }

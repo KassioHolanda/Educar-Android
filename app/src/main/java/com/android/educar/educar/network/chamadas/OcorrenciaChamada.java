@@ -24,12 +24,16 @@ public class OcorrenciaChamada {
     private RealmObjectsDAO realmObjectsDAO;
     private APIService apiService;
     private Realm realm;
+    private int paginaAtualOcorrencia;
+    private int paginaAtualTipoOcorrencia;
 
     public OcorrenciaChamada(Context context) {
         this.context = context;
         apiService = new APIService("");
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
+        paginaAtualOcorrencia = 1;
+        paginaAtualTipoOcorrencia = 1;
     }
 
     public void configRealm() {
@@ -38,13 +42,18 @@ public class OcorrenciaChamada {
     }
 
     public void recuperarTodasOcorrenciasAPI() {
-        Call<ListaOcorrenciaAPI> listaOcorrenciaAPICall = apiService.getOcorrenciaEndPoint().ocorrencias();
+        Call<ListaOcorrenciaAPI> listaOcorrenciaAPICall = apiService.getOcorrenciaEndPoint().ocorrencias(paginaAtualOcorrencia);
         listaOcorrenciaAPICall.enqueue(new Callback<ListaOcorrenciaAPI>() {
             @Override
             public void onResponse(Call<ListaOcorrenciaAPI> call, Response<ListaOcorrenciaAPI> response) {
                 if (response.isSuccessful()) {
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
-                    salvarOcorrenciaRealm(response.body().getResults());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+                    if (response.body().getNext() != null) {
+                        paginaAtualOcorrencia = paginaAtualOcorrencia + 1;
+                        recuperarTodasOcorrenciasAPI();
+                    }
                 }
             }
 
@@ -55,21 +64,18 @@ public class OcorrenciaChamada {
         });
     }
 
-    public void salvarOcorrenciaRealm(List<Ocorrencia> ocorrencias) {
-        realm.beginTransaction();
-        for (int i = 0; i < ocorrencias.size(); i++) {
-            realm.copyToRealmOrUpdate(ocorrencias.get(i));
-        }
-        realm.commitTransaction();
-    }
-
     public void recuperarTodosTiposOcorrenciaAPI() {
-        Call<ListaTipoOcorrenciaAPI> listaTipoOcorrenciaAPICall = apiService.getTipoOcorrenciaEndPoint().tiposOcorrencia();
+        Call<ListaTipoOcorrenciaAPI> listaTipoOcorrenciaAPICall = apiService.getTipoOcorrenciaEndPoint().tiposOcorrencia(paginaAtualTipoOcorrencia);
         listaTipoOcorrenciaAPICall.enqueue(new Callback<ListaTipoOcorrenciaAPI>() {
             @Override
             public void onResponse(Call<ListaTipoOcorrenciaAPI> call, Response<ListaTipoOcorrenciaAPI> response) {
-                salvarTipoOcorrenciaRealm(response.body().getResults());
-//                realmObjectsDAO.salvarListaRealm(response.body().getResults());
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(response.body().getResults());
+                realm.commitTransaction();
+                if (response.body().getNext() != null) {
+                    paginaAtualTipoOcorrencia = paginaAtualTipoOcorrencia + 1;
+                    recuperarTodosTiposOcorrenciaAPI();
+                }
             }
 
             @Override
@@ -77,14 +83,6 @@ public class OcorrenciaChamada {
                 Log.i("ERRO API", t.getMessage());
             }
         });
-    }
-
-    public void salvarTipoOcorrenciaRealm(List<TipoOcorrencia> ocorrencias) {
-        realm.beginTransaction();
-        for (int i = 0; i < ocorrencias.size(); i++) {
-            realm.copyToRealmOrUpdate(ocorrencias.get(i));
-        }
-        realm.commitTransaction();
     }
 
     public void postOcorrenciaAPI(Ocorrencia ocorrencia) {

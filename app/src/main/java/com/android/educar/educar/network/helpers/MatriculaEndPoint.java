@@ -8,6 +8,7 @@ import com.android.educar.educar.network.service.ListaMatriculaAPI;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface MatriculaEndPoint {
     @GET("matricula/")
@@ -15,4 +16,7 @@ public interface MatriculaEndPoint {
 
     @GET("matricula/{id}")
     Call<Matricula> getMatricula(@Path("id") long id);
+
+    @GET("matricula/")
+    Call<ListaMatriculaAPI> matriculas(@Query("page") int page);
 }

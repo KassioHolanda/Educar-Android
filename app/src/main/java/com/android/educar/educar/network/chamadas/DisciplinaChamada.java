@@ -20,6 +20,7 @@ public class DisciplinaChamada {
     private APIService apiService;
     private RealmObjectsDAO realmObjectsDAO;
     private Realm realm;
+    private int paginaAtualDisciplina;
 
     public void configRealm() {
         Realm.init(context);
@@ -31,6 +32,7 @@ public class DisciplinaChamada {
         apiService = new APIService("");
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
+        paginaAtualDisciplina = 1;
     }
 
     public void disciplinasAPI() {
@@ -39,24 +41,20 @@ public class DisciplinaChamada {
             @Override
             public void onResponse(Call<ListaDisciplinasAPI> call, Response<ListaDisciplinasAPI> response) {
                 if (response.isSuccessful()) {
-                    salvarDisciplinaRealm(response.body().getResults());
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+                    if (response.body().getNext() != null) {
+                        paginaAtualDisciplina = paginaAtualDisciplina + 1;
+                        disciplinasAPI();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<ListaDisciplinasAPI> call, Throwable t) {
                 Log.i("ERRO API", t.getMessage());
-//                Toast.makeText(context, "Ocorreu um Erro! Verifique sua Conexão", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public void salvarDisciplinaRealm(List<Disciplina> disciplinas) {
-        realm.beginTransaction();
-        for (int i = 0; i < disciplinas.size(); i++) {
-            realm.copyToRealmOrUpdate(disciplinas.get(i));
-        }
-        realm.commitTransaction();
     }
 }
