@@ -7,10 +7,10 @@
     layout_height="match_parent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="0.1pt"
+
     android:layout_marginTop="0.1pt"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
+
+    android:layout_marginBottom="0.1pt"
     app:cardCornerRadius="2dp">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -34,16 +34,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="10"
             android:text="nomeAluno"
-            android:textStyle="bold"
             android:textColor="#222"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <CheckBox
             android:id="@+id/presenca_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/colorPrimary"
-            android:checked="true" />
+            android:buttonTint="@color/colorPrimary" />
 
     </LinearLayout>
 </android.support.v7.widget.CardView>

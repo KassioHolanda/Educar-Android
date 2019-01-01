@@ -12,7 +12,7 @@ public class AlunoFrequenciaMes extends RealmObject {
     @SerializedName("totalfaltas")
     private int totalFaltas;
     private long matricula;
-    private long bimetre;
+    private long bimestre;
 
     public AlunoFrequenciaMes() {
     }
@@ -42,10 +42,10 @@ public class AlunoFrequenciaMes extends RealmObject {
     }
 
     public long getBimetre() {
-        return bimetre;
+        return bimestre;
     }
 
-    public void setBimetre(long bimetre) {
-        this.bimetre = bimetre;
+    public void setBimetre(long bimestre) {
+        this.bimestre = bimestre;
     }
 }

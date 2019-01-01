@@ -87,7 +87,6 @@ public class DisciplinaActivity extends AppCompatActivity {
     }
 
     public void recuperarDisciplinasRealm() {
-
         RealmResults<GradeCurso> gradeCursos = realm.where(GradeCurso.class).equalTo("professor", preferences.getSavedLong("id_funcionario")).findAll();
         List<SerieDisciplina> serieDisciplinas = new ArrayList<>();
 

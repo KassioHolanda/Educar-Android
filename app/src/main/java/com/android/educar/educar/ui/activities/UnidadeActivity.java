@@ -3,6 +3,7 @@ package com.android.educar.educar.ui.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -56,7 +57,6 @@ public class UnidadeActivity extends AppCompatActivity {
         recuperarDadosRealm();
         onClickItem();
         atualizarAdapterListaUnidades(unidadesList);
-        syncDados();
     }
 
     @Override
@@ -76,7 +76,6 @@ public class UnidadeActivity extends AppCompatActivity {
     }
 
     public void recuperarDadosRealm() {
-
         RealmResults<FuncionarioEscola> funcionarioEscolas = realm.where(FuncionarioEscola.class)
                 .equalTo("funcionario", preferences.getSavedLong("id_funcionario")).findAll();
         for (int i = 0; i < funcionarioEscolas.size(); i++) {
@@ -126,7 +125,7 @@ public class UnidadeActivity extends AppCompatActivity {
                     sincronizarComAPiMB.sincronizarRealmComAPi();
                     sincronizarComAPiMB.sincronizarAPiComRealm();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Sem Conexão!", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(android.R.id.content), "SEM CONXÃO", Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -159,17 +158,5 @@ public class UnidadeActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
             }
         }).show();
-    }
-
-    public void syncDados() {
-//        if (preferences.getSavedBoolean("sync_on") == false) {
-//            if (UtilsFunctions.isConnect(getApplicationContext())) {
-//                sincronizarComAPiMB.sincronizarRealmComAPi();
-//                sincronizarComAPiMB.sincronizarAPiComRealm();
-//                preferences.saveBoolean("sync_on", true);
-//            } else {
-//                Toast.makeText(getApplicationContext(), "Sem Conexão!", Toast.LENGTH_SHORT).show();
-//            }
-//        }
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,11 +12,11 @@
         android:id="@+id/cardview_unidade_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:backgroundTint="@color/colorEdit"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="@color/colorEdit"
         app:cardCornerRadius="4dp">
 
         <LinearLayout
@@ -38,11 +38,11 @@
                     android:background="@drawable/domain" />
 
                 <LinearLayout
-                    android:gravity="center|left"
+                    android:id="@+id/frequencia_unidade_id"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="5"
-                    android:id="@+id/frequencia_unidade_id"
+                    android:gravity="center|left"
                     android:orientation="vertical"
                     android:padding="6dp">
 
@@ -70,11 +70,11 @@
                     android:background="@drawable/calendar_week" />
 
                 <LinearLayout
-                    android:gravity="center|left"
+                    android:id="@+id/frequencia_turma_id"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="5"
-                    android:id="@+id/frequencia_turma_id"
+                    android:gravity="center|left"
                     android:orientation="vertical"
                     android:padding="10dp">
 
@@ -103,11 +103,11 @@
                     android:background="@drawable/book_open" />
 
                 <LinearLayout
-                    android:gravity="center|left"
+                    android:id="@+id/frequencia_disciplina_id"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="5"
-                    android:id="@+id/frequencia_disciplina_id"
+                    android:gravity="center|left"
                     android:orientation="vertical"
                     android:padding="10dp">
 
@@ -131,24 +131,46 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/alunos_frequencia_recycler_id"
+    <TextView
+        android:id="@+id/alunos_titulo_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cardview_unidade_id"
-        android:layout_marginBottom="60dp"
-        android:layout_marginTop="2dp" />
+        android:layout_below="@+id/cardview_unidade_id"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="3dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Alunos"
+        android:textColor="#222"
+        android:textSize="14sp" />
+
+
+    <ListView
+        android:layout_margin="10dp"
+        android:id="@+id/alunos_frequencia_recycler_id"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:layout_below="@id/alunos_titulo_id"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="60dp" />
+
+    <!--<ImageView-->
+        <!--android:layout_below="@+id/alunos_frequencia_recycler_id"-->
+        <!--android:id="@+id/image"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp" />-->
 
     <Button
         android:id="@+id/button_salvarfrequencia_id"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
         android:background="#81c784"
         android:text="Salvar"
         android:textColor="#fff"
         android:textSize="16sp" />
 
-</RelativeLayout>
+</LinearLayout>

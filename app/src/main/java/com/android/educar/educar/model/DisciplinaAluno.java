@@ -34,6 +34,7 @@ public class DisciplinaAluno extends RealmObject {
     private long usuarioAtualizacaoProvaFinal;
     @SerializedName("statusatual")
     private String statusAtual;
+    private boolean alterado;
 
     public DisciplinaAluno() {
     }
@@ -154,5 +155,13 @@ public class DisciplinaAluno extends RealmObject {
 
     public void setStatusAtual(String statusAtual) {
         this.statusAtual = statusAtual;
+    }
+
+    public boolean isAlterado() {
+        return alterado;
+    }
+
+    public void setAlterado(boolean alterado) {
+        this.alterado = alterado;
     }
 }

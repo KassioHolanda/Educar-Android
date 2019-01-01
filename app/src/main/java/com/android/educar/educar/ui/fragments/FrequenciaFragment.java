@@ -8,25 +8,36 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.adapter.FrequenciaAdapter;
+import com.android.educar.educar.adapter.FrequenciaAdapterLista;
+import com.android.educar.educar.mb.FrequenciaMB;
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.Disciplina;
+import com.android.educar.educar.model.Frequencia;
 import com.android.educar.educar.model.Matricula;
+import com.android.educar.educar.model.Perfil;
 import com.android.educar.educar.model.PessoaFisica;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
+import com.android.educar.educar.network.chamadas.PessoaChamada;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -34,9 +45,8 @@ import io.realm.RealmResults;
 public class FrequenciaFragment extends Fragment {
 
     private Preferences preferences;
-    private APIService apiService;
     private UtilsFunctions utilsFunctions;
-    private RecyclerView alunosFrequencia;
+    private ListView alunosFrequencia;
     private TextView unidadeSelecionadaAula;
     private TextView turmaSelecionadaAula;
     private TextView disciplinaSelecionadaAula;
@@ -49,7 +59,9 @@ public class FrequenciaFragment extends Fragment {
     private LinearLayout turmaFrequencia;
     private LinearLayout disciplinaFrequencia;
 
-    private List<PessoaFisica> pessoaFisicas;
+    private ArrayList<PessoaFisica> pessoaFisicas;
+
+    private FrequenciaMB frequenciaMB;
 
     private Realm realm;
 
@@ -86,11 +98,12 @@ public class FrequenciaFragment extends Fragment {
     public void setupInit() {
         preferences = new Preferences(getContext());
         utilsFunctions = new UtilsFunctions();
+        frequenciaMB = new FrequenciaMB(getContext());
+        pessoaFisicas = new ArrayList<>();
     }
 
     public void recuperarAlunosRealm() {
         List<Aluno> alunos = new ArrayList<>();
-        pessoaFisicas = new ArrayList<>();
 
         RealmResults<Matricula> matriculas = realm.where(Matricula.class).equalTo("turma", preferences.getSavedLong("id_turma")).findAll();
 
@@ -104,18 +117,21 @@ public class FrequenciaFragment extends Fragment {
         for (int i = 0; i < alunos.size(); i++) {
             PessoaFisica pessoaFisica = realm.where(PessoaFisica.class).equalTo("id", alunos.get(i).getPessoaFisica()).findFirst();
             if (pessoaFisica != null) {
-                pessoaFisicas.add(pessoaFisica);
+                this.pessoaFisicas.add(pessoaFisica);
             }
         }
 
         atualizarAdapterFrequencia(pessoaFisicas);
+
+//        alunosFrequencia.setAdapter();
     }
 
     public void onClickItem() {
         salvarFrequencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Frequência Registrada!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Frequência Registrada!", Toast.LENGTH_LONG).show();
+                frequenciaMB.salvarFrequencia();
                 getActivity().finish();
             }
         });
@@ -142,10 +158,13 @@ public class FrequenciaFragment extends Fragment {
         });
     }
 
-    public void atualizarAdapterFrequencia(List<PessoaFisica> pessoaFisicas) {
-        FrequenciaAdapter frequenciaAdapter = new FrequenciaAdapter(getContext(), pessoaFisicas);
-        alunosFrequencia.setAdapter(frequenciaAdapter);
-        alunosFrequencia.setLayoutManager(new LinearLayoutManager(getContext()));
+    public void atualizarAdapterFrequencia(ArrayList<PessoaFisica> pessoaFisicas) {
+//        FrequenciaAdapter frequenciaAdapter = new FrequenciaAdapter(getContext(), pessoaFisicas);
+//        alunosFrequencia.setAdapter(frequenciaAdapter);
+//        alunosFrequencia.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        FrequenciaAdapterLista frequenciaAdapterLista = new FrequenciaAdapterLista(getContext(), pessoaFisicas);
+        alunosFrequencia.setAdapter(frequenciaAdapterLista);
     }
 
     public void atualizarDadosTela() {

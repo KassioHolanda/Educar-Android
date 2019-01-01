@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.android.educar.educar.model.PessoaFisica;
 import com.android.educar.educar.network.service.APIService;
 
 import java.io.IOException;
@@ -13,12 +14,15 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Response;
 
 public class UtilsFunctions {
+
     public static ProgressDialog progressDialog(Context context, String mensagem) {
         ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setMessage(mensagem);

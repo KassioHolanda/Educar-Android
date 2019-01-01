@@ -18,7 +18,6 @@ import retrofit2.Response;
 public class FuncionarioChamada {
 
     private APIService apiService;
-    private RealmObjectsDAO realmObjectsDAO;
     private Context context;
     private Realm realm;
     private int paginaAtual;
@@ -31,7 +30,6 @@ public class FuncionarioChamada {
     public FuncionarioChamada(Context context) {
         apiService = new APIService("");
         this.context = context;
-        realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
         paginaAtual = 1;
     }
@@ -45,6 +43,7 @@ public class FuncionarioChamada {
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body().getResults());
                     realm.commitTransaction();
+
                     if (response.body().getNext() != null) {
                         paginaAtual = paginaAtual + 1;
                         recuperarFuncionariosAPI();

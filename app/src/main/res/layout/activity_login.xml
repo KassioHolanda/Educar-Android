@@ -16,14 +16,15 @@
     <!--android:layout_marginBottom="30dp"-->
     <!--android:layout_height="150dp" />-->
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily=""
         android:gravity="center"
         android:padding="30dp"
         android:text="E - Ducar"
         android:textColor="#fff"
-        android:fontFamily=""
         android:textSize="50sp" />
 
     <EditText
@@ -60,5 +61,3 @@
         android:textSize="16sp" />
 
 </LinearLayout>
-
-    <!--android:background="#f4f5f3"-->

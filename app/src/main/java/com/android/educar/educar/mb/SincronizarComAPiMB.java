@@ -49,44 +49,35 @@ public class SincronizarComAPiMB {
     public void sincronizarRealmComAPi() {
         unidadeChamada.unidadesAPI();
 
-//        turmaChamada.turmasAPI();
+        turmaChamada.turmasAPI();
         turmaChamada.gradeCursoAPI();
         turmaChamada.recuperarSituacaoTurmaMesAPI();
-//
-//        disciplinaChamada.disciplinasAPI();
-//        funcionarioEscola.funcionariosEscola();
-//        localEscolaChamada.localEscolaAPI();
-//
-//        serieChamada.serieDisciplina();
-//        serieChamada.recuperarSerieAPI();
-//        serieChamada.recuperarSerieTurmaAPI();
-//
-//        alunoChamada.recuperarTodosAlunosAPI();
-//        alunoChamada.recuperarTodosAlunoNotaMesAPI();
-//        alunoChamada.recuperarTodasDisciplinaAlunoAPI();
-//
-//        matriculaChamada.matriculaAPI();
-//
-//        anoLetivoChamada.anoLetivoAPI();
-//        anoLetivoChamada.recuperarBimestreAPI();
-//
-//        ocorrenciaChamada.recuperarTodasOcorrenciasAPI();
-//        ocorrenciaChamada.recuperarTodosTiposOcorrenciaAPI();
+
+        disciplinaChamada.disciplinasAPI();
+        funcionarioEscola.funcionariosEscola();
+        localEscolaChamada.localEscolaAPI();
+
+        serieChamada.serieDisciplina();
+        serieChamada.recuperarSerieAPI();
+        serieChamada.recuperarSerieTurmaAPI();
+
+        alunoChamada.recuperarTodosAlunosAPI();
+        alunoChamada.recuperarTodosAlunoNotaMesAPI();
+        alunoChamada.recuperarTodasDisciplinaAlunoAPI();
+
+        matriculaChamada.matriculaAPI();
+
+        anoLetivoChamada.anoLetivoAPI();
+        anoLetivoChamada.recuperarBimestreAPI();
+
+        ocorrenciaChamada.recuperarTodasOcorrenciasAPI();
+        ocorrenciaChamada.recuperarTodosTiposOcorrenciaAPI();
 
     }
 
     public void sincronizarAPiComRealm() {
-//        sincronizarOcorrenciaMB.publicarDadosRealmParaAPI();
-//        sincronizarNotaMB.publicarDadosRealmParaAPI();
-
-//        alunoChamada.publicarDadosRealmParaAPI();
-//        ocorrenciaChamada.publicarOcorrenciaAPI();
-    }
-
-    public void recuperarInformaçõesDeLogin() {
-        pessoaChamada.pessoaFisicaAPI();
-        pessoaChamada.recuperarPerfilAPI();
-        pessoaChamada.recuperarUsuariosAPI();
-        funcionarioChamada.recuperarFuncionariosAPI();
+        alunoChamada.publicarDadosRealmParaAPI();
+        alunoChamada.atualizarDadosDisciplinaAluno();
+        ocorrenciaChamada.publicarOcorrenciaAPI();
     }
 }

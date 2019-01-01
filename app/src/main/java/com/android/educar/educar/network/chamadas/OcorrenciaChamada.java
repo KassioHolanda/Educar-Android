@@ -109,10 +109,8 @@ public class OcorrenciaChamada {
     public void publicarOcorrenciaAPI() {
         RealmResults<Ocorrencia> ocorrencias = realm.where(Ocorrencia.class).findAll();
 
-        realm.beginTransaction();
         for (int i = 0; i < ocorrencias.size(); i++) {
             if (ocorrencias.get(i).isNovo()) {
-                ocorrencias.get(i).setNovo(false);
                 Ocorrencia ocorrencia1 = new Ocorrencia();
                 ocorrencia1.setDatahora(ocorrencias.get(i).getDatahora());
                 ocorrencia1.setDatahoracadastro(ocorrencias.get(i).getDatahoracadastro());
@@ -128,10 +126,13 @@ public class OcorrenciaChamada {
                 ocorrencia1.setFuncionario(ocorrencias.get(i).getFuncionario());
                 ocorrencia1.setUnidade(ocorrencias.get(i).getUnidade());
                 ocorrencia1.setAnoLetivo(ocorrencias.get(i).getAnoLetivo());
-                realmObjectsDAO.salvarRealm(ocorrencias.get(i));
+
+                realm.beginTransaction();
+                ocorrencias.get(i).setNovo(false);
+                realm.commitTransaction();
+
                 postOcorrenciaAPI(ocorrencia1);
             }
         }
-        realm.commitTransaction();
     }
 }

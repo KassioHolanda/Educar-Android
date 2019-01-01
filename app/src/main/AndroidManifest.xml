@@ -12,15 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activities.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".ui.activities.LoginActivity" />
         <activity
             android:name=".ui.activities.UnidadeActivity"
-            android:label="Escolas"></activity>
+            android:label="Escolas" />
         <activity
             android:name=".ui.activities.TurmaActivity"
             android:label="Turmas"
@@ -30,12 +25,9 @@
             android:label="Disciplinas"
             android:parentActivityName=".ui.activities.TurmaActivity" />
         <activity
-            android:name=".ui.activities.LoadingActivity"
-            android:theme="@style/AppCompat.TelaCheia"></activity>
-        <activity
             android:name=".ui.activities.AulaAcoesActivity"
             android:label=""
-            android:parentActivityName=".ui.activities.DisciplinaActivity"></activity>
+            android:parentActivityName=".ui.activities.DisciplinaActivity" />
         <activity
             android:name=".ui.activities.NotaFragmentActivity"
             android:label="Notas"
@@ -48,6 +40,12 @@
             android:name=".ui.activities.FrequenciaActivity"
             android:label="Nova Frequêcia"
             android:parentActivityName=".ui.activities.AulaAcoesActivity" />
+        <activity android:name=".ui.activities.LoadingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -35,8 +35,6 @@ public class PessoaChamada {
     private int paginaAtualPerfil;
     private int paginaAtualUsuario;
 
-    private int quantidadeDePaginas;
-
     public void configRealm() {
         Realm.init(context);
         realm = Realm.getDefaultInstance();
@@ -53,16 +51,18 @@ public class PessoaChamada {
         pessoaFisicas = new ArrayList<>();
     }
 
-
     public void pessoaFisicaAPI() {
         Call<ListaPessoaFisicaAPI> listaProfessoresAPICall = apiService.getPessoaFisicaEndPoint().pessoasFisicasComPaginacao(paginaAtualPessoaFisica);
         listaProfessoresAPICall.enqueue(new Callback<ListaPessoaFisicaAPI>() {
             @Override
             public void onResponse(Call<ListaPessoaFisicaAPI> call, Response<ListaPessoaFisicaAPI> response) {
+
                 if (response.isSuccessful()) {
+
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body().getResults());
                     realm.commitTransaction();
+
                     if (response.body().getNext() != null) {
                         paginaAtualPessoaFisica = paginaAtualPessoaFisica + 1;
                         pessoaFisicaAPI();
@@ -83,9 +83,11 @@ public class PessoaChamada {
             @Override
             public void onResponse(Call<ListaUsuariosAPI> call, Response<ListaUsuariosAPI> response) {
                 if (response.isSuccessful()) {
+
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body().getResults());
                     realm.commitTransaction();
+
                     if (response.body().getNext() != null) {
                         paginaAtualUsuario = paginaAtualUsuario + 1;
                         recuperarUsuariosAPI();
@@ -106,8 +108,11 @@ public class PessoaChamada {
             @Override
             public void onResponse(Call<ListaPerfilAPI> call, Response<ListaPerfilAPI> response) {
                 if (response.isSuccessful()) {
+
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+
                     if (response.body().getNext() != null) {
                         paginaAtualPerfil = paginaAtualPerfil + 1;
                         recuperarPerfilAPI();

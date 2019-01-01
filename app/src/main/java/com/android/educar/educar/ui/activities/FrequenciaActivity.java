@@ -20,9 +20,6 @@ import io.realm.Realm;
 
 public class FrequenciaActivity extends AppCompatActivity {
 
-    private Realm realm;
-    private List<PessoaFisica> pessoaFisicas;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

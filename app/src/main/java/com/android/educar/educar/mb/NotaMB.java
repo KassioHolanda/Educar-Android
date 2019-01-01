@@ -63,26 +63,36 @@ public class NotaMB {
             alunoNotaMes.setNota(Float.parseFloat(descricao));
             alunoNotaMes.setUsuario(preferences.getSavedLong("id_usuario"));
             alunoNotaMes.setBimestre(idBimestreAtual);
-
             alunoNotaMes.setAnoLetivo(3);
             alunoNotaMes.setTipoLancamentoNota("LANCADO_APP");
             alunoNotaMes.setInseridoFechamento(false);
             alunoNotaMes.setDisciplinaAluno(disciplinaAluno.getId());
-
             alunoNotaMes.setNovo(true);
-
             realmObjectsBO.salvarObjetoRealm(alunoNotaMes);
+            alterarStatusDisciplinaAluno(Float.parseFloat(descricao));
         } else {
             Toast.makeText(context, "Nota ja Informada", Toast.LENGTH_LONG).show();
         }
     }
 
+    public void alterarStatusDisciplinaAluno(Float nota) {
+        realm.beginTransaction();
+        disciplinaAluno.setAlterado(true);
+        if (nota >= 7) {
+            disciplinaAluno.setStatusAtual("APROVADO");
+        } else {
+            disciplinaAluno.setStatusAtual("REPROVADO");
+        }
+        realm.commitTransaction();
+    }
+
     public boolean verificarStatusParaAdicionarNota() {
-//        if (verificarStatusAtualDisciplinaAluno().getStatusAtual().equals("EM_ANDAMENTO")) {
-        return true;
-//        } else {
-//            return false;
-//        }
+
+        if (this.disciplinaAluno.getStatusAtual().equals("EM_ANDAMENTO")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public long verificarBimestreAtual() {
@@ -130,21 +140,19 @@ public class NotaMB {
     }
 
 
-    public DisciplinaAluno verificarStatusAtualDisciplinaAluno() {
+    public void verificarStatusAtualDisciplinaAluno() {
 
         RealmResults<DisciplinaAluno> disciplinaAlunos = realm.where(DisciplinaAluno.class).findAll();
 
         long id = preferences.getSavedLong("id_matricula");
         long idS = verificarSerieDisciplina().getId();
+//
+//        DisciplinaAluno disciplinaAluno = realm.where(DisciplinaAluno.class)
+//                .equalTo("matricula", preferences.getSavedLong("id_matricula"))
+//                .equalTo("serieDisciplina", verificarSerieDisciplina().getId())
+//                .findFirst();
 
-        DisciplinaAluno disciplinaAluno = realm.where(DisciplinaAluno.class)
-                .equalTo("matricula", preferences.getSavedLong("id_matricula"))
-                .equalTo("serieDisciplina", verificarSerieDisciplina().getId())
-                .findFirst();
-
-        this.disciplinaAluno = disciplinaAluno;
-        return disciplinaAluno;
-
+        this.disciplinaAluno = realm.where(DisciplinaAluno.class).findFirst();
     }
 
     public SerieDisciplina verificarSerieDisciplina() {

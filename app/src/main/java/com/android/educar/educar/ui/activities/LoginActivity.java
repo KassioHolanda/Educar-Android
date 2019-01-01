@@ -1,13 +1,17 @@
 package com.android.educar.educar.ui.activities;
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,8 +29,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Progress;
 import io.realm.Realm;
 import io.realm.RealmResults;
+import okhttp3.internal.Util;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -40,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private Usuario usuario;
     private PessoaChamada pessoaChamada;
     private FuncionarioChamada funcionarioChamada;
-    ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
     private Messages messages;
 
     @Override
@@ -71,9 +77,6 @@ public class LoginActivity extends AppCompatActivity {
         if (preferences.getSavedBoolean("logado")) {
             nextActivity();
         }
-
-        if (!preferences.getSavedBoolean("logado"))
-            carregarDadosSync();
     }
 
     public void settings() {
@@ -81,16 +84,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void setupInit() {
-        progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.setTitle("Carregando...");
-        progressDialog.setMessage("Aguarde alguns segundos!");
-
         messages = new Messages();
         preferences = new Preferences(this);
         pessoaFisica = new PessoaFisica();
         usuario = new Usuario();
         pessoaChamada = new PessoaChamada(this);
         funcionarioChamada = new FuncionarioChamada(this);
+        progressDialog = new ProgressDialog(this);
     }
 
     private void binding() {
@@ -116,16 +116,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void recuperarPessoaFisica() {
-        RealmResults<PessoaFisica> pessoaFisicas = realm.where(PessoaFisica.class).findAll();
-
-        Toast.makeText(getApplicationContext(), "" + pessoaFisicas.size(), Toast.LENGTH_LONG).show();
-
         pessoaFisica = realm.where(PessoaFisica.class).equalTo("cpf", cpf.getText().toString()).findFirst();
         if (pessoaFisica != null) {
             recuperarFuncionario();
             recuperarUsuario();
         } else {
-            Toast.makeText(getApplicationContext(), "CPF não encontrado!", Toast.LENGTH_LONG).show();
+            Snackbar.make(findViewById(android.R.id.content), "CPF não encontrado!", Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -138,15 +134,15 @@ public class LoginActivity extends AppCompatActivity {
                     salvarDadosUsuarioLogin();
                     nextActivity();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Usuario não é um Professor!", Toast.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(android.R.id.content), "Usuario não é um Professor!", Snackbar.LENGTH_LONG).show();
                 }
             } else {
-                Toast.makeText(getApplicationContext(), "Funcionario não Encontrado!", Toast.LENGTH_LONG).show();
+                Snackbar.make(findViewById(android.R.id.content), "Funcionario não Encontrado!", Snackbar.LENGTH_LONG).show();
             }
 
         } catch (Exception e) {
             progressDialog.hide();
-            Toast.makeText(getApplicationContext(), "Ocorreu um Erro, Solicite Administrador!", Toast.LENGTH_LONG).show();
+            Snackbar.make(findViewById(android.R.id.content), "Ocorreu um Erro, Solicite Administrador!", Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -177,15 +173,19 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), UnidadeActivity.class));
     }
 
-    public void carregarDadosSync() {
-        if (!preferences.getSavedBoolean("sync")) {
-            pessoaChamada.pessoaFisicaAPI();
-            pessoaChamada.recuperarPerfilAPI();
-            pessoaChamada.recuperarUsuariosAPI();
-            funcionarioChamada.recuperarFuncionariosAPI();
-            preferences.saveBoolean("sync", true);
-        }
-    }
+//    public void carregarDadosSync() {
+//        if (!preferences.getSavedBoolean("sync")) {
+//            if (UtilsFunctions.isConnect(getApplicationContext())) {
+//
+//                pessoaChamada.pessoaFisicaAPI();
+//                pessoaChamada.recuperarPerfilAPI();
+//                pessoaChamada.recuperarUsuariosAPI();
+//                funcionarioChamada.recuperarFuncionariosAPI();
+//
+//                preferences.saveBoolean("sync", true);
+//            }
+//        }
+//    }
 
     public void verificarConexao() {
         if (UtilsFunctions.isConnect(getApplicationContext())) {
@@ -198,14 +198,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void alertaInformacao(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Conexão!");
-        builder.setMessage(message);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-
-        }).show();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("Conexão!");
+//        builder.setMessage(message);
+//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//            }
+//
+//        }).show();
+        Toast.makeText(getApplicationContext(), "" + message, Toast.LENGTH_LONG).show();
     }
 }

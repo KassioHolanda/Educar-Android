@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -78,7 +79,9 @@ public class NotaAdapter extends RecyclerView.Adapter<NotaAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull final NotaAdapter.ViewHolder holder, final int position) {
 
         holder.nomeAluno.setText(pessoaFisicas.get(position).getNome());
-        holder.idAluno.setText("" + position);
+        int ordem = position;
+        ordem = ordem + 1;
+        holder.idAluno.setText("" + ordem);
         try {
             holder.notaAluno.setText("" + preferences.getSavedFloat("id_nota_bimestre"));
         } catch (NullPointerException e) {
@@ -142,7 +145,7 @@ public class NotaAdapter extends RecyclerView.Adapter<NotaAdapter.ViewHolder> {
                             alertaInformacao();
                         } else {
                             notaMB.salvarAlunoNotaMes(nota.getText().toString());
-                            Toast.makeText(context, "Nota Inserida ao aluno " + nomeAlunoNota + "!", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(viewDialog, "Nota Inserida ao aluno " + nomeAlunoNota + "!", Snackbar.LENGTH_SHORT).show();
                             preferences.saveFloat("id_nota_bimestre", Float.parseFloat(nota.getText().toString()));
                             atualizarFragment();
                         }
