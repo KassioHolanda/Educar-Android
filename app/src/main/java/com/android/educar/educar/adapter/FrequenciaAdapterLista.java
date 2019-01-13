@@ -17,25 +17,41 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.educar.educar.R;
+import com.android.educar.educar.bo.RealmObjectsBO;
+import com.android.educar.educar.model.Aluno;
+import com.android.educar.educar.model.Frequencia;
+import com.android.educar.educar.model.Matricula;
 import com.android.educar.educar.model.PessoaFisica;
+import com.android.educar.educar.utils.UtilsFunctions;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import io.realm.Realm;
 
 
 public class FrequenciaAdapterLista extends BaseAdapter {
 
-    private int resource;
+    private Frequencia frequencia;
     private List<PessoaFisica> pessoaFisicas;
     private Context context;
     private TextView nomeAlunoFrequencia;
     private final List<PessoaFisica> selecionados;
+    private RealmObjectsBO realmObjectsBO;
+    private Realm realm;
 
     public FrequenciaAdapterLista(Context context, List<PessoaFisica> pessoaFisicas) {
-        this.resource = resource;
         this.pessoaFisicas = pessoaFisicas;
         this.context = context;
         selecionados = new ArrayList<>();
+        realmObjectsBO = new RealmObjectsBO(context);
+        configRealm();
+    }
+
+    public void configRealm() {
+        Realm.init(context);
+        realm = Realm.getDefaultInstance();
     }
 
     @Override
@@ -65,17 +81,22 @@ public class FrequenciaAdapterLista extends BaseAdapter {
             row = view;
         }
 
+        Aluno aluno = realm.where(Aluno.class).equalTo("pessoaFisica", pessoaFisicas.get(i).getId()).findFirst();
+        final Matricula matricula = realm.where(Matricula.class).equalTo("aluno", aluno.getId()).findFirst();
+
         nomeAlunoFrequencia = row.findViewById(R.id.nomealuno_frequencia_id);
         CheckBox chk = row.findViewById(R.id.presenca_id);
         TextView idAluno = row.findViewById(R.id.idalunonota_id);
 
         int ordem = i;
-        ordem = ordem+1;
-        idAluno.setText(""+ordem);
+        ordem = ordem + 1;
+        idAluno.setText("" + ordem);
 
         PessoaFisica pessoaFisicaSelecionada = pessoaFisicas.get(i);
         nomeAlunoFrequencia.setText(pessoaFisicaSelecionada.getNome());
         chk.setTag(pessoaFisicaSelecionada);
+
+        atualizarPresenca(matricula, false);
 
         chk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,11 +104,15 @@ public class FrequenciaAdapterLista extends BaseAdapter {
                 CheckBox checkBox = (CheckBox) view;
                 PessoaFisica pessoaFisica1 = (PessoaFisica) checkBox.getTag();
                 if (checkBox.isChecked()) {
+                    atualizarPresenca(matricula, true);
+                    Toast.makeText(context, "O Aluno " + pessoaFisica1.getNome() + " está Presente.", Toast.LENGTH_SHORT).show();
                     if (!selecionados.contains(pessoaFisica1)) {
                         selecionados.add(pessoaFisica1);
                     }
 
                 } else {
+                    atualizarPresenca(matricula, false);
+                    Toast.makeText(context, "O Aluno " + pessoaFisica1.getNome() + " não está Presente.", Toast.LENGTH_SHORT).show();
                     if (selecionados.contains(pessoaFisica1)) {
                         selecionados.remove(pessoaFisica1);
                     }
@@ -101,5 +126,15 @@ public class FrequenciaAdapterLista extends BaseAdapter {
             chk.setChecked(false);
         }
         return row;
+    }
+
+    public void atualizarPresenca(Matricula matricula, boolean presenca) {
+        frequencia = new Frequencia();
+        frequencia.setId(matricula.getId());
+        frequencia.setMatricula(matricula.getId());
+        frequencia.setNovo(true);
+        frequencia.setPresenca(presenca);
+        frequencia.setDate(UtilsFunctions.formatoDataPadrao().format(new Date()));
+        realmObjectsBO.salvarObjetoRealm(frequencia);
     }
 }

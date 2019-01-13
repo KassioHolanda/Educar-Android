@@ -1,22 +1,18 @@
 package com.android.educar.educar.ui.activities;
 
-import android.app.ProgressDialog;
-import android.arch.lifecycle.OnLifecycleEvent;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.educar.educar.R;
+import com.android.educar.educar.mb.FuncionarioMB;
+import com.android.educar.educar.mb.PessoaFisicaMB;
 import com.android.educar.educar.model.Funcionario;
+import com.android.educar.educar.model.Perfil;
 import com.android.educar.educar.model.PessoaFisica;
 import com.android.educar.educar.model.Usuario;
 import com.android.educar.educar.network.chamadas.FuncionarioChamada;
@@ -26,13 +22,8 @@ import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
 
-import io.realm.Progress;
 import io.realm.Realm;
-import io.realm.RealmResults;
-import okhttp3.internal.Util;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -44,10 +35,12 @@ public class LoginActivity extends AppCompatActivity {
     private PessoaFisica pessoaFisica;
     private Funcionario funcionario;
     private Usuario usuario;
-    private PessoaChamada pessoaChamada;
-    private FuncionarioChamada funcionarioChamada;
-    private ProgressDialog progressDialog;
+    private Perfil perfil;
     private Messages messages;
+    private boolean onresume;
+
+    private PessoaFisicaMB pessoaFisicaMB;
+    private FuncionarioMB funcionarioMB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     public void configRealm() {
         Realm.init(this);
         realm = Realm.getDefaultInstance();
+        realm.setAutoRefresh(true);
     }
 
     public void limpar() {
@@ -88,9 +82,11 @@ public class LoginActivity extends AppCompatActivity {
         preferences = new Preferences(this);
         pessoaFisica = new PessoaFisica();
         usuario = new Usuario();
-        pessoaChamada = new PessoaChamada(this);
-        funcionarioChamada = new FuncionarioChamada(this);
-        progressDialog = new ProgressDialog(this);
+        funcionario = new Funcionario();
+        perfil = new Perfil();
+        pessoaFisicaMB = new PessoaFisicaMB(getApplicationContext());
+        funcionarioMB = new FuncionarioMB(getApplicationContext());
+        onresume = false;
     }
 
     private void binding() {
@@ -103,56 +99,67 @@ public class LoginActivity extends AppCompatActivity {
         this.acessarLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                recuperarPessoaFisica();
+                try {
+                    pessoaFisicaMB.recuperarPesoaFisica(cpf.getText().toString());
+
+                    long id = preferences.getSavedLong("id_pessoafisica");
+                    funcionarioMB.recuperarFuncionarioUsuario(preferences.getSavedLong("id_pessoafisica"));
+                    pessoaFisicaMB.recuperarUsuario(preferences.getSavedLong("id_pessoafisica"));
+
+
+//                    funcionarioMB.recuperarFuncionarioUsuario();
+                    recuperarPessoaFisica();
+
+                } catch (NullPointerException e) {
+                    Toast.makeText(getApplicationContext(), "CPF Invalido", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        realm.refresh();
+    }
+
     public void recuperarUsuario() {
-        usuario = realm.where(Usuario.class).equalTo("pessoaFisica", pessoaFisica.getId()).findFirst();
-        if (usuario != null) {
-            preferences.saveLong("id_usuario", usuario.getId());
+//        usuario = realm.where(Usuario.class).equalTo("pessoaFisica", preferences.getSavedLong("id_pessoafisica")).findFirst();
+        if (preferences.getSavedBoolean("usuario_encontrado")) {
+            pessoaFisicaMB.recuperarPerfil(preferences.getSavedLong("usuario_perfil"));
+//            perfil = realm.where(Perfil.class).equalTo("id", usuario.getPerfil()).findFirst();
+//            preferences.saveLong("id_usuario", usuario.getId());
+        } else {
+            Toast.makeText(getApplicationContext(), "Usuário não Encontrado!", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void recuperarPessoaFisica() {
-        pessoaFisica = realm.where(PessoaFisica.class).equalTo("cpf", cpf.getText().toString()).findFirst();
-        if (pessoaFisica != null) {
-            recuperarFuncionario();
+        if (preferences.getSavedBoolean("pessoafisica_encontrado")) {
             recuperarUsuario();
+            recuperarFuncionario();
         } else {
-            Snackbar.make(findViewById(android.R.id.content), "CPF não encontrado!", Snackbar.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "CPF não Encontrado!", Toast.LENGTH_LONG).show();
         }
     }
 
     public void recuperarFuncionario() {
-        try {
-            funcionario = realm.where(Funcionario.class).equalTo("pessoaFisicaId", pessoaFisica.getId()).findFirst();
-
-            if (funcionario != null) {
-                if (funcionario.getCargo() == 5) {
-                    salvarDadosUsuarioLogin();
-                    nextActivity();
-                } else {
-                    Snackbar.make(findViewById(android.R.id.content), "Usuario não é um Professor!", Snackbar.LENGTH_LONG).show();
-                }
+//        funcionario = realm.where(Funcionario.class).equalTo("pessoaFisicaId", pessoaFisica.getId()).findFirst();
+//        try {
+        if (preferences.getSavedBoolean("funcionario_encontrado")) {
+            if (preferences.getSavedLong("funcionario_cargo") == 5) {
+                consultarSenha();
             } else {
-                Snackbar.make(findViewById(android.R.id.content), "Funcionario não Encontrado!", Snackbar.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Usuário não é um Professor!", Toast.LENGTH_LONG).show();
             }
-
-        } catch (Exception e) {
-            progressDialog.hide();
-            Snackbar.make(findViewById(android.R.id.content), "Ocorreu um Erro, Solicite Administrador!", Snackbar.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Funcionário não Encontrado!", Toast.LENGTH_LONG).show();
         }
+//        } catch (Exception e) {
+//            Toast.makeText(getApplicationContext(), "Ocorreu um Erro, Solicite Administrador!", Toast.LENGTH_LONG).show();
+//        }
     }
 
-    public void salvarDadosUsuarioLogin() {
-        if (pessoaFisica.getCpf() != null) {
-            preferences.saveLong("id_pessoafisica", pessoaFisica.getId());
-            preferences.saveLong("id_funcionario", funcionario.getId());
-            preferences.saveBoolean("logado", true);
-        }
-    }
 
     public void consultarSenha() {
         String senhaDigitada = null;
@@ -161,31 +168,17 @@ public class LoginActivity extends AppCompatActivity {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-//        String senhaProfessor = professorDAO.selecionarProfessor(preferences.getSavedLong(messages.ID_USUARIO)).getSenha();
-//        if (senhaDigitada.equals(senhaProfessor)) {
-//            nextActivity();
-//        } else {
-//            Toast.makeText(getApplicationContext(), "Senha Inválida!", Toast.LENGTH_SHORT).show();
-//        }
+        if (senhaDigitada.equals(preferences.getSavedString("pessoafisica_senha"))) {
+            preferences.saveBoolean("logado", true);
+            nextActivity();
+        } else {
+            Toast.makeText(getApplicationContext(), "Senha Inválida!", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void nextActivity() {
-        startActivity(new Intent(getApplicationContext(), UnidadeActivity.class));
+        startActivity(new Intent(getApplicationContext(), LoadingActivity.class));
     }
-
-//    public void carregarDadosSync() {
-//        if (!preferences.getSavedBoolean("sync")) {
-//            if (UtilsFunctions.isConnect(getApplicationContext())) {
-//
-//                pessoaChamada.pessoaFisicaAPI();
-//                pessoaChamada.recuperarPerfilAPI();
-//                pessoaChamada.recuperarUsuariosAPI();
-//                funcionarioChamada.recuperarFuncionariosAPI();
-//
-//                preferences.saveBoolean("sync", true);
-//            }
-//        }
-//    }
 
     public void verificarConexao() {
         if (UtilsFunctions.isConnect(getApplicationContext())) {
@@ -198,15 +191,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void alertaInformacao(String message) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("Conexão!");
-//        builder.setMessage(message);
-//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//            }
-//
-//        }).show();
         Toast.makeText(getApplicationContext(), "" + message, Toast.LENGTH_LONG).show();
     }
 }

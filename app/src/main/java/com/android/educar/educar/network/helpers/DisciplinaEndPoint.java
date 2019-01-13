@@ -15,7 +15,7 @@ public interface DisciplinaEndPoint {
     @GET("disciplina/")
     Call<ListaDisciplinasAPI> disciplinas();
 
-    @GET("disciplina/{id}")
+    @GET("disciplina/id={id}/")
     Call<Disciplina> getDisciplina(@Path("id") long id);
 
     @GET("disciplina/")

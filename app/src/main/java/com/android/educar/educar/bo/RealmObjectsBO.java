@@ -6,6 +6,8 @@ import com.android.educar.educar.dao.RealmObjectsDAO;
 
 import java.util.List;
 
+import io.realm.RealmModel;
+
 public class RealmObjectsBO {
 
     private RealmObjectsDAO realmObjectsDAO;
@@ -14,7 +16,7 @@ public class RealmObjectsBO {
         realmObjectsDAO = new RealmObjectsDAO(context);
     }
 
-    public void salvarObjetoRealm(Object o) {
+    public void salvarObjetoRealm(RealmModel o) {
         realmObjectsDAO.salvarRealm(o);
     }
 }

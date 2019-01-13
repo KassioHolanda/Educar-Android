@@ -2,6 +2,8 @@ package com.android.educar.educar.ui.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.android.educar.educar.R;
@@ -19,11 +22,13 @@ import com.android.educar.educar.bo.RealmObjectsBO;
 import com.android.educar.educar.mb.SincronizarComAPiMB;
 import com.android.educar.educar.model.FuncionarioEscola;
 import com.android.educar.educar.model.Unidade;
+import com.android.educar.educar.network.chamadas.TurmaChamada;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
 import android.app.ProgressDialog;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
@@ -40,12 +45,13 @@ public class UnidadeActivity extends AppCompatActivity {
     private Messages messages;
     private List<Unidade> unidadesList;
     private ArrayAdapter<Unidade> unidadeArrayAdapter;
-    private ProgressDialog progressDialog;
+    private ProgressBar progressBar;
     private FloatingActionButton sincronizarDados;
     private Realm realm;
     private RealmObjectsBO realmObjectsBO;
-
     private SincronizarComAPiMB sincronizarComAPiMB;
+
+    private TurmaChamada turmaChamada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,36 +60,25 @@ public class UnidadeActivity extends AppCompatActivity {
         bindind();
         setupInit();
         configRealm();
-        recuperarDadosRealm();
         onClickItem();
-        atualizarAdapterListaUnidades(unidadesList);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        atualizarAdapterListaUnidades(unidadesList);
+        atualizarAdapterListaUnidades();
+        sync();
     }
 
     public void configRealm() {
         Realm.init(this);
         realm = Realm.getDefaultInstance();
+        realm.refresh();
     }
 
     public void bindind() {
         unidades = findViewById(R.id.unidades_list_view_id);
         sincronizarDados = findViewById(R.id.sincronizar_dados);
-    }
-
-    public void recuperarDadosRealm() {
-        RealmResults<FuncionarioEscola> funcionarioEscolas = realm.where(FuncionarioEscola.class)
-                .equalTo("funcionario", preferences.getSavedLong("id_funcionario")).findAll();
-        for (int i = 0; i < funcionarioEscolas.size(); i++) {
-            Unidade unidade = realm.where(Unidade.class).equalTo("id", funcionarioEscolas.get(i).getUnidade()).findFirst();
-            if (unidade != null) {
-                unidadesList.add(unidade);
-            }
-        }
     }
 
     @Override
@@ -101,11 +96,17 @@ public class UnidadeActivity extends AppCompatActivity {
                 break;
             case R.id.sair_id:
                 preferences.saveBoolean("logado", false);
+                preferences.saveBoolean("sync", false);
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                deletarBancoRealm();
                 onStop();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void deletarBancoRealm() {
+        realm.deleteAll();
     }
 
     public void onClickItem() {
@@ -131,20 +132,30 @@ public class UnidadeActivity extends AppCompatActivity {
         });
     }
 
+//    public void syncInit() {
+//        if (UtilsFunctions.isConnect(getApplicationContext())) {
+//            sincronizarComAPiMB.sincronizarRealmComAPi();
+//            sincronizarComAPiMB.sincronizarAPiComRealm();
+//        }
+//    }
+
     public void nextAcivity() {
         startActivity(new Intent(getApplicationContext(), TurmaActivity.class));
     }
 
     public void setupInit() {
-        progressDialog = UtilsFunctions.progressDialog(this, "Aguarde...");
+        progressBar = new ProgressBar(getApplicationContext());
         preferences = new Preferences(this);
         messages = new Messages();
         sincronizarComAPiMB = new SincronizarComAPiMB(getApplicationContext());
         unidadesList = new ArrayList<>();
         realmObjectsBO = new RealmObjectsBO(getApplicationContext());
+        preferences.saveBoolean("sync", true);
+        turmaChamada = new TurmaChamada(getApplicationContext());
     }
 
-    public void atualizarAdapterListaUnidades(List<Unidade> unidades) {
+    public void atualizarAdapterListaUnidades() {
+        List<Unidade> unidades = realm.where(Unidade.class).findAll();
         unidadeArrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, unidades);
         this.unidades.setAdapter(unidadeArrayAdapter);
     }
@@ -159,4 +170,10 @@ public class UnidadeActivity extends AppCompatActivity {
             }
         }).show();
     }
+
+    public void sync() {
+        turmaChamada.recuperarTurmasUnidade();
+        turmaChamada.recuperarGradeCursoTurma(preferences.getSavedLong("id_funcionario"));
+    }
+
 }

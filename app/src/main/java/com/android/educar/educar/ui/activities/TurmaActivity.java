@@ -18,8 +18,12 @@ import android.widget.TextView;
 import com.android.educar.educar.R;
 import com.android.educar.educar.model.GradeCurso;
 import com.android.educar.educar.model.LocalEscola;
+import com.android.educar.educar.model.Matricula;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
+import com.android.educar.educar.network.chamadas.DisciplinaChamada;
+import com.android.educar.educar.network.chamadas.MatriculaChamada;
+import com.android.educar.educar.network.chamadas.SerieChamada;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
@@ -42,8 +46,10 @@ public class TurmaActivity extends AppCompatActivity {
     private List<Turma> turmaList;
     private Realm realm;
     private Messages messages;
-    private List<GradeCurso> gradeCursos;
-    private List<LocalEscola> localEscolas;
+    private MatriculaChamada matriculaChamada;
+
+    private SerieChamada serieChamada;
+    private DisciplinaChamada disciplinaChamada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,12 @@ public class TurmaActivity extends AppCompatActivity {
         atualizarDadosTela();
         recuperarTurmas();
         settings();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        syncDados();
     }
 
     public void settings() {
@@ -106,8 +118,9 @@ public class TurmaActivity extends AppCompatActivity {
         preferences = new Preferences(this);
         utilsFunctions = new UtilsFunctions();
         messages = new Messages();
-        gradeCursos = new ArrayList<>();
-        localEscolas = new ArrayList<>();
+        matriculaChamada = new MatriculaChamada(getApplicationContext());
+        serieChamada = new SerieChamada(getApplicationContext());
+        disciplinaChamada = new DisciplinaChamada(getApplicationContext());
     }
 
     public void onClickItem() {
@@ -181,4 +194,12 @@ public class TurmaActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_dados_alunos, menu);
         return true;
     }
+
+    public void syncDados() {
+        serieChamada.recuperarSerieDisciplina();
+        disciplinaChamada.recuperarDisciplinasTurma();
+        matriculaChamada.recuperarMatriculasTurmas();
+    }
+
+
 }

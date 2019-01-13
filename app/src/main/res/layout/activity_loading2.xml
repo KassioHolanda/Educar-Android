@@ -27,11 +27,12 @@
         android:layout_alignParentTop="true"
         android:fontFamily="sans-serif-condensed"
         android:gravity="center|bottom"
-        android:text="Carregando seus dados, aguade..."
+        android:text="Carregando seus dados, aguade alguns minutos..."
         android:textColor="#fff"
         android:textSize="18sp" />
 
     <ProgressBar
+        android:layout_marginBottom="20dp"
         android:id="@+id/progresbar_loading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

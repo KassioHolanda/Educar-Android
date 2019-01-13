@@ -16,6 +16,8 @@ import com.android.educar.educar.R;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
+import com.android.educar.educar.network.chamadas.MatriculaChamada;
+import com.android.educar.educar.network.chamadas.PessoaChamada;
 import com.android.educar.educar.utils.Preferences;
 
 import io.realm.Realm;
@@ -26,15 +28,13 @@ public class AulaAcoesActivity extends AppCompatActivity {
     private TextView turma;
     private Preferences preferences;
 
-    private Unidade unidadeSelecionada;
-    private Turma turmaSelecionada;
-    private Disciplina disciplinaSelecionada;
     private LinearLayout paginaNotas;
     private LinearLayout paginaOcorrencia;
     private LinearLayout paginaFrequencia;
     private FloatingActionButton floatingActionButton;
 
     private Realm realm;
+    private PessoaChamada pessoaChamada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,7 @@ public class AulaAcoesActivity extends AppCompatActivity {
 
     public void setupInit() {
         preferences = new Preferences(getApplicationContext());
+        pessoaChamada = new PessoaChamada(getApplicationContext());
     }
 
 
@@ -133,5 +134,15 @@ public class AulaAcoesActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dados_alunos, menu);
         return true;
+    }
+
+    public void syncAlunos() {
+        pessoaChamada.recuperarPessoaAlunos();
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        syncAlunos();
     }
 }

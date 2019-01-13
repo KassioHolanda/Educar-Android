@@ -5,12 +5,14 @@ import android.util.Log;
 
 import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.model.Matricula;
+import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.network.service.ListaMatriculaAPI;
 
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,6 +56,32 @@ public class MatriculaChamada {
             @Override
             public void onFailure(Call<ListaMatriculaAPI> call, Throwable t) {
                 Log.i("ERRO API", t.getMessage());
+            }
+        });
+    }
+
+    public void recuperarMatriculasTurmas() {
+        RealmResults<Turma> turmas = realm.where(Turma.class).findAll();
+        for (int i = 0; i < turmas.size(); i++) {
+            recuperarMatriculasTurmas(turmas.get(i).getId());
+        }
+    }
+
+    public void recuperarMatriculasTurmas(long turmaId) {
+        Call<List<Matricula>> listCall = apiService.getMatriculaEndPoint().getmatriculas(turmaId);
+        listCall.enqueue(new Callback<List<Matricula>>() {
+            @Override
+            public void onResponse(Call<List<Matricula>> call, Response<List<Matricula>> response) {
+                if (response.isSuccessful()) {
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body());
+                    realm.commitTransaction();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Matricula>> call, Throwable t) {
+
             }
         });
     }

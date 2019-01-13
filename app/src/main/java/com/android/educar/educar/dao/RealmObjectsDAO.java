@@ -1,7 +1,9 @@
 package com.android.educar.educar.dao;
 
 import android.content.Context;
+
 import java.util.List;
+
 import io.realm.Realm;
 import io.realm.RealmModel;
 
@@ -17,6 +19,7 @@ public class RealmObjectsDAO {
     public void configRealm() {
         Realm.init(context);
         realm = Realm.getDefaultInstance();
+        realm.setAutoRefresh(true);
     }
 
     public void salvarListaRealm(List<?> realmModels) {
@@ -27,9 +30,9 @@ public class RealmObjectsDAO {
         realm.commitTransaction();
     }
 
-    public void salvarRealm(Object o) {
+    public void salvarRealm(final RealmModel o) {
         realm.beginTransaction();
-        realm.copyToRealmOrUpdate((RealmModel) o);
+        realm.copyToRealmOrUpdate(o);
         realm.commitTransaction();
     }
 

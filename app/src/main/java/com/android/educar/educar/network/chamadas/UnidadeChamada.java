@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.android.educar.educar.dao.RealmObjectsDAO;
+import com.android.educar.educar.model.FuncionarioEscola;
 import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.network.service.ListaUnidadesAPI;
@@ -11,6 +12,7 @@ import com.android.educar.educar.network.service.ListaUnidadesAPI;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,24 +36,26 @@ public class UnidadeChamada {
         paginaAtualUnidade = 1;
     }
 
-    public void unidadesAPI() {
-        Call<ListaUnidadesAPI> listaUnidadesAPICall = apiService.getUnidadeEndPoint().unidades(paginaAtualUnidade);
-        listaUnidadesAPICall.enqueue(new Callback<ListaUnidadesAPI>() {
+    public void recuperarUndidadesProfessor() {
+        RealmResults<FuncionarioEscola> funcionarioEscolas = realm.where(FuncionarioEscola.class).findAll();
+
+        for (int i = 0; i < funcionarioEscolas.size(); i++) {
+            unidadesAPI(funcionarioEscolas.get(i).getUnidade());
+        }
+    }
+
+    public void unidadesAPI(long unidadeId) {
+        Call<Unidade> listaUnidadesAPICall = apiService.getUnidadeEndPoint().getUnidade(unidadeId);
+        listaUnidadesAPICall.enqueue(new Callback<Unidade>() {
             @Override
-            public void onResponse(Call<ListaUnidadesAPI> call, Response<ListaUnidadesAPI> response) {
+            public void onResponse(Call<Unidade> call, Response<Unidade> response) {
                 if (response.isSuccessful()) {
-                    realm.beginTransaction();
-                    realm.copyToRealmOrUpdate(response.body().getResults());
-                    realm.commitTransaction();
-                    if (response.body().getNext() != null) {
-                        paginaAtualUnidade = paginaAtualUnidade + 1;
-                        unidadesAPI();
-                    }
+                    realmObjectsDAO.salvarRealm(response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<ListaUnidadesAPI> call, Throwable t) {
+            public void onFailure(Call<Unidade> call, Throwable t) {
                 Log.i("ERRO API", t.getMessage());
             }
         });

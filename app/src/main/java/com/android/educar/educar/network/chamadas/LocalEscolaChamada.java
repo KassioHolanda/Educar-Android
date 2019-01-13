@@ -5,12 +5,14 @@ import android.util.Log;
 
 import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.model.LocalEscola;
+import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.network.service.ListaLocalEscolaAPI;
 
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,6 +35,33 @@ public class LocalEscolaChamada {
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
         paginaAtualLocaisEscola = 1;
+    }
+
+
+    public void recuperarLocaisEscolaUnidade() {
+        RealmResults<Unidade> unidades = realm.where(Unidade.class).findAll();
+        for(int i =0; i< unidades.size();i++) {
+            recuperarLocaisEscolaDaUnidade(unidades.get(i).getId());
+        }
+    }
+
+    public void recuperarLocaisEscolaDaUnidade(long unidadeId) {
+        Call<List<LocalEscola>> listCall = apiService.getLocalEscolaEndPoint().locaisEscolaUnidade(unidadeId);
+        listCall.enqueue(new Callback<List<LocalEscola>>() {
+            @Override
+            public void onResponse(Call<List<LocalEscola>> call, Response<List<LocalEscola>> response) {
+                if (response.isSuccessful()) {
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body());
+                    realm.commitTransaction();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<LocalEscola>> call, Throwable t) {
+
+            }
+        });
     }
 
     public void localEscolaAPI() {

@@ -14,6 +14,7 @@ import com.android.educar.educar.network.chamadas.PessoaChamada;
 import com.android.educar.educar.network.chamadas.SerieChamada;
 import com.android.educar.educar.network.chamadas.TurmaChamada;
 import com.android.educar.educar.network.chamadas.UnidadeChamada;
+import com.android.educar.educar.utils.Preferences;
 
 public class SincronizarComAPiMB {
 
@@ -30,8 +31,12 @@ public class SincronizarComAPiMB {
     private PessoaChamada pessoaChamada;
     private FuncionarioChamada funcionarioChamada;
 
+    private Preferences preferences;
+
 
     public SincronizarComAPiMB(Context context) {
+        preferences = new Preferences(context);
+
         unidadeChamada = new UnidadeChamada(context);
         turmaChamada = new TurmaChamada(context);
         disciplinaChamada = new DisciplinaChamada(context);
@@ -47,31 +52,31 @@ public class SincronizarComAPiMB {
     }
 
     public void sincronizarRealmComAPi() {
-        unidadeChamada.unidadesAPI();
+//        unidadeChamada.recuperarUnidadesDoFuncionario(preferences.getSavedLong("id_funcionario"));
+//        alunoChamada.recuperarTodosAlunosAPI();
+//        turmaChamada.turmasAPI();
+//        turmaChamada.gradeCursoAPI();
+//        disciplinaChamada.disciplinasAPI();
+//        funcionarioEscola.funcionariosEscola();
+//        localEscolaChamada.localEscolaAPI();
+//        serieChamada.serieDisciplina();
+//        serieChamada.recuperarSerieAPI();
 
-        turmaChamada.turmasAPI();
-        turmaChamada.gradeCursoAPI();
-        turmaChamada.recuperarSituacaoTurmaMesAPI();
 
-        disciplinaChamada.disciplinasAPI();
-        funcionarioEscola.funcionariosEscola();
-        localEscolaChamada.localEscolaAPI();
-
-        serieChamada.serieDisciplina();
-        serieChamada.recuperarSerieAPI();
-        serieChamada.recuperarSerieTurmaAPI();
-
-        alunoChamada.recuperarTodosAlunosAPI();
         alunoChamada.recuperarTodosAlunoNotaMesAPI();
         alunoChamada.recuperarTodasDisciplinaAlunoAPI();
+//        turmaChamada.recuperarSituacaoTurmaMesAPI();
 
-        matriculaChamada.matriculaAPI();
 
-        anoLetivoChamada.anoLetivoAPI();
-        anoLetivoChamada.recuperarBimestreAPI();
+//        serieChamada.recuperarSerieTurmaAPI();
+//        matriculaChamada.matriculaAPI();
 
-        ocorrenciaChamada.recuperarTodasOcorrenciasAPI();
-        ocorrenciaChamada.recuperarTodosTiposOcorrenciaAPI();
+//        anoLetivoChamada.anoLetivoAPI();
+//        anoLetivoChamada.recuperarBimestreAPI();
+//
+//        ocorrenciaChamada.recuperarTodasOcorrenciasAPI();
+//        ocorrenciaChamada.recuperarTodosTiposOcorrenciaAPI();
+
 
     }
 

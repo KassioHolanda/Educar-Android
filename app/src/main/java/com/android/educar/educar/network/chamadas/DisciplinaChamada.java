@@ -5,12 +5,15 @@ import android.util.Log;
 
 import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.model.Disciplina;
+import com.android.educar.educar.model.GradeCurso;
+import com.android.educar.educar.model.SerieDisciplina;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.network.service.ListaDisciplinasAPI;
 
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,6 +57,33 @@ public class DisciplinaChamada {
             @Override
             public void onFailure(Call<ListaDisciplinasAPI> call, Throwable t) {
                 Log.i("ERRO API", t.getMessage());
+            }
+        });
+    }
+
+    public void recuperarDisciplinasTurma() {
+        RealmResults<SerieDisciplina> serieDisciplinas = realm.where(SerieDisciplina.class).findAll();
+
+        for (int i = 0; i < serieDisciplinas.size(); i++) {
+            recuperarDisciplinasTurma(serieDisciplinas.get(i).getDisciplina());
+        }
+    }
+
+    public void recuperarDisciplinasTurma(long disciplina) {
+        Call<Disciplina> listCall = apiService.getDisciplinaEndPoint().getDisciplina(disciplina);
+        listCall.enqueue(new Callback<Disciplina>() {
+            @Override
+            public void onResponse(Call<Disciplina> call, Response<Disciplina> response) {
+                if (response.isSuccessful()) {
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body());
+                    realm.commitTransaction();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Disciplina> call, Throwable t) {
+
             }
         });
     }

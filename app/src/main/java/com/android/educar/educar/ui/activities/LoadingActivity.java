@@ -22,10 +22,22 @@ import com.android.educar.educar.R;
 import com.android.educar.educar.model.Bimestre;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.PessoaFisica;
+import com.android.educar.educar.network.chamadas.AlunoChamada;
+import com.android.educar.educar.network.chamadas.AnoLetivoChamada;
+import com.android.educar.educar.network.chamadas.DisciplinaChamada;
 import com.android.educar.educar.network.chamadas.FuncionarioChamada;
+import com.android.educar.educar.network.chamadas.FuncionarioEscolaChamada;
+import com.android.educar.educar.network.chamadas.LocalEscolaChamada;
+import com.android.educar.educar.network.chamadas.MatriculaChamada;
+import com.android.educar.educar.network.chamadas.OcorrenciaChamada;
 import com.android.educar.educar.network.chamadas.PessoaChamada;
+import com.android.educar.educar.network.chamadas.SerieChamada;
+import com.android.educar.educar.network.chamadas.TurmaChamada;
+import com.android.educar.educar.network.chamadas.UnidadeChamada;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
+
+import io.realm.Realm;
 
 public class LoadingActivity extends AppCompatActivity {
 
@@ -37,6 +49,17 @@ public class LoadingActivity extends AppCompatActivity {
     private int statusLoading;
     private ImageView botaoAcessar;
     private Handler handler;
+
+    private UnidadeChamada unidadeChamada;
+    private TurmaChamada turmaChamada;
+    private DisciplinaChamada disciplinaChamada;
+    private FuncionarioEscolaChamada funcionarioEscola;
+    private LocalEscolaChamada localEscolaChamada;
+    private SerieChamada serieChamada;
+    private AlunoChamada alunoChamada;
+    private MatriculaChamada matriculaChamada;
+    private OcorrenciaChamada ocorrenciaChamada;
+    private AnoLetivoChamada anoLetivoChamada;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -61,11 +84,10 @@ public class LoadingActivity extends AppCompatActivity {
     }
 
     public void loading() {
-        if (!preferences.getSavedBoolean("sync")) {
+//        if (!preferences.getSavedBoolean("sync")) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -75,29 +97,31 @@ public class LoadingActivity extends AppCompatActivity {
 
                     while (statusLoading < 1) {
                         statusLoading++;
-                        android.os.SystemClock.sleep(60000);
+                        android.os.SystemClock.sleep(5000);
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
                                 progressBar.setProgress(statusLoading);
-
+                                progressBar.setVisibility(View.INVISIBLE);
+                                textLoad.setVisibility(View.INVISIBLE);
+                                botaoAcessar.setVisibility(View.VISIBLE);
                             }
                         });
                     }
                 }
             }).start();
-        } else {
-            progressBar.setVisibility(View.INVISIBLE);
-            textLoad.setVisibility(View.INVISIBLE);
-            botaoAcessar.setVisibility(View.VISIBLE);
-        }
+//        } else {
+//            progressBar.setVisibility(View.INVISIBLE);
+//            textLoad.setVisibility(View.INVISIBLE);
+//            botaoAcessar.setVisibility(View.VISIBLE);
+//        }
     }
 
     public void onClick() {
         botaoAcessar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                startActivity(new Intent(getApplicationContext(), UnidadeActivity.class));
             }
         });
     }
@@ -110,10 +134,17 @@ public class LoadingActivity extends AppCompatActivity {
 
     public void setupInit() {
         preferences = new Preferences(getApplicationContext());
-        pessoaChamada = new PessoaChamada(getApplicationContext());
-        funcionarioChamada = new FuncionarioChamada(getApplicationContext());
+
         statusLoading = 0;
         handler = new Handler();
+
+        unidadeChamada = new UnidadeChamada(getApplicationContext());
+        funcionarioEscola = new FuncionarioEscolaChamada(getApplicationContext());
+        unidadeChamada = new UnidadeChamada(getApplicationContext());
+        localEscolaChamada = new LocalEscolaChamada(getApplicationContext());
+        turmaChamada = new TurmaChamada(getApplicationContext());
+        serieChamada = new SerieChamada(getApplicationContext());
+        disciplinaChamada = new DisciplinaChamada(getApplicationContext());
     }
 
     public void settings() {
@@ -122,14 +153,12 @@ public class LoadingActivity extends AppCompatActivity {
     }
 
     public void carregarDadosSync() {
-        if (UtilsFunctions.isConnect(getApplicationContext())) {
-
-            pessoaChamada.pessoaFisicaAPI();
-            pessoaChamada.recuperarPerfilAPI();
-            pessoaChamada.recuperarUsuariosAPI();
-            funcionarioChamada.recuperarFuncionariosAPI();
-
-            preferences.saveBoolean("sync", true);
-        }
+        funcionarioEscola.funcionariosEscola(preferences.getSavedLong("id_funcionario"));
+        unidadeChamada.recuperarUndidadesProfessor();
+        localEscolaChamada.recuperarLocaisEscolaUnidade();
+//        turmaChamada.recuperarTurmasUnidade();
+//        turmaChamada.recuperarGradeCursoTurma(preferences.getSavedLong("id_funcionario"));
+//        serieChamada.recuperarSerieDisciplina();
+//        disciplinaChamada.recuperarDisciplinasTurma();
     }
 }

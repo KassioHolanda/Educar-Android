@@ -9,12 +9,13 @@
     tools:context=".ui.activities.UnidadeActivity">
 
     <ListView
-        android:layout_marginTop="4dp"
         android:id="@+id/unidades_list_view_id"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="4dp"
         android:footerDividersEnabled="true"
         android:headerDividersEnabled="true" />
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/sincronizar_dados"

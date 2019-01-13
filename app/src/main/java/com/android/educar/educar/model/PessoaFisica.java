@@ -8,14 +8,17 @@ import java.util.Date;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class PessoaFisica extends RealmObject implements Comparator {
+public class PessoaFisica extends RealmObject {
+
     @PrimaryKey
     private long id;
+    @SerializedName("cpf")
     private String cpf;
     private String nacionalidade;
     private String sexo;
     private String email;
     private String senha;
+    @SerializedName("datanascimento")
     private String dataNascimento;
     private String rg;
     private String nome;
@@ -98,10 +101,5 @@ public class PessoaFisica extends RealmObject implements Comparator {
     @Override
     public String toString() {
         return this.nome;
-    }
-
-    @Override
-    public int compare(Object o, Object t1) {
-        return 0;
     }
 }

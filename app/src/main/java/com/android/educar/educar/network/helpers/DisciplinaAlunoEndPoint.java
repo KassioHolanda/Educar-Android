@@ -14,15 +14,15 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface DisciplinaAlunoEndPoint {
-    @GET("disciplinaluno/")
+    @GET("disciplinaaluno/")
     Call<ListaDisciplinaAlunoAPI> disciplinasAluno();
 
-    @GET("disciplinaluno/{id}")
+    @GET("disciplinaaluno/id={id}/")
     Call<DisciplinaAluno> getDisciplinaAluno(@Path("id") long id);
 
-    @GET("disciplinaluno/")
+    @GET("disciplinaaluno/")
     Call<ListaDisciplinaAlunoAPI> disciplinasAluno(@Query("page") int page);
 
-    @PUT("disciplinaluno/{id}/")
+    @PUT("disciplinaaluno/id={id}/")
     Call<DisciplinaAluno> atualizarDisciplinaAluno(@Path("id") long id, @Body DisciplinaAluno disciplinaAluno);
 }

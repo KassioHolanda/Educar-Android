@@ -8,6 +8,7 @@ import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.AlunoNotaMes;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.DisciplinaAluno;
+import com.android.educar.educar.model.Matricula;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.network.service.ListaAlunoNotaMesAPI;
 import com.android.educar.educar.network.service.ListaAlunosAPI;
@@ -41,6 +42,9 @@ public class AlunoChamada {
         paginaAtualAlunos = 1;
         paginaAtualAlunoNotaMes = 1;
         paginaAtualDisciplinaAluno = 1;
+//        recuperarTodasDisciplinaAlunoAPI();
+//        recuperarTodosAlunoNotaMesAPI();
+//        recuperarTodosAlunosAPI();
     }
 
     public void configRealm() {
@@ -82,7 +86,7 @@ public class AlunoChamada {
                     realm.copyToRealmOrUpdate(response.body().getResults());
                     realm.commitTransaction();
                     if (response.body().getNext() != null) {
-                        paginaAtualAlunoNotaMes = paginaAtualDisciplinaAluno + 1;
+                        paginaAtualAlunoNotaMes = paginaAtualAlunoNotaMes + 1;
                         recuperarTodosAlunoNotaMesAPI();
                     }
                 }
@@ -206,4 +210,31 @@ public class AlunoChamada {
             }
         }
     }
+
+    public void recuperarAlunosMatricula() {
+        RealmResults<Matricula> matriculas = realm.where(Matricula.class).findAll();
+        for (int i = 0; i < matriculas.size(); i++) {
+            recuperarAlunosMatricula(matriculas.get(i).getAluno());
+        }
+    }
+
+    public void recuperarAlunosMatricula(long alunoId) {
+        Call<Aluno> alunoCall = apiService.getAlunoEndPoint().getAluno(alunoId);
+        alunoCall.enqueue(new Callback<Aluno>() {
+            @Override
+            public void onResponse(Call<Aluno> call, Response<Aluno> response) {
+                if (response.isSuccessful()) {
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body());
+                    realm.commitTransaction();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Aluno> call, Throwable t) {
+
+            }
+        });
+    }
+
 }

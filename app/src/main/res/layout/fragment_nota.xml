@@ -143,7 +143,8 @@
         android:textColor="#222"
         android:textSize="14sp" />
 
-    <android.support.v7.widget.RecyclerView
+    <ListView
+        android:layout_margin="6dp"
         android:id="@+id/alunos_nota_frequencia_recycler_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

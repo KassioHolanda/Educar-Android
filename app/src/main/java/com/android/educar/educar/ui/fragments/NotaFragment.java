@@ -9,11 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.adapter.NotaAdapter;
+import com.android.educar.educar.adapter.NotaAdapterLista;
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.Matricula;
@@ -34,7 +36,7 @@ public class NotaFragment extends Fragment {
 
     private Preferences preferences;
     private UtilsFunctions utilsFunctions;
-    private RecyclerView notasAluno;
+    private ListView notasAluno;
 
     private TextView unidadeSelecionadaAula;
     private TextView turmaSelecionadaAula;
@@ -134,9 +136,9 @@ public class NotaFragment extends Fragment {
     }
 
     public void atualizarAdapterFrequencia(List<PessoaFisica> pessoaFisicas) {
-        NotaAdapter notaFragment = new NotaAdapter(getContext(), pessoaFisicas);
+        NotaAdapterLista notaFragment = new NotaAdapterLista(pessoaFisicas,getContext());
         notasAluno.setAdapter(notaFragment);
-        notasAluno.setLayoutManager(new LinearLayoutManager(getContext()));
+//        notasAluno.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     public void atualizarDadosTela() {

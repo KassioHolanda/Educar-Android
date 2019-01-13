@@ -36,24 +36,20 @@ public class FuncionarioEscolaChamada {
         paginaAtualFuncionarioEscola = 1;
     }
 
-    public void funcionariosEscola() {
-        final Call<ListaFuncionarioEscolaAPI> listaFuncionarioEscolaAPICall = apiService.getFuncionarioEscolaEndPoint().funcionariosEscola(paginaAtualFuncionarioEscola);
-        listaFuncionarioEscolaAPICall.enqueue(new Callback<ListaFuncionarioEscolaAPI>() {
+    public void funcionariosEscola(final long funcionarioId) {
+        final Call<List<FuncionarioEscola>> listaFuncionarioEscolaAPICall = apiService.getFuncionarioEscolaEndPoint().funcionariosEscola(funcionarioId);
+        listaFuncionarioEscolaAPICall.enqueue(new Callback<List<FuncionarioEscola>>() {
             @Override
-            public void onResponse(Call<ListaFuncionarioEscolaAPI> call, Response<ListaFuncionarioEscolaAPI> response) {
+            public void onResponse(Call<List<FuncionarioEscola>> call, Response<List<FuncionarioEscola>> response) {
                 if (response.isSuccessful()) {
                     realm.beginTransaction();
-                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.copyToRealmOrUpdate(response.body());
                     realm.commitTransaction();
-                    if (response.body().getNext() !=null) {
-                        paginaAtualFuncionarioEscola = paginaAtualFuncionarioEscola+1;
-                        funcionariosEscola();
-                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<ListaFuncionarioEscolaAPI> call, Throwable t) {
+            public void onFailure(Call<List<FuncionarioEscola>> call, Throwable t) {
                 Log.i("ERRO API", t.getMessage());
             }
         });

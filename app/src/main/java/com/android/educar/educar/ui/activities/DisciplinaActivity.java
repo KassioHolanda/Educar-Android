@@ -27,6 +27,7 @@ import com.android.educar.educar.model.Professor;
 import com.android.educar.educar.model.SerieDisciplina;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
+import com.android.educar.educar.network.chamadas.AlunoChamada;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
@@ -44,21 +45,19 @@ import io.realm.RealmResults;
 
 public class DisciplinaActivity extends AppCompatActivity {
 
-    private APIService apiService;
     private Preferences preferences;
-    private UtilsFunctions utilsFunctions;
     private Messages messages;
     private ListView disciplinas;
     private TextView turmaSelecionaDisciplina;
     private TextView unidadeSelecionadaDisciplina;
     private Turma turmaSelecionada;
     private Unidade unidadeSelecionada;
-    private Professor professorLogado;
-    private List<Disciplina> disciplinasList;
     private ArrayAdapter<Disciplina> disciplinaArrayAdapter;
 
     private LinearLayout unidadeDisciplina;
     private LinearLayout turmaDisciplina;
+
+    private AlunoChamada alunoChamada;
 
     private Realm realm;
     private Set<Disciplina> disciplinasLista;
@@ -74,6 +73,12 @@ public class DisciplinaActivity extends AppCompatActivity {
         recuperarDadosRealm();
         atualizarDadosTela();
         recuperarDisciplinasRealm();
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        syncDados();
     }
 
     public void configRealm() {
@@ -144,10 +149,9 @@ public class DisciplinaActivity extends AppCompatActivity {
 
     public void setupInit() {
         preferences = new Preferences(this);
-        apiService = new APIService("");
-        utilsFunctions = new UtilsFunctions();
         messages = new Messages();
         disciplinasLista = new HashSet<>();
+        alunoChamada = new AlunoChamada(getApplicationContext());
     }
 
     public void atualizarAdapterListaDisciplinas() {
@@ -199,5 +203,9 @@ public class DisciplinaActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         realm.close();
+    }
+
+    public void syncDados() {
+        alunoChamada.recuperarAlunosMatricula();
     }
 }

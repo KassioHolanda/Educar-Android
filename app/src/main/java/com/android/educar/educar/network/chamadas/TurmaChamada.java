@@ -5,16 +5,19 @@ import android.util.Log;
 
 import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.model.GradeCurso;
+import com.android.educar.educar.model.LocalEscola;
 import com.android.educar.educar.model.SituacaoTurmaMes;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.network.service.ListaGradeCursoAPI;
 import com.android.educar.educar.network.service.ListaSituacaoTurmaMesAPI;
 import com.android.educar.educar.network.service.ListaTurmaAPI;
+import com.android.educar.educar.utils.Preferences;
 
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,12 +30,14 @@ public class TurmaChamada {
     private int paginaAtualGradeCurso;
     private int paginaAtualTurma;
     private int paginaAtualSituacaoTurmames;
+    private Preferences preferences;
 
     public TurmaChamada(Context context) {
         this.context = context;
         apiService = new APIService("");
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
+        preferences = new Preferences(context);
         paginaAtualTurma = 1;
         paginaAtualGradeCurso = 1;
         paginaAtualSituacaoTurmames = 1;
@@ -41,6 +46,32 @@ public class TurmaChamada {
     public void configRealm() {
         Realm.init(context);
         realm = Realm.getDefaultInstance();
+    }
+//
+//    public void recuperarGradeCursoTurma() {
+//        RealmResults<Turma> turmas = realm.where(Turma.class).findAll();
+//        for (int i = 0; i < turmas.size(); i++) {
+//            recuperarGradeCursoTurma(preferences.getSavedLong("id_professor"));
+//        }
+//    }
+
+    public void recuperarGradeCursoTurma(long professorId) {
+        Call<List<GradeCurso>> gradeCursoCall = apiService.getGradeCursoEndPoint().getGradeCrusoTurmaProfessor(professorId);
+        gradeCursoCall.enqueue(new Callback<List<GradeCurso>>() {
+            @Override
+            public void onResponse(Call<List<GradeCurso>> call, Response<List<GradeCurso>> response) {
+                if (response.isSuccessful()) {
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body());
+                    realm.commitTransaction();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<GradeCurso>> call, Throwable t) {
+
+            }
+        });
     }
 
 
@@ -72,6 +103,33 @@ public class TurmaChamada {
             realm.copyToRealmOrUpdate(gradeCursos.get(i));
         }
         realm.commitTransaction();
+    }
+
+    public void recuperarTurmasUnidade() {
+        RealmResults<LocalEscola> localEscolas = realm.where(LocalEscola.class).findAll();
+        for (int i = 0; i < localEscolas.size(); i++) {
+            recuperarTurmasUnidade(localEscolas.get(i).getId());
+        }
+
+    }
+
+    public void recuperarTurmasUnidade(long sala) {
+        Call<List<Turma>> listCall = apiService.getTurmaEndPoint().turmasUnidade(sala);
+        listCall.enqueue(new Callback<List<Turma>>() {
+            @Override
+            public void onResponse(Call<List<Turma>> call, Response<List<Turma>> response) {
+                if (response.isSuccessful()) {
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body());
+                    realm.commitTransaction();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Turma>> call, Throwable t) {
+
+            }
+        });
     }
 
     public void turmasAPI() {

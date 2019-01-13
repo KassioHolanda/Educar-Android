@@ -5,6 +5,8 @@ import com.android.educar.educar.model.Nota;
 import com.android.educar.educar.network.service.ListaGradeCursoAPI;
 import com.android.educar.educar.network.service.ListaLocalEscolaAPI;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -19,4 +21,7 @@ public interface LocalEscolaEndPoint {
 
     @GET("localescola/")
     Call<ListaLocalEscolaAPI> locaisEscola(@Query("page") int page);
+
+    @GET("localescola/unidade={unidade}/")
+    Call<List<LocalEscola>> locaisEscolaUnidade(@Path("unidade") long unidade);
 }

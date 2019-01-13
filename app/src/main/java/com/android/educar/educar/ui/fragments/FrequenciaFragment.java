@@ -35,6 +35,7 @@ import com.android.educar.educar.utils.UtilsFunctions;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -45,7 +46,6 @@ import io.realm.RealmResults;
 public class FrequenciaFragment extends Fragment {
 
     private Preferences preferences;
-    private UtilsFunctions utilsFunctions;
     private ListView alunosFrequencia;
     private TextView unidadeSelecionadaAula;
     private TextView turmaSelecionadaAula;
@@ -97,7 +97,6 @@ public class FrequenciaFragment extends Fragment {
 
     public void setupInit() {
         preferences = new Preferences(getContext());
-        utilsFunctions = new UtilsFunctions();
         frequenciaMB = new FrequenciaMB(getContext());
         pessoaFisicas = new ArrayList<>();
     }
@@ -130,7 +129,7 @@ public class FrequenciaFragment extends Fragment {
         salvarFrequencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Frequência Registrada!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Frequência do dia " + new Date().getDate() + " Registrada!", Toast.LENGTH_LONG).show();
                 frequenciaMB.salvarFrequencia();
                 getActivity().finish();
             }
@@ -159,10 +158,6 @@ public class FrequenciaFragment extends Fragment {
     }
 
     public void atualizarAdapterFrequencia(ArrayList<PessoaFisica> pessoaFisicas) {
-//        FrequenciaAdapter frequenciaAdapter = new FrequenciaAdapter(getContext(), pessoaFisicas);
-//        alunosFrequencia.setAdapter(frequenciaAdapter);
-//        alunosFrequencia.setLayoutManager(new LinearLayoutManager(getContext()));
-
         FrequenciaAdapterLista frequenciaAdapterLista = new FrequenciaAdapterLista(getContext(), pessoaFisicas);
         alunosFrequencia.setAdapter(frequenciaAdapterLista);
     }

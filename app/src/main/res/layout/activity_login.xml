@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
+    android:background="#fff"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp"
@@ -20,11 +20,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily=""
+        android:fontFamily="sans-serif-condensed"
         android:gravity="center"
         android:padding="30dp"
         android:text="E - Ducar"
-        android:textColor="#fff"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="50sp" />
 
     <EditText
@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
-        android:background="#ecf4fc"
+        android:background="@drawable/borda_arredondada"
         android:hint="CPF"
         android:inputType="number"
         android:padding="10dp"
@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:background="#ecf4fc"
+        android:background="@drawable/borda_arredondada"
         android:hint="Senha "
         android:inputType="textPassword"
         android:padding="10dp"
@@ -55,7 +55,7 @@
         android:id="@+id/acessar_login_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorButton"
+        android:background="@drawable/borda_arredondada_botao"
         android:text="Acessar"
         android:textColor="#fff"
         android:textSize="16sp" />

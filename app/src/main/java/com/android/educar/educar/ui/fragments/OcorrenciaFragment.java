@@ -200,7 +200,7 @@ public class OcorrenciaFragment extends Fragment {
 
                         salvarOcorrenciaRealm(tipoOcorrencia, ocorrenciaText.getText().toString());
 
-                        Toast.makeText(getContext(), "Notificação Salva!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Notificação Salva!", Toast.LENGTH_LONG).show();
                     }
                 }).setNegativeButton("Cancelar", null).show();
 
