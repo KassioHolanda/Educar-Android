@@ -99,15 +99,41 @@ public class AlunoChamada {
         });
     }
 
+    public void recuperarDisciplinaAlunoMatricula() {
+        RealmResults<Matricula> matriculas = Realm.getDefaultInstance().where(Matricula.class).findAll();
+        for (int i = 0; i < matriculas.size(); i++) {
+            recuperarDisciplinaAlunoMatricula(matriculas.get(i).getId());
+        }
+    }
+
+    public void recuperarDisciplinaAlunoMatricula(long matriculaId) {
+        Call<List<DisciplinaAluno>> listCall = apiService.getDisciplinaAlunoEndPoint().disciplinasAluno(matriculaId);
+        listCall.enqueue(new Callback<List<DisciplinaAluno>>() {
+            @Override
+            public void onResponse(Call<List<DisciplinaAluno>> call, Response<List<DisciplinaAluno>> response) {
+                if (response.isSuccessful()) {
+                    Realm.getDefaultInstance().beginTransaction();
+                    Realm.getDefaultInstance().copyToRealmOrUpdate(response.body());
+                    Realm.getDefaultInstance().commitTransaction();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DisciplinaAluno>> call, Throwable t) {
+
+            }
+        });
+    }
+
     public void recuperarTodasDisciplinaAlunoAPI() {
         Call<ListaDisciplinaAlunoAPI> listaAlunosAPICall = apiService.getDisciplinaAlunoEndPoint().disciplinasAluno(paginaAtualDisciplinaAluno);
         listaAlunosAPICall.enqueue(new Callback<ListaDisciplinaAlunoAPI>() {
             @Override
             public void onResponse(Call<ListaDisciplinaAlunoAPI> call, Response<ListaDisciplinaAlunoAPI> response) {
                 if (response.isSuccessful()) {
-                    realm.beginTransaction();
-                    realm.copyToRealmOrUpdate(response.body().getResults());
-                    realm.commitTransaction();
+                    Realm.getDefaultInstance().beginTransaction();
+                    Realm.getDefaultInstance().copyToRealmOrUpdate(response.body().getResults());
+                    Realm.getDefaultInstance().commitTransaction();
                     if (response.body().getNext() != null) {
                         paginaAtualDisciplinaAluno = paginaAtualDisciplinaAluno + 1;
                         recuperarTodasDisciplinaAlunoAPI();

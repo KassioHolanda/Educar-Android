@@ -10,8 +10,17 @@ public class GradeCurso extends RealmObject {
     private long professor;
     private long turma;
     private long seriedisciplina;
+    private long disciplina;
 
     public GradeCurso() {
+    }
+
+    public long getDisciplina() {
+        return disciplina;
+    }
+
+    public void setDisciplina(long disciplina) {
+        this.disciplina = disciplina;
     }
 
     public long getId() {

@@ -63,7 +63,6 @@ public class DisciplinaChamada {
 
     public void recuperarDisciplinasTurma() {
         RealmResults<SerieDisciplina> serieDisciplinas = realm.where(SerieDisciplina.class).findAll();
-
         for (int i = 0; i < serieDisciplinas.size(); i++) {
             recuperarDisciplinasTurma(serieDisciplinas.get(i).getDisciplina());
         }

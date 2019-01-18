@@ -2,12 +2,16 @@ package com.android.educar.educar.network.chamadas;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.widget.Toast;
 
 import com.android.educar.educar.dao.RealmObjectsDAO;
+import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.GradeCurso;
 import com.android.educar.educar.model.Serie;
 import com.android.educar.educar.model.SerieDisciplina;
 import com.android.educar.educar.model.SerieTurma;
+import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.network.service.ListaSerieAPI;
 import com.android.educar.educar.network.service.ListaSerieDisciplinaAPI;
@@ -29,6 +33,7 @@ public class SerieChamada {
     private int paginaAtualSerieDisciplina;
     private int paginaAtualSerieTurma;
     private int paginaAtualSerie;
+    private DisciplinaChamada disciplinaChamada;
 
 
     public SerieChamada(Context context) {
@@ -39,6 +44,7 @@ public class SerieChamada {
         paginaAtualSerie = 1;
         paginaAtualSerieDisciplina = 1;
         paginaAtualSerieTurma = 1;
+        disciplinaChamada = new DisciplinaChamada(context);
     }
 
 
@@ -97,35 +103,60 @@ public class SerieChamada {
     }
 
     public void recuperarSerieAPI() {
-        Call<ListaSerieAPI> listaSerieDisciplinaAPICall = apiService.getSerieEndPoint().series(paginaAtualSerie);
+        RealmResults<Turma> turmas = realm.where(Turma.class).findAll();
+        for (int i = 0; i < turmas.size(); i++) {
+            recuperarSerieAPI(turmas.get(i).getSerie());
+        }
+    }
 
-        listaSerieDisciplinaAPICall.enqueue(new Callback<ListaSerieAPI>() {
+    public void recuperarSerieAPI(long serieID) {
+        Call<Serie> listaSerieDisciplinaAPICall = apiService.getSerieEndPoint().getSerie(serieID);
+        listaSerieDisciplinaAPICall.enqueue(new Callback<Serie>() {
             @Override
-            public void onResponse(Call<ListaSerieAPI> call, Response<ListaSerieAPI> response) {
+            public void onResponse(Call<Serie> call, Response<Serie> response) {
                 if (response.isSuccessful()) {
-                    realm.beginTransaction();
-                    realm.copyToRealmOrUpdate(response.body().getResults());
-                    realm.commitTransaction();
-                    if (response.body().getNext() != null) {
-                        paginaAtualSerie = paginaAtualSerie + 1;
-                        recuperarSerieAPI();
-                    }
+                    Realm.getDefaultInstance().beginTransaction();
+                    Realm.getDefaultInstance().copyToRealmOrUpdate(response.body());
+                    Realm.getDefaultInstance().commitTransaction();
                 }
             }
 
             @Override
-            public void onFailure(Call<ListaSerieAPI> call, Throwable t) {
+            public void onFailure(Call<Serie> call, Throwable t) {
                 Log.i("ERRO API", t.getMessage());
+                Toast.makeText(context, "ERRO - " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
     public void recuperarSerieDisciplina() {
         RealmResults<GradeCurso> gradeCursos = realm.where(GradeCurso.class).findAll();
-
         for (int i = 0; i < gradeCursos.size(); i++) {
+
             recuperarSerieDisciplina(gradeCursos.get(i).getSeriedisciplina());
+            recuperarSerieDisciplinaPelaDisciplina(gradeCursos.get(i).getDisciplina());
+            disciplinaChamada.recuperarDisciplinasTurma(gradeCursos.get(i).getDisciplina());
+
         }
+    }
+
+    public void recuperarSerieDisciplinaPelaDisciplina(long disciplinaId) {
+        Call<List<SerieDisciplina>> listCall = apiService.getSerieDisciplinaEndPoint().serieDisciplinas(disciplinaId);
+        listCall.enqueue(new Callback<List<SerieDisciplina>>() {
+            @Override
+            public void onResponse(Call<List<SerieDisciplina>> call, Response<List<SerieDisciplina>> response) {
+                if (response.isSuccessful()) {
+                    Realm.getDefaultInstance().beginTransaction();
+                    Realm.getDefaultInstance().copyToRealmOrUpdate(response.body());
+                    Realm.getDefaultInstance().commitTransaction();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<SerieDisciplina>> call, Throwable t) {
+
+            }
+        });
     }
 
     public void recuperarSerieDisciplina(long serieDisciplina) {
@@ -134,9 +165,9 @@ public class SerieChamada {
             @Override
             public void onResponse(Call<SerieDisciplina> call, Response<SerieDisciplina> response) {
                 if (response.isSuccessful()) {
-                    realm.beginTransaction();
-                    realm.copyToRealmOrUpdate(response.body());
-                    realm.commitTransaction();
+                    Realm.getDefaultInstance().beginTransaction();
+                    Realm.getDefaultInstance().copyToRealmOrUpdate(response.body());
+                    Realm.getDefaultInstance().commitTransaction();
                 }
             }
 

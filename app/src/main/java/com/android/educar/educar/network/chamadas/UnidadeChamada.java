@@ -37,7 +37,7 @@ public class UnidadeChamada {
     }
 
     public void recuperarUndidadesProfessor() {
-        RealmResults<FuncionarioEscola> funcionarioEscolas = realm.where(FuncionarioEscola.class).findAll();
+        RealmResults<FuncionarioEscola> funcionarioEscolas = Realm.getDefaultInstance().where(FuncionarioEscola.class).findAll();
 
         for (int i = 0; i < funcionarioEscolas.size(); i++) {
             unidadesAPI(funcionarioEscolas.get(i).getUnidade());

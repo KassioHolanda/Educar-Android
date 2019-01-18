@@ -39,7 +39,7 @@ public class LocalEscolaChamada {
 
 
     public void recuperarLocaisEscolaUnidade() {
-        RealmResults<Unidade> unidades = realm.where(Unidade.class).findAll();
+        RealmResults<Unidade> unidades = Realm.getDefaultInstance().where(Unidade.class).findAll();
         for(int i =0; i< unidades.size();i++) {
             recuperarLocaisEscolaDaUnidade(unidades.get(i).getId());
         }
@@ -51,9 +51,9 @@ public class LocalEscolaChamada {
             @Override
             public void onResponse(Call<List<LocalEscola>> call, Response<List<LocalEscola>> response) {
                 if (response.isSuccessful()) {
-                    realm.beginTransaction();
-                    realm.copyToRealmOrUpdate(response.body());
-                    realm.commitTransaction();
+                    Realm.getDefaultInstance().beginTransaction();
+                    Realm.getDefaultInstance().copyToRealmOrUpdate(response.body());
+                    Realm.getDefaultInstance().commitTransaction();
                 }
             }
 

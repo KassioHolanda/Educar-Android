@@ -42,8 +42,7 @@ public class Ocorrencia extends RealmObject {
         novo = false;
     }
 
-    public Ocorrencia(long id, String datahora, String dataHoraCadastro, long funcionarioEscola, String descricao, long matriculaAluno, long tipoOcorrencia, long aluno, long anoLetivo, long funcionario, long unidade, boolean enviadoSms, Date dataEnvioSms, String resumoSms, String observacao, int numeroTelefone, boolean novo) {
-        this.id = id;
+    public Ocorrencia(String datahora, String dataHoraCadastro, long funcionarioEscola, String descricao, long matriculaAluno, long tipoOcorrencia, long aluno, long anoLetivo, long funcionario, long unidade, boolean enviadoSms, Date dataEnvioSms, String resumoSms, String observacao, int numeroTelefone, boolean novo) {
         this.datahora = datahora;
         this.datahoracadastro = dataHoraCadastro;
         this.funcionarioEscola = funcionarioEscola;

@@ -6,6 +6,8 @@ import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.network.service.ListaDisciplinaAlunoAPI;
 import com.android.educar.educar.network.service.ListaUnidadesAPI;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -25,4 +27,7 @@ public interface DisciplinaAlunoEndPoint {
 
     @PUT("disciplinaaluno/id={id}/")
     Call<DisciplinaAluno> atualizarDisciplinaAluno(@Path("id") long id, @Body DisciplinaAluno disciplinaAluno);
+
+    @GET("disciplinaaluno/matricula={matricula}/")
+    Call<List<DisciplinaAluno>> disciplinasAluno(@Path("matricula") long matricula);
 }

@@ -14,8 +14,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.educar.educar.R;
+import com.android.educar.educar.adapter.FrequenciaAdapterLista;
+import com.android.educar.educar.adapter.TurmaAdapter;
 import com.android.educar.educar.model.GradeCurso;
 import com.android.educar.educar.model.LocalEscola;
 import com.android.educar.educar.model.Matricula;
@@ -42,7 +45,7 @@ public class TurmaActivity extends AppCompatActivity {
     private Unidade unidadeSelecionada;
     private TextView unidadeSelecionadaTurma;
     private CardView unidade;
-    private ArrayAdapter<Turma> turmaArrayAdapter;
+    private TurmaAdapter turmaArrayAdapter;
     private List<Turma> turmaList;
     private Realm realm;
     private Messages messages;
@@ -58,23 +61,28 @@ public class TurmaActivity extends AppCompatActivity {
         bindind();
         setupInit();
         onClickItem();
-        configRealm();
-        recuperarDadosRealm();
-        atualizarAdapterListaTurmas();
-        atualizarDadosTela();
-        recuperarTurmas();
         settings();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        configRealm();
         syncDados();
+        recuperarDadosRealm();
+        atualizarDadosTela();
+        recuperarTurmas();
+        atualizarAdapterListaTurmas();
+        mensagemInicial();
     }
 
     public void settings() {
         unidade.setCardElevation(2);
         unidade.setElevation(2);
+    }
+
+    public void mensagemInicial() {
+        Toast.makeText(getApplicationContext(), "Selecione uma Turma para Continuar!", Toast.LENGTH_LONG).show();
     }
 
     public void bindind() {
@@ -84,11 +92,19 @@ public class TurmaActivity extends AppCompatActivity {
     }
 
     public void recuperarTurmas() {
-        RealmResults<LocalEscola> localEscolas = realm.where(LocalEscola.class).equalTo("unidade", preferences.getSavedLong("id_unidade")).findAll();
+        RealmResults<LocalEscola> localEscolas = realm.where(LocalEscola.class).equalTo("unidade", preferences.getSavedLong("id_unidade"))
+                .notEqualTo("descricao", "LOCAL MIGRACAO")
+                .notEqualTo("descricao", "DEPOSITO DE ALIMENTOS")
+                .notEqualTo("descricao", "CANTINA")
+                .notEqualTo("descricao", "BANHEIRO MASCULINO")
+                .notEqualTo("descricao", "BANHEIRO FEMININO")
+                .findAll();
         List<Turma> turmasEscola = new ArrayList<>();
 
         for (int i = 0; i < localEscolas.size(); i++) {
-            List<Turma> turmas = realm.where(Turma.class).equalTo("sala", localEscolas.get(i).getId()).equalTo("statusTurma", "CADASTRADA").notEqualTo("nivel", "INFANTIL").findAll();
+            List<Turma> turmas = realm.where(Turma.class).equalTo("sala", localEscolas.get(i).getId())
+                    .equalTo("statusTurma", "CADASTRADA")
+                    .notEqualTo("nivel", "INFANTIL").findAll();
             for (int j = 0; j < turmas.size(); j++) {
                 turmasEscola.add(turmas.get(j));
             }
@@ -129,6 +145,7 @@ public class TurmaActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Turma turma = (Turma) turmas.getItemAtPosition(position);
                 preferences.saveLong("id_turma", turma.getId());
+                preferences.saveLong("id_serie", turma.getSerie());
                 preferences.saveLong("id_anoletivo", turma.getAnoLetivo());
                 preferences.saveLong("id_serie", turma.getSerie());
                 nextAcitivity();
@@ -148,7 +165,11 @@ public class TurmaActivity extends AppCompatActivity {
     }
 
     public void atualizarAdapterListaTurmas() {
-        turmaArrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, turmaList);
+        if (turmaList.size() == 0) {
+            alertaInformacaoSemTurmas();
+        }
+
+        turmaArrayAdapter = new TurmaAdapter(getApplicationContext(), turmaList);
         this.turmas.setAdapter(turmaArrayAdapter);
     }
 
@@ -170,7 +191,7 @@ public class TurmaActivity extends AppCompatActivity {
     public void alertaInformacaoSemTurmas() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Informações!");
-        builder.setMessage("Você não possui Turmas!");
+        builder.setMessage("Esta Unidade não possui Turmas!");
         builder.setCancelable(false);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -196,10 +217,12 @@ public class TurmaActivity extends AppCompatActivity {
     }
 
     public void syncDados() {
+//        if (!preferences.getSavedBoolean("sync_turma")) {
+        serieChamada.recuperarSerieAPI();
         serieChamada.recuperarSerieDisciplina();
         disciplinaChamada.recuperarDisciplinasTurma();
         matriculaChamada.recuperarMatriculasTurmas();
+        preferences.saveBoolean("sync_turma", true);
+//        }
     }
-
-
 }

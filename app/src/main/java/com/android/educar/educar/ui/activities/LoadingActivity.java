@@ -61,6 +61,7 @@ public class LoadingActivity extends AppCompatActivity {
     private OcorrenciaChamada ocorrenciaChamada;
     private AnoLetivoChamada anoLetivoChamada;
 
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,6 +157,9 @@ public class LoadingActivity extends AppCompatActivity {
         funcionarioEscola.funcionariosEscola(preferences.getSavedLong("id_funcionario"));
         unidadeChamada.recuperarUndidadesProfessor();
         localEscolaChamada.recuperarLocaisEscolaUnidade();
+
+//        serieChamada.recuperarSerieDisciplina();
+
 //        turmaChamada.recuperarTurmasUnidade();
 //        turmaChamada.recuperarGradeCursoTurma(preferences.getSavedLong("id_funcionario"));
 //        serieChamada.recuperarSerieDisciplina();

@@ -42,9 +42,9 @@ public class FuncionarioEscolaChamada {
             @Override
             public void onResponse(Call<List<FuncionarioEscola>> call, Response<List<FuncionarioEscola>> response) {
                 if (response.isSuccessful()) {
-                    realm.beginTransaction();
-                    realm.copyToRealmOrUpdate(response.body());
-                    realm.commitTransaction();
+                    Realm.getDefaultInstance().beginTransaction();
+                    Realm.getDefaultInstance().copyToRealmOrUpdate(response.body());
+                    Realm.getDefaultInstance().commitTransaction();
                 }
             }
 

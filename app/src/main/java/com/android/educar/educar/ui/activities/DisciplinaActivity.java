@@ -69,16 +69,6 @@ public class DisciplinaActivity extends AppCompatActivity {
         binding();
         setupInit();
         onClickItem();
-        configRealm();
-        recuperarDadosRealm();
-        atualizarDadosTela();
-        recuperarDisciplinasRealm();
-    }
-
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
-        syncDados();
     }
 
     public void configRealm() {
@@ -92,7 +82,7 @@ public class DisciplinaActivity extends AppCompatActivity {
     }
 
     public void recuperarDisciplinasRealm() {
-        RealmResults<GradeCurso> gradeCursos = realm.where(GradeCurso.class).equalTo("professor", preferences.getSavedLong("id_funcionario")).findAll();
+        RealmResults<GradeCurso> gradeCursos = realm.where(GradeCurso.class).findAll();
         List<SerieDisciplina> serieDisciplinas = new ArrayList<>();
 
         for (int i = 0; i < gradeCursos.size(); i++) {
@@ -108,6 +98,12 @@ public class DisciplinaActivity extends AppCompatActivity {
                 disciplinasLista.add(disciplina);
             }
         }
+
+        RealmResults<Disciplina> disciplinas = realm.where(Disciplina.class).findAll();
+        for (int i = 0; i < disciplinas.size(); i++) {
+            disciplinasLista.add(disciplinas.get(i));
+        }
+
     }
 
     public void binding() {
@@ -196,13 +192,12 @@ public class DisciplinaActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        configRealm();
+        recuperarDadosRealm();
+        atualizarDadosTela();
+        recuperarDisciplinasRealm();
         atualizarAdapterListaDisciplinas();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        realm.close();
+        syncDados();
     }
 
     public void syncDados() {

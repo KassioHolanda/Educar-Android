@@ -31,9 +31,9 @@ public class RealmObjectsDAO {
     }
 
     public void salvarRealm(final RealmModel o) {
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(o);
-        realm.commitTransaction();
+        Realm.getDefaultInstance().beginTransaction();
+        Realm.getDefaultInstance().copyToRealmOrUpdate(o);
+        Realm.getDefaultInstance().commitTransaction();
     }
 
     public Object recuperarObjetoPorId(Long id, Object o) {

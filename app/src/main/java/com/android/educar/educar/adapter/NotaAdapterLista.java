@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.mb.NotaMB;
@@ -137,8 +138,9 @@ public class NotaAdapterLista extends BaseAdapter {
                             alertaInformacao();
                         } else {
                             notaMB.salvarAlunoNotaMes(nota.getText().toString());
-                            Snackbar.make(viewDialog, "Nota Inserida ao aluno " + nomeAlunoNota + "!", Snackbar.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Nota Inserida ao aluno " + nomeAlunoNota + "!", Toast.LENGTH_LONG).show();
                             preferences.saveFloat("id_nota_bimestre", Float.parseFloat(nota.getText().toString()));
+                            Toast.makeText(context, "NOTA INSERIDA " + preferences.getSavedLong("id_nota_bimestre"), Toast.LENGTH_LONG).show();
                             atualizarFragment();
                         }
                     }

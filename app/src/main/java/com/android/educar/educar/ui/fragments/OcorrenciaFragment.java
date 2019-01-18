@@ -200,7 +200,9 @@ public class OcorrenciaFragment extends Fragment {
 
                         salvarOcorrenciaRealm(tipoOcorrencia, ocorrenciaText.getText().toString());
 
-                        Toast.makeText(getContext(), "Notificação Salva!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "A Notificação foi Registrada para o Aluno "
+                                + realm.where(PessoaFisica.class).equalTo("id", preferences.getSavedLong("id_pessoafisica")).findFirst().getNome()
+                                + "!", Toast.LENGTH_LONG).show();
                     }
                 }).setNegativeButton("Cancelar", null).show();
 
@@ -211,7 +213,6 @@ public class OcorrenciaFragment extends Fragment {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
         Ocorrencia ocorrencia = new Ocorrencia(
-                realm.where(Ocorrencia.class).findAll().size() + 1,
                 simpleDateFormat.format(new Date()),
                 simpleDateFormat.format(new Date()),
                 realm.where(FuncionarioEscola.class)

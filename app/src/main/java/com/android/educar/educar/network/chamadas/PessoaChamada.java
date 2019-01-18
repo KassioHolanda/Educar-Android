@@ -66,10 +66,15 @@ public class PessoaChamada {
     }
 
     public void salvarPessoa(List<PessoaFisica> objects) {
-        realmObjectsDAO.salvarRealm(objects.get(0));
-        preferences.saveLong("id_pessoafisica", objects.get(0).getId());
-        preferences.saveBoolean("pessoafisica_encontrado", true);
-        preferences.saveString("pessoafisica_senha", objects.get(0).getSenha());
+        try {
+            realmObjectsDAO.salvarRealm(objects.get(0));
+            preferences.saveLong("id_pessoafisica", objects.get(0).getId());
+            preferences.saveBoolean("pessoafisica_encontrado", true);
+            preferences.saveString("pessoafisica_senha", objects.get(0).getSenha());
+        } catch (IndexOutOfBoundsException e) {
+
+        }
+
     }
 
     public void recuperarUsuarioPessoaFisica(long pessoaFisica) {
@@ -90,10 +95,15 @@ public class PessoaChamada {
     }
 
     public void salvarUsuario(List<Usuario> usuarios) {
-        realmObjectsDAO.salvarRealm(usuarios.get(0));
-        preferences.saveLong("id_usuario", usuarios.get(0).getId());
-        preferences.saveLong("usuario_perfil", usuarios.get(0).getPerfil());
-        preferences.saveBoolean("usuario_encontrado", true);
+        try {
+            realmObjectsDAO.salvarRealm(usuarios.get(0));
+            preferences.saveLong("id_usuario", usuarios.get(0).getId());
+            preferences.saveLong("usuario_perfil", usuarios.get(0).getPerfil());
+            preferences.saveBoolean("usuario_encontrado", true);
+        } catch (IndexOutOfBoundsException e) {
+            Toast.makeText(context, "Solicite Adminstador", Toast.LENGTH_LONG).show();
+            Log.e("ERRO_API", e.getMessage());
+        }
     }
 
 
@@ -154,9 +164,7 @@ public class PessoaChamada {
             @Override
             public void onResponse(Call<List<Perfil>> call, Response<List<Perfil>> response) {
                 if (response.isSuccessful()) {
-                    realmObjectsDAO.salvarRealm(response.body().get(0));
-                    preferences.saveLong("id_perfil", response.body().get(0).getId());
-                    preferences.saveBoolean("usuario_encontrado", true);
+                    salvarPerfil(response.body());
                 }
             }
 
@@ -166,6 +174,18 @@ public class PessoaChamada {
 
             }
         });
+    }
+
+    public void salvarPerfil(List<Perfil> perfils) {
+        try {
+            realmObjectsDAO.salvarRealm(perfils.get(0));
+            preferences.saveLong("id_perfil", perfils.get(0).getId());
+            preferences.saveBoolean("usuario_encontrado", true);
+        } catch (IndexOutOfBoundsException e) {
+            Toast.makeText(context, "Solicite Administrador", Toast.LENGTH_LONG).show();
+            Log.i("ERRo_API", e.getMessage());
+        }
+
     }
 
     public void recuperarPessoaAlunos() {

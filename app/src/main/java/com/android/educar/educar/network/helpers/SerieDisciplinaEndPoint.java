@@ -5,6 +5,8 @@ import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.network.service.ListaSerieDisciplinaAPI;
 import com.android.educar.educar.network.service.ListaTurmaAPI;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -16,6 +18,9 @@ public interface SerieDisciplinaEndPoint {
 
     @GET("seriedisciplina/id={id}/")
     Call<SerieDisciplina> getSerieDisciplinas(@Path("id") long id);
+
+    @GET("seriedisciplina/disciplina={disciplina}/")
+    Call<List<SerieDisciplina>> serieDisciplinas(@Path("disciplina") long disciplina);
 
     @GET("seriedisciplina/")
     Call<ListaSerieDisciplinaAPI> serieDisciplinas(@Query("page") int page);

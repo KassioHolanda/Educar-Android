@@ -14,11 +14,6 @@ public class Serie extends RealmObject {
     public Serie() {
     }
 
-    public Serie(String descricao, String nivel) {
-        this.descricao = descricao;
-        this.nivel = nivel;
-    }
-
     public long getId() {
         return id;
     }

@@ -14,6 +14,7 @@ import com.android.educar.educar.mb.PessoaFisicaMB;
 import com.android.educar.educar.model.Funcionario;
 import com.android.educar.educar.model.Perfil;
 import com.android.educar.educar.model.PessoaFisica;
+import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.model.Usuario;
 import com.android.educar.educar.network.chamadas.FuncionarioChamada;
 import com.android.educar.educar.network.chamadas.PessoaChamada;
@@ -48,12 +49,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         binding();
         setupInit();
-        verificarUsuarioLogado();
-        verificarConexao();
         onClickItem();
         settings();
-        limpar();
-        configRealm();
     }
 
     public void configRealm() {
@@ -103,9 +100,9 @@ public class LoginActivity extends AppCompatActivity {
                     pessoaFisicaMB.recuperarPesoaFisica(cpf.getText().toString());
 
                     long id = preferences.getSavedLong("id_pessoafisica");
+
                     funcionarioMB.recuperarFuncionarioUsuario(preferences.getSavedLong("id_pessoafisica"));
                     pessoaFisicaMB.recuperarUsuario(preferences.getSavedLong("id_pessoafisica"));
-
 
 //                    funcionarioMB.recuperarFuncionarioUsuario();
                     recuperarPessoaFisica();
@@ -120,7 +117,10 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        realm.refresh();
+        configRealm();
+        verificarUsuarioLogado();
+        verificarConexao();
+        limpar();
     }
 
     public void recuperarUsuario() {
@@ -136,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void recuperarPessoaFisica() {
         if (preferences.getSavedBoolean("pessoafisica_encontrado")) {
-            recuperarUsuario();
+//            recuperarUsuario();
             recuperarFuncionario();
         } else {
             Toast.makeText(getApplicationContext(), "CPF não Encontrado!", Toast.LENGTH_LONG).show();

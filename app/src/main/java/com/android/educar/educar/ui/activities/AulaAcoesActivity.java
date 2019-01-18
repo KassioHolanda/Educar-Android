@@ -14,9 +14,13 @@ import android.widget.TextView;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.model.Disciplina;
+import com.android.educar.educar.model.Serie;
+import com.android.educar.educar.model.TipoOcorrencia;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
+import com.android.educar.educar.network.chamadas.AlunoChamada;
 import com.android.educar.educar.network.chamadas.MatriculaChamada;
+import com.android.educar.educar.network.chamadas.OcorrenciaChamada;
 import com.android.educar.educar.network.chamadas.PessoaChamada;
 import com.android.educar.educar.utils.Preferences;
 
@@ -26,6 +30,7 @@ public class AulaAcoesActivity extends AppCompatActivity {
     private TextView unidade;
     private TextView disciplina;
     private TextView turma;
+    private TextView serieacoes;
     private Preferences preferences;
 
     private LinearLayout paginaNotas;
@@ -35,22 +40,24 @@ public class AulaAcoesActivity extends AppCompatActivity {
 
     private Realm realm;
     private PessoaChamada pessoaChamada;
+    private OcorrenciaChamada ocorrenciaChamada;
+    private AlunoChamada alunoChamada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aula_acoes);
-        settings();
         binding();
-        configRealm();
         setupInit();
-        atualizarDados();
+        settings();
         clickOnItem();
     }
 
     public void setupInit() {
         preferences = new Preferences(getApplicationContext());
         pessoaChamada = new PessoaChamada(getApplicationContext());
+        ocorrenciaChamada = new OcorrenciaChamada(getApplicationContext());
+        alunoChamada = new AlunoChamada(getApplicationContext());
     }
 
 
@@ -63,6 +70,7 @@ public class AulaAcoesActivity extends AppCompatActivity {
         unidade.setText(realm.where(Unidade.class).equalTo("id", preferences.getSavedLong("id_unidade")).findFirst().getNome());
         turma.setText(realm.where(Turma.class).equalTo("id", preferences.getSavedLong("id_turma")).findFirst().getDescricao());
         disciplina.setText(realm.where(Disciplina.class).equalTo("id", preferences.getSavedLong("id_disciplina")).findFirst().getDescricao());
+        serieacoes.setText(realm.where(Serie.class).equalTo("id", preferences.getSavedLong("id_serie")).findFirst().getDescricao());
     }
 
     public void clickOnItem() {
@@ -102,6 +110,7 @@ public class AulaAcoesActivity extends AppCompatActivity {
         paginaFrequencia = findViewById(R.id.frequencias_id);
         paginaNotas = findViewById(R.id.notas_id);
         paginaOcorrencia = findViewById(R.id.ocorrencias_id);
+        serieacoes = findViewById(R.id.serieacoes_id);
         floatingActionButton = findViewById(R.id.fab_home_id);
     }
 
@@ -138,11 +147,15 @@ public class AulaAcoesActivity extends AppCompatActivity {
 
     public void syncAlunos() {
         pessoaChamada.recuperarPessoaAlunos();
+        ocorrenciaChamada.recuperarTodosTiposOcorrenciaAPI();
+        alunoChamada.recuperarDisciplinaAlunoMatricula();
     }
 
     @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
+    protected void onResume() {
+        super.onResume();
+        configRealm();
+        atualizarDados();
         syncAlunos();
     }
 }

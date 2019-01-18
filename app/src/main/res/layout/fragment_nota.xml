@@ -25,7 +25,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:orientation="horizontal"
                 android:padding="5dp">
@@ -39,7 +39,7 @@
                 <LinearLayout
                     android:id="@+id/layout_unidade_nota_id"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="5"
                     android:gravity="center|left"
                     android:orientation="vertical"
@@ -71,7 +71,7 @@
                 <LinearLayout
                     android:id="@+id/layout_turma_nota_id"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="5"
                     android:gravity="center|left"
                     android:orientation="vertical"
@@ -90,7 +90,7 @@
                         android:layout_height="wrap_content"
                         android:text="turma"
                         android:textColor="@color/colorTextTabs"
-                        android:textSize="16sp"
+                        android:textSize="13sp"
                         android:textStyle="bold"></TextView>
 
                 </LinearLayout>
@@ -104,7 +104,7 @@
                 <LinearLayout
                     android:id="@+id/layout_disciplina_nota_id"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="5"
                     android:gravity="center|left"
                     android:orientation="vertical"
@@ -123,7 +123,7 @@
                         android:layout_height="wrap_content"
                         android:text="disciplina"
                         android:textColor="@color/colorTextTabs"
-                        android:textSize="16sp"
+                        android:textSize="13sp"
                         android:textStyle="bold"></TextView>
                 </LinearLayout>
             </LinearLayout>

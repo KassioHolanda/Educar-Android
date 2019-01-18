@@ -22,6 +22,7 @@ import com.android.educar.educar.bo.RealmObjectsBO;
 import com.android.educar.educar.mb.SincronizarComAPiMB;
 import com.android.educar.educar.model.FuncionarioEscola;
 import com.android.educar.educar.model.Unidade;
+import com.android.educar.educar.network.chamadas.SerieChamada;
 import com.android.educar.educar.network.chamadas.TurmaChamada;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
@@ -43,13 +44,11 @@ public class UnidadeActivity extends AppCompatActivity {
     private ListView unidades;
     private Preferences preferences;
     private Messages messages;
-    private List<Unidade> unidadesList;
     private ArrayAdapter<Unidade> unidadeArrayAdapter;
-    private ProgressBar progressBar;
     private FloatingActionButton sincronizarDados;
     private Realm realm;
-    private RealmObjectsBO realmObjectsBO;
     private SincronizarComAPiMB sincronizarComAPiMB;
+    private SerieChamada serieChamada;
 
     private TurmaChamada turmaChamada;
 
@@ -59,15 +58,21 @@ public class UnidadeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_unidade);
         bindind();
         setupInit();
-        configRealm();
         onClickItem();
+    }
+
+    public void mensagemInicial() {
+        Toast.makeText(getApplicationContext(), "Selecione uma Turma para Continuar...", Toast.LENGTH_LONG).show();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        configRealm();
         atualizarAdapterListaUnidades();
         sync();
+        mensagemInicial();
+        alertaInformacaoPrimeiraUtilizacao();
     }
 
     public void configRealm() {
@@ -95,18 +100,17 @@ public class UnidadeActivity extends AppCompatActivity {
                 alertaInformacao();
                 break;
             case R.id.sair_id:
-                preferences.saveBoolean("logado", false);
-                preferences.saveBoolean("sync", false);
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                deletarBancoRealm();
-                onStop();
+                alertaInformacaoSincronizar();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void deletarBancoRealm() {
+    public void deletarBanco() {
+        realm.beginTransaction();
         realm.deleteAll();
+        realm.commitTransaction();
+        preferences.limpar();
     }
 
     public void onClickItem() {
@@ -126,32 +130,23 @@ public class UnidadeActivity extends AppCompatActivity {
                     sincronizarComAPiMB.sincronizarRealmComAPi();
                     sincronizarComAPiMB.sincronizarAPiComRealm();
                 } else {
-                    Snackbar.make(findViewById(android.R.id.content), "SEM CONXÃO", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(android.R.id.content), "SEM CONEXÃO", Snackbar.LENGTH_LONG).show();
                 }
             }
         });
     }
-
-//    public void syncInit() {
-//        if (UtilsFunctions.isConnect(getApplicationContext())) {
-//            sincronizarComAPiMB.sincronizarRealmComAPi();
-//            sincronizarComAPiMB.sincronizarAPiComRealm();
-//        }
-//    }
 
     public void nextAcivity() {
         startActivity(new Intent(getApplicationContext(), TurmaActivity.class));
     }
 
     public void setupInit() {
-        progressBar = new ProgressBar(getApplicationContext());
         preferences = new Preferences(this);
         messages = new Messages();
         sincronizarComAPiMB = new SincronizarComAPiMB(getApplicationContext());
-        unidadesList = new ArrayList<>();
-        realmObjectsBO = new RealmObjectsBO(getApplicationContext());
         preferences.saveBoolean("sync", true);
         turmaChamada = new TurmaChamada(getApplicationContext());
+        serieChamada = new SerieChamada(getApplicationContext());
     }
 
     public void atualizarAdapterListaUnidades() {
@@ -172,8 +167,57 @@ public class UnidadeActivity extends AppCompatActivity {
     }
 
     public void sync() {
+//        if (!preferences.getSavedBoolean("sync_unidade")) {
         turmaChamada.recuperarTurmasUnidade();
         turmaChamada.recuperarGradeCursoTurma(preferences.getSavedLong("id_funcionario"));
+//        serieChamada.recuperarSerieAPI();
+        preferences.saveBoolean("sync_unidade", true);
+//        }
     }
 
+    public void alertaInformacaoSincronizar() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Alerta!");
+        builder.setMessage("Antes de Sair sincronize seus dados, ao sair seus dadaos serão apagados!");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                confirmarSaidaUsuario();
+            }
+        }).show();
+    }
+
+    public void confirmarSaidaUsuario() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Alerta!");
+        builder.setMessage("Você deseja realmente sair?");
+        builder.setCancelable(false);
+        builder.setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                deletarBanco();
+                onStop();
+            }
+        }).setNegativeButton("NÂO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        }).show();
+    }
+
+    public void alertaInformacaoPrimeiraUtilizacao() {
+        if (!preferences.getSavedBoolean("alerta_info_primeiro_acesso")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Alerta!");
+            builder.setMessage("Certifique-se de manter internet na primeira utilização!");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            }).show();
+            preferences.saveBoolean("alerta_info_primeiro_acesso", true);
+        }
+    }
 }
