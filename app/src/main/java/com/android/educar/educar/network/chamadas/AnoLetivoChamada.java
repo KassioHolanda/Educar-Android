@@ -43,7 +43,7 @@ public class AnoLetivoChamada {
     }
 
     public void anoLetivoAPI() {
-        Call<ListaAnoLetivoAPI> listaAnoLetivoAPICall = apiService.getAnoLetivoEndPoint().anosLetivos(paginaAtualAnoLetivo);
+        Call<ListaAnoLetivoAPI> listaAnoLetivoAPICall = apiService.getAnoLetivoEndPoint().anosLetivos();
         listaAnoLetivoAPICall.enqueue(new Callback<ListaAnoLetivoAPI>() {
             @Override
             public void onResponse(Call<ListaAnoLetivoAPI> call, Response<ListaAnoLetivoAPI> response) {
@@ -51,10 +51,7 @@ public class AnoLetivoChamada {
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body().getResults());
                     realm.commitTransaction();
-                    if (response.body().getNext() != null) {
-                        paginaAtualAnoLetivo = paginaAtualBimetre + 1;
-                        anoLetivoAPI();
-                    }
+                    Log.i("RESPONSE", "ANOLETIVO RECUPERADOS");
                 }
             }
 
@@ -66,7 +63,7 @@ public class AnoLetivoChamada {
     }
 
     public void recuperarBimestreAPI() {
-        Call<ListaBimestreAPI> listaAnoLetivoAPICall = apiService.getBimestreEndPoint().bimestres(paginaAtualBimetre);
+        Call<ListaBimestreAPI> listaAnoLetivoAPICall = apiService.getBimestreEndPoint().bimestres();
         listaAnoLetivoAPICall.enqueue(new Callback<ListaBimestreAPI>() {
             @Override
             public void onResponse(Call<ListaBimestreAPI> call, Response<ListaBimestreAPI> response) {
@@ -74,10 +71,7 @@ public class AnoLetivoChamada {
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body().getResults());
                     realm.commitTransaction();
-                    if (response.body().getNext() != null) {
-                        paginaAtualBimetre = paginaAtualBimetre + 1;
-                        recuperarBimestreAPI();
-                    }
+                    Log.i("RESPONSE", "BIMESTRES RECUPERADOS");
                 }
             }
 

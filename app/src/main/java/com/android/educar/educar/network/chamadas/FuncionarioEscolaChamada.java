@@ -1,10 +1,12 @@
 package com.android.educar.educar.network.chamadas;
 
+import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
 import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.model.FuncionarioEscola;
+import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.network.service.ListaFuncionarioEscolaAPI;
 
@@ -21,30 +23,34 @@ public class FuncionarioEscolaChamada {
     private Context context;
     private RealmObjectsDAO realmObjectsDAO;
     private Realm realm;
-    private int paginaAtualFuncionarioEscola;
+
+    private UnidadeChamada unidadeChamada;
 
     public void configRealm() {
         Realm.init(context);
         realm = Realm.getDefaultInstance();
+        realm.setAutoRefresh(true);
     }
 
     public FuncionarioEscolaChamada(Context context) {
         apiService = new APIService("");
         this.context = context;
         realmObjectsDAO = new RealmObjectsDAO(context);
+        unidadeChamada = new UnidadeChamada(context);
         configRealm();
-        paginaAtualFuncionarioEscola = 1;
     }
 
-    public void funcionariosEscola(final long funcionarioId) {
-        final Call<List<FuncionarioEscola>> listaFuncionarioEscolaAPICall = apiService.getFuncionarioEscolaEndPoint().funcionariosEscola(funcionarioId);
+    public void funcionariosEscola(long funcionarioId) {
+        Call<List<FuncionarioEscola>> listaFuncionarioEscolaAPICall = apiService.getFuncionarioEscolaEndPoint().funcionariosEscola(funcionarioId);
         listaFuncionarioEscolaAPICall.enqueue(new Callback<List<FuncionarioEscola>>() {
             @Override
             public void onResponse(Call<List<FuncionarioEscola>> call, Response<List<FuncionarioEscola>> response) {
                 if (response.isSuccessful()) {
-                    Realm.getDefaultInstance().beginTransaction();
-                    Realm.getDefaultInstance().copyToRealmOrUpdate(response.body());
-                    Realm.getDefaultInstance().commitTransaction();
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body());
+                    realm.commitTransaction();
+                    recuperarUnidades(response.body());
+                    Log.i("RESPONSE", "FUNCIONARIOESCOLA CARREGADOS");
                 }
             }
 
@@ -53,5 +59,11 @@ public class FuncionarioEscolaChamada {
                 Log.i("ERRO API", t.getMessage());
             }
         });
+    }
+
+    public void recuperarUnidades(List<FuncionarioEscola> funcionarioEscolas) {
+        for (int i = 0; i < funcionarioEscolas.size(); i++) {
+            unidadeChamada.recuperarUnidadesDoProfessorAPI(funcionarioEscolas.get(i).getUnidade());
+        }
     }
 }

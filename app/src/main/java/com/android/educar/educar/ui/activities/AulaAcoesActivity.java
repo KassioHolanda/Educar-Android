@@ -145,17 +145,11 @@ public class AulaAcoesActivity extends AppCompatActivity {
         return true;
     }
 
-    public void syncAlunos() {
-        pessoaChamada.recuperarPessoaAlunos();
-        ocorrenciaChamada.recuperarTodosTiposOcorrenciaAPI();
-        alunoChamada.recuperarDisciplinaAlunoMatricula();
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
         configRealm();
         atualizarDados();
-        syncAlunos();
     }
 }

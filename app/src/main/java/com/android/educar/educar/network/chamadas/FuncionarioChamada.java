@@ -46,6 +46,7 @@ public class FuncionarioChamada {
             public void onResponse(Call<List<Funcionario>> call, Response<List<Funcionario>> response) {
                 if (response.isSuccessful()) {
                     salvarFuncionario(response.body());
+                    Log.i("RESPONSE", "FUNCIONARIO RECUPERADO");
                 }
             }
 

@@ -67,7 +67,8 @@ public class TurmaAdapter extends BaseAdapter {
         serie = row.findViewById(R.id.serieitem_id);
 
         turmaTextView.setText(turmaList.get(i).getDescricao());
-//        serie.setText(realm.where(Serie.class).equalTo("id", turmaList.get(i).getSerie()).findFirst().getDescricao());
+        serie.setText(turmaList.get(i).getSerie() + "");
+        serie.setText(realm.where(Serie.class).equalTo("id", turmaList.get(i).getSerie()).findFirst().getDescricao());
 
         return row;
     }

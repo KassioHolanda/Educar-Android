@@ -21,10 +21,12 @@ import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.Bimestre;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.Matricula;
+import com.android.educar.educar.model.Nota;
 import com.android.educar.educar.model.PessoaFisica;
 import com.android.educar.educar.ui.activities.NotaFragmentActivity;
 import com.android.educar.educar.utils.Preferences;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
@@ -40,12 +42,15 @@ public class NotaAdapterLista extends BaseAdapter {
     protected TextView idAluno;
     protected TextView notaAluno;
     private Preferences preferences;
+    private List<Nota> notas;
 
 
     public NotaAdapterLista(List<PessoaFisica> pessoaFisicaList, Context context) {
         this.pessoaFisicaList = pessoaFisicaList;
         this.context = context;
         notaMB = new NotaMB(context);
+        notas = new ArrayList<>();
+        preferences = new Preferences(context);
         configRealm();
     }
 
@@ -92,16 +97,27 @@ public class NotaAdapterLista extends BaseAdapter {
 
         idAluno.setText("" + ordem);
         nomeAluno.setText(pessoaFisicaList.get(i).getNome());
+        notaAluno.setText("k");
+
+        for (int k = 0; k < notas.size(); k++) {
+            if (notas.get(k).getMatricula() == preferences.getSavedLong("id_matricula")) {
+                notaAluno.setText("" + notas.get(k).getNota());
+            }
+        }
 
         addNota.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                preferences = new Preferences(context);
-                preferences.saveLong("id_pessoafisica", pessoaFisicaList.get(position).getId());
-                Aluno aluno = realm.where(Aluno.class).equalTo("pessoaFisica", pessoaFisicaList.get(position).getId()).findFirst();
-                Matricula matricula = realm.where(Matricula.class).equalTo("aluno", aluno.getId()).findFirst();
-                preferences.saveLong("id_matricula", matricula.getId());
-                adicionarNota();
+                if (notaMB.verificarBimestreAtual() == 0) {
+
+                } else {
+                    preferences = new Preferences(context);
+                    preferences.saveLong("id_pessoafisica", pessoaFisicaList.get(position).getId());
+                    Aluno aluno = realm.where(Aluno.class).equalTo("pessoaFisica", pessoaFisicaList.get(position).getId()).findFirst();
+                    Matricula matricula = realm.where(Matricula.class).equalTo("aluno", aluno.getId()).findFirst();
+                    preferences.saveLong("id_matricula", matricula.getId());
+                    adicionarNota();
+                }
             }
         });
 
@@ -128,6 +144,7 @@ public class NotaAdapterLista extends BaseAdapter {
         long idBimestre = notaMB.verificarBimestreAtual();
         bimestre.setText(realm.where(Bimestre.class).equalTo("id", idBimestre).findFirst().getDescricao());
 
+
         builder.setView(viewDialog).setTitle("Inserir Nota!")
                 .setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
                     @Override
@@ -138,13 +155,22 @@ public class NotaAdapterLista extends BaseAdapter {
                             alertaInformacao();
                         } else {
                             notaMB.salvarAlunoNotaMes(nota.getText().toString());
+
+                            criarNotaAxiliar(Float.valueOf(nota.getText().toString()), preferences.getSavedLong("id_matricula"));
+                            notaAluno.setText(nota.getText().toString());
+
                             Toast.makeText(context, "Nota Inserida ao aluno " + nomeAlunoNota + "!", Toast.LENGTH_LONG).show();
-                            preferences.saveFloat("id_nota_bimestre", Float.parseFloat(nota.getText().toString()));
-                            Toast.makeText(context, "NOTA INSERIDA " + preferences.getSavedLong("id_nota_bimestre"), Toast.LENGTH_LONG).show();
                             atualizarFragment();
                         }
                     }
                 }).setNegativeButton("Cancelar", null).show();
+    }
+
+    public void criarNotaAxiliar(float nota, long matricula) {
+        Nota nota1 = new Nota();
+        nota1.setMatricula(matricula);
+        nota1.setNota(nota);
+        notas.add(nota1);
     }
 
     public void alertaInformacao() {
@@ -162,7 +188,7 @@ public class NotaAdapterLista extends BaseAdapter {
     }
 
     public void atualizarFragment() {
-        context.startActivity(new Intent(context, NotaFragmentActivity.class));
+//        context.startActivity(new Intent(context, NotaFragmentActivity.class));
 //        FragmentManager fragment = ((FragmentActivity) context).getSupportFragmentManager();
 //        FragmentTransaction fragmentTransaction = fragment.beginTransaction();
 //

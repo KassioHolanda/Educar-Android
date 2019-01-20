@@ -1,39 +1,24 @@
 package com.android.educar.educar.ui.activities;
 
-import android.content.DialogInterface;
+import android.app.Activity;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.model.Bimestre;
-import com.android.educar.educar.model.Disciplina;
-import com.android.educar.educar.model.PessoaFisica;
-import com.android.educar.educar.network.chamadas.AlunoChamada;
+import com.android.educar.educar.mb.SincronizarComAPiMB;
 import com.android.educar.educar.network.chamadas.AnoLetivoChamada;
-import com.android.educar.educar.network.chamadas.DisciplinaChamada;
-import com.android.educar.educar.network.chamadas.FuncionarioChamada;
 import com.android.educar.educar.network.chamadas.FuncionarioEscolaChamada;
-import com.android.educar.educar.network.chamadas.LocalEscolaChamada;
-import com.android.educar.educar.network.chamadas.MatriculaChamada;
 import com.android.educar.educar.network.chamadas.OcorrenciaChamada;
-import com.android.educar.educar.network.chamadas.PessoaChamada;
-import com.android.educar.educar.network.chamadas.SerieChamada;
 import com.android.educar.educar.network.chamadas.TurmaChamada;
-import com.android.educar.educar.network.chamadas.UnidadeChamada;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
@@ -43,24 +28,18 @@ public class LoadingActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
     private Preferences preferences;
-    private PessoaChamada pessoaChamada;
-    private FuncionarioChamada funcionarioChamada;
     private TextView textLoad;
     private int statusLoading;
     private ImageView botaoAcessar;
     private Handler handler;
+    private Realm realm;
+    private SincronizarComAPiMB sincronizarComAPiMB;
 
-    private UnidadeChamada unidadeChamada;
-    private TurmaChamada turmaChamada;
-    private DisciplinaChamada disciplinaChamada;
-    private FuncionarioEscolaChamada funcionarioEscola;
-    private LocalEscolaChamada localEscolaChamada;
-    private SerieChamada serieChamada;
-    private AlunoChamada alunoChamada;
-    private MatriculaChamada matriculaChamada;
-    private OcorrenciaChamada ocorrenciaChamada;
-    private AnoLetivoChamada anoLetivoChamada;
-
+    public void configRealm() {
+        Realm.init(this);
+        realm = Realm.getDefaultInstance();
+        realm.setAutoRefresh(true);
+    }
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -69,8 +48,14 @@ public class LoadingActivity extends AppCompatActivity {
         binding();
         settings();
         setupInit();
-        verificarConexao();
         onClick();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        configRealm();
+        verificarConexao();
     }
 
     public void verificarConexao() {
@@ -80,12 +65,11 @@ public class LoadingActivity extends AppCompatActivity {
             Snackbar.make(findViewById(android.R.id.content), "Dispositivo sem Conexão com Internet, verifique sua conexão!", Snackbar.LENGTH_LONG).show();
             progressBar.setVisibility(View.INVISIBLE);
             textLoad.setVisibility(View.INVISIBLE);
-//            botaoAcessar.setVisibility(View.VISIBLE);
         }
     }
 
     public void loading() {
-//        if (!preferences.getSavedBoolean("sync")) {
+        if (!preferences.getSavedBoolean("sync_dados")){
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -98,7 +82,7 @@ public class LoadingActivity extends AppCompatActivity {
 
                     while (statusLoading < 1) {
                         statusLoading++;
-                        android.os.SystemClock.sleep(5000);
+                        android.os.SystemClock.sleep(600000);
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -111,18 +95,20 @@ public class LoadingActivity extends AppCompatActivity {
                     }
                 }
             }).start();
-//        } else {
-//            progressBar.setVisibility(View.INVISIBLE);
-//            textLoad.setVisibility(View.INVISIBLE);
-//            botaoAcessar.setVisibility(View.VISIBLE);
-//        }
+        } else {
+            progressBar.setVisibility(View.INVISIBLE);
+            textLoad.setVisibility(View.INVISIBLE);
+            botaoAcessar.setVisibility(View.VISIBLE);
+        }
     }
 
     public void onClick() {
         botaoAcessar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), UnidadeActivity.class));
+                Intent intent = new Intent(LoadingActivity.this, UnidadeActivity.class);
+                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeCustomAnimation(LoadingActivity.this, R.anim.mover_esquerda, R.anim.fade_out);
+                ActivityCompat.startActivity(LoadingActivity.this, intent, activityOptionsCompat.toBundle());
             }
         });
     }
@@ -138,14 +124,7 @@ public class LoadingActivity extends AppCompatActivity {
 
         statusLoading = 0;
         handler = new Handler();
-
-        unidadeChamada = new UnidadeChamada(getApplicationContext());
-        funcionarioEscola = new FuncionarioEscolaChamada(getApplicationContext());
-        unidadeChamada = new UnidadeChamada(getApplicationContext());
-        localEscolaChamada = new LocalEscolaChamada(getApplicationContext());
-        turmaChamada = new TurmaChamada(getApplicationContext());
-        serieChamada = new SerieChamada(getApplicationContext());
-        disciplinaChamada = new DisciplinaChamada(getApplicationContext());
+        sincronizarComAPiMB = new SincronizarComAPiMB(getApplicationContext());
     }
 
     public void settings() {
@@ -154,15 +133,9 @@ public class LoadingActivity extends AppCompatActivity {
     }
 
     public void carregarDadosSync() {
-        funcionarioEscola.funcionariosEscola(preferences.getSavedLong("id_funcionario"));
-        unidadeChamada.recuperarUndidadesProfessor();
-        localEscolaChamada.recuperarLocaisEscolaUnidade();
-
-//        serieChamada.recuperarSerieDisciplina();
-
-//        turmaChamada.recuperarTurmasUnidade();
-//        turmaChamada.recuperarGradeCursoTurma(preferences.getSavedLong("id_funcionario"));
-//        serieChamada.recuperarSerieDisciplina();
-//        disciplinaChamada.recuperarDisciplinasTurma();
+        if (!preferences.getSavedBoolean("sync_dados")) {
+            sincronizarComAPiMB.recuperarDadosDaAPISalvarBancoDeDadosRealm();
+            preferences.saveBoolean("sync_dados", true);
+        }
     }
 }

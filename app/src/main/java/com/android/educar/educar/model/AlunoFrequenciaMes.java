@@ -13,8 +13,34 @@ public class AlunoFrequenciaMes extends RealmObject {
     private int totalFaltas;
     private long matricula;
     private long bimestre;
+    private boolean novo;
+    private long disciplina;
 
     public AlunoFrequenciaMes() {
+    }
+
+    public long getDisciplina() {
+        return disciplina;
+    }
+
+    public void setDisciplina(long disciplina) {
+        this.disciplina = disciplina;
+    }
+
+    public long getBimestre() {
+        return bimestre;
+    }
+
+    public void setBimestre(long bimestre) {
+        this.bimestre = bimestre;
+    }
+
+    public boolean isNovo() {
+        return novo;
+    }
+
+    public void setNovo(boolean novo) {
+        this.novo = novo;
     }
 
     public long getId() {
@@ -41,11 +67,4 @@ public class AlunoFrequenciaMes extends RealmObject {
         this.matricula = matricula;
     }
 
-    public long getBimetre() {
-        return bimestre;
-    }
-
-    public void setBimetre(long bimestre) {
-        this.bimestre = bimestre;
-    }
 }

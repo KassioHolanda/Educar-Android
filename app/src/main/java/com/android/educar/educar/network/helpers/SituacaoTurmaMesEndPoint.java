@@ -5,6 +5,8 @@ import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.network.service.ListaSituacaoTurmaMesAPI;
 import com.android.educar.educar.network.service.ListaUnidadesAPI;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -23,5 +25,8 @@ public interface SituacaoTurmaMesEndPoint {
     Call<SituacaoTurmaMes> postSituacaoTurmaMes(@Body SituacaoTurmaMes situacaoTurmaMes);
 
     @GET("situacaoturmames/")
-    Call<ListaSituacaoTurmaMesAPI> situacoes(@Query("page")int page);
+    Call<ListaSituacaoTurmaMesAPI> situacoes(@Query("page") int page);
+
+    @GET("situacaoturmames/turma={turma}/")
+    Call<List<SituacaoTurmaMes>> situacaoTurmaMes(@Path("turma") long turma);
 }

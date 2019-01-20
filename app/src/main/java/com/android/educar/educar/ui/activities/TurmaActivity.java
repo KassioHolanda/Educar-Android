@@ -3,6 +3,8 @@ package com.android.educar.educar.ui.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,7 +43,6 @@ public class TurmaActivity extends AppCompatActivity {
 
     private ListView turmas;
     private Preferences preferences;
-    private UtilsFunctions utilsFunctions;
     private Unidade unidadeSelecionada;
     private TextView unidadeSelecionadaTurma;
     private CardView unidade;
@@ -49,10 +50,7 @@ public class TurmaActivity extends AppCompatActivity {
     private List<Turma> turmaList;
     private Realm realm;
     private Messages messages;
-    private MatriculaChamada matriculaChamada;
 
-    private SerieChamada serieChamada;
-    private DisciplinaChamada disciplinaChamada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +66,6 @@ public class TurmaActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         configRealm();
-        syncDados();
         recuperarDadosRealm();
         atualizarDadosTela();
         recuperarTurmas();
@@ -132,11 +129,7 @@ public class TurmaActivity extends AppCompatActivity {
     public void setupInit() {
         turmaList = new ArrayList<>();
         preferences = new Preferences(this);
-        utilsFunctions = new UtilsFunctions();
         messages = new Messages();
-        matriculaChamada = new MatriculaChamada(getApplicationContext());
-        serieChamada = new SerieChamada(getApplicationContext());
-        disciplinaChamada = new DisciplinaChamada(getApplicationContext());
     }
 
     public void onClickItem() {
@@ -161,7 +154,9 @@ public class TurmaActivity extends AppCompatActivity {
     }
 
     public void nextAcitivity() {
-        startActivity(new Intent(getApplicationContext(), DisciplinaActivity.class));
+        Intent intent = new Intent(getApplicationContext(), DisciplinaActivity.class);
+        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeCustomAnimation(TurmaActivity.this, R.anim.mover_esquerda, R.anim.fade_out);
+        ActivityCompat.startActivity(TurmaActivity.this, intent, activityOptionsCompat.toBundle());
     }
 
     public void atualizarAdapterListaTurmas() {
@@ -214,15 +209,5 @@ public class TurmaActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dados_alunos, menu);
         return true;
-    }
-
-    public void syncDados() {
-//        if (!preferences.getSavedBoolean("sync_turma")) {
-        serieChamada.recuperarSerieAPI();
-        serieChamada.recuperarSerieDisciplina();
-        disciplinaChamada.recuperarDisciplinasTurma();
-        matriculaChamada.recuperarMatriculasTurmas();
-        preferences.saveBoolean("sync_turma", true);
-//        }
     }
 }

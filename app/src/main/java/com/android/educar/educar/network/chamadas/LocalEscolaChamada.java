@@ -22,7 +22,7 @@ public class LocalEscolaChamada {
     private APIService apiService;
     private RealmObjectsDAO realmObjectsDAO;
     private Realm realm;
-    private int paginaAtualLocaisEscola;
+    private TurmaChamada turmaChamada;
 
     public void configRealm() {
         Realm.init(context);
@@ -34,26 +34,21 @@ public class LocalEscolaChamada {
         apiService = new APIService("");
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
-        paginaAtualLocaisEscola = 1;
+        turmaChamada = new TurmaChamada(context);
     }
 
 
-    public void recuperarLocaisEscolaUnidade() {
-        RealmResults<Unidade> unidades = Realm.getDefaultInstance().where(Unidade.class).findAll();
-        for(int i =0; i< unidades.size();i++) {
-            recuperarLocaisEscolaDaUnidade(unidades.get(i).getId());
-        }
-    }
-
-    public void recuperarLocaisEscolaDaUnidade(long unidadeId) {
+    public void recuperarLocalEscolaUnidade(long unidadeId) {
         Call<List<LocalEscola>> listCall = apiService.getLocalEscolaEndPoint().locaisEscolaUnidade(unidadeId);
         listCall.enqueue(new Callback<List<LocalEscola>>() {
             @Override
             public void onResponse(Call<List<LocalEscola>> call, Response<List<LocalEscola>> response) {
                 if (response.isSuccessful()) {
-                    Realm.getDefaultInstance().beginTransaction();
-                    Realm.getDefaultInstance().copyToRealmOrUpdate(response.body());
-                    Realm.getDefaultInstance().commitTransaction();
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body());
+                    realm.commitTransaction();
+                    recuperarTodasAsTurmasDaUnidade(response.body());
+                    Log.i("RESPONSE", "LOCALESCOLA RECUPERADOS");
                 }
             }
 
@@ -64,26 +59,9 @@ public class LocalEscolaChamada {
         });
     }
 
-    public void localEscolaAPI() {
-        Call<ListaLocalEscolaAPI> listaProfessoresAPICall = apiService.getLocalEscolaEndPoint().locaisEscola(paginaAtualLocaisEscola);
-        listaProfessoresAPICall.enqueue(new Callback<ListaLocalEscolaAPI>() {
-            @Override
-            public void onResponse(Call<ListaLocalEscolaAPI> call, Response<ListaLocalEscolaAPI> response) {
-                if (response.isSuccessful()) {
-                    realm.beginTransaction();
-                    realm.copyToRealmOrUpdate(response.body().getResults());
-                    realm.commitTransaction();
-                    if (response.body().getNext() != null) {
-                        paginaAtualLocaisEscola = paginaAtualLocaisEscola + 1;
-                        localEscolaAPI();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ListaLocalEscolaAPI> call, Throwable t) {
-                Log.i("ERRO API", t.getMessage());
-            }
-        });
+    public void recuperarTodasAsTurmasDaUnidade(List<LocalEscola> localEscolas) {
+        for (int i = 0; i < localEscolas.size(); i++) {
+            turmaChamada.recuperarTurmasDaUnidade(localEscolas.get(i).getId());
+        }
     }
 }

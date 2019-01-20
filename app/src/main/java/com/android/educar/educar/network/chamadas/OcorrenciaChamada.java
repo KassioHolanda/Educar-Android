@@ -10,6 +10,7 @@ import com.android.educar.educar.model.TipoOcorrencia;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.network.service.ListaOcorrenciaAPI;
 import com.android.educar.educar.network.service.ListaTipoOcorrenciaAPI;
+import com.android.educar.educar.utils.Preferences;
 
 import java.util.List;
 
@@ -26,12 +27,14 @@ public class OcorrenciaChamada {
     private Realm realm;
     private int paginaAtualOcorrencia;
     private int paginaAtualTipoOcorrencia;
+    private Preferences preferences;
 
     public OcorrenciaChamada(Context context) {
         this.context = context;
         apiService = new APIService("");
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
+        preferences = new Preferences(context);
         paginaAtualOcorrencia = 1;
         paginaAtualTipoOcorrencia = 1;
     }
@@ -76,6 +79,7 @@ public class OcorrenciaChamada {
                     paginaAtualTipoOcorrencia = paginaAtualTipoOcorrencia + 1;
                     recuperarTodosTiposOcorrenciaAPI();
                 }
+                Log.i("RESPONSE", "TIPOS OCORRENCIA RECUPERADOS");
             }
 
             @Override
@@ -85,17 +89,17 @@ public class OcorrenciaChamada {
         });
     }
 
-    public void postOcorrenciaAPI(Ocorrencia ocorrencia) {
+    public void postOcorrenciaAPI(final Ocorrencia ocorrencia) {
         Call<Ocorrencia> ocorrenciaCall = apiService.getOcorrenciaEndPoint().postOcorrencia(ocorrencia);
         ocorrenciaCall.enqueue(new Callback<Ocorrencia>() {
             @Override
             public void onResponse(Call<Ocorrencia> call, Response<Ocorrencia> response) {
-                if (response.code() == 400) {
-                    Toast.makeText(context, "" + response.errorBody().toString(), Toast.LENGTH_SHORT).show();
-                    Log.i("ERRO OCORRENCIA", response.errorBody().toString());
-                }
                 if (response.isSuccessful()) {
-                    Toast.makeText(context, "" + response.message(), Toast.LENGTH_SHORT).show();
+                    realm.beginTransaction();
+                    ocorrencia.setNovo(false);
+                    realm.copyToRealmOrUpdate(ocorrencia);
+                    realm.commitTransaction();
+                    Log.i("RESPONSE", "OCORRENCIA PUBLICADA");
                 }
             }
 
@@ -106,7 +110,7 @@ public class OcorrenciaChamada {
         });
     }
 
-    public void publicarOcorrenciaAPI() {
+    public void publicarNovaOcorrenciaParaAPI() {
         RealmResults<Ocorrencia> ocorrencias = realm.where(Ocorrencia.class).findAll();
 
         for (int i = 0; i < ocorrencias.size(); i++) {
@@ -126,12 +130,8 @@ public class OcorrenciaChamada {
                 ocorrencia1.setFuncionario(ocorrencias.get(i).getFuncionario());
                 ocorrencia1.setUnidade(ocorrencias.get(i).getUnidade());
                 ocorrencia1.setAnoLetivo(ocorrencias.get(i).getAnoLetivo());
-
-                realm.beginTransaction();
-                ocorrencias.get(i).setNovo(false);
-                realm.commitTransaction();
-
                 postOcorrenciaAPI(ocorrencia1);
+//                preferences.saveInt("numero_registros_sincronizados", 1);
             }
         }
     }

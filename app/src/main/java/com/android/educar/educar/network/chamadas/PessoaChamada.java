@@ -7,6 +7,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.educar.educar.dao.RealmObjectsDAO;
+import com.android.educar.educar.mb.FuncionarioMB;
+import com.android.educar.educar.mb.PessoaFisicaMB;
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.Perfil;
 import com.android.educar.educar.model.PessoaFisica;
@@ -36,6 +38,12 @@ public class PessoaChamada {
     private Realm realm;
     private Preferences preferences;
 
+//    private PessoaFisicaMB pessoaFisicaMB;
+//    private FuncionarioMB funcionarioMB;
+
+    private FuncionarioChamada funcionarioChamada;
+
+
     public void configRealm() {
         Realm.init(context);
         realm = Realm.getDefaultInstance();
@@ -44,6 +52,7 @@ public class PessoaChamada {
 
     public PessoaChamada(Context context) {
         this.context = context;
+        funcionarioChamada = new FuncionarioChamada(context);
         apiService = new APIService("");
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
@@ -55,7 +64,17 @@ public class PessoaChamada {
         pessoaFisicaCall.enqueue(new Callback<List<PessoaFisica>>() {
             @Override
             public void onResponse(Call<List<PessoaFisica>> call, Response<List<PessoaFisica>> response) {
-                salvarPessoa(response.body());
+                if (response.isSuccessful()) {
+                    salvarPessoaFisicaRecuperadaAPI(response.body());
+                    try {
+                        funcionarioChamada.recuperarFuncionarioPessoaFisicaAPI(response.body().get(0).getId());
+                        recuperarUsuarioPessoaFisica(response.body().get(0).getId());
+                        recuperarPerfilUsuario(response.body().get(0).getId());
+                        Log.i("RESPONSE", "PESSOAFISICA RECUPERADA LOGIN");
+                    } catch (IndexOutOfBoundsException e) {
+                        Log.i("ERRO", "CPF NAO ENCONTRADO");
+                    }
+                }
             }
 
             @Override
@@ -65,7 +84,8 @@ public class PessoaChamada {
         });
     }
 
-    public void salvarPessoa(List<PessoaFisica> objects) {
+
+    public void salvarPessoaFisicaRecuperadaAPI(List<PessoaFisica> objects) {
         try {
             realmObjectsDAO.salvarRealm(objects.get(0));
             preferences.saveLong("id_pessoafisica", objects.get(0).getId());
@@ -74,7 +94,6 @@ public class PessoaChamada {
         } catch (IndexOutOfBoundsException e) {
 
         }
-
     }
 
     public void recuperarUsuarioPessoaFisica(long pessoaFisica) {
@@ -84,6 +103,13 @@ public class PessoaChamada {
             public void onResponse(Call<List<Usuario>> call, Response<List<Usuario>> response) {
                 if (response.isSuccessful()) {
                     salvarUsuario(response.body());
+                    Log.i("RESPONSE", "USUARIO RECUPERADO");
+                    try {
+                        recuperarPerfilUsuario(response.body().get(0).getPerfil());
+                    } catch (IndexOutOfBoundsException e) {
+//                        Toast.makeText(context, "CPF Invalido!", Toast.LENGTH_LONG).show();
+                    }
+
                 }
             }
 
@@ -101,62 +127,10 @@ public class PessoaChamada {
             preferences.saveLong("usuario_perfil", usuarios.get(0).getPerfil());
             preferences.saveBoolean("usuario_encontrado", true);
         } catch (IndexOutOfBoundsException e) {
-            Toast.makeText(context, "Solicite Adminstador", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "Solicite Adminstador", Toast.LENGTH_LONG).show();
             Log.e("ERRO_API", e.getMessage());
         }
     }
-
-
-//    public void recuperarPessoaFisicaAPI() {
-//        Call<ListaPessoaFisicaAPI> listaProfessoresAPICall = apiService.getPessoaFisicaEndPoint().pessoasFisicasComPaginacao(paginaAtualPessoaFisica);
-//        listaProfessoresAPICall.enqueue(new Callback<ListaPessoaFisicaAPI>() {
-//            @Override
-//            public void onResponse(Call<ListaPessoaFisicaAPI> call, Response<ListaPessoaFisicaAPI> response) {
-//                if (response.isSuccessful()) {
-//
-//                    realm.beginTransaction();
-//                    realm.copyToRealmOrUpdate(response.body().getResults());
-//                    realm.commitTransaction();
-//
-//                    if (response.body().getNext() != null) {
-//                        paginaAtualPessoaFisica = paginaAtualPessoaFisica + 1;
-//                        recuperarUsuariosAPI();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ListaPessoaFisicaAPI> call, Throwable t) {
-//                Log.i("ERRO API", t.getMessage());
-//            }
-//        });
-//    }
-
-
-//    public void recuperarUsuariosAPI() {
-//        Call<ListaUsuariosAPI> listaProfessoresAPICall = apiService.getUsuarioEndPoint().usuariosPaginacao(paginaAtualUsuario);
-//        listaProfessoresAPICall.enqueue(new Callback<ListaUsuariosAPI>() {
-//            @Override
-//            public void onResponse(Call<ListaUsuariosAPI> call, Response<ListaUsuariosAPI> response) {
-//                if (response.isSuccessful()) {
-//
-//                    realm.beginTransaction();
-//                    realm.copyToRealmOrUpdate(response.body().getResults());
-//                    realm.commitTransaction();
-//
-//                    if (response.body().getNext() != null) {
-//                        paginaAtualUsuario = paginaAtualUsuario + 1;
-//                        recuperarUsuariosAPI();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ListaUsuariosAPI> call, Throwable t) {
-//                Log.i("ERRO API", t.getMessage());
-//            }
-//        });
-//    }
 
     public void recuperarPerfilUsuario(long id) {
         Call<List<Perfil>> perfilCall = apiService.getPerfilEndPoint().getPerfil(id);
@@ -165,6 +139,7 @@ public class PessoaChamada {
             public void onResponse(Call<List<Perfil>> call, Response<List<Perfil>> response) {
                 if (response.isSuccessful()) {
                     salvarPerfil(response.body());
+                    Log.i("RESPONSE", "PERFIL RECUPERADO");
                 }
             }
 
@@ -188,14 +163,7 @@ public class PessoaChamada {
 
     }
 
-    public void recuperarPessoaAlunos() {
-        RealmResults<Aluno> alunos = realm.where(Aluno.class).findAll();
-        for (int i = 0; i < alunos.size(); i++) {
-            recuperarPessoaAlunos(alunos.get(i).getPessoaFisica());
-        }
-    }
-
-    private void recuperarPessoaAlunos(long pessoaFisica) {
+    public void recuperarPessoaFisicaAluno(long pessoaFisica) {
         Call<PessoaFisica> pessoaFisicaCall = apiService.getPessoaFisicaEndPoint().getPessoaFisica(pessoaFisica);
         pessoaFisicaCall.enqueue(new Callback<PessoaFisica>() {
             @Override
@@ -204,6 +172,7 @@ public class PessoaChamada {
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body());
                     realm.commitTransaction();
+                    Log.i("RESPONSE", "PESSOAFISICA RECUPERADAS");
                 }
             }
 
@@ -213,29 +182,4 @@ public class PessoaChamada {
             }
         });
     }
-//
-//    public void recuperarPerfilAPI() {
-//        Call<ListaPerfilAPI> listaProfessoresAPICall = apiService.getPerfilEndPoint().perfisPaginacao(paginaAtualPerfil);
-//        listaProfessoresAPICall.enqueue(new Callback<ListaPerfilAPI>() {
-//            @Override
-//            public void onResponse(Call<ListaPerfilAPI> call, Response<ListaPerfilAPI> response) {
-//                if (response.isSuccessful()) {
-//
-//                    realm.beginTransaction();
-//                    realm.copyToRealmOrUpdate(response.body().getResults());
-//                    realm.commitTransaction();
-//
-//                    if (response.body().getNext() != null) {
-//                        paginaAtualPerfil = paginaAtualPerfil + 1;
-//                        recuperarPerfilAPI();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ListaPerfilAPI> call, Throwable t) {
-//                Log.i("ERRO API", t.getMessage());
-//            }
-//        });
-//    }
 }

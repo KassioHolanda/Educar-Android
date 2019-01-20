@@ -29,7 +29,6 @@ public class FuncionarioMB {
 
     public void recuperarFuncionarioUsuario(long pessoaFisicaId) {
         funcionarioChamada.recuperarFuncionarioPessoaFisicaAPI(pessoaFisicaId);
-//        Funcionario funcionario =
     }
 
 }

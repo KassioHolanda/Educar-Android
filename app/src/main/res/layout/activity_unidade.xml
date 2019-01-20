@@ -8,7 +8,64 @@
     android:orientation="vertical"
     tools:context=".ui.activities.UnidadeActivity">
 
+    <android.support.v7.widget.CardView
+        android:id="@+id/unidade_professor_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorEdit"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        app:cardCornerRadius="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/domain" />
+
+                <LinearLayout
+                    android:gravity="center|left"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Professor"
+                        android:textColor="@color/colorTextTabs"
+                        android:textSize="13sp"></TextView>
+
+                    <TextView
+                        android:id="@+id/professorlogado_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="professor"
+                        android:textColor="@color/colorTextTabs"
+                        android:textSize="16sp"
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
     <ListView
+        android:layout_below="@+id/unidade_professor_id"
         android:id="@+id/unidades_list_view_id"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
