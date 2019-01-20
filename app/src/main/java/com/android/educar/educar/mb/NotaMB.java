@@ -61,7 +61,7 @@ public class NotaMB {
             alunoNotaMes.setMatricula(preferences.getSavedLong("id_matricula"));
             alunoNotaMes.setNota(Float.parseFloat(descricao));
             alunoNotaMes.setUsuario(preferences.getSavedLong("id_usuario"));
-            alunoNotaMes.setBimestre(idBimestreAtual);
+            alunoNotaMes.setBimestre(verificarBimestreAtual());
             alunoNotaMes.setAnoLetivo(3);
             alunoNotaMes.setTipoLancamentoNota("LANCADO_APP");
             alunoNotaMes.setInseridoFechamento(false);
@@ -87,7 +87,7 @@ public class NotaMB {
 
     public boolean verificarStatusParaAdicionarNota() {
 //        if (this.disciplinaAluno.getStatusDisciplinaAluno().equals("EM_ANDAMENTO")) {
-            return true;
+        return true;
 //        } else {
 //            return false;
 //        }
@@ -101,26 +101,26 @@ public class NotaMB {
             criarNovaSituacaoTurmaMes();
 
         } else {
-            for (int i = 0; i < situacaoTurmaMes.size(); i++) {
-                if (situacaoTurmaMes.get(i).getStatus().equals("ABERTO")) {
-                    this.idBimestreAtual = situacaoTurmaMes.get(i).getBimestre();
-                } else if (situacaoTurmaMes.get(i).getBimestre() == 5 && situacaoTurmaMes.get(i).getStatus().equals("FECHADO")) {
-                    criarNovaSituacaoTurmaMes();
-                } else if (situacaoTurmaMes.get(i).getBimestre() < 5 && situacaoTurmaMes.get(i).getStatus().equals("FECHADO")) {
-                    this.ultimoIdBimestre = situacaoTurmaMes.get(i).getBimestre();
-                    criarNovaSituacaoTurmaMes();
-                }
+//            for (int i = 0; i < situacaoTurmaMes.size(); i++) {
+            if (situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getStatus().equals("ABERTO")) {
+                this.idBimestreAtual = situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getBimestre();
+            } else if (situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getBimestre() == 5 && situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getStatus().equals("FECHADO")) {
+                return 0;
+            } else if (situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getBimestre() < 5 && situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getStatus().equals("FECHADO")) {
+                this.ultimoIdBimestre = situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getBimestre();
+                criarNovaSituacaoTurmaMes();
             }
+//            }
         }
 
         if (idBimestreAtual == 0)
-            criarNovaSituacaoTurmaMes();
+            return criarNovaSituacaoTurmaMes();
 
         preferences.saveLong("id_bimestre", idBimestreAtual);
         return idBimestreAtual;
     }
 
-    public void criarNovaSituacaoTurmaMes() {
+    public long criarNovaSituacaoTurmaMes() {
 
         long idBimestre = 2;
 
@@ -134,7 +134,10 @@ public class NotaMB {
         situacaoTurmaMes1.setNovo(true);
 
         realmObjectsBO.salvarObjetoRealm(situacaoTurmaMes1);
+        preferences.saveLong("id_bimestre", idBimestreAtual);
         idBimestreAtual = situacaoTurmaMes1.getBimestre();
+
+        return idBimestreAtual;
     }
 
 

@@ -4,10 +4,12 @@ import android.content.Context;
 import android.util.Log;
 
 import com.android.educar.educar.dao.RealmObjectsDAO;
+import com.android.educar.educar.model.AlunoFrequenciaMes;
 import com.android.educar.educar.model.Matricula;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.network.service.ListaMatriculaAPI;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class MatriculaChamada {
     private APIService apiService;
     private RealmObjectsDAO realmObjectsDAO;
     private Realm realm;
-    private int paginaAtualMatricula;
+    private AlunoChamada alunoChamada;
 
     public void configRealm() {
         Realm.init(context);
@@ -34,38 +36,9 @@ public class MatriculaChamada {
         apiService = new APIService("");
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
-        paginaAtualMatricula = 1;
+        alunoChamada = new AlunoChamada(context);
     }
 
-    public void matriculaAPI() {
-        Call<ListaMatriculaAPI> listaProfessoresAPICall = apiService.getMatriculaEndPoint().matriculas(paginaAtualMatricula);
-        listaProfessoresAPICall.enqueue(new Callback<ListaMatriculaAPI>() {
-            @Override
-            public void onResponse(Call<ListaMatriculaAPI> call, Response<ListaMatriculaAPI> response) {
-                if (response.isSuccessful()) {
-                    realm.beginTransaction();
-                    realm.copyToRealmOrUpdate(response.body().getResults());
-                    realm.commitTransaction();
-                    if (response.body().getNext() != null) {
-                        paginaAtualMatricula = paginaAtualMatricula + 1;
-                        matriculaAPI();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ListaMatriculaAPI> call, Throwable t) {
-                Log.i("ERRO API", t.getMessage());
-            }
-        });
-    }
-
-    public void recuperarMatriculasTurmas() {
-        RealmResults<Turma> turmas = realm.where(Turma.class).findAll();
-        for (int i = 0; i < turmas.size(); i++) {
-            recuperarMatriculasTurmas(turmas.get(i).getId());
-        }
-    }
 
     public void recuperarMatriculasTurmas(long turmaId) {
         Call<List<Matricula>> listCall = apiService.getMatriculaEndPoint().getmatriculas(turmaId);
@@ -76,12 +49,75 @@ public class MatriculaChamada {
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body());
                     realm.commitTransaction();
+                    recuperarAlunosMatricula(response.body());
+                    Log.i("RESPONSE", "MATRICULAS RECUPERADAS");
                 }
             }
 
             @Override
             public void onFailure(Call<List<Matricula>> call, Throwable t) {
+                Log.i("ERRO API", "" + t.getMessage());
+            }
+        });
+    }
 
+    public void recuperarAlunoFrequenciaMesAPI(long matriculaId) {
+        Call<List<AlunoFrequenciaMes>> listCall = apiService.getAlunoFrequenciaMesEndPoint().alunoFrequenciaMes(matriculaId);
+        listCall.enqueue(new Callback<List<AlunoFrequenciaMes>>() {
+            @Override
+            public void onResponse(Call<List<AlunoFrequenciaMes>> call, Response<List<AlunoFrequenciaMes>> response) {
+                if (response.isSuccessful()) {
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body());
+                    realm.commitTransaction();
+                    Log.i("RESPONSE", "ALUNOFREQUENCIAMES RECUPERADOS");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<AlunoFrequenciaMes>> call, Throwable t) {
+                Log.i("ERRO API", "" + t.getMessage());
+            }
+        });
+    }
+
+    public void recuperarAlunosMatricula(List<Matricula> matriculas) {
+        for (int i = 0; i < matriculas.size(); i++) {
+            alunoChamada.recuperarAlunosMatricula(matriculas.get(i).getAluno());
+            alunoChamada.recuperarDisciplinaAlunoMatricula(matriculas.get(i).getId());
+            recuperarAlunoFrequenciaMesAPI(matriculas.get(i).getId());
+        }
+    }
+
+    public void atualizarAlunoFrequenciaMes() {
+        RealmResults<AlunoFrequenciaMes> alunoFrequenciaMes = realm.where(AlunoFrequenciaMes.class).findAll();
+        for (int i = 0; i < alunoFrequenciaMes.size(); i++) {
+            if (alunoFrequenciaMes.get(i).isNovo()) {
+                AlunoFrequenciaMes alunoFrequenciaMes1 = new AlunoFrequenciaMes();
+                alunoFrequenciaMes1.setTotalFaltas(alunoFrequenciaMes.get(i).getTotalFaltas());
+                alunoFrequenciaMes1.setBimestre(alunoFrequenciaMes.get(i).getBimestre());
+                alunoFrequenciaMes1.setMatricula(alunoFrequenciaMes.get(i).getMatricula());
+                publicarAlunoFrequenciaMes(alunoFrequenciaMes1);
+            }
+        }
+    }
+
+    public void publicarAlunoFrequenciaMes(final AlunoFrequenciaMes alunoFrequenciaMes) {
+        Call<AlunoFrequenciaMes> alunoFrequenciaMesCall = apiService.getAlunoFrequenciaMesEndPoint().postAlunoFrequenciaMes(alunoFrequenciaMes.getId(), alunoFrequenciaMes);
+        alunoFrequenciaMesCall.enqueue(new Callback<AlunoFrequenciaMes>() {
+            @Override
+            public void onResponse(Call<AlunoFrequenciaMes> call, Response<AlunoFrequenciaMes> response) {
+                realm.beginTransaction();
+                alunoFrequenciaMes.setNovo(false);
+                realm.copyToRealmOrUpdate(alunoFrequenciaMes);
+                realm.commitTransaction();
+//                realmObjectsDAO.salvarRealm(alunoFrequenciaMes);
+                Log.i("RESPONSE", "ALUNOFRQUENCIAMES PUBLICADO");
+            }
+
+            @Override
+            public void onFailure(Call<AlunoFrequenciaMes> call, Throwable t) {
+                Log.i("ERRO API", "" + t.getMessage());
             }
         });
     }

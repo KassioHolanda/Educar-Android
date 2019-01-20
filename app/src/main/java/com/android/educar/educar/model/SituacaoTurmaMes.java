@@ -50,13 +50,6 @@ public class SituacaoTurmaMes extends RealmObject {
         this.status = status;
     }
 
-    public long getTuma() {
-        return turma;
-    }
-
-    public void setTuma(long tuma) {
-        this.turma = tuma;
-    }
 
     public int getQuantidadeAprovados() {
         return quantidadeAprovados;

@@ -13,7 +13,9 @@ import com.android.educar.educar.network.service.ListaGradeCursoAPI;
 import com.android.educar.educar.network.service.ListaSituacaoTurmaMesAPI;
 import com.android.educar.educar.network.service.ListaTurmaAPI;
 import com.android.educar.educar.utils.Preferences;
+import com.android.educar.educar.utils.UtilsFunctions;
 
+import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
@@ -27,35 +29,26 @@ public class TurmaChamada {
     private APIService apiService;
     private RealmObjectsDAO realmObjectsDAO;
     private Realm realm;
-    private int paginaAtualGradeCurso;
-    private int paginaAtualTurma;
-    private int paginaAtualSituacaoTurmames;
-    private Preferences preferences;
+    private SerieChamada serieChamada;
+    private DisciplinaChamada disciplinaChamada;
+    private MatriculaChamada matriculaChamada;
 
     public TurmaChamada(Context context) {
         this.context = context;
         apiService = new APIService("");
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
-        preferences = new Preferences(context);
-        paginaAtualTurma = 1;
-        paginaAtualGradeCurso = 1;
-        paginaAtualSituacaoTurmames = 1;
+        serieChamada = new SerieChamada(context);
+        disciplinaChamada = new DisciplinaChamada(context);
+        matriculaChamada = new MatriculaChamada(context);
     }
 
     public void configRealm() {
         Realm.init(context);
         realm = Realm.getDefaultInstance();
     }
-//
-//    public void recuperarGradeCursoTurma() {
-//        RealmResults<Turma> turmas = realm.where(Turma.class).findAll();
-//        for (int i = 0; i < turmas.size(); i++) {
-//            recuperarGradeCursoTurma(preferences.getSavedLong("id_professor"));
-//        }
-//    }
 
-    public void recuperarGradeCursoTurma(long professorId) {
+    public void recuperarGradeCurso(long professorId) {
         Call<List<GradeCurso>> gradeCursoCall = apiService.getGradeCursoEndPoint().getGradeCrusoTurmaProfessor(professorId);
         gradeCursoCall.enqueue(new Callback<List<GradeCurso>>() {
             @Override
@@ -64,56 +57,28 @@ public class TurmaChamada {
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body());
                     realm.commitTransaction();
+                    recuperarSerieDisciplina(response.body());
+                    Log.i("RESPONSE", "GRADECURSO RECUPERADOS");
                 }
             }
 
             @Override
             public void onFailure(Call<List<GradeCurso>> call, Throwable t) {
-
+                Log.i("ERRO API", "" + t.getMessage());
             }
         });
     }
 
-
-    public void gradeCursoAPI() {
-        Call<ListaGradeCursoAPI> listaGradeCursoAPICall = apiService.getGradeCursoEndPoint().gradeCursos(paginaAtualGradeCurso);
-        listaGradeCursoAPICall.enqueue(new Callback<ListaGradeCursoAPI>() {
-            @Override
-            public void onResponse(Call<ListaGradeCursoAPI> call, Response<ListaGradeCursoAPI> response) {
-                if (response.isSuccessful()) {
-//                    realmObjectsDAO.salvarListaRealm(response.body().getResults());
-                    salvarGradeCursoRealm(response.body().getResults());
-                    if (response.body().getNext() != null) {
-                        paginaAtualGradeCurso = paginaAtualGradeCurso + 1;
-                        gradeCursoAPI();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ListaGradeCursoAPI> call, Throwable t) {
-                Log.i("ERRO API", t.getMessage());
-            }
-        });
-    }
-
-    public void salvarGradeCursoRealm(List<GradeCurso> gradeCursos) {
-        realm.beginTransaction();
+    public void recuperarSerieDisciplina(List<GradeCurso> gradeCursos) {
         for (int i = 0; i < gradeCursos.size(); i++) {
-            realm.copyToRealmOrUpdate(gradeCursos.get(i));
+            serieChamada.recuperarSerieDisciplina(gradeCursos.get(i).getSeriedisciplina());
+            serieChamada.recuperarSerieDisciplinaPelaDisciplina(gradeCursos.get(i).getDisciplina());
+            disciplinaChamada.recuperarDisciplinasTurma(gradeCursos.get(i).getDisciplina());
         }
-        realm.commitTransaction();
     }
 
-    public void recuperarTurmasUnidade() {
-        RealmResults<LocalEscola> localEscolas = realm.where(LocalEscola.class).findAll();
-        for (int i = 0; i < localEscolas.size(); i++) {
-            recuperarTurmasUnidade(localEscolas.get(i).getId());
-        }
 
-    }
-
-    public void recuperarTurmasUnidade(long sala) {
+    public void recuperarTurmasDaUnidade(long sala) {
         Call<List<Turma>> listCall = apiService.getTurmaEndPoint().turmasUnidade(sala);
         listCall.enqueue(new Callback<List<Turma>>() {
             @Override
@@ -122,81 +87,95 @@ public class TurmaChamada {
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body());
                     realm.commitTransaction();
+                    recuerarSeriesDaTurma(response.body());
+                    recuperarMatriculasDaTurma(response.body());
+                    recuperarSituacaoTurmaMes(response.body());
+                    Log.i("RESPONSE", "TURMAS RECUPERADAS");
                 }
             }
 
             @Override
             public void onFailure(Call<List<Turma>> call, Throwable t) {
-
+                Log.i("ERRO API", "" + t.getMessage());
             }
         });
     }
 
-    public void turmasAPI() {
-        Call<ListaTurmaAPI> listaUnidadesAPICall = apiService.getTurmaEndPoint().turmas(paginaAtualTurma);
-        listaUnidadesAPICall.enqueue(new Callback<ListaTurmaAPI>() {
+    public void recuperarSituacaoTurmaMes(List<Turma> turmas) {
+        for (int i = 0; i < turmas.size(); i++) {
+            recuperarSituacaoTurmaMesAPI(turmas.get(i).getId());
+        }
+    }
+
+    public void recuperarMatriculasDaTurma(List<Turma> turmas) {
+        for (int i = 0; i < turmas.size(); i++) {
+            matriculaChamada.recuperarMatriculasTurmas(turmas.get(i).getId());
+        }
+    }
+
+    public void recuerarSeriesDaTurma(List<Turma> turmas) {
+        for (int i = 0; i < turmas.size(); i++) {
+            serieChamada.recuperarSerieAPI(turmas.get(i).getSerie());
+        }
+    }
+
+
+    public void recuperarSituacaoTurmaMesAPI(long turmaId) {
+        Call<List<SituacaoTurmaMes>> listaUnidadesAPICall = apiService.getSituacaoTurmaMesEndPoint().situacaoTurmaMes(turmaId);
+        listaUnidadesAPICall.enqueue(new Callback<List<SituacaoTurmaMes>>() {
             @Override
-            public void onResponse(Call<ListaTurmaAPI> call, Response<ListaTurmaAPI> response) {
+            public void onResponse(Call<List<SituacaoTurmaMes>> call, Response<List<SituacaoTurmaMes>> response) {
                 if (response.isSuccessful()) {
-
                     realm.beginTransaction();
-                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.copyToRealmOrUpdate(response.body());
                     realm.commitTransaction();
-
-                    if (response.body().getNext() != null) {
-                        paginaAtualTurma = paginaAtualTurma + 1;
-                        turmasAPI();
-                    }
-
+                    Log.i("RESPONSE", "SITUACAOTURMAMES RECUPERADAS");
                 }
             }
 
             @Override
-            public void onFailure(Call<ListaTurmaAPI> call, Throwable t) {
-
+            public void onFailure(Call<List<SituacaoTurmaMes>> call, Throwable t) {
+                Log.i("ERRO API", "" + t.getMessage());
             }
         });
     }
 
 
-    public void recuperarSituacaoTurmaMesAPI() {
-        Call<ListaSituacaoTurmaMesAPI> listaUnidadesAPICall = apiService.getSituacaoTurmaMesEndPoint().situacoes(paginaAtualSituacaoTurmames);
-        listaUnidadesAPICall.enqueue(new Callback<ListaSituacaoTurmaMesAPI>() {
-            @Override
-            public void onResponse(Call<ListaSituacaoTurmaMesAPI> call, Response<ListaSituacaoTurmaMesAPI> response) {
-                if (response.isSuccessful()) {
-                    realm.beginTransaction();
-                    realm.copyToRealmOrUpdate(response.body().getResults());
-                    realm.commitTransaction();
-                    if (response.body().getNext() != null) {
-                        paginaAtualSituacaoTurmames = paginaAtualSituacaoTurmames + 1;
-                        recuperarSituacaoTurmaMesAPI();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ListaSituacaoTurmaMesAPI> call, Throwable t) {
-
-            }
-        });
-    }
-
-
-    public void postSituacaoTurmaMesAPI(SituacaoTurmaMes situacaoTurmaMes) {
+    public void postSituacaoTurmaMesAPI(final SituacaoTurmaMes situacaoTurmaMes) {
         Call<SituacaoTurmaMes> situacaoTurmaMesCall = apiService.getSituacaoTurmaMesEndPoint().postSituacaoTurmaMes(situacaoTurmaMes);
         situacaoTurmaMesCall.enqueue(new Callback<SituacaoTurmaMes>() {
             @Override
             public void onResponse(Call<SituacaoTurmaMes> call, Response<SituacaoTurmaMes> response) {
-
+                if (response.isSuccessful()) {
+                    realm.beginTransaction();
+                    situacaoTurmaMes.setNovo(false);
+                    realm.copyToRealmOrUpdate(situacaoTurmaMes);
+                    realm.commitTransaction();
+                    Log.i("RESPONSE", "SITUACAOTURMAMES PUBLICADA");
+                }
             }
 
             @Override
             public void onFailure(Call<SituacaoTurmaMes> call, Throwable t) {
-
+                Log.i("ERRO API", "" + t.getMessage());
             }
         });
     }
 
 
+    public void publicarSituacaoTurmaMes() {
+        RealmResults<SituacaoTurmaMes> situacaoTurmaMes = realm.where(SituacaoTurmaMes.class).findAll();
+        for (int i = 0; i < situacaoTurmaMes.size(); i++) {
+            if (situacaoTurmaMes.get(i).isNovo()) {
+                SituacaoTurmaMes situacaoTurmaMes1 = new SituacaoTurmaMes();
+                situacaoTurmaMes1.setDataHora(situacaoTurmaMes.get(i).getDataHora());
+                situacaoTurmaMes1.setStatus(situacaoTurmaMes.get(i).getStatus());
+                situacaoTurmaMes1.setQuantidadeAprovados(situacaoTurmaMes.get(i).getQuantidadeAprovados());
+                situacaoTurmaMes1.setTurma(situacaoTurmaMes.get(i).getTurma());
+                situacaoTurmaMes1.setQuantidadeReprovados(situacaoTurmaMes.get(i).getQuantidadeReprovados());
+                situacaoTurmaMes1.getBimestre();
+                postSituacaoTurmaMesAPI(situacaoTurmaMes1);
+            }
+        }
+    }
 }

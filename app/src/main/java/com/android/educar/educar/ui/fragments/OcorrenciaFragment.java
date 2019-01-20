@@ -104,20 +104,20 @@ public class OcorrenciaFragment extends Fragment {
         pessoas.setAdapter(alunoArrayAdapter);
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
+//    @Override
+//    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+//        super.onCreateContextMenu(menu, v, menuInfo);
 
-        final MenuItem detalhar = menu.add("Detalhar");
-
-        detalhar.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                startActivity(new Intent(getContext(), DetalheAlunoActivity.class));
-                return false;
-            }
-        });
-    }
+//        final MenuItem detalhar = menu.add("Detalhar");
+//
+//        detalhar.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                startActivity(new Intent(getContext(), DetalheAlunoActivity.class));
+//                return false;
+//            }
+//        });
+//    }
 
     public void recuperarAlunosRealm() {
         List<Aluno> alunos = new ArrayList<>();
@@ -218,13 +218,15 @@ public class OcorrenciaFragment extends Fragment {
                 realm.where(FuncionarioEscola.class)
                         .equalTo("funcionario", preferences.getSavedLong("id_funcionario"))
                         .equalTo("unidade", preferences.getSavedLong("id_unidade")).findFirst().getId(),
-                descricao,
+                tipoOcorrencia.getDescricao(),
                 preferences.getSavedLong("id_matricula"),
                 tipoOcorrencia.getId(),
                 preferences.getSavedLong("id_aluno"),
                 preferences.getSavedLong("id_anoletivo"),
                 preferences.getSavedLong("id_funcionario"),
-                preferences.getSavedLong("id_unidade"), false, null, null, null, 0, true);
+                preferences.getSavedLong("id_unidade"), false, null,
+                tipoOcorrencia.getDescricao(),
+                descricao, 0, true);
 
         realm.copyToRealmOrUpdate(ocorrencia);
         realm.commitTransaction();

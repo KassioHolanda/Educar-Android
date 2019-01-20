@@ -31,7 +31,7 @@ public class PessoaFisicaMB {
         realm.setAutoRefresh(true);
     }
 
-    public void recuperarPesoaFisica(String cpf) {
+    public void recuperarPessoaFisicaPeloCPF(String cpf) {
         pessoaChamada.pessoaFisicaCPF(cpf);
     }
 

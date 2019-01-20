@@ -3,6 +3,8 @@ package com.android.educar.educar.ui.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,19 +25,14 @@ import com.android.educar.educar.R;
 //import com.android.educar.educar.dao.UnidadeDAO;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.GradeCurso;
-import com.android.educar.educar.model.Professor;
 import com.android.educar.educar.model.SerieDisciplina;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.network.chamadas.AlunoChamada;
-import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
-import com.android.educar.educar.utils.UtilsFunctions;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -99,7 +96,7 @@ public class DisciplinaActivity extends AppCompatActivity {
             }
         }
 
-        RealmResults<Disciplina> disciplinas = realm.where(Disciplina.class).findAll();
+        RealmResults<Disciplina> disciplinas = realm.where(Disciplina.class).findAll().sort("descricao");
         for (int i = 0; i < disciplinas.size(); i++) {
             disciplinasLista.add(disciplinas.get(i));
         }
@@ -140,7 +137,9 @@ public class DisciplinaActivity extends AppCompatActivity {
     }
 
     public void nextActivity() {
-        startActivity(new Intent(getApplicationContext(), AulaAcoesActivity.class));
+        Intent intent = new Intent(getApplicationContext(), AulaAcoesActivity.class);
+        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeCustomAnimation(DisciplinaActivity.this, R.anim.mover_esquerda, R.anim.fade_out);
+        ActivityCompat.startActivity(DisciplinaActivity.this, intent, activityOptionsCompat.toBundle());
     }
 
     public void setupInit() {
@@ -197,10 +196,5 @@ public class DisciplinaActivity extends AppCompatActivity {
         atualizarDadosTela();
         recuperarDisciplinasRealm();
         atualizarAdapterListaDisciplinas();
-        syncDados();
-    }
-
-    public void syncDados() {
-        alunoChamada.recuperarAlunosMatricula();
     }
 }

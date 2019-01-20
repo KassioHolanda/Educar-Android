@@ -33,7 +33,9 @@ import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -129,9 +131,15 @@ public class FrequenciaFragment extends Fragment {
         salvarFrequencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Frequência do dia " + new Date().getDate() + " Registrada!", Toast.LENGTH_LONG).show();
-                frequenciaMB.salvarFrequencia();
-                getActivity().finish();
+                Date data = new Date();
+                SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+                if (preferences.getSavedBoolean("datadia-" + formatador.format(data)+"-turma-"+preferences.getSavedLong("id_turma")+"-"+preferences.getSavedLong("id_disciplina"))) {
+                    Snackbar.make(getView(), "FREQUENCIA JA REALIZADA HOJE", Snackbar.LENGTH_INDEFINITE).show();
+                } else {
+                    frequenciaMB.salvarFrequencia();
+                    Toast.makeText(getContext(), "Frequência do dia " + new Date().getDate() + " Registrada!", Toast.LENGTH_LONG).show();
+                    getActivity().finish();
+                }
             }
         });
 

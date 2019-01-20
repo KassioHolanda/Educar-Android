@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.model.FuncionarioEscola;
+import com.android.educar.educar.model.LocalEscola;
 import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.network.service.ListaUnidadesAPI;
@@ -22,7 +23,8 @@ public class UnidadeChamada {
     private APIService apiService;
     private RealmObjectsDAO realmObjectsDAO;
     private Realm realm;
-    private int paginaAtualUnidade;
+
+    private LocalEscolaChamada localEscolaChamada;
 
     public void configRealm() {
         Realm.init(context);
@@ -33,24 +35,18 @@ public class UnidadeChamada {
         apiService = new APIService("");
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
-        paginaAtualUnidade = 1;
+        localEscolaChamada = new LocalEscolaChamada(context);
     }
 
-    public void recuperarUndidadesProfessor() {
-        RealmResults<FuncionarioEscola> funcionarioEscolas = Realm.getDefaultInstance().where(FuncionarioEscola.class).findAll();
-
-        for (int i = 0; i < funcionarioEscolas.size(); i++) {
-            unidadesAPI(funcionarioEscolas.get(i).getUnidade());
-        }
-    }
-
-    public void unidadesAPI(long unidadeId) {
+    public void recuperarUnidadesDoProfessorAPI(long unidadeId) {
         Call<Unidade> listaUnidadesAPICall = apiService.getUnidadeEndPoint().getUnidade(unidadeId);
         listaUnidadesAPICall.enqueue(new Callback<Unidade>() {
             @Override
             public void onResponse(Call<Unidade> call, Response<Unidade> response) {
                 if (response.isSuccessful()) {
                     realmObjectsDAO.salvarRealm(response.body());
+                    localEscolaChamada.recuperarLocalEscolaUnidade(response.body().getId());
+                    Log.i("RESPONSE", "UNIDADES RECUPERADAS");
                 }
             }
 

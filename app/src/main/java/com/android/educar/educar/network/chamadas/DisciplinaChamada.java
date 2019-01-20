@@ -23,7 +23,6 @@ public class DisciplinaChamada {
     private APIService apiService;
     private RealmObjectsDAO realmObjectsDAO;
     private Realm realm;
-    private int paginaAtualDisciplina;
 
     public void configRealm() {
         Realm.init(context);
@@ -35,37 +34,6 @@ public class DisciplinaChamada {
         apiService = new APIService("");
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
-        paginaAtualDisciplina = 1;
-    }
-
-    public void disciplinasAPI() {
-        Call<ListaDisciplinasAPI> listaProfessoresAPICall = apiService.getDisciplinaEndPoint().disciplinas();
-        listaProfessoresAPICall.enqueue(new Callback<ListaDisciplinasAPI>() {
-            @Override
-            public void onResponse(Call<ListaDisciplinasAPI> call, Response<ListaDisciplinasAPI> response) {
-                if (response.isSuccessful()) {
-                    realm.beginTransaction();
-                    realm.copyToRealmOrUpdate(response.body().getResults());
-                    realm.commitTransaction();
-                    if (response.body().getNext() != null) {
-                        paginaAtualDisciplina = paginaAtualDisciplina + 1;
-                        disciplinasAPI();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ListaDisciplinasAPI> call, Throwable t) {
-                Log.i("ERRO API", t.getMessage());
-            }
-        });
-    }
-
-    public void recuperarDisciplinasTurma() {
-        RealmResults<SerieDisciplina> serieDisciplinas = realm.where(SerieDisciplina.class).findAll();
-        for (int i = 0; i < serieDisciplinas.size(); i++) {
-            recuperarDisciplinasTurma(serieDisciplinas.get(i).getDisciplina());
-        }
     }
 
     public void recuperarDisciplinasTurma(long disciplina) {
@@ -77,12 +45,13 @@ public class DisciplinaChamada {
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body());
                     realm.commitTransaction();
+                    Log.i("RESPONSE", "DISCIPLINAS RECUPERADAS");
                 }
             }
 
             @Override
             public void onFailure(Call<Disciplina> call, Throwable t) {
-
+                Log.i("ERRO API", "" + t.getMessage());
             }
         });
     }

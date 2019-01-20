@@ -1,7 +1,6 @@
 package com.android.educar.educar.network.service;
 
 import com.android.educar.educar.model.Funcionario;
-import com.android.educar.educar.model.Professor;
 
 import java.util.ArrayList;
 import java.util.List;
