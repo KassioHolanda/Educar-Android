@@ -17,11 +17,11 @@ public interface LocalEscolaEndPoint {
     Call<ListaLocalEscolaAPI> locaisEscola();
 
     @GET("localescola/{pk}")
-    Call<LocalEscola> getLocalEscola(@Path("id") long id);
+    Call<LocalEscola> getLocalEscola(@Path("id") Long id);
 
     @GET("localescola/")
     Call<ListaLocalEscolaAPI> locaisEscola(@Query("page") int page);
 
     @GET("localescola/unidade={unidade}/")
-    Call<List<LocalEscola>> locaisEscolaUnidade(@Path("unidade") long unidade);
+    Call<List<LocalEscola>> locaisEscolaUnidade(@Path("unidade") Long unidade);
 }

@@ -82,7 +82,7 @@ public class LoadingActivity extends AppCompatActivity {
 
                     while (statusLoading < 1) {
                         statusLoading++;
-                        android.os.SystemClock.sleep(600000);
+                        android.os.SystemClock.sleep(40000);
                         handler.post(new Runnable() {
                             @Override
                             public void run() {

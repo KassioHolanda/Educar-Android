@@ -6,20 +6,20 @@ import io.realm.annotations.PrimaryKey;
 public class FuncionarioEscola extends RealmObject {
 
     @PrimaryKey
-    private long id;
+    private Long id;
     private Boolean ativo;
-    private long unidade;
-    private long funcionario;
+    private Long unidade;
+    private Long funcionario;
 
     public FuncionarioEscola() {
 
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -31,19 +31,19 @@ public class FuncionarioEscola extends RealmObject {
         this.ativo = ativo;
     }
 
-    public long getUnidade() {
+    public Long getUnidade() {
         return unidade;
     }
 
-    public void setUnidade(long unidade) {
+    public void setUnidade(Long unidade) {
         this.unidade = unidade;
     }
 
-    public long getFuncionario() {
+    public Long getFuncionario() {
         return funcionario;
     }
 
-    public void setFuncionario(long funcionario) {
+    public void setFuncionario(Long funcionario) {
         this.funcionario = funcionario;
     }
 }

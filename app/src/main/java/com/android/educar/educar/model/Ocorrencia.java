@@ -12,21 +12,21 @@ import io.realm.annotations.PrimaryKey;
 public class Ocorrencia extends RealmObject {
 
     @PrimaryKey
-    private long id;
+    private Long id;
     private String datahora;
     private String datahoracadastro;
     @SerializedName("funcionarioescola")
-    private long funcionarioEscola;
+    private Long funcionarioEscola;
     private String descricao;
     @SerializedName("matriculaaluno")
-    private long matriculaAluno;
+    private Long matriculaAluno;
     @SerializedName("tipoocorrencia")
-    private long tipoOcorrencia;
-    private long aluno;
+    private Long tipoOcorrencia;
+    private Long aluno;
     @SerializedName("anoletivo")
-    private long anoLetivo;
-    private long funcionario;
-    private long unidade;
+    private Long anoLetivo;
+    private Long funcionario;
+    private Long unidade;
     @SerializedName("enviadosms")
     private boolean enviadoSms;
     @SerializedName("dataenviosms")
@@ -42,7 +42,7 @@ public class Ocorrencia extends RealmObject {
         novo = false;
     }
 
-    public Ocorrencia(String datahora, String dataHoraCadastro, long funcionarioEscola, String descricao, long matriculaAluno, long tipoOcorrencia, long aluno, long anoLetivo, long funcionario, long unidade, boolean enviadoSms, Date dataEnvioSms, String resumoSms, String observacao, int numeroTelefone, boolean novo) {
+    public Ocorrencia(String datahora, String dataHoraCadastro, Long funcionarioEscola, String descricao, Long matriculaAluno, Long tipoOcorrencia, Long aluno, Long anoLetivo, Long funcionario, Long unidade, boolean enviadoSms, Date dataEnvioSms, String resumoSms, String observacao, int numeroTelefone, boolean novo) {
         this.datahora = datahora;
         this.datahoracadastro = dataHoraCadastro;
         this.funcionarioEscola = funcionarioEscola;
@@ -61,19 +61,19 @@ public class Ocorrencia extends RealmObject {
         this.novo = novo;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getFuncionarioEscola() {
+    public Long getFuncionarioEscola() {
         return funcionarioEscola;
     }
 
-    public void setFuncionarioEscola(long funcionarioEscola) {
+    public void setFuncionarioEscola(Long funcionarioEscola) {
         this.funcionarioEscola = funcionarioEscola;
     }
 
@@ -85,51 +85,51 @@ public class Ocorrencia extends RealmObject {
         this.descricao = descricao;
     }
 
-    public long getMatriculaAluno() {
+    public Long getMatriculaAluno() {
         return matriculaAluno;
     }
 
-    public void setMatriculaAluno(long matriculaAluno) {
+    public void setMatriculaAluno(Long matriculaAluno) {
         this.matriculaAluno = matriculaAluno;
     }
 
-    public long getTipoOcorrencia() {
+    public Long getTipoOcorrencia() {
         return tipoOcorrencia;
     }
 
-    public void setTipoOcorrencia(long tipoOcorrencia) {
+    public void setTipoOcorrencia(Long tipoOcorrencia) {
         this.tipoOcorrencia = tipoOcorrencia;
     }
 
-    public long getAluno() {
+    public Long getAluno() {
         return aluno;
     }
 
-    public void setAluno(long aluno) {
+    public void setAluno(Long aluno) {
         this.aluno = aluno;
     }
 
-    public long getAnoLetivo() {
+    public Long getAnoLetivo() {
         return anoLetivo;
     }
 
-    public void setAnoLetivo(long anoLetivo) {
+    public void setAnoLetivo(Long anoLetivo) {
         this.anoLetivo = anoLetivo;
     }
 
-    public long getFuncionario() {
+    public Long getFuncionario() {
         return funcionario;
     }
 
-    public void setFuncionario(long funcionario) {
+    public void setFuncionario(Long funcionario) {
         this.funcionario = funcionario;
     }
 
-    public long getUnidade() {
+    public Long getUnidade() {
         return unidade;
     }
 
-    public void setUnidade(long unidade) {
+    public void setUnidade(Long unidade) {
         this.unidade = unidade;
     }
 

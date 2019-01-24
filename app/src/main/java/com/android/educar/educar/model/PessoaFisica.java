@@ -11,7 +11,7 @@ import io.realm.annotations.PrimaryKey;
 public class PessoaFisica extends RealmObject {
 
     @PrimaryKey
-    private long id;
+    private Long id;
     @SerializedName("cpf")
     private String cpf;
     private String nacionalidade;
@@ -26,11 +26,11 @@ public class PessoaFisica extends RealmObject {
     public PessoaFisica() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

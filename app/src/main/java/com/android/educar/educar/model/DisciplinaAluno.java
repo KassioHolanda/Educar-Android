@@ -10,10 +10,10 @@ import io.realm.annotations.PrimaryKey;
 public class DisciplinaAluno extends RealmObject {
 
     @PrimaryKey
-    private long id;
+    private Long id;
     @SerializedName("statusdisciplinaaluno")
     private String statusDisciplinaAluno;
-    private long matricula;
+    private Long matricula;
     @SerializedName("seriedisciplina")
     private Long serieDisciplina;
     @SerializedName("mesesfechadosnota")
@@ -31,7 +31,7 @@ public class DisciplinaAluno extends RealmObject {
     @SerializedName("notaantigaprovafinal")
     private Float notaAntigaProvaFinal;
     @SerializedName("usuarioatualizacaoprovafinal")
-    private long usuarioAtualizacaoProvaFinal;
+    private Long usuarioAtualizacaoProvaFinal;
     @SerializedName("statusatual")
     private String statusAtual;
     private boolean alterado;
@@ -39,7 +39,7 @@ public class DisciplinaAluno extends RealmObject {
     public DisciplinaAluno() {
     }
 
-    public DisciplinaAluno(String statusDisciplinaAluno, long matricula, Long serieDisciplina, int mesesFechadosNota, Float notaAcumulada, Date datacadastroprovafinal, Float notaProvaFinal, Boolean fechadoProvaFInal, Date dataCadastroAtualizacaoProvaFinal, Float notaAntigaProvaFinal, long usuarioAtualizacaoProvaFinal) {
+    public DisciplinaAluno(String statusDisciplinaAluno, Long matricula, Long serieDisciplina, int mesesFechadosNota, Float notaAcumulada, Date datacadastroprovafinal, Float notaProvaFinal, Boolean fechadoProvaFInal, Date dataCadastroAtualizacaoProvaFinal, Float notaAntigaProvaFinal, Long usuarioAtualizacaoProvaFinal) {
         this.statusDisciplinaAluno = statusDisciplinaAluno;
         this.matricula = matricula;
         this.serieDisciplina = serieDisciplina;
@@ -53,11 +53,11 @@ public class DisciplinaAluno extends RealmObject {
         this.usuarioAtualizacaoProvaFinal = usuarioAtualizacaoProvaFinal;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -69,11 +69,11 @@ public class DisciplinaAluno extends RealmObject {
         this.statusDisciplinaAluno = statusDisciplinaAluno;
     }
 
-    public long getMatricula() {
+    public Long getMatricula() {
         return matricula;
     }
 
-    public void setMatricula(long matricula) {
+    public void setMatricula(Long matricula) {
         this.matricula = matricula;
     }
 
@@ -141,11 +141,11 @@ public class DisciplinaAluno extends RealmObject {
         this.notaAntigaProvaFinal = notaAntigaProvaFinal;
     }
 
-    public long getUsuarioAtualizacaoProvaFinal() {
+    public Long getUsuarioAtualizacaoProvaFinal() {
         return usuarioAtualizacaoProvaFinal;
     }
 
-    public void setUsuarioAtualizacaoProvaFinal(long usuarioAtualizacaoProvaFinal) {
+    public void setUsuarioAtualizacaoProvaFinal(Long usuarioAtualizacaoProvaFinal) {
         this.usuarioAtualizacaoProvaFinal = usuarioAtualizacaoProvaFinal;
     }
 

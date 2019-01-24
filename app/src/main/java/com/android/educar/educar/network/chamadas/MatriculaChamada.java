@@ -5,10 +5,14 @@ import android.util.Log;
 
 import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.model.AlunoFrequenciaMes;
+import com.android.educar.educar.model.Disciplina;
+import com.android.educar.educar.model.DisciplinaAluno;
 import com.android.educar.educar.model.Matricula;
+import com.android.educar.educar.model.SerieDisciplina;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.network.service.ListaMatriculaAPI;
+import com.android.educar.educar.utils.Preferences;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -40,7 +44,7 @@ public class MatriculaChamada {
     }
 
 
-    public void recuperarMatriculasTurmas(long turmaId) {
+    public void recuperarMatriculasTurmas(Long turmaId) {
         Call<List<Matricula>> listCall = apiService.getMatriculaEndPoint().getmatriculas(turmaId);
         listCall.enqueue(new Callback<List<Matricula>>() {
             @Override
@@ -61,7 +65,7 @@ public class MatriculaChamada {
         });
     }
 
-    public void recuperarAlunoFrequenciaMesAPI(long matriculaId) {
+    public void recuperarAlunoFrequenciaMesAPI(Long matriculaId) {
         Call<List<AlunoFrequenciaMes>> listCall = apiService.getAlunoFrequenciaMesEndPoint().alunoFrequenciaMes(matriculaId);
         listCall.enqueue(new Callback<List<AlunoFrequenciaMes>>() {
             @Override
@@ -94,9 +98,13 @@ public class MatriculaChamada {
         for (int i = 0; i < alunoFrequenciaMes.size(); i++) {
             if (alunoFrequenciaMes.get(i).isNovo()) {
                 AlunoFrequenciaMes alunoFrequenciaMes1 = new AlunoFrequenciaMes();
+                alunoFrequenciaMes1.setId(alunoFrequenciaMes.get(i).getId());
                 alunoFrequenciaMes1.setTotalFaltas(alunoFrequenciaMes.get(i).getTotalFaltas());
                 alunoFrequenciaMes1.setBimestre(alunoFrequenciaMes.get(i).getBimestre());
                 alunoFrequenciaMes1.setMatricula(alunoFrequenciaMes.get(i).getMatricula());
+                alunoFrequenciaMes1.setDisciplinaAluno(alunoFrequenciaMes.get(i).getDisciplinaAluno());
+                alunoFrequenciaMes1.setTipoLancamentoFrequencia(alunoFrequenciaMes.get(i).getTipoLancamentoFrequencia());
+                alunoFrequenciaMes1.setDisciplina(alunoFrequenciaMes.get(i).getDisciplina());
                 publicarAlunoFrequenciaMes(alunoFrequenciaMes1);
             }
         }
@@ -107,12 +115,13 @@ public class MatriculaChamada {
         alunoFrequenciaMesCall.enqueue(new Callback<AlunoFrequenciaMes>() {
             @Override
             public void onResponse(Call<AlunoFrequenciaMes> call, Response<AlunoFrequenciaMes> response) {
-                realm.beginTransaction();
-                alunoFrequenciaMes.setNovo(false);
-                realm.copyToRealmOrUpdate(alunoFrequenciaMes);
-                realm.commitTransaction();
-//                realmObjectsDAO.salvarRealm(alunoFrequenciaMes);
-                Log.i("RESPONSE", "ALUNOFRQUENCIAMES PUBLICADO");
+                if (response.isSuccessful()) {
+                    realm.beginTransaction();
+                    alunoFrequenciaMes.setNovo(false);
+                    realm.copyToRealmOrUpdate(alunoFrequenciaMes);
+                    realm.commitTransaction();
+                    Log.i("RESPONSE", "ALUNOFRQUENCIAMES PUBLICADO");
+                }
             }
 
             @Override

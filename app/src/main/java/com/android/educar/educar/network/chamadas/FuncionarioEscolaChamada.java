@@ -40,7 +40,7 @@ public class FuncionarioEscolaChamada {
         configRealm();
     }
 
-    public void funcionariosEscola(long funcionarioId) {
+    public void funcionariosEscola(Long funcionarioId) {
         Call<List<FuncionarioEscola>> listaFuncionarioEscolaAPICall = apiService.getFuncionarioEscolaEndPoint().funcionariosEscola(funcionarioId);
         listaFuncionarioEscolaAPICall.enqueue(new Callback<List<FuncionarioEscola>>() {
             @Override

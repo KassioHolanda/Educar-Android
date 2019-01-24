@@ -35,11 +35,11 @@ public class PessoaFisicaMB {
         pessoaChamada.pessoaFisicaCPF(cpf);
     }
 
-    public void recuperarPerfil(long perfil) {
+    public void recuperarPerfil(Long perfil) {
         pessoaChamada.recuperarPerfilUsuario(perfil);
     }
 
-    public void recuperarUsuario(long pessoaFisicaId) {
+    public void recuperarUsuario(Long pessoaFisicaId) {
         pessoaChamada.recuperarUsuarioPessoaFisica(pessoaFisicaId);
     }
 }

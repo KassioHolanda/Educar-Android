@@ -21,15 +21,15 @@ public interface AlunoFrequenciaMesEndPoint {
     Call<ListaAlunoFrequenciaMesAPI> alunosFrequenciaMes();
 
     @GET("alunofrequenciames/{id}")
-    Call<AlunoFrequenciaMes> getAlunoFrequenciaMes(@Path("id") long id);
+    Call<AlunoFrequenciaMes> getAlunoFrequenciaMes(@Path("id") Long id);
 
     @GET("alunofrequenciames/matricula={matricula}/")
-    Call<List<AlunoFrequenciaMes>> alunoFrequenciaMes(@Path("matricula") long matricula);
+    Call<List<AlunoFrequenciaMes>> alunoFrequenciaMes(@Path("matricula") Long matricula);
 
     @GET("alunofrequenciames/")
     Call<ListaAlunoFrequenciaMesAPI> alunosFrequenciaMes(@Query("page") int page);
 
     @PUT("alunofrequenciames/id={id}/")
-    Call<AlunoFrequenciaMes> postAlunoFrequenciaMes(@Path("id") long id, @Body AlunoFrequenciaMes alunoFrequenciaMes);
+    Call<AlunoFrequenciaMes> postAlunoFrequenciaMes(@Path("id") Long id, @Body AlunoFrequenciaMes alunoFrequenciaMes);
 
 }

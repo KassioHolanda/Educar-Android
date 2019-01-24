@@ -80,7 +80,7 @@ public class SerieChamada {
     }
 
 
-    public void recuperarSerieAPI(long serieID) {
+    public void recuperarSerieAPI(Long serieID) {
         Call<Serie> listaSerieDisciplinaAPICall = apiService.getSerieEndPoint().getSerie(serieID);
         listaSerieDisciplinaAPICall.enqueue(new Callback<Serie>() {
             @Override
@@ -100,7 +100,7 @@ public class SerieChamada {
         });
     }
 
-    public void recuperarSerieDisciplinaPelaDisciplina(final long disciplinaId) {
+    public void recuperarSerieDisciplinaPelaDisciplina(final Long disciplinaId) {
         Call<List<SerieDisciplina>> listCall = apiService.getSerieDisciplinaEndPoint().serieDisciplinas(disciplinaId);
         listCall.enqueue(new Callback<List<SerieDisciplina>>() {
             @Override
@@ -121,7 +121,7 @@ public class SerieChamada {
         });
     }
 
-    public void recuperarSerieDisciplina(final long serieDisciplina) {
+    public void recuperarSerieDisciplina(final Long serieDisciplina) {
         Call<SerieDisciplina> serieDisciplinaCall = apiService.getSerieDisciplinaEndPoint().getSerieDisciplinas(serieDisciplina);
         serieDisciplinaCall.enqueue(new Callback<SerieDisciplina>() {
             @Override

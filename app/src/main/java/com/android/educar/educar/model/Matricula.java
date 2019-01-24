@@ -10,41 +10,41 @@ import io.realm.annotations.PrimaryKey;
 public class Matricula extends RealmObject {
 
     @PrimaryKey
-    private long id;
-    private long aluno;
+    private Long id;
+    private Long aluno;
     @SerializedName("statusmatricula")
     private String statusMatricula;
     @SerializedName("datamatricula")
     private Date dataMatricula;
-    private long turma;
+    private Long turma;
     @SerializedName("statusatual")
     private String statusAtual;
-    private long serie;
+    private Long serie;
 
     public Matricula() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getTurma() {
+    public Long getTurma() {
         return turma;
     }
 
-    public void setTurma(long turma) {
+    public void setTurma(Long turma) {
         this.turma = turma;
     }
 
-    public long getAluno() {
+    public Long getAluno() {
         return aluno;
     }
 
-    public void setAluno(long aluno) {
+    public void setAluno(Long aluno) {
         this.aluno = aluno;
     }
 
@@ -72,11 +72,11 @@ public class Matricula extends RealmObject {
         this.statusAtual = statusAtual;
     }
 
-    public long getSerie() {
+    public Long getSerie() {
         return serie;
     }
 
-    public void setSerie(long serie) {
+    public void setSerie(Long serie) {
         this.serie = serie;
     }
 }

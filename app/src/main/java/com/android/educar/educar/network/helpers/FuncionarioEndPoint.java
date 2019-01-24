@@ -16,10 +16,10 @@ public interface FuncionarioEndPoint {
     Call<ListaFuncionariosAPI> funcionarios();
 
     @GET("funcionario/id={id}/")
-    Call<Funcionario> getFuncionario(@Path("id") long id);
+    Call<Funcionario> getFuncionario(@Path("id") Long id);
 
     @GET("funcionario/pessoafisica={pessoafisica}/")
-    Call<List<Funcionario>> getFuncionarioPessoaFisica(@Path("pessoafisica") long pessoafisica);
+    Call<List<Funcionario>> getFuncionarioPessoaFisica(@Path("pessoafisica") Long pessoafisica);
 
     @GET("funcionario/")
     Call<ListaFuncionariosAPI> funcionarios(@Query("page") int page);

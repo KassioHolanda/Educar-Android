@@ -9,22 +9,22 @@ import io.realm.annotations.PrimaryKey;
 
 public class SituacaoTurmaMes extends RealmObject {
     @PrimaryKey
-    private long id;
+    private Long id;
     @SerializedName("datahora")
     private String dataHora;
     private String status;
-    private long turma;
+    private Long turma;
     @SerializedName("quantidadeaproados")
     private int quantidadeAprovados;
     @SerializedName("quantidadereprovados")
     private int quantidadeReprovados;
-    private long bimestre;
+    private Long bimestre;
     private boolean novo;
 
     public SituacaoTurmaMes() {
     }
 
-    public SituacaoTurmaMes(String dataHora, String status, long tuma, int quantidadeAprovados, int quantidadeReprovados, long bimestre) {
+    public SituacaoTurmaMes(String dataHora, String status, Long tuma, int quantidadeAprovados, int quantidadeReprovados, Long bimestre) {
         this.dataHora = dataHora;
         this.status = status;
         this.turma = tuma;
@@ -67,27 +67,27 @@ public class SituacaoTurmaMes extends RealmObject {
         this.quantidadeReprovados = quantidadeReprovados;
     }
 
-    public long getBimestre() {
+    public Long getBimestre() {
         return bimestre;
     }
 
-    public void setBimestre(long bimestre) {
+    public void setBimestre(Long bimestre) {
         this.bimestre = bimestre;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getTurma() {
+    public Long getTurma() {
         return turma;
     }
 
-    public void setTurma(long turma) {
+    public void setTurma(Long turma) {
         this.turma = turma;
     }
 

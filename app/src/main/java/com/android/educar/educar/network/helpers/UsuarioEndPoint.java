@@ -17,10 +17,10 @@ public interface UsuarioEndPoint {
     Call<ListaUsuariosAPI> usuarios();
 
     @GET("usuario/{id}/")
-    Call<Usuario> getUsuario(@Path("id") long id);
+    Call<Usuario> getUsuario(@Path("id") Long id);
 
     @GET("usuario/pessoafisica={pessoafisica}/")
-    Call<List<Usuario>> getUsuarioPessoaFisica(@Path("pessoafisica") long pessoafisica);
+    Call<List<Usuario>> getUsuarioPessoaFisica(@Path("pessoafisica") Long pessoafisica);
 
     @GET("usuario/")
     Call<ListaUsuariosAPI> usuariosPaginacao(@Query("page") int page);

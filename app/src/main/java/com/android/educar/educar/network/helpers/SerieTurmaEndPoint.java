@@ -15,7 +15,7 @@ public interface SerieTurmaEndPoint {
     Call<ListaSerieTurmaAPI> seriesturma();
 
     @GET("serieturma/{id}")
-    Call<SerieTurma> getSerieTurma(@Path("id") long id);
+    Call<SerieTurma> getSerieTurma(@Path("id") Long id);
 
     @GET("serieturma/")
     Call<ListaSerieTurmaAPI> seriesturma(@Query("page")int page);

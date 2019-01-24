@@ -48,7 +48,7 @@ public class TurmaChamada {
         realm = Realm.getDefaultInstance();
     }
 
-    public void recuperarGradeCurso(long professorId) {
+    public void recuperarGradeCurso(Long professorId) {
         Call<List<GradeCurso>> gradeCursoCall = apiService.getGradeCursoEndPoint().getGradeCrusoTurmaProfessor(professorId);
         gradeCursoCall.enqueue(new Callback<List<GradeCurso>>() {
             @Override
@@ -78,7 +78,7 @@ public class TurmaChamada {
     }
 
 
-    public void recuperarTurmasDaUnidade(long sala) {
+    public void recuperarTurmasDaUnidade(Long sala) {
         Call<List<Turma>> listCall = apiService.getTurmaEndPoint().turmasUnidade(sala);
         listCall.enqueue(new Callback<List<Turma>>() {
             @Override
@@ -120,7 +120,7 @@ public class TurmaChamada {
     }
 
 
-    public void recuperarSituacaoTurmaMesAPI(long turmaId) {
+    public void recuperarSituacaoTurmaMesAPI(Long turmaId) {
         Call<List<SituacaoTurmaMes>> listaUnidadesAPICall = apiService.getSituacaoTurmaMesEndPoint().situacaoTurmaMes(turmaId);
         listaUnidadesAPICall.enqueue(new Callback<List<SituacaoTurmaMes>>() {
             @Override

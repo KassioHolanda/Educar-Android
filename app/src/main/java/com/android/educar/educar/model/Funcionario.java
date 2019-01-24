@@ -10,13 +10,13 @@ import io.realm.annotations.PrimaryKey;
 public class Funcionario extends RealmObject {
 
     @PrimaryKey
-    private long id;
+    private Long id;
     @SerializedName("escolaridade")
     private String escolaridade;
     @SerializedName("pessoafisica")
-    private long pessoaFisicaId;
+    private Long pessoaFisicaId;
     @SerializedName("cargo")
-    private long cargo;
+    private Long cargo;
     @SerializedName("cargahoraria")
     private String cargaHoraria;
     @SerializedName("dataadmissao")
@@ -30,11 +30,11 @@ public class Funcionario extends RealmObject {
     public Funcionario() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -46,19 +46,19 @@ public class Funcionario extends RealmObject {
         this.escolaridade = escolaridade;
     }
 
-    public long getPessoaFisicaId() {
+    public Long getPessoaFisicaId() {
         return pessoaFisicaId;
     }
 
-    public void setPessoaFisicaId(long pessoaFisicaId) {
+    public void setPessoaFisicaId(Long pessoaFisicaId) {
         this.pessoaFisicaId = pessoaFisicaId;
     }
 
-    public long getCargo() {
+    public Long getCargo() {
         return cargo;
     }
 
-    public void setCargo(long cargo) {
+    public void setCargo(Long cargo) {
         this.cargo = cargo;
     }
 

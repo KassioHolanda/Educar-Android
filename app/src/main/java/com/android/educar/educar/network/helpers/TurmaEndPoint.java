@@ -16,12 +16,12 @@ public interface TurmaEndPoint {
     Call<ListaTurmaAPI> turmas();
 
     @GET("turma/{pk}")
-    Call<Turma> getTurma(@Path("id") long id);
+    Call<Turma> getTurma(@Path("id") Long id);
 
     @GET("turma/")
     Call<ListaTurmaAPI> turmas(@Query("page") int page);
 
 //   Dados recuperados para turmas no nivel fundamental e turmas cadastradas apenas
     @GET("turma/sala={sala}/")
-    Call<List<Turma>> turmasUnidade(@Path("sala") long sala);
+    Call<List<Turma>> turmasUnidade(@Path("sala") Long sala);
 }

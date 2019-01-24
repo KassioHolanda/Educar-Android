@@ -47,7 +47,7 @@ public class AlunoChamada {
         realm = Realm.getDefaultInstance();
     }
 
-    public void recuperarDisciplinaAlunoMatricula(long matriculaId) {
+    public void recuperarDisciplinaAlunoMatricula(Long matriculaId) {
         Call<List<DisciplinaAluno>> listCall = apiService.getDisciplinaAlunoEndPoint().disciplinasAluno(matriculaId);
         listCall.enqueue(new Callback<List<DisciplinaAluno>>() {
             @Override
@@ -66,7 +66,7 @@ public class AlunoChamada {
         });
     }
 
-    private void atualizarDisciplinaAluno(long id, DisciplinaAluno disciplinaAluno) {
+    private void atualizarDisciplinaAluno(Long id, DisciplinaAluno disciplinaAluno) {
         Call<DisciplinaAluno> disciplinaAlunoCall = apiService.getDisciplinaAlunoEndPoint().atualizarDisciplinaAluno(id, disciplinaAluno);
         disciplinaAlunoCall.enqueue(new Callback<DisciplinaAluno>() {
             @Override
@@ -163,7 +163,7 @@ public class AlunoChamada {
         }
     }
 
-    public void recuperarAlunosMatricula(long alunoId) {
+    public void recuperarAlunosMatricula(Long alunoId) {
         Call<Aluno> alunoCall = apiService.getAlunoEndPoint().getAluno(alunoId);
         alunoCall.enqueue(new Callback<Aluno>() {
             @Override

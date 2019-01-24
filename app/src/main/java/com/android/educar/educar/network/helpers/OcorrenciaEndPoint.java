@@ -16,7 +16,7 @@ public interface OcorrenciaEndPoint {
     Call<ListaOcorrenciaAPI> ocorrencias();
 
     @GET("ocorrencia/{id}")
-    Call<Ocorrencia> getOcorrencias(@Path("id") long id);
+    Call<Ocorrencia> getOcorrencias(@Path("id") Long id);
 
     @POST("ocorrencia/")
     Call<Ocorrencia> postOcorrencia(@Body Ocorrencia ocorrencia);

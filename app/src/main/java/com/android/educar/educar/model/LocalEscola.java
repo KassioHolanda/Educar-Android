@@ -6,11 +6,11 @@ import io.realm.annotations.PrimaryKey;
 public class LocalEscola extends RealmObject {
 
     @PrimaryKey
-    private long id;
+    private Long id;
     private String descricao;
-    private long unidade;
+    private Long unidade;
 
-    public LocalEscola(String descricao, long unidade) {
+    public LocalEscola(String descricao, Long unidade) {
         this.descricao = descricao;
         this.unidade = unidade;
     }
@@ -18,11 +18,11 @@ public class LocalEscola extends RealmObject {
     public LocalEscola() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -34,11 +34,11 @@ public class LocalEscola extends RealmObject {
         this.descricao = descricao;
     }
 
-    public long getUnidade() {
+    public Long getUnidade() {
         return unidade;
     }
 
-    public void setUnidade(long unidade) {
+    public void setUnidade(Long unidade) {
         this.unidade = unidade;
     }
 }

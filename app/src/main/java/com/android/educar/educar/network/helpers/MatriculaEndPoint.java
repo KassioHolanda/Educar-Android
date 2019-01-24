@@ -17,11 +17,11 @@ public interface MatriculaEndPoint {
     Call<ListaMatriculaAPI> matriculas();
 
     @GET("matricula/id={id}/")
-    Call<Matricula> getMatricula(@Path("id") long id);
+    Call<Matricula> getMatricula(@Path("id") Long id);
 
     @GET("matricula/")
     Call<ListaMatriculaAPI> matriculas(@Query("page") int page);
 
     @GET("matricula/turma={turma}/")
-    Call<List<Matricula>> getmatriculas(@Path("turma") long turma);
+    Call<List<Matricula>> getmatriculas(@Path("turma") Long turma);
 }

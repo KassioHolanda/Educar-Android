@@ -22,7 +22,7 @@ public interface PessoaFisicaEndPoint {
     Call<ListaPessoaFisicaAPI> pessoasFisicasComPaginacao(@Query("page") int page);
 
     @GET("pessoafisica/id={id}/")
-    Call<PessoaFisica> getPessoaFisica(@Path("id") long id);
+    Call<PessoaFisica> getPessoaFisica(@Path("id") Long id);
 
     @GET("pessoafisica/cpf={cpf}/")
     Call<List<PessoaFisica>> getPessoaFisicaCpf(@Path("cpf") String cpf);

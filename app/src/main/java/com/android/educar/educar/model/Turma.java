@@ -14,13 +14,13 @@ import io.realm.annotations.PrimaryKey;
 public class Turma extends RealmObject {
 
     @PrimaryKey
-    private long id;
+    private Long id;
     private String descricao;
     private String turno;
-    private long sala;
+    private Long sala;
     @SerializedName("anoletivo")
-    private long anoLetivo;
-    private long serie;
+    private Long anoLetivo;
+    private Long serie;
     private String nivel;
     @SerializedName("statusturma")
     private String statusTurma;
@@ -29,11 +29,11 @@ public class Turma extends RealmObject {
 
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -53,27 +53,27 @@ public class Turma extends RealmObject {
         this.turno = turno;
     }
 
-    public long getSala() {
+    public Long getSala() {
         return sala;
     }
 
-    public void setSala(long sala) {
+    public void setSala(Long sala) {
         this.sala = sala;
     }
 
-    public long getAnoLetivo() {
+    public Long getAnoLetivo() {
         return anoLetivo;
     }
 
-    public void setAnoLetivo(long anoLetivo) {
+    public void setAnoLetivo(Long anoLetivo) {
         this.anoLetivo = anoLetivo;
     }
 
-    public long getSerie() {
+    public Long getSerie() {
         return serie;
     }
 
-    public void setSerie(long serie) {
+    public void setSerie(Long serie) {
         this.serie = serie;
     }
 

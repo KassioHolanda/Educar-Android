@@ -17,11 +17,11 @@ public interface GradeCursoEndPoint {
     Call<ListaGradeCursoAPI> gradeCursos();
 
     @GET("gradecurso/id={id}/")
-    Call<GradeCurso> getGradeCruso(@Path("id") long id);
+    Call<GradeCurso> getGradeCruso(@Path("id") Long id);
 
     @GET("gradecurso/")
     Call<ListaGradeCursoAPI> gradeCursos(@Query("page") int page);
 
     @GET("gradecurso/professor={professor}/")
-    Call<List<GradeCurso>> getGradeCrusoTurmaProfessor(@Path("professor") long professor);
+    Call<List<GradeCurso>> getGradeCrusoTurmaProfessor(@Path("professor") Long professor);
 }

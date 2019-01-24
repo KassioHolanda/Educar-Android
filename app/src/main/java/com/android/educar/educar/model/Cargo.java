@@ -3,7 +3,7 @@ package com.android.educar.educar.model;
 import io.realm.RealmObject;
 
 public class Cargo extends RealmObject {
-    private long id;
+    private Long id;
     private String abreviacao;
     private String descricao;
 
@@ -15,11 +15,11 @@ public class Cargo extends RealmObject {
         this.descricao = descricao;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

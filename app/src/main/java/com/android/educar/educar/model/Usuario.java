@@ -8,19 +8,19 @@ import io.realm.annotations.PrimaryKey;
 
 public class Usuario extends RealmObject {
     @PrimaryKey
-    private long id;
+    private Long id;
     private boolean ativo;
     private String login;
     private String matricula;
     private String senha;
     @SerializedName("pessoafisica")
-    private long pessoaFisica;
-    private long perfil;
+    private Long pessoaFisica;
+    private Long perfil;
 
     public Usuario() {
     }
 
-    public Usuario(boolean ativo, String login, String matricula, String senha, long pessoaFisica, long perfil) {
+    public Usuario(boolean ativo, String login, String matricula, String senha, Long pessoaFisica, Long perfil) {
         this.ativo = ativo;
         this.login = login;
         this.matricula = matricula;
@@ -61,27 +61,27 @@ public class Usuario extends RealmObject {
         this.senha = senha;
     }
 
-    public long getPessoaFisica() {
+    public Long getPessoaFisica() {
         return pessoaFisica;
     }
 
-    public void setPessoaFisica(long pessoaFisica) {
+    public void setPessoaFisica(Long pessoaFisica) {
         this.pessoaFisica = pessoaFisica;
     }
 
-    public long getPerfil() {
+    public Long getPerfil() {
         return perfil;
     }
 
-    public void setPerfil(long perfil) {
+    public void setPerfil(Long perfil) {
         this.perfil = perfil;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

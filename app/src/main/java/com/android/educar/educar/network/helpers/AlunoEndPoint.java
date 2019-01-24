@@ -18,11 +18,11 @@ public interface AlunoEndPoint {
     Call<ListaAlunosAPI> alunos();
 
     @GET("aluno/id={id}/")
-    Call<Aluno> getAluno(@Path("id") long id);
+    Call<Aluno> getAluno(@Path("id") Long id);
 
     @GET("aluno/")
     Call<ListaAlunosAPI> alunos(@Query("page") int page);
 
     @GET("aluno/matricula={matricula}/")
-    Call<List<Aluno>> alunosMatricula(@Path("matricula") long matricula);
+    Call<List<Aluno>> alunosMatricula(@Path("matricula") Long matricula);
 }

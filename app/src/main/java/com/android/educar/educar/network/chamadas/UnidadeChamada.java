@@ -38,7 +38,7 @@ public class UnidadeChamada {
         localEscolaChamada = new LocalEscolaChamada(context);
     }
 
-    public void recuperarUnidadesDoProfessorAPI(long unidadeId) {
+    public void recuperarUnidadesDoProfessorAPI(Long unidadeId) {
         Call<Unidade> listaUnidadesAPICall = apiService.getUnidadeEndPoint().getUnidade(unidadeId);
         listaUnidadesAPICall.enqueue(new Callback<Unidade>() {
             @Override

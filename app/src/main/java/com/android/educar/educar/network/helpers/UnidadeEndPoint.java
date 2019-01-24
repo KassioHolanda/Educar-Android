@@ -16,7 +16,7 @@ public interface UnidadeEndPoint {
     Call<ListaUnidadesAPI> unidades();
 
     @GET("unidade/id={id}/")
-    Call<Unidade> getUnidade(@Path("id") long id);
+    Call<Unidade> getUnidade(@Path("id") Long id);
 
     @GET("unidade/")
     Call<ListaUnidadesAPI> unidades(@Query("page") int page);

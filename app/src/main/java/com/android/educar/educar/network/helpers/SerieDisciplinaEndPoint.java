@@ -17,10 +17,10 @@ public interface SerieDisciplinaEndPoint {
     Call<ListaSerieDisciplinaAPI> serieDisciplinas();
 
     @GET("seriedisciplina/id={id}/")
-    Call<SerieDisciplina> getSerieDisciplinas(@Path("id") long id);
+    Call<SerieDisciplina> getSerieDisciplinas(@Path("id") Long id);
 
     @GET("seriedisciplina/disciplina={disciplina}/")
-    Call<List<SerieDisciplina>> serieDisciplinas(@Path("disciplina") long disciplina);
+    Call<List<SerieDisciplina>> serieDisciplinas(@Path("disciplina") Long disciplina);
 
     @GET("seriedisciplina/")
     Call<ListaSerieDisciplinaAPI> serieDisciplinas(@Query("page") int page);

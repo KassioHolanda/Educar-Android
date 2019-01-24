@@ -17,11 +17,11 @@ public interface FuncionarioEscolaEndPoint {
     Call<ListaFuncionarioEscolaAPI> funcionariosEscola();
 
     @GET("funcionarioescola/{id}")
-    Call<FuncionarioEscola> getFuncionarioEscola(@Path("id") long id);
+    Call<FuncionarioEscola> getFuncionarioEscola(@Path("id") Long id);
 
     @GET("funcionarioescola/")
     Call<ListaFuncionarioEscolaAPI> funcionariosEscola(@Query("page") int page);
 
     @GET("funcionarioescola/funcionario={funcionario}/")
-    Call<List<FuncionarioEscola>> funcionariosEscola(@Path("funcionario") long funcionario);
+    Call<List<FuncionarioEscola>> funcionariosEscola(@Path("funcionario") Long funcionario);
 }

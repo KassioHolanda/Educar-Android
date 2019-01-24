@@ -15,7 +15,7 @@ public interface BimestreEndPoint {
     Call<ListaBimestreAPI> bimestres();
 
     @GET("bimestre/{id}")
-    Call<Bimestre> getBimestre(@Path("id") long id);
+    Call<Bimestre> getBimestre(@Path("id") Long id);
 
     @GET("bimestre/")
     Call<ListaBimestreAPI> bimestres(@Query("page") int page);

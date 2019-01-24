@@ -6,39 +6,39 @@ import io.realm.annotations.PrimaryKey;
 public class SerieDisciplina extends RealmObject{
 
     @PrimaryKey
-    private long id;
-    private long disciplina;
-    private long serie;
+    private Long id;
+    private Long disciplina;
+    private Long serie;
 
     public SerieDisciplina() {
     }
 
-    public SerieDisciplina(long disciplina, long serie) {
+    public SerieDisciplina(Long disciplina, Long serie) {
         this.disciplina = disciplina;
         this.serie = serie;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getDisciplina() {
+    public Long getDisciplina() {
         return disciplina;
     }
 
-    public void setDisciplina(long disciplina) {
+    public void setDisciplina(Long disciplina) {
         this.disciplina = disciplina;
     }
 
-    public long getSerie() {
+    public Long getSerie() {
         return serie;
     }
 
-    public void setSerie(long serie) {
+    public void setSerie(Long serie) {
         this.serie = serie;
     }
 }

@@ -29,8 +29,8 @@ public class NotaMB {
     private Preferences preferences;
     private DisciplinaAluno disciplinaAluno;
     private SerieDisciplina serieDisciplina;
-    private long idBimestreAtual;
-    private long ultimoIdBimestre;
+    private Long idBimestreAtual;
+    private Long ultimoIdBimestre;
 
     public void configRealm() {
         Realm.init(context);
@@ -43,8 +43,8 @@ public class NotaMB {
         this.realmObjectsBO = new RealmObjectsBO(context);
         this.disciplinaAluno = new DisciplinaAluno();
         this.serieDisciplina = new SerieDisciplina();
-        this.idBimestreAtual = 0;
-        this.ultimoIdBimestre = 0;
+        this.idBimestreAtual = Long.valueOf(0);
+        this.ultimoIdBimestre = Long.valueOf(0);
         configRealm();
     }
 
@@ -62,7 +62,7 @@ public class NotaMB {
             alunoNotaMes.setNota(Float.parseFloat(descricao));
             alunoNotaMes.setUsuario(preferences.getSavedLong("id_usuario"));
             alunoNotaMes.setBimestre(verificarBimestreAtual());
-            alunoNotaMes.setAnoLetivo(3);
+            alunoNotaMes.setAnoLetivo((long) 3);
             alunoNotaMes.setTipoLancamentoNota("LANCADO_APP");
             alunoNotaMes.setInseridoFechamento(false);
             alunoNotaMes.setDisciplinaAluno(disciplinaAluno.getId());
@@ -93,7 +93,7 @@ public class NotaMB {
 //        }
     }
 
-    public long verificarBimestreAtual() {
+    public Long verificarBimestreAtual() {
         RealmResults<SituacaoTurmaMes> situacaoTurmaMes = realm.where(SituacaoTurmaMes.class)
                 .equalTo("turma", preferences.getSavedLong("id_turma")).findAll();
 
@@ -105,7 +105,7 @@ public class NotaMB {
             if (situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getStatus().equals("ABERTO")) {
                 this.idBimestreAtual = situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getBimestre();
             } else if (situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getBimestre() == 5 && situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getStatus().equals("FECHADO")) {
-                return 0;
+                return Long.valueOf(0);
             } else if (situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getBimestre() < 5 && situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getStatus().equals("FECHADO")) {
                 this.ultimoIdBimestre = situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getBimestre();
                 criarNovaSituacaoTurmaMes();
@@ -120,9 +120,9 @@ public class NotaMB {
         return idBimestreAtual;
     }
 
-    public long criarNovaSituacaoTurmaMes() {
+    public Long criarNovaSituacaoTurmaMes() {
 
-        long idBimestre = 2;
+        Long idBimestre = Long.valueOf(2);
 
         if (this.ultimoIdBimestre != 0) {
             idBimestre = ultimoIdBimestre + 1;
@@ -145,8 +145,8 @@ public class NotaMB {
 
         RealmResults<DisciplinaAluno> disciplinaAlunos = realm.where(DisciplinaAluno.class).findAll();
 
-        long id = preferences.getSavedLong("id_matricula");
-        long idS = verificarSerieDisciplina().getId();
+        Long id = preferences.getSavedLong("id_matricula");
+        Long idS = verificarSerieDisciplina().getId();
 
         DisciplinaAluno disciplinaAluno = realm.where(DisciplinaAluno.class)
                 .equalTo("matricula", preferences.getSavedLong("id_matricula"))
@@ -158,8 +158,8 @@ public class NotaMB {
 
     public SerieDisciplina verificarSerieDisciplina() {
 
-        long serie = preferences.getSavedLong("id_serie");
-        long disciplina = preferences.getSavedLong("id_disciplina");
+        Long serie = preferences.getSavedLong("id_serie");
+        Long disciplina = preferences.getSavedLong("id_disciplina");
 
         SerieDisciplina serieDisciplina = realm.where(SerieDisciplina.class)
                 .equalTo("serie", preferences.getSavedLong("id_serie"))

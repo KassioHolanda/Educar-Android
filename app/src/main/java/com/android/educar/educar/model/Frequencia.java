@@ -11,17 +11,17 @@ import io.realm.annotations.PrimaryKey;
 
 public class Frequencia extends RealmObject {
     @PrimaryKey
-    private long id;
-    private long matricula;
+    private Long id;
+    private Long matricula;
     private boolean presenca;
     private boolean novo;
     private String date;
 
-    public long getMatricula() {
+    public Long getMatricula() {
         return matricula;
     }
 
-    public void setMatricula(long matricula) {
+    public void setMatricula(Long matricula) {
         this.matricula = matricula;
     }
 
@@ -41,11 +41,11 @@ public class Frequencia extends RealmObject {
         this.novo = novo;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

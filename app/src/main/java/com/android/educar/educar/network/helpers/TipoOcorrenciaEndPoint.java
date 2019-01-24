@@ -15,7 +15,7 @@ public interface TipoOcorrenciaEndPoint {
     Call<ListaTipoOcorrenciaAPI> tiposOcorrencia();
 
     @GET("tipoocorrencia/{pk}")
-    Call<TipoOcorrencia> getTipoOcorrencia(@Path("id") long id);
+    Call<TipoOcorrencia> getTipoOcorrencia(@Path("id") Long id);
 
     @GET("tipoocorrencia/")
     Call<ListaTipoOcorrenciaAPI> tiposOcorrencia(@Query("page") int page);

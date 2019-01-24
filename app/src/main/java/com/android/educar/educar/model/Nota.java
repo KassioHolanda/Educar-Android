@@ -4,18 +4,18 @@ import com.google.gson.annotations.SerializedName;
 
 public class Nota {
 
-    private long matricula;
+    private Long matricula;
     private float nota;
 
     public Nota() {
     }
 
 
-    public long getMatricula() {
+    public Long getMatricula() {
         return matricula;
     }
 
-    public void setMatricula(long matricula) {
+    public void setMatricula(Long matricula) {
         this.matricula = matricula;
     }
 

@@ -5,7 +5,7 @@ import io.realm.annotations.PrimaryKey;
 
 public class Bimestre extends RealmObject {
     @PrimaryKey
-    private long id;
+    private Long id;
     private String descricao;
     private int sequencia;
     private boolean temnota;
@@ -13,14 +13,14 @@ public class Bimestre extends RealmObject {
     public Bimestre() {
     }
 
-    public Bimestre(long id, String descricao, int sequencia, boolean temnota) {
+    public Bimestre(Long id, String descricao, int sequencia, boolean temnota) {
         this.id = id;
         this.descricao = descricao;
         this.sequencia = sequencia;
         this.temnota = temnota;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -32,7 +32,7 @@ public class Bimestre extends RealmObject {
         this.temnota = temnota;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

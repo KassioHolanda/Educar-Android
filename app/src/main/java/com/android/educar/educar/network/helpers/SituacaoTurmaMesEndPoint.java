@@ -19,7 +19,7 @@ public interface SituacaoTurmaMesEndPoint {
     Call<ListaSituacaoTurmaMesAPI> situacoes();
 
     @GET("situacaoturmames/{id}")
-    Call<SituacaoTurmaMes> getSituacaoTurmaMes(@Path("id") long id);
+    Call<SituacaoTurmaMes> getSituacaoTurmaMes(@Path("id") Long id);
 
     @POST("situacaoturmames/")
     Call<SituacaoTurmaMes> postSituacaoTurmaMes(@Body SituacaoTurmaMes situacaoTurmaMes);
@@ -28,5 +28,5 @@ public interface SituacaoTurmaMesEndPoint {
     Call<ListaSituacaoTurmaMesAPI> situacoes(@Query("page") int page);
 
     @GET("situacaoturmames/turma={turma}/")
-    Call<List<SituacaoTurmaMes>> situacaoTurmaMes(@Path("turma") long turma);
+    Call<List<SituacaoTurmaMes>> situacaoTurmaMes(@Path("turma") Long turma);
 }

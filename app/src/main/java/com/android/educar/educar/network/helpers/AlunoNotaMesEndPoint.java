@@ -19,7 +19,7 @@ public interface AlunoNotaMesEndPoint {
     Call<ListaAlunoNotaMesAPI> alunosNotaMes();
 
     @GET("alunonotames/{id}/")
-    Call<AlunoNotaMes> getAlunoNotaMes(@Path("id") long id);
+    Call<AlunoNotaMes> getAlunoNotaMes(@Path("id") Long id);
 
     @POST("alunonotames/")
     Call<AlunoNotaMes> postAlunoNotaMes(@Body AlunoNotaMes alunoNotaMes);

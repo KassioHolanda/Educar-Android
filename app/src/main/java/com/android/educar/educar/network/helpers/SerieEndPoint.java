@@ -15,7 +15,7 @@ public interface SerieEndPoint {
     Call<ListaSerieAPI> series();
 
     @GET("serie/id={id}/")
-    Call<Serie> getSerie(@Path("id") long id);
+    Call<Serie> getSerie(@Path("id") Long id);
 
     @GET("serie/")
     Call<ListaSerieAPI> series(@Query("page")int page);

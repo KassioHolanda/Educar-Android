@@ -16,7 +16,7 @@ public interface AnoLetivoEndPoint {
     Call<ListaAnoLetivoAPI> anosLetivos();
 
     @GET("anoletivo/{id}")
-    Call<AnoLetivo> getAnoLetivo(@Path("id") long id);
+    Call<AnoLetivo> getAnoLetivo(@Path("id") Long id);
 
     @GET("anoletivo/")
     Call<ListaAnoLetivoAPI> anosLetivos(@Query("page") int page);

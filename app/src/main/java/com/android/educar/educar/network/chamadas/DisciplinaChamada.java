@@ -36,7 +36,7 @@ public class DisciplinaChamada {
         configRealm();
     }
 
-    public void recuperarDisciplinasTurma(long disciplina) {
+    public void recuperarDisciplinasTurma(Long disciplina) {
         Call<Disciplina> listCall = apiService.getDisciplinaEndPoint().getDisciplina(disciplina);
         listCall.enqueue(new Callback<Disciplina>() {
             @Override

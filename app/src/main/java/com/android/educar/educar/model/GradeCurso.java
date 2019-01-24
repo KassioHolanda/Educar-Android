@@ -6,52 +6,52 @@ import io.realm.annotations.PrimaryKey;
 public class GradeCurso extends RealmObject {
 
     @PrimaryKey
-    private long id;
-    private long professor;
-    private long turma;
-    private long seriedisciplina;
-    private long disciplina;
+    private Long id;
+    private Long professor;
+    private Long turma;
+    private Long seriedisciplina;
+    private Long disciplina;
 
     public GradeCurso() {
     }
 
-    public long getDisciplina() {
+    public Long getDisciplina() {
         return disciplina;
     }
 
-    public void setDisciplina(long disciplina) {
+    public void setDisciplina(Long disciplina) {
         this.disciplina = disciplina;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getProfessor() {
+    public Long getProfessor() {
         return professor;
     }
 
-    public void setProfessor(long professor) {
+    public void setProfessor(Long professor) {
         this.professor = professor;
     }
 
-    public long getTurma() {
+    public Long getTurma() {
         return turma;
     }
 
-    public void setTurma(long turma) {
+    public void setTurma(Long turma) {
         this.turma = turma;
     }
 
-    public long getSeriedisciplina() {
+    public Long getSeriedisciplina() {
         return seriedisciplina;
     }
 
-    public void setSeriedisciplina(long seriedisciplina) {
+    public void setSeriedisciplina(Long seriedisciplina) {
         this.seriedisciplina = seriedisciplina;
     }
 }

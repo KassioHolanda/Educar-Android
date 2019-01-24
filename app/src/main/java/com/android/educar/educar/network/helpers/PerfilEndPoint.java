@@ -17,7 +17,7 @@ public interface PerfilEndPoint {
     Call<ListaPerfilAPI> perfis();
 
     @GET("perfil/id={id}/")
-    Call<List<Perfil>> getPerfil(@Path("id") long id);
+    Call<List<Perfil>> getPerfil(@Path("id") Long id);
 
     @GET("perfil/")
     Call<ListaPerfilAPI> perfisPaginacao(@Query("page") int page);

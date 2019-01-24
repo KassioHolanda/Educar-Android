@@ -39,7 +39,7 @@ public class FuncionarioChamada {
         configRealm();
     }
 
-    public void recuperarFuncionarioPessoaFisicaAPI(long pessoafisica) {
+    public void recuperarFuncionarioPessoaFisicaAPI(Long pessoafisica) {
         Call<List<Funcionario>> funcionarioCall = apiService.getFuncionarioEndPoint().getFuncionarioPessoaFisica(pessoafisica);
         funcionarioCall.enqueue(new Callback<List<Funcionario>>() {
             @Override

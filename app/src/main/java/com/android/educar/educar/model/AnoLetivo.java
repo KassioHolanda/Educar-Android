@@ -10,7 +10,7 @@ import io.realm.annotations.PrimaryKey;
 public class AnoLetivo extends RealmObject {
 
     @PrimaryKey
-    private long id;
+    private Long id;
     private String descricao;
     @SerializedName("datainicio")
     private Date dataInicio;
@@ -29,11 +29,11 @@ public class AnoLetivo extends RealmObject {
         this.fechadoNota = fechadoNota;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

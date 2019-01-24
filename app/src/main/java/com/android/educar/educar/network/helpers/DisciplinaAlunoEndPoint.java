@@ -20,14 +20,14 @@ public interface DisciplinaAlunoEndPoint {
     Call<ListaDisciplinaAlunoAPI> disciplinasAluno();
 
     @GET("disciplinaaluno/id={id}/")
-    Call<DisciplinaAluno> getDisciplinaAluno(@Path("id") long id);
+    Call<DisciplinaAluno> getDisciplinaAluno(@Path("id") Long id);
 
     @GET("disciplinaaluno/")
     Call<ListaDisciplinaAlunoAPI> disciplinasAluno(@Query("page") int page);
 
     @PUT("disciplinaaluno/id={id}/")
-    Call<DisciplinaAluno> atualizarDisciplinaAluno(@Path("id") long id, @Body DisciplinaAluno disciplinaAluno);
+    Call<DisciplinaAluno> atualizarDisciplinaAluno(@Path("id") Long id, @Body DisciplinaAluno disciplinaAluno);
 
     @GET("disciplinaaluno/matricula={matricula}/")
-    Call<List<DisciplinaAluno>> disciplinasAluno(@Path("matricula") long matricula);
+    Call<List<DisciplinaAluno>> disciplinasAluno(@Path("matricula") Long matricula);
 }

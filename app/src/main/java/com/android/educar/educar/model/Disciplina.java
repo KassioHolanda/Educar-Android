@@ -11,14 +11,14 @@ import io.realm.annotations.PrimaryKey;
 public class Disciplina extends RealmObject implements Comparable{
 
     @PrimaryKey
-    private long id;
+    private Long id;
     private String descricao;
-    private long codigo;
+    private Long codigo;
 
     public Disciplina() {
     }
 
-    public Disciplina(String descricao, long codigo) {
+    public Disciplina(String descricao, Long codigo) {
         this.descricao = descricao;
         this.codigo = codigo;
     }
@@ -27,11 +27,11 @@ public class Disciplina extends RealmObject implements Comparable{
         this.descricao = descricao;
     }
 
-    public long getCodigo() {
+    public Long getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(long codigo) {
+    public void setCodigo(Long codigo) {
         this.codigo = codigo;
     }
 
@@ -40,11 +40,11 @@ public class Disciplina extends RealmObject implements Comparable{
         return this.descricao;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
