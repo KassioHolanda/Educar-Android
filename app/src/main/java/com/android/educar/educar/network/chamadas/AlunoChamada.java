@@ -16,6 +16,8 @@ import com.android.educar.educar.network.service.ListaAlunosAPI;
 import com.android.educar.educar.network.service.ListaDisciplinaAlunoAPI;
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +34,7 @@ public class AlunoChamada {
     private APIService apiService;
     private RealmObjectsDAO realmObjectsDAO;
     private PessoaChamada pessoaChamada;
+    private OcorrenciaChamada ocorrenciaChamada;
 
     public AlunoChamada(Context context) {
         this.context = context;
@@ -39,6 +42,7 @@ public class AlunoChamada {
         realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
         pessoaChamada = new PessoaChamada(context);
+        ocorrenciaChamada = new OcorrenciaChamada(context);
 
     }
 
@@ -71,28 +75,45 @@ public class AlunoChamada {
         disciplinaAlunoCall.enqueue(new Callback<DisciplinaAluno>() {
             @Override
             public void onResponse(Call<DisciplinaAluno> call, Response<DisciplinaAluno> response) {
-
+                if (response.isSuccessful()) {
+                    Log.i("RESPONSE", "DISCIPLINAALUNO PUBLICADO");
+                }
             }
 
             @Override
             public void onFailure(Call<DisciplinaAluno> call, Throwable t) {
-
+                Log.i("ERRO API", "" + t.getMessage());
             }
         });
     }
 
-    private void postAlunoNotaMes(final AlunoNotaMes alunoNotaMes) {
+    private void postAlunoNotaMes(AlunoNotaMes alunoNotaMes) {
         Call<AlunoNotaMes> alunoNotaMesCall = apiService.getAlunoNotaMesEndPoint().postAlunoNotaMes(alunoNotaMes);
         alunoNotaMesCall.enqueue(new Callback<AlunoNotaMes>() {
             @Override
             public void onResponse(Call<AlunoNotaMes> call, Response<AlunoNotaMes> response) {
                 if (response.isSuccessful()) {
-                    realm.beginTransaction();
-                    alunoNotaMes.setNovo(false);
-                    realm.copyToRealmOrUpdate(alunoNotaMes);
-                    realm.commitTransaction();
+//                    realm.beginTransaction();
+//                    alunoNotaMes.setNovo(false);
+//                    realm.copyToRealmOrUpdate(alunoNotaMes);
+//                    realm.commitTransaction();
                     Log.i("RESPONSE", "ALUNONTOAMES PUBLICADO");
                 }
+            }
+
+            @Override
+            public void onFailure(Call<AlunoNotaMes> call, Throwable t) {
+                Log.i("ERRO API", "" + t.getMessage());
+            }
+        });
+    }
+
+    private void atualizarAlunoNotaMes(Long alunoNotamesId, AlunoNotaMes alunoNotaMes) {
+        Call<AlunoNotaMes> alunoNotaMesCall = apiService.getAlunoNotaMesEndPoint().atualizarAlunoNotaMes(alunoNotamesId, alunoNotaMes);
+        alunoNotaMesCall.enqueue(new Callback<AlunoNotaMes>() {
+            @Override
+            public void onResponse(Call<AlunoNotaMes> call, Response<AlunoNotaMes> response) {
+                Log.i("RESPONSE", "ALUNONTOAMES ALTERADO");
             }
 
             @Override
@@ -106,23 +127,37 @@ public class AlunoChamada {
         RealmResults<AlunoNotaMes> alunoNotaMes = realm.where(AlunoNotaMes.class).findAll();
 
         for (int i = 0; i < alunoNotaMes.size(); i++) {
-            if (alunoNotaMes.get(i).isNovo()) {
-                AlunoNotaMes alunoNotaMes1 = new AlunoNotaMes();
 
-                alunoNotaMes1.setDisciplina(alunoNotaMes.get(i).getDisciplina());
-                alunoNotaMes1.setInseridoFechamento(alunoNotaMes.get(i).isInseridoFechamento());
-                alunoNotaMes1.setAnoLetivo(alunoNotaMes.get(i).getAnoLetivo());
-                alunoNotaMes1.setId(alunoNotaMes.get(i).getId());
-                alunoNotaMes1.setDisciplinaAluno(alunoNotaMes.get(i).getDisciplinaAluno());
-                alunoNotaMes1.setMatricula(alunoNotaMes.get(i).getMatricula());
-                alunoNotaMes1.setDatahora(alunoNotaMes.get(i).getDatahora());
-                alunoNotaMes1.setNota(alunoNotaMes.get(i).getNota());
-                alunoNotaMes1.setUsuario(alunoNotaMes.get(i).getUsuario());
-                alunoNotaMes1.setUnidade(alunoNotaMes.get(i).getUnidade());
-                alunoNotaMes1.setTipoLancamentoNota(alunoNotaMes.get(i).getTipoLancamentoNota());
-                alunoNotaMes1.setBimestre(alunoNotaMes.get(i).getBimestre());
-                alunoNotaMes1.setSequencia(0);
+            AlunoNotaMes alunoNotaMes1 = new AlunoNotaMes();
+            alunoNotaMes1.setDisciplina(alunoNotaMes.get(i).getDisciplina());
+            alunoNotaMes1.setInseridoFechamento(alunoNotaMes.get(i).isInseridoFechamento());
+            alunoNotaMes1.setAnoLetivo(alunoNotaMes.get(i).getAnoLetivo());
+            alunoNotaMes1.setId(0);
+            alunoNotaMes1.setDisciplinaAluno(alunoNotaMes.get(i).getDisciplinaAluno());
+            alunoNotaMes1.setMatricula(alunoNotaMes.get(i).getMatricula());
+            alunoNotaMes1.setDatahora(alunoNotaMes.get(i).getDatahora());
+            alunoNotaMes1.setNota(alunoNotaMes.get(i).getNota());
+            alunoNotaMes1.setUsuario(alunoNotaMes.get(i).getUsuario());
+            alunoNotaMes1.setUnidade(alunoNotaMes.get(i).getUnidade());
+            alunoNotaMes1.setTipoLancamentoNota(alunoNotaMes.get(i).getTipoLancamentoNota());
+            alunoNotaMes1.setBimestre(alunoNotaMes.get(i).getBimestre());
+            alunoNotaMes1.setSequencia(0);
+
+            if (alunoNotaMes.get(i).isNovo()) {
+                realm.beginTransaction();
+                alunoNotaMes.get(i).setNovo(false);
+                realm.copyFromRealm(alunoNotaMes.get(i));
+                realm.commitTransaction();
+
                 postAlunoNotaMes(alunoNotaMes1);
+
+            } else if (alunoNotaMes.get(i).isAlterado()) {
+                realm.beginTransaction();
+                alunoNotaMes.get(i).setNovo(false);
+                realm.copyFromRealm(alunoNotaMes.get(i));
+                realm.commitTransaction();
+
+                atualizarAlunoNotaMes(alunoNotaMes1.getId(), alunoNotaMes1);
             }
         }
     }
@@ -131,7 +166,6 @@ public class AlunoChamada {
         RealmResults<DisciplinaAluno> disciplinaAlunos = realm.where(DisciplinaAluno.class).findAll();
         for (int i = 0; i < disciplinaAlunos.size(); i++) {
             if (disciplinaAlunos.get(i).isAlterado()) {
-
                 DisciplinaAluno disciplinaAluno = new DisciplinaAluno();
                 disciplinaAluno.setStatusAtual(disciplinaAlunos.get(i).getStatusAtual());
                 disciplinaAluno.setSerieDisciplina(disciplinaAlunos.get(i).getSerieDisciplina());
@@ -146,9 +180,12 @@ public class AlunoChamada {
                 disciplinaAluno.setUsuarioAtualizacaoProvaFinal(disciplinaAlunos.get(i).getUsuarioAtualizacaoProvaFinal());
                 disciplinaAluno.setStatusAtual(disciplinaAlunos.get(i).getStatusAtual());
                 disciplinaAluno.setId(disciplinaAlunos.get(i).getId());
+                disciplinaAluno.setMediaAculumada(disciplinaAlunos.get(i).getMediaAculumada());
+                disciplinaAluno.setCargaHoraria(disciplinaAlunos.get(i).getCargaHoraria());
 
                 realm.beginTransaction();
-                disciplinaAluno.setAlterado(false);
+                disciplinaAlunos.get(i).setAlterado(false);
+                realm.copyFromRealm(disciplinaAlunos.get(i));
                 realm.commitTransaction();
 
                 atualizarDisciplinaAluno(disciplinaAluno.getId(), disciplinaAluno);
@@ -173,14 +210,14 @@ public class AlunoChamada {
                     realm.copyToRealmOrUpdate(response.body());
                     realm.commitTransaction();
                     pessoaChamada.recuperarPessoaFisicaAluno(response.body().getPessoaFisica());
+                    ocorrenciaChamada.recuperarOcorrenciasAluno(response.body().getId());
                 }
             }
 
             @Override
             public void onFailure(Call<Aluno> call, Throwable t) {
-
+                Log.i("ERRO API", "" + t.getMessage());
             }
         });
     }
-
 }

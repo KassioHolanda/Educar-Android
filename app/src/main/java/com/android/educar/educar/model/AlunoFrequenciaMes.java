@@ -22,21 +22,9 @@ public class AlunoFrequenciaMes extends RealmObject {
     @SerializedName("tipolancamentofrequencia")
     private String tipoLancamentoFrequencia;
     @SerializedName("disciplinaaluno")
-    @ParametersAreNullableByDefault
     private Long disciplinaAluno;
 
     public AlunoFrequenciaMes() {
-    }
-
-    public AlunoFrequenciaMes(Long id, int totalFaltas, Long matricula, Long bimestre,  Long disciplina, String tipoLancamentoFrequencia, Long disciplinaAluno) {
-        this.id = id;
-        this.totalFaltas = totalFaltas;
-        this.matricula = matricula;
-        this.bimestre = bimestre;
-        this.novo = novo;
-        this.disciplina = disciplina;
-        this.tipoLancamentoFrequencia = tipoLancamentoFrequencia;
-        this.disciplinaAluno = disciplinaAluno;
     }
 
     public String getTipoLancamentoFrequencia() {

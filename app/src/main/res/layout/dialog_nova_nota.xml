@@ -11,9 +11,10 @@
         android:layout_marginBottom="10dp">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/semestre_nota_id"
+            android:id="@+id/bimestre_nota_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:textColor="#222"
             android:text="semetre"
             android:hint="Semestre"
@@ -28,6 +29,7 @@
         <android.support.design.widget.TextInputEditText
             android:id="@+id/nome_aluno_nota_id"
             android:layout_width="match_parent"
+            android:enabled="false"
             android:layout_height="wrap_content"
             android:hint="Nome Aluno"
             android:text="nomeAluno"
@@ -42,6 +44,7 @@
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/disciplina_nota_id"
+            android:enabled="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Disciplina"

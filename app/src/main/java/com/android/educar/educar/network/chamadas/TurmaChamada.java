@@ -147,10 +147,10 @@ public class TurmaChamada {
             @Override
             public void onResponse(Call<SituacaoTurmaMes> call, Response<SituacaoTurmaMes> response) {
                 if (response.isSuccessful()) {
-                    realm.beginTransaction();
-                    situacaoTurmaMes.setNovo(false);
-                    realm.copyToRealmOrUpdate(situacaoTurmaMes);
-                    realm.commitTransaction();
+//                    realm.beginTransaction();
+//                    situacaoTurmaMes.setNovo(false);
+//                    realm.copyToRealmOrUpdate(situacaoTurmaMes);
+//                    realm.commitTransaction();
                     Log.i("RESPONSE", "SITUACAOTURMAMES PUBLICADA");
                 }
             }
@@ -174,6 +174,12 @@ public class TurmaChamada {
                 situacaoTurmaMes1.setTurma(situacaoTurmaMes.get(i).getTurma());
                 situacaoTurmaMes1.setQuantidadeReprovados(situacaoTurmaMes.get(i).getQuantidadeReprovados());
                 situacaoTurmaMes1.getBimestre();
+
+                realm.beginTransaction();
+                situacaoTurmaMes.get(i).setNovo(false);
+                realm.copyFromRealm(situacaoTurmaMes.get(i));
+                realm.commitTransaction();
+
                 postSituacaoTurmaMesAPI(situacaoTurmaMes1);
             }
         }

@@ -65,6 +65,7 @@ public class LoadingActivity extends AppCompatActivity {
             Snackbar.make(findViewById(android.R.id.content), "Dispositivo sem Conexão com Internet, verifique sua conexão!", Snackbar.LENGTH_LONG).show();
             progressBar.setVisibility(View.INVISIBLE);
             textLoad.setVisibility(View.INVISIBLE);
+            botaoAcessar.setVisibility(View.VISIBLE);
         }
     }
 

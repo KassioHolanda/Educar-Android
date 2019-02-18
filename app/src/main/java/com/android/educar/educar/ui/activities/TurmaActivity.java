@@ -98,21 +98,23 @@ public class TurmaActivity extends AppCompatActivity {
                 .findAll();
         List<Turma> turmasEscola = new ArrayList<>();
 
-        for (int i = 0; i < localEscolas.size(); i++) {
-            List<Turma> turmas = realm.where(Turma.class).equalTo("sala", localEscolas.get(i).getId())
+        for (LocalEscola localEscola : localEscolas) {
+            List<Turma> turmas = realm.where(Turma.class).equalTo("sala", localEscola.getId())
                     .equalTo("statusTurma", "CADASTRADA")
                     .notEqualTo("nivel", "INFANTIL").findAll();
-            for (int j = 0; j < turmas.size(); j++) {
-                turmasEscola.add(turmas.get(j));
+
+            for (Turma turma : turmas) {
+                turmasEscola.add(turma);
             }
+
         }
 
-        for (int i = 0; i < turmasEscola.size(); i++) {
+        for (Turma turma : turmasEscola) {
             List<GradeCurso> gradeCursos = realm.where(GradeCurso.class)
-                    .equalTo("turma", turmasEscola.get(i).getId())
+                    .equalTo("turma", turma.getId())
                     .equalTo("professor", preferences.getSavedLong("id_funcionario")).findAll();
             if (gradeCursos.size() > 0) {
-                turmaList.add(realm.where(Turma.class).equalTo("id", turmasEscola.get(i).getId()).findFirst());
+                turmaList.add(realm.where(Turma.class).equalTo("id", turma.getId()).findFirst());
             }
         }
     }

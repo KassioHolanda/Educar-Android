@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.educar.educar.R;
+import com.android.educar.educar.mb.NotaMB;
+import com.android.educar.educar.model.Bimestre;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.Serie;
 import com.android.educar.educar.model.TipoOcorrencia;
@@ -24,6 +26,8 @@ import com.android.educar.educar.network.chamadas.OcorrenciaChamada;
 import com.android.educar.educar.network.chamadas.PessoaChamada;
 import com.android.educar.educar.utils.Preferences;
 
+import java.util.Date;
+
 import io.realm.Realm;
 
 public class AulaAcoesActivity extends AppCompatActivity {
@@ -31,6 +35,7 @@ public class AulaAcoesActivity extends AppCompatActivity {
     private TextView disciplina;
     private TextView turma;
     private TextView serieacoes;
+    private TextView bimestre;
     private Preferences preferences;
 
     private LinearLayout paginaNotas;
@@ -71,6 +76,7 @@ public class AulaAcoesActivity extends AppCompatActivity {
         turma.setText(realm.where(Turma.class).equalTo("id", preferences.getSavedLong("id_turma")).findFirst().getDescricao());
         disciplina.setText(realm.where(Disciplina.class).equalTo("id", preferences.getSavedLong("id_disciplina")).findFirst().getDescricao());
         serieacoes.setText(realm.where(Serie.class).equalTo("id", preferences.getSavedLong("id_serie")).findFirst().getDescricao());
+        bimestre.setText(realm.where(Bimestre.class).equalTo("id", new NotaMB(getApplicationContext()).verificarBimestreAtual()).findFirst().getDescricao());
     }
 
     public void clickOnItem() {
@@ -105,6 +111,7 @@ public class AulaAcoesActivity extends AppCompatActivity {
 
     public void binding() {
         unidade = findViewById(R.id.unidade_id);
+        bimestre = findViewById(R.id.bimestre_acoes_id);
         turma = findViewById(R.id.turma_id);
         disciplina = findViewById(R.id.disciplina_id);
         paginaFrequencia = findViewById(R.id.frequencias_id);
@@ -117,6 +124,7 @@ public class AulaAcoesActivity extends AppCompatActivity {
     public void settings() {
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setElevation(0);
+        actionBar.setTitle("2019");
     }
 
     public void alertaInformacao() {

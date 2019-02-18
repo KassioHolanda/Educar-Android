@@ -20,6 +20,10 @@ public class Matricula extends RealmObject {
     @SerializedName("statusatual")
     private String statusAtual;
     private Long serie;
+    @SerializedName("anoletivo")
+    private long anoLetivo;
+
+
 
     public Matricula() {
     }
@@ -74,6 +78,14 @@ public class Matricula extends RealmObject {
 
     public Long getSerie() {
         return serie;
+    }
+
+    public long getAnoLetivo() {
+        return anoLetivo;
+    }
+
+    public void setAnoLetivo(long anoLetivo) {
+        this.anoLetivo = anoLetivo;
     }
 
     public void setSerie(Long serie) {

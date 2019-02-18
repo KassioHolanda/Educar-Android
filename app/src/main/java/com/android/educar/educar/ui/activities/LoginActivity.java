@@ -215,12 +215,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void verificarConexao() {
-        if (UtilsFunctions.isConnect(getApplicationContext())) {
-            alertaInformacao("Seu Dispositivo está Conectado!");
-            preferences.saveBoolean(messages.CONEXAO, true);
-        } else {
-            alertaInformacao("Seu Dispositivo está Desconectado! Não é possivel efetuar o login.");
-            preferences.saveBoolean(messages.CONEXAO, false);
+        if (preferences.getSavedBoolean("usuario_logado")) {
+            if (UtilsFunctions.isConnect(getApplicationContext())) {
+                alertaInformacao("Seu Dispositivo está Conectado!");
+                preferences.saveBoolean(messages.CONEXAO, true);
+            } else {
+                alertaInformacao("Seu Dispositivo está Desconectado! Não é possivel efetuar o login.");
+                preferences.saveBoolean(messages.CONEXAO, false);
+            }
         }
     }
 

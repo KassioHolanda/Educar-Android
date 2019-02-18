@@ -4,9 +4,11 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.android.educar.educar.bo.RealmObjectsBO;
+import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.AlunoNotaMes;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.DisciplinaAluno;
+import com.android.educar.educar.model.Matricula;
 import com.android.educar.educar.model.Ocorrencia;
 import com.android.educar.educar.model.Serie;
 import com.android.educar.educar.model.SerieDisciplina;
@@ -46,42 +48,66 @@ public class NotaMB {
         this.idBimestreAtual = Long.valueOf(0);
         this.ultimoIdBimestre = Long.valueOf(0);
         configRealm();
+        verificarBimestreAtual();
     }
 
     public void salvarAlunoNotaMes(String descricao) {
         verificarStatusAtualDisciplinaAluno();
         verificarSerieDisciplina();
 
-        if (verificarStatusParaAdicionarNota()) {
-            AlunoNotaMes alunoNotaMes = new AlunoNotaMes();
-//            alunoNotaMes.setId(realm.where(AlunoNotaMes.class).findAll().size() + 1);
-            alunoNotaMes.setUnidade(preferences.getSavedLong("id_unidade"));
-            alunoNotaMes.setDatahora(UtilsFunctions.formatoDataPadrao().format(new Date()));
-            alunoNotaMes.setDisciplina(preferences.getSavedLong("id_disciplina"));
-            alunoNotaMes.setMatricula(preferences.getSavedLong("id_matricula"));
-            alunoNotaMes.setNota(Float.parseFloat(descricao));
-            alunoNotaMes.setUsuario(preferences.getSavedLong("id_usuario"));
-            alunoNotaMes.setBimestre(verificarBimestreAtual());
-            alunoNotaMes.setAnoLetivo((long) 3);
-            alunoNotaMes.setTipoLancamentoNota("LANCADO_APP");
-            alunoNotaMes.setInseridoFechamento(false);
-            alunoNotaMes.setDisciplinaAluno(disciplinaAluno.getId());
-            alunoNotaMes.setNovo(true);
-            realmObjectsBO.salvarObjetoRealm(alunoNotaMes);
-//            alterarStatusDisciplinaAluno(Float.parseFloat(descricao));
+        if (disciplinaAluno == null || serieDisciplina == null) {
+            Toast.makeText(context, "Ocorreu um Erro, solicite Administrador", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(context, "Nota ja Informada", Toast.LENGTH_LONG).show();
+            if (verificarStatusParaAdicionarNota()) {
+                Matricula matricula = realm.where(Matricula.class).equalTo("id", preferences.getSavedLong("id_matricula")).findFirst();
+
+                AlunoNotaMes alunoNotaMes = new AlunoNotaMes();
+                alunoNotaMes.setUnidade(preferences.getSavedLong("id_unidade"));
+                alunoNotaMes.setDatahora(UtilsFunctions.formatoDataPadrao().format(new Date()));
+                alunoNotaMes.setDisciplina(preferences.getSavedLong("id_disciplina"));
+                alunoNotaMes.setMatricula(matricula.getId());
+                alunoNotaMes.setNota(Float.parseFloat(descricao));
+                alunoNotaMes.setUsuario(preferences.getSavedLong("id_usuario"));
+                alunoNotaMes.setBimestre(verificarBimestreAtual());
+                alunoNotaMes.setAnoLetivo(matricula.getAnoLetivo());
+                alunoNotaMes.setTipoLancamentoNota("LANCADO_APP");
+                alunoNotaMes.setInseridoFechamento(false);
+                alunoNotaMes.setDisciplinaAluno(disciplinaAluno.getId());
+                alunoNotaMes.setNovo(true);
+                alunoNotaMes.setAlterado(false);
+                realmObjectsBO.salvarObjetoRealm(alunoNotaMes);
+//                atualizarDadosDisciplinaAluno(Float.parseFloat(descricao));
+            } else {
+                Toast.makeText(context, "A Nota Ja foi Informada", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
-    public void alterarStatusDisciplinaAluno(Float nota) {
+    public void atualizarAlunoNotaMes(String descricao, long matriculaId) {
+        AlunoNotaMes alunoNotaMes = recuperarNotaMatricula(matriculaId);
+        realm.beginTransaction();
+        alunoNotaMes.setAlterado(true);
+        alunoNotaMes.setNota(Float.parseFloat(descricao));
+        realm.copyToRealmOrUpdate(alunoNotaMes);
+        realm.commitTransaction();
+    }
+
+    public void atualizarDadosDisciplinaAluno(Float nota) {
         realm.beginTransaction();
         disciplinaAluno.setAlterado(true);
-        if (nota >= 7) {
+        if (disciplinaAluno.getMesesFechadosNota() == 0) {
+            disciplinaAluno.setMesesFechadosNota(1);
+        }
+
+        disciplinaAluno.setNotaAcumulada(nota + disciplinaAluno.getNotaAcumulada());
+        disciplinaAluno.setMediaAculumada(disciplinaAluno.getNotaAcumulada() / disciplinaAluno.getMesesFechadosNota());
+
+        if (disciplinaAluno.getMediaAculumada() >= 6) {
             disciplinaAluno.setStatusAtual("APROVADO");
         } else {
             disciplinaAluno.setStatusAtual("REPROVADO");
         }
+
         realm.commitTransaction();
     }
 
@@ -102,13 +128,16 @@ public class NotaMB {
 
         } else {
 //            for (int i = 0; i < situacaoTurmaMes.size(); i++) {
-            if (situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getStatus().equals("ABERTO")) {
-                this.idBimestreAtual = situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getBimestre();
-            } else if (situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getBimestre() == 5 && situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getStatus().equals("FECHADO")) {
-                return Long.valueOf(0);
-            } else if (situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getBimestre() < 5 && situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getStatus().equals("FECHADO")) {
-                this.ultimoIdBimestre = situacaoTurmaMes.get(situacaoTurmaMes.size()-1).getBimestre();
+            if (situacaoTurmaMes.get(situacaoTurmaMes.size() - 1).getStatus().equals("ABERTO")) {
+                this.idBimestreAtual = situacaoTurmaMes.get(situacaoTurmaMes.size() - 1).getBimestre();
+            } else if (situacaoTurmaMes.get(situacaoTurmaMes.size() - 1).getBimestre() == 5 && situacaoTurmaMes.get(situacaoTurmaMes.size() - 1).getStatus().equals("FECHADO")) {
+                preferences.saveLong("id_bimestre", 5);
+                preferences.saveBoolean("bimestre_5_fechado", true);
+                return Long.valueOf(5);
+            } else if (situacaoTurmaMes.get(situacaoTurmaMes.size() - 1).getBimestre() < 5 && situacaoTurmaMes.get(situacaoTurmaMes.size() - 1).getStatus().equals("FECHADO")) {
+                this.ultimoIdBimestre = situacaoTurmaMes.get(situacaoTurmaMes.size() - 1).getBimestre();
                 criarNovaSituacaoTurmaMes();
+
             }
 //            }
         }
@@ -142,12 +171,6 @@ public class NotaMB {
 
 
     public void verificarStatusAtualDisciplinaAluno() {
-
-        RealmResults<DisciplinaAluno> disciplinaAlunos = realm.where(DisciplinaAluno.class).findAll();
-
-        Long id = preferences.getSavedLong("id_matricula");
-        Long idS = verificarSerieDisciplina().getId();
-
         DisciplinaAluno disciplinaAluno = realm.where(DisciplinaAluno.class)
                 .equalTo("matricula", preferences.getSavedLong("id_matricula"))
                 .equalTo("serieDisciplina", verificarSerieDisciplina().getId())
@@ -157,10 +180,6 @@ public class NotaMB {
     }
 
     public SerieDisciplina verificarSerieDisciplina() {
-
-        Long serie = preferences.getSavedLong("id_serie");
-        Long disciplina = preferences.getSavedLong("id_disciplina");
-
         SerieDisciplina serieDisciplina = realm.where(SerieDisciplina.class)
                 .equalTo("serie", preferences.getSavedLong("id_serie"))
                 .equalTo("disciplina", preferences.getSavedLong("id_disciplina"))
@@ -169,4 +188,13 @@ public class NotaMB {
         return serieDisciplina;
     }
 
+    public AlunoNotaMes recuperarNotaMatricula(Long matriculaAluno) {
+        DisciplinaAluno disciplinaAluno = realm.where(DisciplinaAluno.class).equalTo("matricula", matriculaAluno).equalTo("serieDisciplina", verificarSerieDisciplina().getId()).findFirst();
+        if (disciplinaAluno != null) {
+            AlunoNotaMes alunoNotaMes = realm.where(AlunoNotaMes.class).equalTo("matricula", matriculaAluno).equalTo("bimestre", verificarBimestreAtual()).equalTo("disciplinaAluno", disciplinaAluno.getId()).findFirst();
+            return alunoNotaMes;
+        } else {
+            return null;
+        }
+    }
 }

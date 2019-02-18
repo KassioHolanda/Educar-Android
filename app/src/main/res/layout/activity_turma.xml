@@ -13,10 +13,10 @@
         android:id="@+id/unidade_turma_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorEdit"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="10dp"
+        android:backgroundTint="@color/colorEdit"
         app:cardCornerRadius="4dp">
 
         <LinearLayout
@@ -38,14 +38,15 @@
                     android:background="@drawable/domain" />
 
                 <LinearLayout
-                    android:gravity="center|left"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
+                    android:gravity="center|left"
                     android:orientation="vertical"
                     android:padding="10dp">
 
                     <TextView
+
                         android:id="@+id/unidade_selecionada_turma_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -54,6 +55,7 @@
                         android:textSize="13sp"></TextView>
 
                     <TextView
+
                         android:id="@+id/unidadeselecionada_turma_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

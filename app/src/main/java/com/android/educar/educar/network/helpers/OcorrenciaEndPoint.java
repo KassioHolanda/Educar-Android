@@ -4,6 +4,8 @@ import com.android.educar.educar.model.Nota;
 import com.android.educar.educar.model.Ocorrencia;
 import com.android.educar.educar.network.service.ListaOcorrenciaAPI;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -15,8 +17,11 @@ public interface OcorrenciaEndPoint {
     @GET("ocorrencia/")
     Call<ListaOcorrenciaAPI> ocorrencias();
 
-    @GET("ocorrencia/{id}")
+    @GET("ocorrencia/id={id}/")
     Call<Ocorrencia> getOcorrencias(@Path("id") Long id);
+
+    @GET("ocorrencia/aluno={aluno}/")
+    Call<List<Ocorrencia>> getOcorrenciasAluno(@Path("aluno") Long aluno);
 
     @POST("ocorrencia/")
     Call<Ocorrencia> postOcorrencia(@Body Ocorrencia ocorrencia);

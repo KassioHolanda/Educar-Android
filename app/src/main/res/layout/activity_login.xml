@@ -10,65 +10,70 @@
     android:padding="16dp"
     tools:context=".ui.activities.LoginActivity">
 
-    <!--<ImageView-->
-    <!--android:background="@drawable/logologin"-->
-    <!--android:layout_width="200dp"-->
-    <!--android:layout_marginBottom="30dp"-->
-    <!--android:layout_height="150dp" />-->
-
-
-    <TextView
+    <ImageView
         android:id="@+id/logo_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:gravity="center"
-        android:padding="30dp"
-        android:text="E - Ducar"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="50sp" />
+        android:layout_width="250dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/logo_padrao" />
 
-    <EditText
-        android:id="@+id/cpf_login_id"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/text_layout_cpf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/logo_id"
-        android:layout_marginBottom="2dp"
-        android:background="@drawable/borda_arredondada"
-        android:hint="CPF"
-        android:inputType="number"
-        android:padding="10dp"
-        android:textColorHint="@color/colorPrimary"
-        android:textSize="16sp" />
+        android:layout_marginBottom="4dp"
+        android:paddingBottom="0dp">
 
-    <EditText
-        android:id="@+id/senha_login_id"
+        <EditText
+            android:id="@+id/cpf_login_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo_id"
+            android:hint="CPF"
+            android:inputType="number"
+            android:padding="10dp"
+            android:textColorHint="@color/colorPrimary"
+            android:textSize="16sp" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/layout_senha"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/cpf_login_id"
+        android:layout_below="@+id/text_layout_cpf"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/borda_arredondada"
-        android:hint="Senha "
-        android:inputType="textPassword"
-        android:padding="10dp"
-        android:textColorHint="@color/colorPrimary"
-        android:textSize="16sp" />
+        android:paddingBottom="0dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/senha_login_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Senha "
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textColorHint="@color/colorPrimary"
+            android:textSize="16sp" />
+
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/acessar_login_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/senha_login_id"
+        android:layout_below="@+id/layout_senha"
         android:background="@drawable/borda_arredondada_botao"
         android:text="Acessar"
         android:textColor="#fff"
         android:textSize="16sp" />
+
 
     <ProgressBar
         android:id="@+id/bar_loading_login_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/logo_id"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
 </RelativeLayout>

@@ -22,13 +22,16 @@ import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.Frequencia;
 import com.android.educar.educar.model.Matricula;
 import com.android.educar.educar.model.PessoaFisica;
+import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 
 public class FrequenciaAdapterLista extends BaseAdapter {
@@ -40,6 +43,8 @@ public class FrequenciaAdapterLista extends BaseAdapter {
     private final List<PessoaFisica> selecionados;
     private RealmObjectsBO realmObjectsBO;
     private Realm realm;
+    private Preferences preferences;
+    private Frequencia frequencia2;
 
     public FrequenciaAdapterLista(Context context, List<PessoaFisica> pessoaFisicas) {
         this.pessoaFisicas = pessoaFisicas;
@@ -47,6 +52,7 @@ public class FrequenciaAdapterLista extends BaseAdapter {
         selecionados = new ArrayList<>();
         realmObjectsBO = new RealmObjectsBO(context);
         configRealm();
+        preferences = new Preferences(context);
     }
 
     public void configRealm() {
@@ -92,11 +98,17 @@ public class FrequenciaAdapterLista extends BaseAdapter {
         ordem = ordem + 1;
         idAluno.setText("" + ordem);
 
-        PessoaFisica pessoaFisicaSelecionada = pessoaFisicas.get(i);
+        final PessoaFisica pessoaFisicaSelecionada = pessoaFisicas.get(i);
+
+        Frequencia frequencia = recuperarFrequencia(pessoaFisicaSelecionada);
+        if (frequencia != null) {
+            if (frequencia.isPresenca()) {
+                selecionados.add(pessoaFisicaSelecionada);
+            }
+        }
+
         nomeAlunoFrequencia.setText(pessoaFisicaSelecionada.getNome());
         chk.setTag(pessoaFisicaSelecionada);
-
-        atualizarPresenca(matricula, false);
 
         chk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,14 +116,14 @@ public class FrequenciaAdapterLista extends BaseAdapter {
                 CheckBox checkBox = (CheckBox) view;
                 PessoaFisica pessoaFisica1 = (PessoaFisica) checkBox.getTag();
                 if (checkBox.isChecked()) {
-                    atualizarPresenca(matricula, true);
+                    atualizarPresenca(pessoaFisicaSelecionada, matricula, true);
                     Toast.makeText(context, "O Aluno " + pessoaFisica1.getNome() + " está Presente.", Toast.LENGTH_SHORT).show();
                     if (!selecionados.contains(pessoaFisica1)) {
                         selecionados.add(pessoaFisica1);
                     }
 
                 } else {
-                    atualizarPresenca(matricula, false);
+                    atualizarPresenca(pessoaFisicaSelecionada, matricula, false);
                     Toast.makeText(context, "O Aluno " + pessoaFisica1.getNome() + " não está Presente.", Toast.LENGTH_SHORT).show();
                     if (selecionados.contains(pessoaFisica1)) {
                         selecionados.remove(pessoaFisica1);
@@ -128,13 +140,31 @@ public class FrequenciaAdapterLista extends BaseAdapter {
         return row;
     }
 
-    public void atualizarPresenca(Matricula matricula, boolean presenca) {
+    public void atualizarPresenca(PessoaFisica pessoaFisica, Matricula matricula, boolean presenca) {
         frequencia = new Frequencia();
         frequencia.setId(matricula.getId());
         frequencia.setMatricula(matricula.getId());
-        frequencia.setNovo(true);
+        frequencia.setTurma(preferences.getSavedLong("id_turma"));
+        frequencia.setUnidade(preferences.getSavedLong("id_unidade"));
+        frequencia.setDisciplina(preferences.getSavedLong("id_disciplina"));
         frequencia.setPresenca(presenca);
-        frequencia.setDate(UtilsFunctions.formatoDataPadrao().format(new Date()));
+        frequencia.setDate(UtilsFunctions.apenasData().format(new Date()));
+        frequencia.setPessoafisica(pessoaFisica.getId());
+        if (recuperarFrequencia(pessoaFisica)!=null) {
+            frequencia.setAlterado(true);
+        } else {
+            frequencia.setNovo(true);
+        }
         realmObjectsBO.salvarObjetoRealm(frequencia);
+    }
+
+    public Frequencia recuperarFrequencia(PessoaFisica pessoaFisica) {
+        Frequencia frequencia2 = realm.where(Frequencia.class)
+                .equalTo("disciplina", preferences.getSavedLong("id_disciplina"))
+                .equalTo("pessoaFisica", pessoaFisica.getId())
+                .equalTo("date", UtilsFunctions.apenasData().format(new Date()))
+                .equalTo("turma", preferences.getSavedLong("id_turma"))
+                .equalTo("unidade", preferences.getSavedLong("id_unidade")).findFirst();
+        return frequencia2;
     }
 }

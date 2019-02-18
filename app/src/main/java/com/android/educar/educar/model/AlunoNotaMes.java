@@ -1,5 +1,7 @@
 package com.android.educar.educar.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -10,7 +12,7 @@ import io.realm.annotations.PrimaryKey;
 public class AlunoNotaMes extends RealmObject {
 
     @PrimaryKey
-    private Long id;
+    private long id;
     private float nota;
     @SerializedName("disciplinaaluno")
     private Long disciplinaAluno;
@@ -27,32 +29,17 @@ public class AlunoNotaMes extends RealmObject {
     private String datahora;
     private Long usuario;
     private boolean novo;
+    private boolean alterado;
     private int sequencia;
 
     public AlunoNotaMes() {
     }
 
-    public AlunoNotaMes(Long id, float nota, Long disciplinaAluno, boolean inseridoFechamento, String tipoLancamentoNota, Long anoLetivo, Long matricula, Long unidade, Long disciplina, String datahora, Long usuario, Long bimestre) {
-        this.id = id;
-        this.bimestre = bimestre;
-        this.nota = nota;
-        this.disciplinaAluno = disciplinaAluno;
-        this.inseridoFechamento = inseridoFechamento;
-        this.tipoLancamentoNota = tipoLancamentoNota;
-        this.anoLetivo = anoLetivo;
-        this.matricula = matricula;
-        this.unidade = unidade;
-        this.disciplina = disciplina;
-        this.datahora = datahora;
-        this.usuario = usuario;
-        this.novo = false;
-    }
-
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -158,6 +145,14 @@ public class AlunoNotaMes extends RealmObject {
 
     public void setSequencia(int sequencia) {
         this.sequencia = sequencia;
+    }
+
+    public boolean isAlterado() {
+        return alterado;
+    }
+
+    public void setAlterado(boolean alterado) {
+        this.alterado = alterado;
     }
 }
 

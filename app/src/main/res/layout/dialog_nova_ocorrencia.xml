@@ -32,8 +32,10 @@
             android:text="Tipo Notificação" />
 
         <Spinner
+            android:focusedByDefault="true"
             android:id="@+id/tipos_ocorrencia_id"
             android:layout_width="match_parent"
+
             android:layout_marginTop="2dp"
             android:layout_height="50dp"></Spinner>
 

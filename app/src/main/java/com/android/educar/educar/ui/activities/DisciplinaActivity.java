@@ -54,8 +54,6 @@ public class DisciplinaActivity extends AppCompatActivity {
     private LinearLayout unidadeDisciplina;
     private LinearLayout turmaDisciplina;
 
-    private AlunoChamada alunoChamada;
-
     private Realm realm;
     private Set<Disciplina> disciplinasLista;
 
@@ -82,23 +80,23 @@ public class DisciplinaActivity extends AppCompatActivity {
         RealmResults<GradeCurso> gradeCursos = realm.where(GradeCurso.class).findAll();
         List<SerieDisciplina> serieDisciplinas = new ArrayList<>();
 
-        for (int i = 0; i < gradeCursos.size(); i++) {
-            SerieDisciplina serieDisciplina = realm.where(SerieDisciplina.class).equalTo("id", gradeCursos.get(i).getSeriedisciplina()).findFirst();
+        for (GradeCurso gradeCurso : gradeCursos) {
+            SerieDisciplina serieDisciplina = realm.where(SerieDisciplina.class).equalTo("id", gradeCurso.getSeriedisciplina()).findFirst();
             if (serieDisciplina != null) {
                 serieDisciplinas.add(serieDisciplina);
             }
         }
 
-        for (int i = 0; i < serieDisciplinas.size(); i++) {
-            Disciplina disciplina = realm.where(Disciplina.class).equalTo("id", serieDisciplinas.get(i).getDisciplina()).findFirst();
+        for (SerieDisciplina serieDisciplina : serieDisciplinas) {
+            Disciplina disciplina = realm.where(Disciplina.class).equalTo("id", serieDisciplina.getDisciplina()).findFirst();
             if (disciplina != null) {
                 disciplinasLista.add(disciplina);
             }
         }
 
         RealmResults<Disciplina> disciplinas = realm.where(Disciplina.class).findAll().sort("descricao");
-        for (int i = 0; i < disciplinas.size(); i++) {
-            disciplinasLista.add(disciplinas.get(i));
+        for (Disciplina disciplina : disciplinas) {
+            disciplinasLista.add(disciplina);
         }
 
     }
@@ -146,7 +144,6 @@ public class DisciplinaActivity extends AppCompatActivity {
         preferences = new Preferences(this);
         messages = new Messages();
         disciplinasLista = new HashSet<>();
-        alunoChamada = new AlunoChamada(getApplicationContext());
     }
 
     public void atualizarAdapterListaDisciplinas() {

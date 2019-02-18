@@ -44,22 +44,24 @@ public class FrequenciaMB {
 
     public void salvarFrequencia() {
         Long idBimestreAtual = notaMB.verificarBimestreAtual();
-        if (idBimestreAtual == 0) {
-            idBimestreAtual = Long.valueOf(5);
-        }
+//
+//        if (idBimestreAtual == 0) {
+//            idBimestreAtual = Long.valueOf(5);
+//        }
+
         RealmResults<Frequencia> frequencias = realm.where(Frequencia.class).findAll();
         RealmResults<AlunoFrequenciaMes> alunoFrequenciaMes2 = realm.where(AlunoFrequenciaMes.class).findAll();
 
-        for (int i = 0; i < frequencias.size(); i++) {
-            if (frequencias.get(i).isNovo()) {
+        for (Frequencia frequencia : frequencias) {
+            if (frequencia.isNovo()) {
                 Long idSerieDisciplina = realm.where(SerieDisciplina.class).equalTo("disciplina", preferences.getSavedLong("id_disciplina")).findFirst().getId();
-                Long idMatricula = realm.where(Matricula.class).equalTo("id", frequencias.get(i).getMatricula()).findFirst().getId();
+                Long idMatricula = realm.where(Matricula.class).equalTo("id", frequencia.getMatricula()).findFirst().getId();
 
                 Long idDisciplinaAluno = Long.valueOf(0);
                 try {
                     idDisciplinaAluno = (realm.where(DisciplinaAluno.class).equalTo("matricula", idMatricula)
                             .equalTo("serieDisciplina", idSerieDisciplina)
-                            .equalTo("matricula", frequencias.get(i).getMatricula()).findFirst()).getId();
+                            .equalTo("matricula", frequencia.getMatricula()).findFirst()).getId();
                 } catch (Exception e) {
                     Log.i("ERRO", "DISCIPLINA ALUNO NULLL");
                 }
@@ -82,13 +84,18 @@ public class FrequenciaMB {
                     alunoFrequenciaMes.setTotalFaltas(alunoFrequenciaMes.getTotalFaltas() + 1);
                     alunoFrequenciaMes.setNovo(true);
                     alunoFrequenciaMes.setTipoLancamentoFrequencia("LANCADO_APP");
-                    frequencias.get(i).setNovo(false);
+                    frequencia.setNovo(false);
                     realm.commitTransaction();
                 }
             }
+
+            if (frequencia.isAlterado()) {
+
+            }
         }
+
         Date data = new Date();
-        SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
-        preferences.saveBoolean("datadia-" + formatador.format(data) + "-turma-" + preferences.getSavedLong("id_turma") + "-" + preferences.getSavedLong("id_disciplina"), true);
+//        SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+//        preferences.saveBoolean("datadia-" + formatador.format(data) + "-turma-" + preferences.getSavedLong("id_turma") + "-" + preferences.getSavedLong("id_disciplina"), true);
     }
 }

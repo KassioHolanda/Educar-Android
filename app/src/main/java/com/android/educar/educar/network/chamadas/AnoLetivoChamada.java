@@ -38,8 +38,6 @@ public class AnoLetivoChamada {
         configRealm();
         paginaAtualAnoLetivo = 1;
         paginaAtualBimetre = 1;
-        anoLetivoAPI();
-        recuperarBimestreAPI();
     }
 
     public void anoLetivoAPI() {

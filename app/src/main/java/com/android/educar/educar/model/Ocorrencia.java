@@ -1,8 +1,10 @@
 package com.android.educar.educar.model;
 
+import com.android.educar.educar.utils.UtilsFunctions;
 import com.google.gson.annotations.SerializedName;
 import com.orm.dsl.Unique;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -195,5 +197,11 @@ public class Ocorrencia extends RealmObject {
 
     public void setNovo(boolean novo) {
         this.novo = novo;
+    }
+
+    @Override
+    public String toString() {
+//        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        return this.descricao + " - " + this.datahora;
     }
 }

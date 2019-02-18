@@ -48,7 +48,7 @@ public class SincronizarComAPiMB {
         alunoChamada.publicarAlunoNotaMesNaAPI();
         turmaChamada.publicarSituacaoTurmaMes();
         matriculaChamada.atualizarAlunoFrequenciaMes();
-//        alunoChamada.atualizarDadosDisciplinaAluno();
+        alunoChamada.atualizarDadosDisciplinaAluno();
         ocorrenciaChamada.publicarNovaOcorrenciaParaAPI();
     }
 }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.android.educar.educar.R;
 import com.android.educar.educar.adapter.NotaAdapterLista;
 import com.android.educar.educar.model.Aluno;
+import com.android.educar.educar.model.Bimestre;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.Matricula;
 import com.android.educar.educar.model.PessoaFisica;
@@ -51,6 +52,8 @@ public class NotaFragment extends Fragment {
     private List<PessoaFisica> pessoaFisicas;
     private SerieTurma serieTurma;
 
+    private TextView bimestreFragmentNota;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -79,6 +82,7 @@ public class NotaFragment extends Fragment {
         layoutUnidade = view.findViewById(R.id.layout_unidade_nota_id);
         layoutDisciplina = view.findViewById(R.id.layout_disciplina_nota_id);
         layoutTurma = view.findViewById(R.id.layout_turma_nota_id);
+        bimestreFragmentNota = view.findViewById(R.id.bimestre_fragment_nota_id);
     }
 
     public void recuperarAlunosRealm() {
@@ -86,15 +90,15 @@ public class NotaFragment extends Fragment {
         pessoaFisicas = new ArrayList<>();
         RealmResults<Matricula> matriculas = realm.where(Matricula.class).equalTo("turma", preferences.getSavedLong("id_turma")).findAll();
 
-        for (int i = 0; i < matriculas.size(); i++) {
-            Aluno aluno = realm.where(Aluno.class).equalTo("id", matriculas.get(i).getAluno()).findFirst();
+        for (Matricula matricula : matriculas) {
+            Aluno aluno = realm.where(Aluno.class).equalTo("id", matricula.getAluno()).findFirst();
             if (aluno != null) {
                 alunos.add(aluno);
             }
         }
 
-        for (int i = 0; i < alunos.size(); i++) {
-            PessoaFisica pessoaFisica = realm.where(PessoaFisica.class).equalTo("id", alunos.get(i).getPessoaFisica()).findFirst();
+        for (Aluno aluno : alunos) {
+            PessoaFisica pessoaFisica = realm.where(PessoaFisica.class).equalTo("id", aluno.getPessoaFisica()).findFirst();
             if (pessoaFisica != null) {
                 pessoaFisicas.add(pessoaFisica);
             }
@@ -133,14 +137,15 @@ public class NotaFragment extends Fragment {
     }
 
     public void atualizarAdapterFrequencia(List<PessoaFisica> pessoaFisicas) {
-        NotaAdapterLista notaFragment = new NotaAdapterLista(pessoaFisicas,getContext());
+        NotaAdapterLista notaFragment = new NotaAdapterLista(pessoaFisicas, getContext());
         notasAluno.setAdapter(notaFragment);
     }
 
     public void atualizarDadosTela() {
-        unidadeSelecionadaAula.setText(unidadeSelecionada.getAbreviacao());
+        unidadeSelecionadaAula.setText(unidadeSelecionada.getNome());
         turmaSelecionadaAula.setText(turmaSelecionada.getDescricao());
         disciplinaSelecionadaAula.setText(disciplinaSelecionada.getDescricao());
+        bimestreFragmentNota.setText(realm.where(Bimestre.class).equalTo("id", preferences.getSavedLong("id_bimestre")).findFirst().getDescricao());
     }
 
     public void recuperarDadosRealm() {

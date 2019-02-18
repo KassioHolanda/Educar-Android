@@ -21,6 +21,7 @@ import com.android.educar.educar.adapter.FrequenciaAdapter;
 import com.android.educar.educar.adapter.FrequenciaAdapterLista;
 import com.android.educar.educar.mb.FrequenciaMB;
 import com.android.educar.educar.model.Aluno;
+import com.android.educar.educar.model.Bimestre;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.Frequencia;
 import com.android.educar.educar.model.Matricula;
@@ -66,6 +67,7 @@ public class FrequenciaFragment extends Fragment {
     private FrequenciaMB frequenciaMB;
 
     private Realm realm;
+    private TextView bimestreFragmentFrequencia;
 
 
     @Override
@@ -90,6 +92,7 @@ public class FrequenciaFragment extends Fragment {
         unidadeFrequecia = view.findViewById(R.id.frequencia_unidade_id);
         turmaFrequencia = view.findViewById(R.id.frequencia_turma_id);
         disciplinaFrequencia = view.findViewById(R.id.frequencia_disciplina_id);
+        bimestreFragmentFrequencia = view.findViewById(R.id.bimestre_fragment_frequencia_id);
     }
 
     public void configRealm() {
@@ -108,38 +111,30 @@ public class FrequenciaFragment extends Fragment {
 
         RealmResults<Matricula> matriculas = realm.where(Matricula.class).equalTo("turma", preferences.getSavedLong("id_turma")).findAll();
 
-        for (int i = 0; i < matriculas.size(); i++) {
-            Aluno aluno = realm.where(Aluno.class).equalTo("id", matriculas.get(i).getAluno()).findFirst();
+        for (Matricula matricula : matriculas) {
+            Aluno aluno = realm.where(Aluno.class).equalTo("id", matricula.getAluno()).findFirst();
             if (aluno != null) {
                 alunos.add(aluno);
             }
         }
 
-        for (int i = 0; i < alunos.size(); i++) {
-            PessoaFisica pessoaFisica = realm.where(PessoaFisica.class).equalTo("id", alunos.get(i).getPessoaFisica()).findFirst();
+        for (Aluno aluno : alunos) {
+            PessoaFisica pessoaFisica = realm.where(PessoaFisica.class).equalTo("id", aluno.getPessoaFisica()).findFirst();
             if (pessoaFisica != null) {
                 this.pessoaFisicas.add(pessoaFisica);
             }
         }
 
         atualizarAdapterFrequencia(pessoaFisicas);
-
-//        alunosFrequencia.setAdapter();
     }
 
     public void onClickItem() {
         salvarFrequencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date data = new Date();
-                SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
-                if (preferences.getSavedBoolean("datadia-" + formatador.format(data)+"-turma-"+preferences.getSavedLong("id_turma")+"-"+preferences.getSavedLong("id_disciplina"))) {
-                    Snackbar.make(getView(), "FREQUENCIA JA REALIZADA HOJE", Snackbar.LENGTH_INDEFINITE).show();
-                } else {
-                    frequenciaMB.salvarFrequencia();
-                    Toast.makeText(getContext(), "Frequência do dia " + new Date().getDate() + " Registrada!", Toast.LENGTH_LONG).show();
-                    getActivity().finish();
-                }
+                frequenciaMB.salvarFrequencia();
+                Toast.makeText(getContext(), "Frequência do dia " + new Date().getDate() + " Registrada!", Toast.LENGTH_LONG).show();
+                getActivity().finish();
             }
         });
 
@@ -174,6 +169,7 @@ public class FrequenciaFragment extends Fragment {
         unidadeSelecionadaAula.setText(unidadeSelecionada.getAbreviacao());
         turmaSelecionadaAula.setText(turmaSelecionada.getDescricao());
         disciplinaSelecionadaAula.setText(disciplinaSelecionada.getDescricao());
+        bimestreFragmentFrequencia.setText(realm.where(Bimestre.class).equalTo("id", preferences.getSavedLong("id_bimestre")).findFirst().getDescricao());
     }
 
     public void recuperarDadosRealm() {

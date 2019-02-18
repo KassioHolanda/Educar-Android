@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.model.AlunoFrequenciaMes;
+import com.android.educar.educar.model.AlunoNotaMes;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.DisciplinaAluno;
 import com.android.educar.educar.model.Matricula;
@@ -54,12 +55,37 @@ public class MatriculaChamada {
                     realm.copyToRealmOrUpdate(response.body());
                     realm.commitTransaction();
                     recuperarAlunosMatricula(response.body());
+                    recuperarAlunoNotaMesDasMatriculas(response.body());
                     Log.i("RESPONSE", "MATRICULAS RECUPERADAS");
                 }
             }
 
             @Override
             public void onFailure(Call<List<Matricula>> call, Throwable t) {
+                Log.i("ERRO API", "" + t.getMessage());
+            }
+        });
+    }
+
+    public void recuperarAlunoNotaMesDasMatriculas(List<Matricula> matriculas) {
+        for (int i = 0; i < matriculas.size(); i++) {
+            recuperaralunoNotaMesPelaMatricula(matriculas.get(i).getId());
+        }
+    }
+
+    private void recuperaralunoNotaMesPelaMatricula(Long matriculaId) {
+        Call<List<AlunoNotaMes>> listCall = apiService.getAlunoNotaMesEndPoint().alunosNotaMesMatricula(matriculaId);
+        listCall.enqueue(new Callback<List<AlunoNotaMes>>() {
+            @Override
+            public void onResponse(Call<List<AlunoNotaMes>> call, Response<List<AlunoNotaMes>> response) {
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(response.body());
+                realm.commitTransaction();
+                Log.i("RESPONSE", "ALUNONOTAMES RECUPERADOS");
+            }
+
+            @Override
+            public void onFailure(Call<List<AlunoNotaMes>> call, Throwable t) {
                 Log.i("ERRO API", "" + t.getMessage());
             }
         });
@@ -105,21 +131,24 @@ public class MatriculaChamada {
                 alunoFrequenciaMes1.setDisciplinaAluno(alunoFrequenciaMes.get(i).getDisciplinaAluno());
                 alunoFrequenciaMes1.setTipoLancamentoFrequencia(alunoFrequenciaMes.get(i).getTipoLancamentoFrequencia());
                 alunoFrequenciaMes1.setDisciplina(alunoFrequenciaMes.get(i).getDisciplina());
+
+                realm.beginTransaction();
+                alunoFrequenciaMes.get(i).setNovo(false);
+                realm.copyToRealmOrUpdate(alunoFrequenciaMes.get(i));
+                realm.commitTransaction();
+
                 publicarAlunoFrequenciaMes(alunoFrequenciaMes1);
             }
         }
     }
 
-    public void publicarAlunoFrequenciaMes(final AlunoFrequenciaMes alunoFrequenciaMes) {
+    public void publicarAlunoFrequenciaMes(AlunoFrequenciaMes alunoFrequenciaMes) {
         Call<AlunoFrequenciaMes> alunoFrequenciaMesCall = apiService.getAlunoFrequenciaMesEndPoint().postAlunoFrequenciaMes(alunoFrequenciaMes.getId(), alunoFrequenciaMes);
         alunoFrequenciaMesCall.enqueue(new Callback<AlunoFrequenciaMes>() {
             @Override
             public void onResponse(Call<AlunoFrequenciaMes> call, Response<AlunoFrequenciaMes> response) {
                 if (response.isSuccessful()) {
-                    realm.beginTransaction();
-                    alunoFrequenciaMes.setNovo(false);
-                    realm.copyToRealmOrUpdate(alunoFrequenciaMes);
-                    realm.commitTransaction();
+
                     Log.i("RESPONSE", "ALUNOFRQUENCIAMES PUBLICADO");
                 }
             }

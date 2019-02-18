@@ -89,17 +89,32 @@ public class OcorrenciaChamada {
         });
     }
 
+    public void recuperarOcorrenciasAluno(long alunoId) {
+        Call<List<Ocorrencia>> listCall = apiService.getOcorrenciaEndPoint().getOcorrenciasAluno(alunoId);
+        listCall.enqueue(new Callback<List<Ocorrencia>>() {
+            @Override
+            public void onResponse(Call<List<Ocorrencia>> call, Response<List<Ocorrencia>> response) {
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(response.body());
+                realm.commitTransaction();
+                Log.i("RESPONSE", "TIPOS OCORRENCIA RECUPERADOS");
+            }
+
+            @Override
+            public void onFailure(Call<List<Ocorrencia>> call, Throwable t) {
+                Log.i("ERRO API", t.getMessage());
+            }
+        });
+    }
+
     public void postOcorrenciaAPI(final Ocorrencia ocorrencia) {
         Call<Ocorrencia> ocorrenciaCall = apiService.getOcorrenciaEndPoint().postOcorrencia(ocorrencia);
         ocorrenciaCall.enqueue(new Callback<Ocorrencia>() {
             @Override
             public void onResponse(Call<Ocorrencia> call, Response<Ocorrencia> response) {
                 if (response.isSuccessful()) {
-                    realm.beginTransaction();
-                    ocorrencia.setNovo(false);
-                    realm.copyToRealmOrUpdate(ocorrencia);
-                    realm.commitTransaction();
-                    Log.i("RESPONSE", "OCORRENCIA PUBLICADA");
+
+                    Log.i("RESPONSE", "OCORRENCIAS RECUPERADAS");
                 }
             }
 
@@ -130,6 +145,12 @@ public class OcorrenciaChamada {
                 ocorrencia1.setFuncionario(ocorrencias.get(i).getFuncionario());
                 ocorrencia1.setUnidade(ocorrencias.get(i).getUnidade());
                 ocorrencia1.setAnoLetivo(ocorrencias.get(i).getAnoLetivo());
+
+                realm.beginTransaction();
+                ocorrencias.get(i).setNovo(false);
+                realm.copyToRealmOrUpdate(ocorrencias.get(i));
+                realm.commitTransaction();
+
                 postOcorrenciaAPI(ocorrencia1);
 //                preferences.saveInt("numero_registros_sincronizados", 1);
             }

@@ -35,8 +35,28 @@ public class DisciplinaAluno extends RealmObject {
     @SerializedName("statusatual")
     private String statusAtual;
     private boolean alterado;
+    @SerializedName("mediaacumulada")
+    private double mediaAculumada;
+    @SerializedName("cargahoraria")
+    private Long cargaHoraria;
 
     public DisciplinaAluno() {
+    }
+
+    public Long getCargaHoraria() {
+        return cargaHoraria;
+    }
+
+    public void setCargaHoraria(Long cargaHoraria) {
+        this.cargaHoraria = cargaHoraria;
+    }
+
+    public double getMediaAculumada() {
+        return mediaAculumada;
+    }
+
+    public void setMediaAculumada(double mediaAculumada) {
+        this.mediaAculumada = mediaAculumada;
     }
 
     public DisciplinaAluno(String statusDisciplinaAluno, Long matricula, Long serieDisciplina, int mesesFechadosNota, Float notaAcumulada, Date datacadastroprovafinal, Float notaProvaFinal, Boolean fechadoProvaFInal, Date dataCadastroAtualizacaoProvaFinal, Float notaAntigaProvaFinal, Long usuarioAtualizacaoProvaFinal) {
@@ -164,4 +184,5 @@ public class DisciplinaAluno extends RealmObject {
     public void setAlterado(boolean alterado) {
         this.alterado = alterado;
     }
+
 }

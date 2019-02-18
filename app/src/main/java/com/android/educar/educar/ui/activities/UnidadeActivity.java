@@ -135,7 +135,7 @@ public class UnidadeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (UtilsFunctions.isConnect(getApplicationContext())) {
-//                    sincronizarComAPiMB.recuperarDadosDaAPISalvarBancoDeDadosRealm();
+                    sincronizarComAPiMB.recuperarDadosDaAPISalvarBancoDeDadosRealm();
                     sincronizarComAPiMB.enviarDadosDoBancoDeDadosParaAPI();
                 } else {
                     Snackbar.make(findViewById(android.R.id.content), "SEM CONEXÃO", Snackbar.LENGTH_LONG).show();
