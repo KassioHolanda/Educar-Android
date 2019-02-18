@@ -150,12 +150,16 @@ public class FrequenciaAdapterLista extends BaseAdapter {
         frequencia.setPresenca(presenca);
         frequencia.setDate(UtilsFunctions.apenasData().format(new Date()));
         frequencia.setPessoafisica(pessoaFisica.getId());
-        if (recuperarFrequencia(pessoaFisica)!=null) {
+
+        if (recuperarFrequencia(pessoaFisica) != null || !frequencia.isNovo()) {
             frequencia.setAlterado(true);
         } else {
             frequencia.setNovo(true);
         }
-        realmObjectsBO.salvarObjetoRealm(frequencia);
+
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(frequencia);
+        realm.commitTransaction();
     }
 
     public Frequencia recuperarFrequencia(PessoaFisica pessoaFisica) {

@@ -15,6 +15,7 @@
         <activity android:name=".ui.activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -45,10 +46,8 @@
             android:name=".ui.activities.FrequenciaActivity"
             android:label="Nova Frequêcia"
             android:parentActivityName=".ui.activities.AulaAcoesActivity" />
-        <activity android:name=".ui.activities.LoadingActivity">
-
-        </activity>
-
+        <activity android:name=".ui.activities.LoadingActivity"></activity>
+        <activity android:name=".ui.activities.NotificacoesAlunoAcitivity" android:parentActivityName=".ui.activities.OcorrenciaActivity"></activity>
     </application>
 
 </manifest>

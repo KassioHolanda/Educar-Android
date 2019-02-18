@@ -5,14 +5,29 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <TextView
-        android:id="@+id/data_ocorrencia_detalhe_id"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:text="data"
-        android:layout_marginBottom="-10dp"
-        android:textSize="14sp" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/titulo_id_notificacao"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="titulo"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/data_ocorrencia_detalhe_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_weight="1"
+            android:text="data"
+            android:textSize="10sp" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/notificacao_detalhe_id"
@@ -21,5 +36,5 @@
         android:hint="Notificação"
         android:text="notificacao"
         android:textColor="#222"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 </LinearLayout>

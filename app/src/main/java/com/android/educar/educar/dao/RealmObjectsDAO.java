@@ -19,7 +19,6 @@ public class RealmObjectsDAO {
     public void configRealm() {
         Realm.init(context);
         realm = Realm.getDefaultInstance();
-        realm.setAutoRefresh(true);
     }
 
     public void salvarListaRealm(List<?> realmModels) {

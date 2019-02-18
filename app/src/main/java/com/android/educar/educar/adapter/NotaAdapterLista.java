@@ -116,13 +116,9 @@ public class NotaAdapterLista extends BaseAdapter {
         addNota.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (!preferences.getSavedBoolean("bimestre_5_fechado")) {
-//
-//                } else {
                 pessoaFisicaSelecionada = pessoaFisicaList.get(position);
                 preferences.saveLong("id_matricula", matricula.getId());
                 adicionarNota();
-//                }
             }
         });
 
@@ -142,7 +138,7 @@ public class NotaAdapterLista extends BaseAdapter {
         Aluno aluno2 = realm.where(Aluno.class).equalTo("pessoaFisica", pessoaFisicaSelecionada.getId()).findFirst();
         final Matricula matricula = realm.where(Matricula.class).equalTo("aluno", aluno2.getId()).findFirst();
 
-        aluno.setText(pessoaFisicaAluno.getNome());
+        aluno.setText(pessoaFisicaSelecionada.getNome());
         disciplina.setText(realm.where(Disciplina.class).equalTo("id", preferences.getSavedLong("id_disciplina")).findFirst().getDescricao());
         bimestre.setText(realm.where(Bimestre.class).equalTo("id", notaMB.verificarBimestreAtual()).findFirst().getDescricao());
 
@@ -162,13 +158,17 @@ public class NotaAdapterLista extends BaseAdapter {
                         } else if (Float.valueOf(nota.getText().toString()) > 10) {
                             alertaInformacao();
                         } else {
-                            if (nota == null) {
+                            if (nota == null || nota.equals("")) {
                                 notaMB.salvarAlunoNotaMes(nota.getText().toString());
-                                Toast.makeText(context, "Nota Inserida ao aluno " + pessoaFisicaAluno.getNome() + "!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Nota Inserida ao aluno " + pessoaFisicaSelecionada.getNome() + "!", Toast.LENGTH_LONG).show();
+                                android.os.SystemClock.sleep(3000);
                             } else {
+
                                 notaMB.atualizarAlunoNotaMes(nota.getText().toString(), matricula.getId());
-                                Toast.makeText(context, "Nota do aluno " + pessoaFisicaAluno.getNome() + " Atualizada!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Nota do aluno " + pessoaFisicaSelecionada.getNome() + " Atualizada!", Toast.LENGTH_LONG).show();
+                                android.os.SystemClock.sleep(3000);
                             }
+
                             atualizarFragment();
                         }
                     }
@@ -184,19 +184,6 @@ public class NotaAdapterLista extends BaseAdapter {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 adicionarNota();
-            }
-
-        }).show();
-    }
-
-    public void alertaInformacaoNota() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Informação!");
-        builder.setMessage("Nota Ja foi Inserida!");
-        builder.setCancelable(false);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
             }
 
         }).show();

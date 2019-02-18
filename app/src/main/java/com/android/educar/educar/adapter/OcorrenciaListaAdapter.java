@@ -15,9 +15,12 @@ import com.android.educar.educar.R;
 import com.android.educar.educar.utils.UtilsFunctions;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import io.realm.Realm;
 
@@ -27,6 +30,7 @@ public class OcorrenciaListaAdapter extends BaseAdapter {
     private Realm realm;
     private TextView data;
     private TextView notificacao;
+    private TextView titulo;
 
 
     public OcorrenciaListaAdapter(Context context, List<Ocorrencia> ocorrencias) {
@@ -52,7 +56,7 @@ public class OcorrenciaListaAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return ocorrencias.get(i).getId();
+        return 0;
     }
 
     @Override
@@ -67,11 +71,32 @@ public class OcorrenciaListaAdapter extends BaseAdapter {
             row = view;
         }
 
+        titulo = row.findViewById(R.id.titulo_id_notificacao);
+        titulo.setText(ocorrencias.get(i).getDescricao());
         notificacao = row.findViewById(R.id.notificacao_detalhe_id);
-        notificacao.setText(ocorrencias.get(i).getDescricao());
+        notificacao.setText(ocorrencias.get(i).getObservacao());
         data = row.findViewById(R.id.data_ocorrencia_detalhe_id);
-        data.setText("" + ocorrencias.get(i).getDatahora());
 
+        try {
+            data.setText("" + getparsedDate(ocorrencias.get(i).getDatahora()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return row;
+    }
+
+    private String getparsedDate(String date) throws Exception {
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
+        String s1 = date;
+        String s2 = null;
+        Date d;
+        try {
+            d = sdf.parse(s1);
+            s2 = (new SimpleDateFormat("dd/MM/yyyy")).format(d);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return s2;
+
     }
 }

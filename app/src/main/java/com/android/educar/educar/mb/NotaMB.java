@@ -1,6 +1,7 @@
 package com.android.educar.educar.mb;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.educar.educar.bo.RealmObjectsBO;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import okhttp3.internal.Util;
 
 public class NotaMB {
 
@@ -84,12 +86,17 @@ public class NotaMB {
     }
 
     public void atualizarAlunoNotaMes(String descricao, long matriculaId) {
-        AlunoNotaMes alunoNotaMes = recuperarNotaMatricula(matriculaId);
-        realm.beginTransaction();
-        alunoNotaMes.setAlterado(true);
-        alunoNotaMes.setNota(Float.parseFloat(descricao));
-        realm.copyToRealmOrUpdate(alunoNotaMes);
-        realm.commitTransaction();
+        try {
+            AlunoNotaMes alunoNotaMes = recuperarNotaMatricula(matriculaId);
+            realm.beginTransaction();
+            alunoNotaMes.setAlterado(true);
+            alunoNotaMes.setNota(Float.parseFloat(descricao));
+            realm.copyToRealmOrUpdate(alunoNotaMes);
+            realm.commitTransaction();
+        } catch (NullPointerException e) {
+            Log.i("ERRO", "Matricula NULL");
+        }
+
     }
 
     public void atualizarDadosDisciplinaAluno(Float nota) {
@@ -132,12 +139,11 @@ public class NotaMB {
                 this.idBimestreAtual = situacaoTurmaMes.get(situacaoTurmaMes.size() - 1).getBimestre();
             } else if (situacaoTurmaMes.get(situacaoTurmaMes.size() - 1).getBimestre() == 5 && situacaoTurmaMes.get(situacaoTurmaMes.size() - 1).getStatus().equals("FECHADO")) {
                 preferences.saveLong("id_bimestre", 5);
-                preferences.saveBoolean("bimestre_5_fechado", true);
+//                preferences.saveBoolean("bimestre_5_fechado", true);
                 return Long.valueOf(5);
             } else if (situacaoTurmaMes.get(situacaoTurmaMes.size() - 1).getBimestre() < 5 && situacaoTurmaMes.get(situacaoTurmaMes.size() - 1).getStatus().equals("FECHADO")) {
                 this.ultimoIdBimestre = situacaoTurmaMes.get(situacaoTurmaMes.size() - 1).getBimestre();
                 criarNovaSituacaoTurmaMes();
-
             }
 //            }
         }
@@ -157,8 +163,7 @@ public class NotaMB {
             idBimestre = ultimoIdBimestre + 1;
         }
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-        SituacaoTurmaMes situacaoTurmaMes1 = new SituacaoTurmaMes(simpleDateFormat.format(new Date()), "ABERTO",
+        SituacaoTurmaMes situacaoTurmaMes1 = new SituacaoTurmaMes(UtilsFunctions.formatoDataPadrao().format(new Date()), "ABERTO",
                 preferences.getSavedLong("id_turma"), 0, 0, idBimestre);
         situacaoTurmaMes1.setNovo(true);
 
@@ -189,10 +194,21 @@ public class NotaMB {
     }
 
     public AlunoNotaMes recuperarNotaMatricula(Long matriculaAluno) {
-        DisciplinaAluno disciplinaAluno = realm.where(DisciplinaAluno.class).equalTo("matricula", matriculaAluno).equalTo("serieDisciplina", verificarSerieDisciplina().getId()).findFirst();
+        DisciplinaAluno disciplinaAluno = realm.where(DisciplinaAluno.class)
+                .equalTo("matricula", matriculaAluno)
+                .equalTo("serieDisciplina", verificarSerieDisciplina().getId())
+                .findFirst();
+
         if (disciplinaAluno != null) {
-            AlunoNotaMes alunoNotaMes = realm.where(AlunoNotaMes.class).equalTo("matricula", matriculaAluno).equalTo("bimestre", verificarBimestreAtual()).equalTo("disciplinaAluno", disciplinaAluno.getId()).findFirst();
+
+            AlunoNotaMes alunoNotaMes = realm.where(AlunoNotaMes.class)
+                    .equalTo("matricula", matriculaAluno)
+                    .equalTo("bimestre", verificarBimestreAtual())
+                    .equalTo("disciplinaAluno", disciplinaAluno.getId())
+                    .findFirst();
+
             return alunoNotaMes;
+
         } else {
             return null;
         }

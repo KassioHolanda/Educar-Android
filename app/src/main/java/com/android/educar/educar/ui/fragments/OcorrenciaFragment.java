@@ -1,6 +1,7 @@
 package com.android.educar.educar.ui.fragments;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -32,6 +33,7 @@ import com.android.educar.educar.model.PessoaFisica;
 import com.android.educar.educar.model.TipoOcorrencia;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
+import com.android.educar.educar.ui.activities.NotificacoesAlunoAcitivity;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
@@ -68,6 +70,9 @@ public class OcorrenciaFragment extends Fragment {
     private PessoaFisica pessoaFisica;
     private Aluno aluno;
     private Matricula matricula;
+
+    private Aluno aluno2;
+    private Matricula matricula2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -121,7 +126,8 @@ public class OcorrenciaFragment extends Fragment {
         detalhar.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                mostrarNotificacoes();
+//                mostrarNotificacoes();
+                startActivity(new Intent(getContext(), NotificacoesAlunoAcitivity.class));
                 return false;
             }
         });
@@ -166,6 +172,10 @@ public class OcorrenciaFragment extends Fragment {
                 PessoaFisica pessoaFisica = (PessoaFisica) pessoas.getItemAtPosition(position);
                 Long id2 = pessoaFisica.getId();
                 preferences.saveLong("id_pessoafisica_aluno", id2);
+
+                aluno2 = realm.where(Aluno.class).equalTo("pessoaFisica", id2).findFirst();
+                matricula2 = realm.where(Matricula.class).equalTo("aluno", aluno2.getId()).findFirst();
+
                 recuperarRegistrosAluno(pessoaFisica.getId());
                 view.showContextMenu();
             }
@@ -204,7 +214,7 @@ public class OcorrenciaFragment extends Fragment {
         final Spinner tiposOcorrencia = viewDialog.findViewById(R.id.tipos_ocorrencia_id);
         final EditText aluno = viewDialog.findViewById(R.id.aluno_ocorrencia_id);
 
-        aluno.setText(realm.where(PessoaFisica.class).equalTo("id", preferences.getSavedLong("id_pessoafisica")).findFirst().getNome());
+        aluno.setText(realm.where(PessoaFisica.class).equalTo("id", preferences.getSavedLong("id_pessoafisica_aluno")).findFirst().getNome());
         aluno.setEnabled(false);
 
         ArrayAdapter<TipoOcorrencia> tipoOcorrenciaArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, realm.where(TipoOcorrencia.class).findAll());
@@ -219,61 +229,36 @@ public class OcorrenciaFragment extends Fragment {
                         salvarOcorrenciaRealm(tipoOcorrencia, ocorrenciaText.getText().toString());
 
                         Toast.makeText(getContext(), "A Notificação foi Registrada para o Aluno "
-                                + realm.where(PessoaFisica.class).equalTo("id", preferences.getSavedLong("id_pessoafisica")).findFirst().getNome()
+                                + realm.where(PessoaFisica.class).equalTo("id", preferences.getSavedLong("id_pessoafisica_aluno")).findFirst().getNome()
                                 + "!", Toast.LENGTH_LONG).show();
                     }
                 }).setNegativeButton("Cancelar", null).show();
 
     }
 
-
-    public void mostrarNotificacoes() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        final View viewDialog = getLayoutInflater().inflate(R.layout.dialog_mostrar_notificacoes, null);
-
-        final ListView ocorrencais = viewDialog.findViewById(R.id.ocorrencais_dialog_aluno_id);
-
-        pessoaFisica = realm.where(PessoaFisica.class).equalTo("id", preferences.getSavedLong("id_pessoafisica_aluno")).findFirst();
-        aluno = realm.where(Aluno.class).equalTo("pessoaFisica", pessoaFisica.getId()).findFirst();
-        matricula = realm.where(Matricula.class).equalTo("aluno", aluno.getId()).findFirst();
-
-        RealmResults<Ocorrencia> ocorrencias = realm.where(Ocorrencia.class).equalTo("matriculaAluno", matricula.getId()).findAll();
-
-        OcorrenciaListaAdapter ocorrenciaListaAdapter = new OcorrenciaListaAdapter(getContext(), ocorrencias);
-        ocorrencais.setAdapter(ocorrenciaListaAdapter);
-
-        builder.setView(viewDialog).setTitle("Notificações Registradas!")
-                .setPositiveButton("Sair", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-                .setCancelable(false)
-                .show();
-    }
-
     public void salvarOcorrenciaRealm(TipoOcorrencia tipoOcorrencia, String descricao) {
+        Ocorrencia ocorrencia1 = new Ocorrencia();
+        ocorrencia1.setDatahora(UtilsFunctions.formatoDataPadrao().format(new Date()));
+        ocorrencia1.setDatahoracadastro(UtilsFunctions.formatoDataPadrao().format(new Date()));
+        ocorrencia1.setFuncionarioEscola(realm.where(FuncionarioEscola.class)
+                .equalTo("funcionario", preferences.getSavedLong("id_funcionario"))
+                .equalTo("unidade", preferences.getSavedLong("id_unidade")).findFirst().getId());
+        ocorrencia1.setDescricao(tipoOcorrencia.getDescricao());
+        ocorrencia1.setMatriculaAluno(matricula2.getId());
+        ocorrencia1.setTipoOcorrencia(tipoOcorrencia.getId());
+        ocorrencia1.setAluno(preferences.getSavedLong("id_aluno"));
+        ocorrencia1.setAnoLetivo(preferences.getSavedLong("id_anoletivo"));
+        ocorrencia1.setFuncionarioEscola(preferences.getSavedLong("id_funcionario"));
+        ocorrencia1.setUnidade(preferences.getSavedLong("id_unidade"));
+        ocorrencia1.setEnviadoSms(false);
+        ocorrencia1.setDataEnvioSms(null);
+        ocorrencia1.setResumoSms(tipoOcorrencia.getDescricao());
+        ocorrencia1.setObservacao(descricao);
+        ocorrencia1.setNumeroTelefone(0);
+        ocorrencia1.setNovo(true);
+
         realm.beginTransaction();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-
-        Ocorrencia ocorrencia = new Ocorrencia(
-                simpleDateFormat.format(new Date()),
-                simpleDateFormat.format(new Date()),
-                realm.where(FuncionarioEscola.class)
-                        .equalTo("funcionario", preferences.getSavedLong("id_funcionario"))
-                        .equalTo("unidade", preferences.getSavedLong("id_unidade")).findFirst().getId(),
-                tipoOcorrencia.getDescricao(),
-                preferences.getSavedLong("id_matricula"),
-                tipoOcorrencia.getId(),
-                preferences.getSavedLong("id_aluno"),
-                preferences.getSavedLong("id_anoletivo"),
-                preferences.getSavedLong("id_funcionario"),
-                preferences.getSavedLong("id_unidade"), false, null,
-                tipoOcorrencia.getDescricao(),
-                descricao, 0, true);
-
-        realm.copyToRealmOrUpdate(ocorrencia);
+        realm.copyToRealmOrUpdate(ocorrencia1);
         realm.commitTransaction();
     }
 
