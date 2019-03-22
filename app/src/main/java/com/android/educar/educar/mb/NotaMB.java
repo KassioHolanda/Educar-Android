@@ -1,9 +1,15 @@
 package com.android.educar.educar.mb;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.educar.educar.R;
 import com.android.educar.educar.bo.RealmObjectsBO;
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.AlunoNotaMes;
@@ -13,6 +19,7 @@ import com.android.educar.educar.model.Matricula;
 import com.android.educar.educar.model.Ocorrencia;
 import com.android.educar.educar.model.Serie;
 import com.android.educar.educar.model.SerieDisciplina;
+import com.android.educar.educar.model.SerieTurma;
 import com.android.educar.educar.model.SituacaoTurmaMes;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
@@ -53,12 +60,24 @@ public class NotaMB {
         verificarBimestreAtual();
     }
 
+    public void alertarErro() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Alerta!");
+        builder.setMessage("Ocorreu um Erro, solicite Administrador!");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        }).show();
+    }
+
     public void salvarAlunoNotaMes(String descricao) {
         verificarStatusAtualDisciplinaAluno();
         verificarSerieDisciplina();
 
         if (disciplinaAluno == null || serieDisciplina == null) {
-            Toast.makeText(context, "Ocorreu um Erro, solicite Administrador", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "Ocorreu um Erro, solicite Administrador", Toast.LENGTH_LONG).show();
+            alertarErro();
         } else {
             if (verificarStatusParaAdicionarNota()) {
                 Matricula matricula = realm.where(Matricula.class).equalTo("id", preferences.getSavedLong("id_matricula")).findFirst();
@@ -79,8 +98,9 @@ public class NotaMB {
                 alunoNotaMes.setAlterado(false);
                 realmObjectsBO.salvarObjetoRealm(alunoNotaMes);
 //                atualizarDadosDisciplinaAluno(Float.parseFloat(descricao));
+                Toast.makeText(context, "Nota Inserida com Sucesso!", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(context, "A Nota Ja foi Informada", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Não é mais Permitido Inserir Nota", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -93,8 +113,10 @@ public class NotaMB {
             alunoNotaMes.setNota(Float.parseFloat(descricao));
             realm.copyToRealmOrUpdate(alunoNotaMes);
             realm.commitTransaction();
+            Toast.makeText(context, "Nota do aluno Atualizada com Sucesso!", Toast.LENGTH_LONG).show();
         } catch (NullPointerException e) {
-            Log.i("ERRO", "Matricula NULL");
+            alertarErro();
+            Toast.makeText(context, "Ocorreu um Erro, solicite Administrador", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -176,6 +198,9 @@ public class NotaMB {
 
 
     public void verificarStatusAtualDisciplinaAluno() {
+        Long id = verificarSerieDisciplina().getId();
+        Long ma = preferences.getSavedLong("id_matricula");
+
         DisciplinaAluno disciplinaAluno = realm.where(DisciplinaAluno.class)
                 .equalTo("matricula", preferences.getSavedLong("id_matricula"))
                 .equalTo("serieDisciplina", verificarSerieDisciplina().getId())
@@ -185,10 +210,12 @@ public class NotaMB {
     }
 
     public SerieDisciplina verificarSerieDisciplina() {
-        SerieDisciplina serieDisciplina = realm.where(SerieDisciplina.class)
+
+        serieDisciplina = realm.where(SerieDisciplina.class)
                 .equalTo("serie", preferences.getSavedLong("id_serie"))
                 .equalTo("disciplina", preferences.getSavedLong("id_disciplina"))
                 .findFirst();
+
 
         return serieDisciplina;
     }
@@ -210,7 +237,9 @@ public class NotaMB {
             return alunoNotaMes;
 
         } else {
+
             return null;
         }
     }
+
 }

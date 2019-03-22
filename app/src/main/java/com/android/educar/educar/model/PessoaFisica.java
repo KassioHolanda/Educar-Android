@@ -1,5 +1,7 @@
 package com.android.educar.educar.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Comparator;
@@ -8,7 +10,7 @@ import java.util.Date;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class PessoaFisica extends RealmObject {
+public class PessoaFisica extends RealmObject implements Comparable<PessoaFisica>{
 
     @PrimaryKey
     private Long id;
@@ -101,5 +103,11 @@ public class PessoaFisica extends RealmObject {
     @Override
     public String toString() {
         return this.nome;
+    }
+
+
+    @Override
+    public int compareTo(@NonNull PessoaFisica pessoaFisica) {
+        return getNome().compareToIgnoreCase(pessoaFisica.getNome());
     }
 }

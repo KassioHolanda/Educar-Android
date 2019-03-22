@@ -158,14 +158,12 @@ public class NotaAdapterLista extends BaseAdapter {
                         } else if (Float.valueOf(nota.getText().toString()) > 10) {
                             alertaInformacao();
                         } else {
-                            if (nota == null || nota.equals("")) {
+                            if (notaMB.recuperarNotaMatricula(matricula.getId()) == null) {
                                 notaMB.salvarAlunoNotaMes(nota.getText().toString());
-                                Toast.makeText(context, "Nota Inserida ao aluno " + pessoaFisicaSelecionada.getNome() + "!", Toast.LENGTH_LONG).show();
-                                android.os.SystemClock.sleep(3000);
+//                                Toast.makeText(context, "Nota Inserida ao aluno " + pessoaFisicaSelecionada.getNome() + "!", Toast.LENGTH_LONG).show();
                             } else {
-
                                 notaMB.atualizarAlunoNotaMes(nota.getText().toString(), matricula.getId());
-                                Toast.makeText(context, "Nota do aluno " + pessoaFisicaSelecionada.getNome() + " Atualizada!", Toast.LENGTH_LONG).show();
+//                                Toast.makeText(context, "Nota do aluno " + pessoaFisicaSelecionada.getNome() + " Atualizada!", Toast.LENGTH_LONG).show();
                                 android.os.SystemClock.sleep(3000);
                             }
 

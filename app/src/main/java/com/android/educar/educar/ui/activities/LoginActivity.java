@@ -150,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 while (statusLoading < 1) {
                     statusLoading++;
-                    android.os.SystemClock.sleep(3000);
+                    android.os.SystemClock.sleep(1000);
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -168,6 +168,7 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext(), "CPF não Encontrado!", Toast.LENGTH_LONG).show();
             mostrarCamposDeLogin();
+            statusLoading = 0;
         }
     }
 
@@ -178,10 +179,12 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(getApplicationContext(), "Usuário não é um Professor!", Toast.LENGTH_LONG).show();
                 mostrarCamposDeLogin();
+                statusLoading = 0;
             }
         } else {
             Toast.makeText(getApplicationContext(), "Funcionário não Encontrado!", Toast.LENGTH_LONG).show();
             mostrarCamposDeLogin();
+            statusLoading = 0;
         }
     }
 
@@ -200,6 +203,7 @@ public class LoginActivity extends AppCompatActivity {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             mostrarCamposDeLogin();
+            statusLoading = 0;
         }
         if (senhaDigitada.equals(preferences.getSavedString("pessoafisica_senha"))) {
             preferences.saveBoolean("logado", true);
@@ -207,6 +211,8 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext(), "Senha Inválida!", Toast.LENGTH_LONG).show();
             mostrarCamposDeLogin();
+            statusLoading = 0;
+//            onResume();
         }
     }
 

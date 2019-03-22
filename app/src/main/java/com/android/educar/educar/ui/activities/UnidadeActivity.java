@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,6 +55,7 @@ public class UnidadeActivity extends AppCompatActivity {
     private Realm realm;
     private SincronizarComAPiMB sincronizarComAPiMB;
     private TextView professorLogado;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public class UnidadeActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         configRealm();
+        settings();
         atualizarAdapterListaUnidades();
         mensagemInicial();
         alertaInformacaoPrimeiraUtilizacao();
@@ -82,6 +85,10 @@ public class UnidadeActivity extends AppCompatActivity {
         Realm.init(this);
         realm = Realm.getDefaultInstance();
         realm.refresh();
+    }
+
+    public void settings() {
+//        getSupportActionBar().setTitle(Html.fromHtml("Unidades"));
     }
 
     public void bindind() {
@@ -135,8 +142,10 @@ public class UnidadeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (UtilsFunctions.isConnect(getApplicationContext())) {
+                    progressDialog.show();
                     sincronizarComAPiMB.recuperarDadosDaAPISalvarBancoDeDadosRealm();
                     sincronizarComAPiMB.enviarDadosDoBancoDeDadosParaAPI();
+                    progressDialog.hide();
                 } else {
                     Snackbar.make(findViewById(android.R.id.content), "SEM CONEXÃO", Snackbar.LENGTH_LONG).show();
                 }
@@ -154,6 +163,7 @@ public class UnidadeActivity extends AppCompatActivity {
         preferences = new Preferences(this);
         messages = new Messages();
         sincronizarComAPiMB = new SincronizarComAPiMB(getApplicationContext());
+        progressDialog = UtilsFunctions.progressDialog(this, "Carregando...");
     }
 
     public void atualizarAdapterListaUnidades() {

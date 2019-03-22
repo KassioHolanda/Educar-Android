@@ -24,6 +24,8 @@ import com.android.educar.educar.adapter.TurmaAdapter;
 import com.android.educar.educar.model.GradeCurso;
 import com.android.educar.educar.model.LocalEscola;
 import com.android.educar.educar.model.Matricula;
+import com.android.educar.educar.model.Serie;
+import com.android.educar.educar.model.SerieTurma;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.network.chamadas.DisciplinaChamada;
@@ -90,11 +92,6 @@ public class TurmaActivity extends AppCompatActivity {
 
     public void recuperarTurmas() {
         RealmResults<LocalEscola> localEscolas = realm.where(LocalEscola.class).equalTo("unidade", preferences.getSavedLong("id_unidade"))
-                .notEqualTo("descricao", "LOCAL MIGRACAO")
-                .notEqualTo("descricao", "DEPOSITO DE ALIMENTOS")
-                .notEqualTo("descricao", "CANTINA")
-                .notEqualTo("descricao", "BANHEIRO MASCULINO")
-                .notEqualTo("descricao", "BANHEIRO FEMININO")
                 .findAll();
         List<Turma> turmasEscola = new ArrayList<>();
 
@@ -140,9 +137,16 @@ public class TurmaActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Turma turma = (Turma) turmas.getItemAtPosition(position);
                 preferences.saveLong("id_turma", turma.getId());
-                preferences.saveLong("id_serie", turma.getSerie());
+                Long serieID = turma.getSerie();
+                if(serieID == null) {
+                    SerieTurma serieTurma = realm.where(SerieTurma.class).equalTo("turma", turma.getId()).findFirst();
+                    preferences.saveLong("id_serie", serieTurma.getSerie());
+                } else {
+                    preferences.saveLong("id_serie", turma.getSerie());
+                }
+
                 preferences.saveLong("id_anoletivo", turma.getAnoLetivo());
-                preferences.saveLong("id_serie", turma.getSerie());
+
                 nextAcitivity();
             }
         });

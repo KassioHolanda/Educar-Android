@@ -133,6 +133,11 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <ImageView
+                android:background="#222"
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp" />
+            
             <TextView
                 android:id="@+id/bimestre_fragment_ocorrencia_id"
                 android:layout_width="wrap_content"
@@ -146,23 +151,22 @@
     </android.support.v7.widget.CardView>
 
     <TextView
-        android:id="@+id/alunos_titulo_id"
+        android:id="@+id/data_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/cardview_unidade_id"
         android:layout_marginLeft="12dp"
-        android:layout_marginTop="7dp"
-        android:layout_marginBottom="3dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="4dp"
         android:fontFamily="sans-serif-condensed"
-
         android:text="Alunos"
         android:textColor="#222"
-        android:textSize="14sp" />
+        android:textSize="16sp" />
 
     <ListView
         android:id="@+id/alunos_list_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/alunos_titulo_id"></ListView>
+        android:layout_below="@+id/data_id"></ListView>
 
 </RelativeLayout>

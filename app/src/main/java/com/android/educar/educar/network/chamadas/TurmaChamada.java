@@ -6,6 +6,7 @@ import android.util.Log;
 import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.model.GradeCurso;
 import com.android.educar.educar.model.LocalEscola;
+import com.android.educar.educar.model.SerieTurma;
 import com.android.educar.educar.model.SituacaoTurmaMes;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.network.service.APIService;
@@ -78,18 +79,20 @@ public class TurmaChamada {
     }
 
 
-    public void recuperarTurmasDaUnidade(Long sala) {
+    public void recuperarTurmasDaUnidade(final Long sala) {
         Call<List<Turma>> listCall = apiService.getTurmaEndPoint().turmasUnidade(sala);
         listCall.enqueue(new Callback<List<Turma>>() {
             @Override
             public void onResponse(Call<List<Turma>> call, Response<List<Turma>> response) {
                 if (response.isSuccessful()) {
+                    long id = sala;
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body());
                     realm.commitTransaction();
                     recuerarSeriesDaTurma(response.body());
                     recuperarMatriculasDaTurma(response.body());
                     recuperarSituacaoTurmaMes(response.body());
+                    recuperarSerieTurma(response.body());
                     Log.i("RESPONSE", "TURMAS RECUPERADAS");
                 }
             }
@@ -99,6 +102,12 @@ public class TurmaChamada {
                 Log.i("ERRO API", "" + t.getMessage());
             }
         });
+    }
+
+    public void recuperarSerieTurma(List<Turma> turmas) {
+        for (Turma t : turmas) {
+            recuperarSerieTurmaApi(t.getId());
+        }
     }
 
     public void recuperarSituacaoTurmaMes(List<Turma> turmas) {
@@ -117,6 +126,24 @@ public class TurmaChamada {
         for (int i = 0; i < turmas.size(); i++) {
             serieChamada.recuperarSerieAPI(turmas.get(i).getSerie());
         }
+    }
+
+    public void recuperarSerieTurmaApi(Long serieTurma) {
+        Call<List<SerieTurma>> listCall = apiService.getSerieTurmaEndPoint().seriesTurma(serieTurma);
+        listCall.enqueue(new Callback<List<SerieTurma>>() {
+            @Override
+            public void onResponse(Call<List<SerieTurma>> call, Response<List<SerieTurma>> response) {
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(response.body());
+                realm.commitTransaction();
+                Log.i("RESPONSE", "serieturma RECUPERADAS");
+            }
+
+            @Override
+            public void onFailure(Call<List<SerieTurma>> call, Throwable t) {
+                Log.i("ERRO API", "" + t.getMessage());
+            }
+        });
     }
 
 

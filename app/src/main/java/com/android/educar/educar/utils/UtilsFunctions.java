@@ -13,11 +13,13 @@ import java.lang.annotation.Annotation;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
@@ -88,6 +90,21 @@ public class UtilsFunctions {
     public static SimpleDateFormat apenasData() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf;
+    }
+
+    private static String converterDataEmString(String date) throws Exception {
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
+        String s1 = date;
+        String s2 = null;
+        Date d;
+        try {
+            d = sdf.parse(s1);
+            s2 = (new SimpleDateFormat("dd/MM/yyyy")).format(d);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return s2;
+
     }
 }
 

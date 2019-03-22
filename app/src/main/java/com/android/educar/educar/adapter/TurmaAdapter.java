@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.model.Serie;
+import com.android.educar.educar.model.SerieTurma;
 import com.android.educar.educar.model.Turma;
 
 import java.util.List;
@@ -68,7 +69,16 @@ public class TurmaAdapter extends BaseAdapter {
 
         turmaTextView.setText(turmaList.get(i).getDescricao());
         serie.setText(turmaList.get(i).getSerie() + "");
-        serie.setText(realm.where(Serie.class).equalTo("id", turmaList.get(i).getSerie()).findFirst().getDescricao());
+
+        Long serieId = turmaList.get(i).getSerie();
+
+        if (serieId == null) {
+            SerieTurma serieTurma = realm.where(SerieTurma.class).equalTo("turma", turmaList.get(i).getId()).findFirst();
+            serie.setText(realm.where(Serie.class).equalTo("id", serieTurma.getSerie()).findFirst().getDescricao());
+        } else {
+            Serie serieSelecionada = realm.where(Serie.class).equalTo("id", turmaList.get(i).getSerie()).findFirst();
+            serie.setText(serieSelecionada.getDescricao());
+        }
 
         return row;
     }

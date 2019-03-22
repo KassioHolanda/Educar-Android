@@ -12,6 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.activities.FrequenciaMensalActivityAlunos"
+            android:parentActivityName=".ui.activities.AulaAcoesActivity" android:label="Frequência Mensal"></activity>
+        <activity
+            android:name=".ui.activities.FrequenciaMensalActivity"
+            android:parentActivityName=".ui.activities.FrequenciaMensalActivityAlunos" android:label="Frequência Mensal" />
         <activity android:name=".ui.activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,10 +50,13 @@
             android:parentActivityName=".ui.activities.AulaAcoesActivity" />
         <activity
             android:name=".ui.activities.FrequenciaActivity"
-            android:label="Nova Frequêcia"
+            android:label="Frequêcia Diária"
             android:parentActivityName=".ui.activities.AulaAcoesActivity" />
-        <activity android:name=".ui.activities.LoadingActivity"></activity>
-        <activity android:name=".ui.activities.NotificacoesAlunoAcitivity" android:parentActivityName=".ui.activities.OcorrenciaActivity"></activity>
+        <activity android:name=".ui.activities.LoadingActivity" />
+        <activity
+            android:name=".ui.activities.NotificacoesAlunoAcitivity"
+            android:label="Notificações"
+            android:parentActivityName=".ui.activities.OcorrenciaActivity" />
     </application>
 
 </manifest>

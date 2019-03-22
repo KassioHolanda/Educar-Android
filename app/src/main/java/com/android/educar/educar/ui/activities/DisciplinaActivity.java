@@ -33,6 +33,7 @@ import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -99,6 +100,10 @@ public class DisciplinaActivity extends AppCompatActivity {
             disciplinasLista.add(disciplina);
         }
 
+        List<Disciplina> disciplinasOrdem = new ArrayList<>();
+        disciplinasOrdem.addAll(disciplinasLista);
+        Collections.sort(disciplinasOrdem);
+        atualizarAdapterListaDisciplinas(disciplinasOrdem);
     }
 
     public void binding() {
@@ -146,8 +151,8 @@ public class DisciplinaActivity extends AppCompatActivity {
         disciplinasLista = new HashSet<>();
     }
 
-    public void atualizarAdapterListaDisciplinas() {
-        ArrayList<Disciplina> disciplinas = new ArrayList<>(disciplinasLista);
+    public void atualizarAdapterListaDisciplinas(List<Disciplina> disciplinas2) {
+        ArrayList<Disciplina> disciplinas = new ArrayList<>(disciplinas2);
         disciplinaArrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, disciplinas);
         this.disciplinas.setAdapter(disciplinaArrayAdapter);
     }
@@ -192,6 +197,5 @@ public class DisciplinaActivity extends AppCompatActivity {
         recuperarDadosRealm();
         atualizarDadosTela();
         recuperarDisciplinasRealm();
-        atualizarAdapterListaDisciplinas();
     }
 }

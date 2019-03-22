@@ -2,6 +2,7 @@ package com.android.educar.educar.ui.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ public class NotificacoesAlunoAcitivity extends AppCompatActivity {
     private PessoaFisica pessoaFisica;
     private Matricula matricula;
     private Aluno aluno;
+    private CalendarView calendarView;
     private Preferences preferences;
     private Turma turma;
     private Disciplina disciplina;
@@ -67,6 +69,11 @@ public class NotificacoesAlunoAcitivity extends AppCompatActivity {
         turmaDetalhe = findViewById(R.id.turma_notificacoes_aluno_id);
         disciplinaDetalhe = findViewById(R.id.disciplina_notificacao_aluno_id);
         notificacoes = findViewById(R.id.notificacoes_aluno_id);
+//        calendarView = findViewById(R.id.calendarView);
+    }
+
+    public void configurarCalendario() {
+//        calendarView.set
     }
 
     public void recuperarDadosRealm() {

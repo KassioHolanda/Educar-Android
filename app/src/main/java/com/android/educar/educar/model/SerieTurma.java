@@ -4,6 +4,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class SerieTurma extends RealmObject {
+
     @PrimaryKey
     private Long id;
     private Long serie;

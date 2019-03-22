@@ -25,6 +25,7 @@ import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.realm.Realm;
@@ -104,6 +105,7 @@ public class NotaFragment extends Fragment {
             }
         }
 
+        Collections.sort(pessoaFisicas);
         atualizarAdapterFrequencia(pessoaFisicas);
     }
 

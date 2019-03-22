@@ -6,6 +6,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:actionBarStyle">@color/colorEdit</item>
+        <item name="android:textColorPrimary">#222</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

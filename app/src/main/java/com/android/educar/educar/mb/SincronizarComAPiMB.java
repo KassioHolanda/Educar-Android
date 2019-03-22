@@ -46,9 +46,9 @@ public class SincronizarComAPiMB {
 
     public void enviarDadosDoBancoDeDadosParaAPI() {
         alunoChamada.publicarAlunoNotaMesNaAPI();
-        turmaChamada.publicarSituacaoTurmaMes();
-        matriculaChamada.atualizarAlunoFrequenciaMes();
-        alunoChamada.atualizarDadosDisciplinaAluno();
-        ocorrenciaChamada.publicarNovaOcorrenciaParaAPI();
+//        turmaChamada.publicarSituacaoTurmaMes();
+//        matriculaChamada.atualizarAlunoFrequenciaMes();
+//        alunoChamada.atualizarDadosDisciplinaAluno();
+//        ocorrenciaChamada.publicarNovaOcorrenciaParaAPI();
     }
 }

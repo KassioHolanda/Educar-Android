@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ededed"
+    android:background="@color/background"
+    android:padding="8dp"
     android:orientation="vertical"
     tools:context=".ui.activities.TurmaActivity">
 
@@ -13,9 +14,7 @@
         android:id="@+id/unidade_turma_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp"
         android:backgroundTint="@color/colorEdit"
         app:cardCornerRadius="4dp">
 

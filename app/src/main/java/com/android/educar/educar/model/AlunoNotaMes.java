@@ -13,7 +13,7 @@ public class AlunoNotaMes extends RealmObject {
 
     @PrimaryKey
     private long id;
-    private float nota;
+    private Float nota;
     @SerializedName("disciplinaaluno")
     private Long disciplinaAluno;
     @SerializedName("inseridoFechamento")
@@ -43,7 +43,7 @@ public class AlunoNotaMes extends RealmObject {
         this.id = id;
     }
 
-    public float getNota() {
+    public Float getNota() {
         return nota;
     }
 

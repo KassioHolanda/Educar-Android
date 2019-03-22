@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    tools:context=".ui.activities.FrequenciaMensalActivityAlunos">
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardview_unidade_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="@color/colorEdit"
+        app:cardCornerRadius="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/domain" />
+
+                <LinearLayout
+                    android:id="@+id/frequencia6_unidade_id"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:gravity="center|left"
+                    android:orientation="vertical"
+                    android:padding="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Unidade"
+                        android:textColor="@color/colorTextTabs"
+                        android:textSize="13sp"></TextView>
+
+                    <TextView
+                        android:id="@+id/unidadeselecionada6_aula_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="unidade"
+                        android:textColor="@color/colorTextTabs"
+                        android:textSize="13sp"
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/frequencia6_turma_id"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:gravity="center|left"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Turma"
+                        android:textColor="@color/colorTextTabs"
+                        android:textSize="13sp"></TextView>
+
+                    <TextView
+                        android:id="@+id/turmaselecionada6_aula_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="turma"
+                        android:textColor="@color/colorTextTabs"
+                        android:textSize="13sp"
+                        android:textStyle="bold"></TextView>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/book_open" />
+
+                <LinearLayout
+                    android:id="@+id/frequencia6_disciplina_id"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:gravity="center|left"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Disciplina"
+                        android:textColor="@color/colorTextTabs"
+                        android:textSize="13sp"></TextView>
+
+                    <TextView
+                        android:id="@+id/disciplinaselecionada6_aula_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="dicisplina"
+                        android:textColor="@color/colorTextTabs"
+                        android:textSize="13sp"
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="#222" />
+
+            <TextView
+                android:id="@+id/bimestre6_fragment_frequencia_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="4dp"
+                android:text="bimestre"
+                android:textColor="#222"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Alunos"
+        android:textColor="#222"
+        android:textSize="16sp" />
+
+
+    <ListView
+        android:id="@+id/alunos6_frequencia_recycler_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
+
+</LinearLayout>

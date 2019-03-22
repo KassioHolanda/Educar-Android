@@ -100,9 +100,9 @@ public class FrequenciaAdapterLista extends BaseAdapter {
 
         final PessoaFisica pessoaFisicaSelecionada = pessoaFisicas.get(i);
 
-        Frequencia frequencia = recuperarFrequencia(pessoaFisicaSelecionada);
-        if (frequencia != null) {
-            if (frequencia.isPresenca()) {
+        frequencia2 = recuperarFrequencia(pessoaFisicaSelecionada);
+        if (frequencia2 != null) {
+            if (frequencia2.isPresenca()) {
                 selecionados.add(pessoaFisicaSelecionada);
             }
         }
@@ -142,7 +142,7 @@ public class FrequenciaAdapterLista extends BaseAdapter {
 
     public void atualizarPresenca(PessoaFisica pessoaFisica, Matricula matricula, boolean presenca) {
         frequencia = new Frequencia();
-        frequencia.setId(matricula.getId());
+        frequencia.setId(Long.valueOf(realm.where(Frequencia.class).findAll().size()+1));
         frequencia.setMatricula(matricula.getId());
         frequencia.setTurma(preferences.getSavedLong("id_turma"));
         frequencia.setUnidade(preferences.getSavedLong("id_unidade"));
@@ -151,8 +151,12 @@ public class FrequenciaAdapterLista extends BaseAdapter {
         frequencia.setDate(UtilsFunctions.apenasData().format(new Date()));
         frequencia.setPessoafisica(pessoaFisica.getId());
 
-        if (recuperarFrequencia(pessoaFisica) != null || !frequencia.isNovo()) {
-            frequencia.setAlterado(true);
+        Frequencia frequenciaConsulta = recuperarFrequencia(pessoaFisica);
+
+        if (frequenciaConsulta != null) {
+            if (!frequenciaConsulta.isNovo()){
+                frequencia.setAlterado(true);
+            }
         } else {
             frequencia.setNovo(true);
         }

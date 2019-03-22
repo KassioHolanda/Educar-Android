@@ -39,6 +39,7 @@ import com.android.educar.educar.utils.UtilsFunctions;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -161,6 +162,7 @@ public class OcorrenciaFragment extends Fragment {
             }
         }
 
+        Collections.sort(pessoaFisicas);
         atualizarLista(pessoaFisicas);
     }
 
@@ -237,7 +239,11 @@ public class OcorrenciaFragment extends Fragment {
     }
 
     public void salvarOcorrenciaRealm(TipoOcorrencia tipoOcorrencia, String descricao) {
+
+        realm.beginTransaction();
+
         Ocorrencia ocorrencia1 = new Ocorrencia();
+        ocorrencia1.setId(Long.valueOf(realm.where(Ocorrencia.class).findAll().size() + 1));
         ocorrencia1.setDatahora(UtilsFunctions.formatoDataPadrao().format(new Date()));
         ocorrencia1.setDatahoracadastro(UtilsFunctions.formatoDataPadrao().format(new Date()));
         ocorrencia1.setFuncionarioEscola(realm.where(FuncionarioEscola.class)
@@ -248,7 +254,10 @@ public class OcorrenciaFragment extends Fragment {
         ocorrencia1.setTipoOcorrencia(tipoOcorrencia.getId());
         ocorrencia1.setAluno(preferences.getSavedLong("id_aluno"));
         ocorrencia1.setAnoLetivo(preferences.getSavedLong("id_anoletivo"));
-        ocorrencia1.setFuncionarioEscola(preferences.getSavedLong("id_funcionario"));
+        ocorrencia1.setFuncionarioEscola(realm.where(FuncionarioEscola.class)
+                .equalTo("funcionario", preferences.getSavedLong("id_funcionario"))
+                .equalTo("unidade", preferences.getSavedLong("id_unidade")).findFirst().getId());
+        ocorrencia1.setFuncionario(preferences.getSavedLong("id_funcionario"));
         ocorrencia1.setUnidade(preferences.getSavedLong("id_unidade"));
         ocorrencia1.setEnviadoSms(false);
         ocorrencia1.setDataEnvioSms(null);
@@ -256,8 +265,6 @@ public class OcorrenciaFragment extends Fragment {
         ocorrencia1.setObservacao(descricao);
         ocorrencia1.setNumeroTelefone(0);
         ocorrencia1.setNovo(true);
-
-        realm.beginTransaction();
         realm.copyToRealmOrUpdate(ocorrencia1);
         realm.commitTransaction();
     }

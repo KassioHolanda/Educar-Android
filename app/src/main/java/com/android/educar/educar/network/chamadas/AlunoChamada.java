@@ -14,6 +14,9 @@ import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.network.service.ListaAlunoNotaMesAPI;
 import com.android.educar.educar.network.service.ListaAlunosAPI;
 import com.android.educar.educar.network.service.ListaDisciplinaAlunoAPI;
+import com.android.educar.educar.utils.Messages;
+import com.android.educar.educar.utils.Preferences;
+import com.android.educar.educar.utils.UtilsFunctions;
 import com.google.gson.annotations.SerializedName;
 
 import java.text.DecimalFormat;
@@ -35,6 +38,7 @@ public class AlunoChamada {
     private RealmObjectsDAO realmObjectsDAO;
     private PessoaChamada pessoaChamada;
     private OcorrenciaChamada ocorrenciaChamada;
+    private Preferences preferences;
 
     public AlunoChamada(Context context) {
         this.context = context;
@@ -43,7 +47,7 @@ public class AlunoChamada {
         configRealm();
         pessoaChamada = new PessoaChamada(context);
         ocorrenciaChamada = new OcorrenciaChamada(context);
-
+        preferences = new Preferences(context);
     }
 
     public void configRealm() {
@@ -135,15 +139,16 @@ public class AlunoChamada {
             alunoNotaMes1.setId(0);
             alunoNotaMes1.setDisciplinaAluno(alunoNotaMes.get(i).getDisciplinaAluno());
             alunoNotaMes1.setMatricula(alunoNotaMes.get(i).getMatricula());
-            alunoNotaMes1.setDatahora(alunoNotaMes.get(i).getDatahora());
-            alunoNotaMes1.setNota(alunoNotaMes.get(i).getNota());
-            alunoNotaMes1.setUsuario(alunoNotaMes.get(i).getUsuario());
+            alunoNotaMes1.setDatahora(UtilsFunctions.formatoDataPadrao().format(new Date()));
+            alunoNotaMes1.setUsuario(preferences.getSavedLong(Messages.ID_UNIDADE));
             alunoNotaMes1.setUnidade(alunoNotaMes.get(i).getUnidade());
             alunoNotaMes1.setTipoLancamentoNota(alunoNotaMes.get(i).getTipoLancamentoNota());
             alunoNotaMes1.setBimestre(alunoNotaMes.get(i).getBimestre());
             alunoNotaMes1.setSequencia(0);
+            alunoNotaMes1.setTipoLancamentoNota("LANCADO_APP");
 
             if (alunoNotaMes.get(i).isNovo()) {
+                alunoNotaMes1.setNota(alunoNotaMes.get(i).getNota());
                 realm.beginTransaction();
                 alunoNotaMes.get(i).setNovo(false);
                 realm.copyFromRealm(alunoNotaMes.get(i));
@@ -152,8 +157,11 @@ public class AlunoChamada {
                 postAlunoNotaMes(alunoNotaMes1);
 
             } else if (alunoNotaMes.get(i).isAlterado()) {
+                alunoNotaMes1.setNota(alunoNotaMes.get(i).getNota());
+                alunoNotaMes1.setId(alunoNotaMes.get(i).getId());
                 realm.beginTransaction();
-                alunoNotaMes.get(i).setNovo(false);
+//                alunoNotaMes.get(i).setNovo(false);
+                alunoNotaMes.get(i).setAlterado(false);
                 realm.copyFromRealm(alunoNotaMes.get(i));
                 realm.commitTransaction();
 

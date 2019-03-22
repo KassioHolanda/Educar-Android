@@ -34,6 +34,8 @@ import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,13 +58,14 @@ public class FrequenciaFragment extends Fragment {
     private Unidade unidadeSelecionada;
     private Disciplina disciplinaSelecionada;
     private Turma turmaSelecionada;
-    private Button salvarFrequencia;
+    //    private Button salvarFrequencia;
+    private TextView dataFrequencia;
 
     private LinearLayout unidadeFrequecia;
     private LinearLayout turmaFrequencia;
     private LinearLayout disciplinaFrequencia;
 
-    private ArrayList<PessoaFisica> pessoaFisicas;
+    private List<PessoaFisica> pessoaFisicas;
 
     private FrequenciaMB frequenciaMB;
 
@@ -88,11 +91,12 @@ public class FrequenciaFragment extends Fragment {
         unidadeSelecionadaAula = view.findViewById(R.id.unidadeselecionada_aula_id);
         disciplinaSelecionadaAula = view.findViewById(R.id.disciplinaselecionada_aula_id);
         turmaSelecionadaAula = view.findViewById(R.id.turmaselecionada_aula_id);
-        salvarFrequencia = view.findViewById(R.id.button_salvarfrequencia_id);
+//        salvarFrequencia = view.findViewById(R.id.button_salvarfrequencia_id);
         unidadeFrequecia = view.findViewById(R.id.frequencia_unidade_id);
         turmaFrequencia = view.findViewById(R.id.frequencia_turma_id);
         disciplinaFrequencia = view.findViewById(R.id.frequencia_disciplina_id);
         bimestreFragmentFrequencia = view.findViewById(R.id.bimestre_fragment_frequencia_id);
+        dataFrequencia = view.findViewById(R.id.data_frequencia_id);
     }
 
     public void configRealm() {
@@ -125,18 +129,19 @@ public class FrequenciaFragment extends Fragment {
             }
         }
 
+        Collections.sort(pessoaFisicas);
         atualizarAdapterFrequencia(pessoaFisicas);
     }
 
     public void onClickItem() {
-        salvarFrequencia.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                frequenciaMB.salvarFrequencia();
-                Toast.makeText(getContext(), "Frequência do dia " + new Date().getDate() + " Registrada!", Toast.LENGTH_LONG).show();
-                getActivity().finish();
-            }
-        });
+//        salvarFrequencia.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                frequenciaMB.salvarFrequencia();
+//                Toast.makeText(getContext(), "Frequência do dia " + new Date().getDate() + " Registrada!", Toast.LENGTH_LONG).show();
+//                getActivity().finish();
+//            }
+//        });
 
         unidadeFrequecia.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,7 +165,7 @@ public class FrequenciaFragment extends Fragment {
         });
     }
 
-    public void atualizarAdapterFrequencia(ArrayList<PessoaFisica> pessoaFisicas) {
+    public void atualizarAdapterFrequencia(List<PessoaFisica> pessoaFisicas) {
         FrequenciaAdapterLista frequenciaAdapterLista = new FrequenciaAdapterLista(getContext(), pessoaFisicas);
         alunosFrequencia.setAdapter(frequenciaAdapterLista);
     }
@@ -170,6 +175,7 @@ public class FrequenciaFragment extends Fragment {
         turmaSelecionadaAula.setText(turmaSelecionada.getDescricao());
         disciplinaSelecionadaAula.setText(disciplinaSelecionada.getDescricao());
         bimestreFragmentFrequencia.setText(realm.where(Bimestre.class).equalTo("id", preferences.getSavedLong("id_bimestre")).findFirst().getDescricao());
+        dataFrequencia.setText("" + UtilsFunctions.apenasData().format(new Date()));
     }
 
     public void recuperarDadosRealm() {

@@ -12,8 +12,8 @@
 
     <ImageView
         android:id="@+id/logo_id"
-        android:layout_width="250dp"
-        android:layout_height="200dp"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
         android:background="@drawable/logo_padrao" />

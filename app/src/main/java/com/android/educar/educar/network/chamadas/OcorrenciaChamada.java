@@ -28,6 +28,7 @@ public class OcorrenciaChamada {
     private int paginaAtualOcorrencia;
     private int paginaAtualTipoOcorrencia;
     private Preferences preferences;
+    private Ocorrencia ocorrenciaSelecionada;
 
     public OcorrenciaChamada(Context context) {
         this.context = context;
@@ -113,7 +114,10 @@ public class OcorrenciaChamada {
             @Override
             public void onResponse(Call<Ocorrencia> call, Response<Ocorrencia> response) {
                 if (response.isSuccessful()) {
-
+                    realm.beginTransaction();
+                    ocorrenciaSelecionada.setNovo(false);
+                    realm.copyToRealmOrUpdate(ocorrenciaSelecionada);
+                    realm.commitTransaction();
                     Log.i("RESPONSE", "OCORRENCIAS RECUPERADAS");
                 }
             }
@@ -145,14 +149,9 @@ public class OcorrenciaChamada {
                 ocorrencia1.setFuncionario(ocorrencias.get(i).getFuncionario());
                 ocorrencia1.setUnidade(ocorrencias.get(i).getUnidade());
                 ocorrencia1.setAnoLetivo(ocorrencias.get(i).getAnoLetivo());
-
-                realm.beginTransaction();
-                ocorrencias.get(i).setNovo(false);
-                realm.copyToRealmOrUpdate(ocorrencias.get(i));
-                realm.commitTransaction();
-
+                ocorrencia1.setFuncionario(ocorrencias.get(i).getFuncionario());
+                this.ocorrenciaSelecionada = ocorrencia1;
                 postOcorrenciaAPI(ocorrencia1);
-//                preferences.saveInt("numero_registros_sincronizados", 1);
             }
         }
     }

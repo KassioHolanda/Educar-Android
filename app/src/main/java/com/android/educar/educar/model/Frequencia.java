@@ -1,6 +1,7 @@
 package com.android.educar.educar.model;
 
 import com.android.educar.educar.bo.RealmObjectsBO;
+import com.applandeo.materialcalendarview.EventDay;
 import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
 

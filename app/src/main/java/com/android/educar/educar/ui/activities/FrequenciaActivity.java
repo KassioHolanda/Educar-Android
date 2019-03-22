@@ -9,8 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.android.educar.educar.R;
+import com.android.educar.educar.mb.FrequenciaMB;
 import com.android.educar.educar.ui.fragments.FrequenciaFragment;
 import com.android.educar.educar.model.PessoaFisica;
 
@@ -20,6 +22,8 @@ import io.realm.Realm;
 
 public class FrequenciaActivity extends AppCompatActivity {
 
+    private FrequenciaMB frequenciaMB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +32,7 @@ public class FrequenciaActivity extends AppCompatActivity {
     }
 
     public void setupInit() {
+        frequenciaMB = new FrequenciaMB(getApplicationContext());
         FragmentManager fragment = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragment.beginTransaction();
 
@@ -35,6 +40,12 @@ public class FrequenciaActivity extends AppCompatActivity {
 
         fragmentTransaction.add(R.id.layout_frequencia_id, fragment1);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        frequenciaMB.salvarFrequencia();
     }
 
     @Override

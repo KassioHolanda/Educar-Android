@@ -8,7 +8,7 @@ import com.orm.SugarRecord;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Disciplina extends RealmObject implements Comparable{
+public class Disciplina extends RealmObject implements Comparable<Disciplina>{
 
     @PrimaryKey
     private Long id;
@@ -53,7 +53,7 @@ public class Disciplina extends RealmObject implements Comparable{
     }
 
     @Override
-    public int compareTo(@NonNull Object o) {
-        return 0;
+    public int compareTo(@NonNull Disciplina disciplina) {
+        return getDescricao().compareToIgnoreCase(disciplina.getDescricao());
     }
 }
