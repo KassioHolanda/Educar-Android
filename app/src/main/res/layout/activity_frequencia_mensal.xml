@@ -135,18 +135,31 @@
         </LinearLayout>
     </LinearLayout>
 
-    <com.applandeo.materialcalendarview.CalendarView
-        android:id="@+id/calendarView"
-        app:selectionLabelColor="@color/colorPrimary"
-        app:eventsEnabled="true"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <!--<com.applandeo.materialcalendarview.CalendarView-->
+    <!--android:id="@+id/calendarView"-->
+    <!--app:selectionLabelColor="@color/colorPrimary"-->
+    <!--app:eventsEnabled="true"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
 
     <!--<com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"-->
-        <!--android:id="@+id/calendarView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:mcv_selectionColor="#00F"-->
-        <!--app:mcv_showOtherDates="all" />-->
+    <!--android:id="@+id/calendarView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:mcv_selectionColor="#00F"-->
+    <!--app:mcv_showOtherDates="all" />-->
+
+    <TextView
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Registro de Faltas"
+        android:textSize="16sp"
+         />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
 
 </LinearLayout>

@@ -59,7 +59,7 @@ public class FrequenciaMensalActivity extends AppCompatActivity {
     private Turma turma;
     private Disciplina disciplina;
     //    private MaterialCalendarView calendarView;
-    private CalendarView calendarView;
+//    private CalendarView calendarView;
     Calendar cal = Calendar.getInstance();
 
     private List<Calendar> calendars;
@@ -69,7 +69,7 @@ public class FrequenciaMensalActivity extends AppCompatActivity {
         alunoDetalhe = findViewById(R.id.aluno2_notificacoes_id);
         turmaDetalhe = findViewById(R.id.turma2_notificacoes_aluno_id);
         disciplinaDetalhe = findViewById(R.id.disciplina2_notificacao_aluno_id);
-        calendarView = findViewById(R.id.calendarView);
+//        calendarView = findViewById(R.id.calendarView);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class FrequenciaMensalActivity extends AppCompatActivity {
         recuperarDadosRealm();
         atualizarDadosTela();
         consultandoDatasPresenca();
-        inicalizarCalendario();
+//        inicalizarCalendario();
     }
 
     public void setupInit() {
@@ -150,29 +150,6 @@ public class FrequenciaMensalActivity extends AppCompatActivity {
                     }
 
                 }).setNegativeButton("Cancelar", null).show();
-    }
-
-    public void inicalizarCalendario() {
-        RealmResults<Frequencia> frequencias = realm.where(Frequencia.class).equalTo("matricula", matricula.getId()).findAll();
-        List<EventDay> eventDays = new ArrayList<>();
-        for (Frequencia f : frequencias) {
-            EventDay eventDay = new EventDay(convererStringCalendar(f.getDate()));
-            eventDays.add(eventDay);
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(2019, 3, 20);
-
-            List<Calendar> calendarList = new ArrayList<>();
-            calendarList.add(eventDay.getCalendar());
-            calendarList.add(calendar);
-
-            calendarView.setSelectedDates(calendarList);
-
-        }
-
-        calendarView.setEvents(eventDays);
-//        calendarView.setSelectedDates(calendars);
-
     }
 
     private List<Calendar> getSelectedDays() {
