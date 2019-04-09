@@ -47,7 +47,13 @@ public class LocalEscolaChamada {
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body());
                     realm.commitTransaction();
-                    recuperarTodasAsTurmasDaUnidade(response.body());
+                    try {
+                        Thread.sleep(1000);
+                        recuperarTodasAsTurmasDaUnidade(response.body());
+                    } catch (InterruptedException ex) {
+                    }
+
+
                     Log.i("RESPONSE", "LOCALESCOLA RECUPERADOS");
                 }
             }

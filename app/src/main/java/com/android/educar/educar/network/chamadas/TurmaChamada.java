@@ -89,10 +89,17 @@ public class TurmaChamada {
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body());
                     realm.commitTransaction();
-                    recuerarSeriesDaTurma(response.body());
-                    recuperarMatriculasDaTurma(response.body());
-                    recuperarSituacaoTurmaMes(response.body());
-                    recuperarSerieTurma(response.body());
+                    try {
+                        Thread.sleep(1000);
+                        recuerarSeriesDaTurma(response.body());
+                        Thread.sleep(1000);
+                        recuperarMatriculasDaTurma(response.body());
+                        Thread.sleep(1000);
+                        recuperarSituacaoTurmaMes(response.body());
+                        Thread.sleep(1000);
+                        recuperarSerieTurma(response.body());
+                    } catch (InterruptedException ex) {
+                    }
                     Log.i("RESPONSE", "TURMAS RECUPERADAS");
                 }
             }

@@ -159,6 +159,7 @@
          />
 
     <ListView
+        android:id="@+id/lista_de_faltas_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></ListView>
 

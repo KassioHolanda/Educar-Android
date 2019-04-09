@@ -45,7 +45,14 @@ public class FuncionarioChamada {
             @Override
             public void onResponse(Call<List<Funcionario>> call, Response<List<Funcionario>> response) {
                 if (response.isSuccessful()) {
-                    salvarFuncionario(response.body());
+
+                    try {
+                        Thread.sleep(1000);
+                        salvarFuncionario(response.body());
+                    } catch (InterruptedException ex) {
+
+                    }
+
                     Log.i("RESPONSE", "FUNCIONARIO RECUPERADO");
                 }
             }

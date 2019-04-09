@@ -141,29 +141,32 @@ public class FrequenciaAdapterLista extends BaseAdapter {
     }
 
     public void atualizarPresenca(PessoaFisica pessoaFisica, Matricula matricula, boolean presenca) {
-        frequencia = new Frequencia();
-        frequencia.setId(Long.valueOf(realm.where(Frequencia.class).findAll().size()+1));
-        frequencia.setMatricula(matricula.getId());
-        frequencia.setTurma(preferences.getSavedLong("id_turma"));
-        frequencia.setUnidade(preferences.getSavedLong("id_unidade"));
-        frequencia.setDisciplina(preferences.getSavedLong("id_disciplina"));
-        frequencia.setPresenca(presenca);
-        frequencia.setDate(UtilsFunctions.apenasData().format(new Date()));
-        frequencia.setPessoafisica(pessoaFisica.getId());
 
         Frequencia frequenciaConsulta = recuperarFrequencia(pessoaFisica);
 
         if (frequenciaConsulta != null) {
-            if (!frequenciaConsulta.isNovo()){
-                frequencia.setAlterado(true);
+            realm.beginTransaction();
+            frequenciaConsulta.setPresenca(presenca);
+            if (!frequenciaConsulta.isNovo()) {
+                frequenciaConsulta.setAlterado(true);
             }
+            realm.copyToRealmOrUpdate(frequenciaConsulta);
+            realm.commitTransaction();
         } else {
+            realm.beginTransaction();
+            frequencia = new Frequencia();
+            frequencia.setId(Long.valueOf(realm.where(Frequencia.class).findAll().size() + 1));
+            frequencia.setMatricula(matricula.getId());
+            frequencia.setTurma(preferences.getSavedLong("id_turma"));
+            frequencia.setUnidade(preferences.getSavedLong("id_unidade"));
+            frequencia.setDisciplina(preferences.getSavedLong("id_disciplina"));
+            frequencia.setPresenca(presenca);
+            frequencia.setDate(UtilsFunctions.apenasData().format(new Date()));
+            frequencia.setPessoafisica(pessoaFisica.getId());
             frequencia.setNovo(true);
+            realm.copyToRealmOrUpdate(frequencia);
+            realm.commitTransaction();
         }
-
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(frequencia);
-        realm.commitTransaction();
     }
 
     public Frequencia recuperarFrequencia(PessoaFisica pessoaFisica) {

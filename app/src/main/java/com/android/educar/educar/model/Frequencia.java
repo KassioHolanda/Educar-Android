@@ -102,4 +102,9 @@ public class Frequencia extends RealmObject {
     public void setUnidade(long unidade) {
         this.unidade = unidade;
     }
+
+    @Override
+    public String toString() {
+        return date + " - Faltou";
+    }
 }

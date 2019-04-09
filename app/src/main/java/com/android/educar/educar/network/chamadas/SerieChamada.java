@@ -116,7 +116,7 @@ public class SerieChamada {
 
             @Override
             public void onFailure(Call<List<SerieDisciplina>> call, Throwable t) {
-
+                Log.i("ERRO API", t.getMessage());
             }
         });
     }
@@ -130,15 +130,20 @@ public class SerieChamada {
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body());
                     realm.commitTransaction();
-                    recuperarSerieAPI(response.body().getSerie());
-                    disciplinaChamada.recuperarDisciplinasTurma(response.body().getDisciplina());
+                    try {
+                        Thread.sleep(1000);
+                        recuperarSerieAPI(response.body().getSerie());
+                        Thread.sleep(1000);
+                        disciplinaChamada.recuperarDisciplinasTurma(response.body().getDisciplina());
+                    } catch (InterruptedException ex) {
+                    }
                     Log.i("RESPONSE", "SERIEDISCIPLINA RECUPERADAS");
                 }
             }
 
             @Override
             public void onFailure(Call<SerieDisciplina> call, Throwable t) {
-
+                Log.i("ERRO API", t.getMessage());
             }
         });
     }

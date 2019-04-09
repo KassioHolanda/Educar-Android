@@ -13,11 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ui.activities.MenuGeralActivity"
+            android:label="@string/title_activity_menu_geral"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".ui.activities.FrequenciaMensalActivityAlunos"
-            android:parentActivityName=".ui.activities.AulaAcoesActivity" android:label="Frequência Mensal"></activity>
+            android:label="Frequência Mensal"
+            android:parentActivityName=".ui.activities.AulaAcoesActivity" />
         <activity
             android:name=".ui.activities.FrequenciaMensalActivity"
-            android:parentActivityName=".ui.activities.FrequenciaMensalActivityAlunos" android:label="Frequência Mensal" />
+            android:label="Frequência Mensal"
+            android:parentActivityName=".ui.activities.FrequenciaMensalActivityAlunos" />
         <activity android:name=".ui.activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

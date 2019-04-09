@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,7 +23,9 @@ import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.Frequencia;
 import com.android.educar.educar.model.Matricula;
 import com.android.educar.educar.model.PessoaFisica;
+import com.android.educar.educar.model.TipoOcorrencia;
 import com.android.educar.educar.model.Turma;
+import com.android.educar.educar.network.chamadas.PessoaChamada;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 import com.annimon.stream.Stream;
@@ -58,18 +63,14 @@ public class FrequenciaMensalActivity extends AppCompatActivity {
     private Preferences preferences;
     private Turma turma;
     private Disciplina disciplina;
-    //    private MaterialCalendarView calendarView;
-//    private CalendarView calendarView;
-    Calendar cal = Calendar.getInstance();
-
-    private List<Calendar> calendars;
-
+    private ListView listaDeFaltas;
 
     public void binding() {
         alunoDetalhe = findViewById(R.id.aluno2_notificacoes_id);
         turmaDetalhe = findViewById(R.id.turma2_notificacoes_aluno_id);
         disciplinaDetalhe = findViewById(R.id.disciplina2_notificacao_aluno_id);
 //        calendarView = findViewById(R.id.calendarView);
+        listaDeFaltas = findViewById(R.id.lista_de_faltas_id);
     }
 
     @Override
@@ -78,7 +79,6 @@ public class FrequenciaMensalActivity extends AppCompatActivity {
         setContentView(R.layout.activity_frequencia_mensal);
         configRealm();
         binding();
-        onClick();
 //        inicalizarCalendario();
     }
 
@@ -93,7 +93,7 @@ public class FrequenciaMensalActivity extends AppCompatActivity {
         recuperarDadosRealm();
         atualizarDadosTela();
         consultandoDatasPresenca();
-//        inicalizarCalendario();
+        atualizandoListaDePresenca();
     }
 
     public void setupInit() {
@@ -119,60 +119,55 @@ public class FrequenciaMensalActivity extends AppCompatActivity {
         disciplinaDetalhe.setText(disciplina.getDescricao());
     }
 
-    public void onClick() {
-//        Toast.makeText(getApplicationContext(), "data - " + calendarView.getSelectedDate(), Toast.LENGTH_LONG).show();
-//        calendarView.getSelectedDate();
+    public void atualizandoListaDePresenca() {
+        List<Frequencia> frequenciasLista = realm.where(Frequencia.class).equalTo("presenca", false).equalTo("matricula", matricula.getId()).findAll();
+        ArrayAdapter<Frequencia> frequencias = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, frequenciasLista);
+        listaDeFaltas.setAdapter(frequencias);
 
-//        calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
-//            @Override
-//            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-//                Toast.makeText(getApplicationContext(), "data - " + calendarView.getSelectedDate(), Toast.LENGTH_LONG).show();
-//                alterarPresenca();
-//            }
-//        });
+        listaDeFaltas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                alterarPresenca(frequenciasLista.get(i));
+            }
+        });
     }
 
-    public void alterarPresenca() {
-        AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+    public void alterarPresenca(Frequencia frequencia) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
 
         final View viewDialog = inflater.inflate(R.layout.dialog_alterar_presenca_aluno, null);
 
         final EditText aluno = viewDialog.findViewById(R.id.aluno_presenca_mensal_id);
         final EditText data = viewDialog.findViewById(R.id.data_presenca_mensal_id);
+        final CheckBox preseca = viewDialog.findViewById(R.id.presenca_id_mensal);
 
+        aluno.setText(realm.where(PessoaFisica.class).equalTo("id", frequencia.getPessoafisica()).findFirst().getNome());
+        aluno.setEnabled(false);
+        data.setText(frequencia.getDate());
+        data.setEnabled(false);
+        preseca.setChecked(frequencia.isPresenca());
 
-        builder.setView(viewDialog).setTitle("Presenca Aluno")
+        preseca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (preseca.isChecked()) {
+                    realm.beginTransaction();
+                    frequencia.setPresenca(true);
+                    realm.copyToRealmOrUpdate(frequencia);
+                    realm.commitTransaction();
+                }
+            }
+        });
+
+        builder.setView(viewDialog).setTitle("Alterar Presença")
                 .setCancelable(false)
                 .setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        onResume();
                     }
 
                 }).setNegativeButton("Cancelar", null).show();
-    }
-
-    private List<Calendar> getSelectedDays() {
-        List<Calendar> calendars = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++) {
-            Calendar calendar = DateUtils.getCalendar();
-            calendar.add(Calendar.DAY_OF_MONTH, i);
-            calendars.add(calendar);
-        }
-
-        return calendars;
-    }
-
-    public Calendar convererStringCalendar(String data) {
-        SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
-        Calendar c = Calendar.getInstance();
-        try {
-            c.setTime(formatoData.parse(data));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return c;
     }
 }

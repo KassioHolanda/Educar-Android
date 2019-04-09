@@ -45,7 +45,12 @@ public class UnidadeChamada {
             public void onResponse(Call<Unidade> call, Response<Unidade> response) {
                 if (response.isSuccessful()) {
                     realmObjectsDAO.salvarRealm(response.body());
-                    localEscolaChamada.recuperarLocalEscolaUnidade(response.body().getId());
+                    try {
+                        Thread.sleep(1000);
+                        localEscolaChamada.recuperarLocalEscolaUnidade(response.body().getId());
+                    } catch (InterruptedException ex) {
+                    }
+
                     Log.i("RESPONSE", "UNIDADES RECUPERADAS");
                 }
             }

@@ -10,6 +10,7 @@ import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.network.service.ListaFuncionarioEscolaAPI;
 
+import java.time.Clock;
 import java.util.List;
 
 import io.realm.Realm;
@@ -49,7 +50,12 @@ public class FuncionarioEscolaChamada {
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body());
                     realm.commitTransaction();
-                    recuperarUnidades(response.body());
+                    try {
+                        Thread.sleep(1000);
+                        recuperarUnidades(response.body());
+                    } catch (InterruptedException ex) {
+                    }
+
                     Log.i("RESPONSE", "FUNCIONARIOESCOLA CARREGADOS");
                 }
             }

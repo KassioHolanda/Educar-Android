@@ -54,8 +54,15 @@ public class MatriculaChamada {
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body());
                     realm.commitTransaction();
-                    recuperarAlunosMatricula(response.body());
-                    recuperarAlunoNotaMesDasMatriculas(response.body());
+                    try {
+                        Thread.sleep(1000);
+                        recuperarAlunosMatricula(response.body());
+                        Thread.sleep(1000);
+                        recuperarAlunoNotaMesDasMatriculas(response.body());
+                    } catch (InterruptedException ex) {
+                    }
+
+
                     Log.i("RESPONSE", "MATRICULAS RECUPERADAS");
                 }
             }

@@ -150,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 while (statusLoading < 1) {
                     statusLoading++;
-                    android.os.SystemClock.sleep(1000);
+                    android.os.SystemClock.sleep(2000);
                     handler.post(new Runnable() {
                         @Override
                         public void run() {

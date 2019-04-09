@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:background="#E8E9E8"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp"
@@ -12,8 +12,8 @@
 
     <ImageView
         android:id="@+id/logo_id"
-        android:layout_width="200dp"
-        android:layout_height="150dp"
+        android:layout_width="230dp"
+        android:layout_height="180dp"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
         android:background="@drawable/logo_padrao" />

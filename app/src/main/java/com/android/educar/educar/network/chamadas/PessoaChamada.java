@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.educar.educar.dao.RealmObjectsDAO;
@@ -67,12 +68,18 @@ public class PessoaChamada {
                 if (response.isSuccessful()) {
                     salvarPessoaFisicaRecuperadaAPI(response.body());
                     try {
+
+                        Thread.sleep(2000);
                         funcionarioChamada.recuperarFuncionarioPessoaFisicaAPI(response.body().get(0).getId());
                         recuperarUsuarioPessoaFisica(response.body().get(0).getId());
+
                         recuperarPerfilUsuario(response.body().get(0).getId());
                         Log.i("RESPONSE", "PESSOAFISICA RECUPERADA LOGIN");
-                    } catch (IndexOutOfBoundsException e) {
+
+                    } catch (IndexOutOfBoundsException e){
                         Log.i("ERRO", "CPF NAO ENCONTRADO");
+                    } catch (InterruptedException ex) {
+
                     }
                 }
             }
