@@ -24,6 +24,7 @@ import com.android.educar.educar.R;
 //import com.android.educar.educar.dao.TurmaDAO;
 //import com.android.educar.educar.dao.UnidadeDAO;
 import com.android.educar.educar.model.Disciplina;
+import com.android.educar.educar.model.Funcionario;
 import com.android.educar.educar.model.GradeCurso;
 import com.android.educar.educar.model.SerieDisciplina;
 import com.android.educar.educar.model.Turma;
@@ -57,14 +58,44 @@ public class DisciplinaActivity extends AppCompatActivity {
 
     private Realm realm;
     private Set<Disciplina> disciplinasLista;
+    private Funcionario funcionario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_disicplina);
         binding();
+        configRealm();
         setupInit();
         onClickItem();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        recuperarUnidade();
+        recuperarTurma();
+//        recuperarDadosRealm();
+        atualizarDadosTela();
+        recuperarDisciplinas();
+    }
+
+    public void recuperarUnidade() {
+        for (int i = 0; i < funcionario.getFuncionarioEscolas().size(); i++) {
+            if (funcionario.getFuncionarioEscolas().get(i).getUnidade().getId() == preferences.getSavedLong(Messages.ID_UNIDADE) && funcionario.getFuncionarioEscolas().get(i).getAtivo()) {
+                this.unidadeSelecionada = funcionario.getFuncionarioEscolas().get(i).getUnidade();
+            }
+        }
+    }
+
+    public void recuperarTurma() {
+        for (int i = 0; i < unidadeSelecionada.getLocalEscolas().size(); i++) {
+            for (int j = 0; j < unidadeSelecionada.getLocalEscolas().get(i).getTurmas().size(); j++) {
+                if (unidadeSelecionada.getLocalEscolas().get(i).getTurmas().get(j).getId() == preferences.getSavedLong(Messages.ID_TURMA)) {
+                    this.turmaSelecionada = (unidadeSelecionada.getLocalEscolas().get(i).getTurmas().get(j));
+                }
+            }
+        }
     }
 
     public void configRealm() {
@@ -77,29 +108,22 @@ public class DisciplinaActivity extends AppCompatActivity {
         turmaSelecionada = realm.where(Turma.class).equalTo("id", preferences.getSavedLong(messages.ID_TURMA)).findFirst();
     }
 
-    public void recuperarDisciplinasRealm() {
-        RealmResults<GradeCurso> gradeCursos = realm.where(GradeCurso.class).findAll();
-        List<SerieDisciplina> serieDisciplinas = new ArrayList<>();
+    public void recuperarDisciplinas() {
+        for (int i = 0; i < turmaSelecionada.getGradeCursos().size(); i++) {
+            this.disciplinasLista.add(turmaSelecionada.getGradeCursos().get(i).getDisciplina());
+            try {
+                this.disciplinasLista.add(turmaSelecionada.getGradeCursos().get(i).getSeriedisciplina().getDisciplina());
+            } catch (NullPointerException e) {
 
-        for (GradeCurso gradeCurso : gradeCursos) {
-//            SerieDisciplina serieDisciplina = realm.where(SerieDisciplina.class).equalTo("id", gradeCurso.getSeriedisciplina()).findFirst();
-//            if (serieDisciplina != null) {
-//                serieDisciplinas.add(serieDisciplina);
-//            }
+            }
         }
+//        this.disciplinasLista = turmaSelecionada.getGradeCursos() {
 
-        for (SerieDisciplina serieDisciplina : serieDisciplinas) {
-//            Disciplina disciplina = realm.where(Disciplina.class).equalTo("id", serieDisciplina.getDisciplina()).findFirst();
-//            if (disciplina != null) {
-//                disciplinasLista.add(disciplina);
-//            }
-        }
-
-        RealmResults<Disciplina> disciplinas = realm.where(Disciplina.class).findAll().sort("descricao");
-        for (Disciplina disciplina : disciplinas) {
-            disciplinasLista.add(disciplina);
-        }
-
+//        RealmResults<Disciplina> disciplinas = realm.where(Disciplina.class).findAll().sort("descricao");
+//        for (Disciplina disciplina : disciplinas) {
+//            disciplinasLista.add(disciplina);
+//        }
+//
         List<Disciplina> disciplinasOrdem = new ArrayList<>();
         disciplinasOrdem.addAll(disciplinasLista);
         Collections.sort(disciplinasOrdem);
@@ -149,6 +173,7 @@ public class DisciplinaActivity extends AppCompatActivity {
         preferences = new Preferences(this);
         messages = new Messages();
         disciplinasLista = new HashSet<>();
+        funcionario = realm.copyFromRealm(realm.where(Funcionario.class).findFirst());
     }
 
     public void atualizarAdapterListaDisciplinas(List<Disciplina> disciplinas2) {
@@ -190,12 +215,5 @@ public class DisciplinaActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        configRealm();
-//        recuperarDadosRealm();
-//        atualizarDadosTela();
-//        recuperarDisciplinasRealm();
-    }
+
 }

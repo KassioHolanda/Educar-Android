@@ -5,103 +5,99 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    android:backgroundTint="#fff"
     android:orientation="vertical"
-    android:padding="8dp"
     tools:context=".ui.activities.DisciplinaActivity">
 
-    <android.support.v7.widget.CardView
+    <LinearLayout
         android:id="@+id/cardview_unidade_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:backgroundTint="@color/colorEdit"
-        android:elevation="2dp"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="2dp">
+        android:background="#EEEEEE"
+        android:orientation="vertical"
+        android:padding="6dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:background="@drawable/domain" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/unidade_disciplina_id"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:orientation="horizontal"
-                android:padding="5dp">
+                android:layout_weight="5"
+                android:gravity="center|left"
+                android:orientation="vertical"
+                android:padding="10dp">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/domain" />
-
-                <LinearLayout
-                    android:id="@+id/unidade_disciplina_id"
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:gravity="center|left"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:text="Unidade"
+                    android:textColor="@color/colorTextTabs"
+                    android:textSize="14sp"
+                    android:textStyle="bold"></TextView>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:text="Unidade"
-                        android:textColor="@color/colorTextTabs"
-                        android:textSize="13sp"></TextView>
-
-                    <TextView
-                        android:id="@+id/unidadeselecionada_disciplina_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-
-                        android:text="unidade"
-                        android:textColor="@color/colorTextTabs"
-                        android:textSize="13sp"
-                        android:textStyle="bold"></TextView>
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/calendar_week" />
-
-                <LinearLayout
-                    android:id="@+id/turma_disciplina_id"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/unidadeselecionada_disciplina_id"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="5"
-                    android:gravity="center|left"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:text="Turma"
-                        android:textColor="@color/colorTextTabs"
-                        android:textSize="13sp"></TextView>
-
-                    <TextView
-                        android:id="@+id/turmaselecionada_disciplina_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:text="turma"
-                        android:textColor="@color/colorTextTabs"
-                        android:textSize="13sp"
-                        android:textStyle="bold"></TextView>
-
-                </LinearLayout>
+                    android:text="unidade"
+                    android:textColor="@color/colorTextTabs"
+                    android:textSize="14sp"
+                    android:textStyle="italic"></TextView>
             </LinearLayout>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:background="@drawable/calendar_week" />
+
+            <LinearLayout
+                android:id="@+id/turma_disciplina_id"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:gravity="center|left"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Turma"
+                    android:textColor="@color/colorTextTabs"
+                    android:textSize="14sp"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+                    android:id="@+id/turmaselecionada_disciplina_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="turma"
+                    android:textColor="@color/colorTextTabs"
+                    android:textSize="14sp"
+                    android:textStyle="italic"></TextView>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
     <ListView
         android:id="@+id/disciplinas_list_view_id"
