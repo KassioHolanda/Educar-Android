@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.android.educar.educar.R;
 import com.android.educar.educar.adapter.FrequenciaAdapterLista;
 import com.android.educar.educar.adapter.TurmaAdapter;
+import com.android.educar.educar.model.Funcionario;
 import com.android.educar.educar.model.GradeCurso;
 import com.android.educar.educar.model.LocalEscola;
 import com.android.educar.educar.model.Matricula;
@@ -48,10 +49,12 @@ public class TurmaActivity extends AppCompatActivity {
     private Unidade unidadeSelecionada;
     private TextView unidadeSelecionadaTurma;
     private CardView unidade;
+    private Unidade unidadeFuncionario;
     private TurmaAdapter turmaArrayAdapter;
     private List<Turma> turmaList;
     private Realm realm;
     private Messages messages;
+    private Funcionario funcionario;
 
 
     @Override
@@ -59,6 +62,7 @@ public class TurmaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_turma);
         bindind();
+        configRealm();
         setupInit();
         onClickItem();
         settings();
@@ -67,13 +71,14 @@ public class TurmaActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        configRealm();
-        recuperarDadosRealm();
+//        recuperarDadosRealm();
+        mensagemInicial();
+        recuperarUnidade();
         atualizarDadosTela();
         recuperarTurmas();
         atualizarAdapterListaTurmas();
-        mensagemInicial();
     }
+
 
     public void settings() {
         unidade.setCardElevation(2);
@@ -90,28 +95,18 @@ public class TurmaActivity extends AppCompatActivity {
         unidade = findViewById(R.id.unidade_turma_id);
     }
 
-    public void recuperarTurmas() {
-        RealmResults<LocalEscola> localEscolas = realm.where(LocalEscola.class).equalTo("unidade", preferences.getSavedLong("id_unidade"))
-                .findAll();
-        List<Turma> turmasEscola = new ArrayList<>();
-
-        for (LocalEscola localEscola : localEscolas) {
-            List<Turma> turmas = realm.where(Turma.class).equalTo("sala", localEscola.getId())
-                    .equalTo("statusTurma", "CADASTRADA")
-                    .notEqualTo("nivel", "INFANTIL").findAll();
-
-            for (Turma turma : turmas) {
-                turmasEscola.add(turma);
+    public void recuperarUnidade() {
+        for (int i = 0; i < funcionario.getFuncionarioEscolas().size(); i++) {
+            if (funcionario.getFuncionarioEscolas().get(i).getUnidade().getId() == preferences.getSavedLong(Messages.ID_UNIDADE) && funcionario.getFuncionarioEscolas().get(i).getAtivo()) {
+                this.unidadeSelecionada = funcionario.getFuncionarioEscolas().get(i).getUnidade();
             }
-
         }
+    }
 
-        for (Turma turma : turmasEscola) {
-            List<GradeCurso> gradeCursos = realm.where(GradeCurso.class)
-                    .equalTo("turma", turma.getId())
-                    .equalTo("professor", preferences.getSavedLong("id_funcionario")).findAll();
-            if (gradeCursos.size() > 0) {
-                turmaList.add(realm.where(Turma.class).equalTo("id", turma.getId()).findFirst());
+    public void recuperarTurmas() {
+        for (int i = 0; i < unidadeSelecionada.getLocalEscolas().size(); i++) {
+            for (int j = 0; j < unidadeSelecionada.getLocalEscolas().get(i).getTurmas().size(); j++) {
+                this.turmaList.add(unidadeSelecionada.getLocalEscolas().get(i).getTurmas().get(j));
             }
         }
     }
@@ -129,6 +124,7 @@ public class TurmaActivity extends AppCompatActivity {
         turmaList = new ArrayList<>();
         preferences = new Preferences(this);
         messages = new Messages();
+        funcionario = realm.copyFromRealm(realm.where(Funcionario.class).findFirst());
     }
 
     public void onClickItem() {
@@ -137,15 +133,15 @@ public class TurmaActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Turma turma = (Turma) turmas.getItemAtPosition(position);
                 preferences.saveLong("id_turma", turma.getId());
-                Long serieID = turma.getSerie();
-                if(serieID == null) {
-                    SerieTurma serieTurma = realm.where(SerieTurma.class).equalTo("turma", turma.getId()).findFirst();
-                    preferences.saveLong("id_serie", serieTurma.getSerie());
-                } else {
-                    preferences.saveLong("id_serie", turma.getSerie());
-                }
+//                Long serieID = turma.getSerie();
+//                if(serieID == null) {
+                SerieTurma serieTurma = realm.where(SerieTurma.class).equalTo("turma", turma.getId()).findFirst();
+                preferences.saveLong("id_serie", serieTurma.getSerie());
+//                } else {
+//                    preferences.saveLong("id_serie", turma.getSerie());
+//                }
 
-                preferences.saveLong("id_anoletivo", turma.getAnoLetivo());
+//                preferences.saveLong("id_anoletivo", turma.getAnoLetivo());
 
                 nextAcitivity();
             }

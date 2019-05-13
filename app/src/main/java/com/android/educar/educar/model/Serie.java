@@ -1,9 +1,12 @@
 package com.android.educar.educar.model;
 
+import java.io.Serializable;
+
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Serie extends RealmObject {
+public class Serie extends RealmObject{
 
     @PrimaryKey
     private Long id;

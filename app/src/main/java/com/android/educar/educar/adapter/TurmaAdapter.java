@@ -70,15 +70,15 @@ public class TurmaAdapter extends BaseAdapter {
         turmaTextView.setText(turmaList.get(i).getDescricao());
         serie.setText(turmaList.get(i).getSerie() + "");
 
-        Long serieId = turmaList.get(i).getSerie();
+//        Long serieId = turmaList.get(i).getSerie();
 
-        if (serieId == null) {
+//        if (serieId == null) {
             SerieTurma serieTurma = realm.where(SerieTurma.class).equalTo("turma", turmaList.get(i).getId()).findFirst();
-            serie.setText(realm.where(Serie.class).equalTo("id", serieTurma.getSerie()).findFirst().getDescricao());
-        } else {
-            Serie serieSelecionada = realm.where(Serie.class).equalTo("id", turmaList.get(i).getSerie()).findFirst();
-            serie.setText(serieSelecionada.getDescricao());
-        }
+//            serie.setText(realm.where(Serie.class).equalTo("id", serieTurma.getSerie()).findFirst().getDescricao());
+//        } else {
+//            Serie serieSelecionada = realm.where(Serie.class).equalTo("id", turmaList.get(i).getSerie()).findFirst();
+//            serie.setText(serieSelecionada.getDescricao());
+//        }
 
         return row;
     }

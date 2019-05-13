@@ -4,10 +4,12 @@ import com.android.educar.educar.utils.UtilsFunctions;
 import com.google.gson.annotations.SerializedName;
 import com.orm.dsl.Unique;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -44,7 +46,7 @@ public class Ocorrencia extends RealmObject {
         novo = false;
     }
 
-    public Ocorrencia(Long id,String datahora, String dataHoraCadastro, Long funcionarioEscola, String descricao, Long matriculaAluno, Long tipoOcorrencia, Long aluno, Long anoLetivo, Long funcionario, Long unidade, boolean enviadoSms, Date dataEnvioSms, String resumoSms, String observacao, int numeroTelefone, boolean novo) {
+    public Ocorrencia(Long id, String datahora, String dataHoraCadastro, Long funcionarioEscola, String descricao, Long matriculaAluno, Long tipoOcorrencia, Long aluno, Long anoLetivo, Long funcionario, Long unidade, boolean enviadoSms, Date dataEnvioSms, String resumoSms, String observacao, int numeroTelefone, boolean novo) {
         this.datahora = datahora;
         this.datahoracadastro = dataHoraCadastro;
         this.funcionarioEscola = funcionarioEscola;

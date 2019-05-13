@@ -1,19 +1,17 @@
 package com.android.educar.educar.model;
 
+import java.io.Serializable;
+
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class FuncionarioEscola extends RealmObject {
+public class FuncionarioEscola extends RealmObject{
 
     @PrimaryKey
     private Long id;
     private Boolean ativo;
-    private Long unidade;
-    private Long funcionario;
-
-    public FuncionarioEscola() {
-
-    }
+    private Unidade unidade;
 
     public Long getId() {
         return id;
@@ -31,19 +29,11 @@ public class FuncionarioEscola extends RealmObject {
         this.ativo = ativo;
     }
 
-    public Long getUnidade() {
+    public Unidade getUnidade() {
         return unidade;
     }
 
-    public void setUnidade(Long unidade) {
+    public void setUnidade(Unidade unidade) {
         this.unidade = unidade;
-    }
-
-    public Long getFuncionario() {
-        return funcionario;
-    }
-
-    public void setFuncionario(Long funcionario) {
-        this.funcionario = funcionario;
     }
 }

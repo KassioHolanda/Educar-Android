@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.Toast;
 
-import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.GradeCurso;
 import com.android.educar.educar.model.Serie;
@@ -28,7 +27,6 @@ import retrofit2.Response;
 public class SerieChamada {
     private Context context;
     private APIService apiService;
-    private RealmObjectsDAO realmObjectsDAO;
     private Realm realm;
     private int paginaAtualSerieDisciplina;
     private int paginaAtualSerieTurma;
@@ -39,7 +37,6 @@ public class SerieChamada {
     public SerieChamada(Context context) {
         this.context = context;
         apiService = new APIService("");
-        realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
         paginaAtualSerie = 1;
         paginaAtualSerieDisciplina = 1;
@@ -51,7 +48,6 @@ public class SerieChamada {
     public void configRealm() {
         Realm.init(context);
         realm = Realm.getDefaultInstance();
-        realmObjectsDAO = new RealmObjectsDAO(context);
     }
 
 
@@ -132,9 +128,9 @@ public class SerieChamada {
                     realm.commitTransaction();
                     try {
                         Thread.sleep(1000);
-                        recuperarSerieAPI(response.body().getSerie());
+//                        recuperarSerieAPI(response.body().getSerie());
                         Thread.sleep(1000);
-                        disciplinaChamada.recuperarDisciplinasTurma(response.body().getDisciplina());
+//                        disciplinaChamada.recuperarDisciplinasTurma(response.body().getDisciplina());
                     } catch (InterruptedException ex) {
                     }
                     Log.i("RESPONSE", "SERIEDISCIPLINA RECUPERADAS");

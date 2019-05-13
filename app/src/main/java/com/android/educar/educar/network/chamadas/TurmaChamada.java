@@ -3,7 +3,6 @@ package com.android.educar.educar.network.chamadas;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.model.GradeCurso;
 import com.android.educar.educar.model.LocalEscola;
 import com.android.educar.educar.model.SerieTurma;
@@ -28,7 +27,6 @@ import retrofit2.Response;
 public class TurmaChamada {
     private Context context;
     private APIService apiService;
-    private RealmObjectsDAO realmObjectsDAO;
     private Realm realm;
     private SerieChamada serieChamada;
     private DisciplinaChamada disciplinaChamada;
@@ -37,7 +35,6 @@ public class TurmaChamada {
     public TurmaChamada(Context context) {
         this.context = context;
         apiService = new APIService("");
-        realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
         serieChamada = new SerieChamada(context);
         disciplinaChamada = new DisciplinaChamada(context);
@@ -72,9 +69,9 @@ public class TurmaChamada {
 
     public void recuperarSerieDisciplina(List<GradeCurso> gradeCursos) {
         for (int i = 0; i < gradeCursos.size(); i++) {
-            serieChamada.recuperarSerieDisciplina(gradeCursos.get(i).getSeriedisciplina());
-            serieChamada.recuperarSerieDisciplinaPelaDisciplina(gradeCursos.get(i).getDisciplina());
-            disciplinaChamada.recuperarDisciplinasTurma(gradeCursos.get(i).getDisciplina());
+//            serieChamada.recuperarSerieDisciplina(gradeCursos.get(i).getSeriedisciplina());
+//            serieChamada.recuperarSerieDisciplinaPelaDisciplina(gradeCursos.get(i).getDisciplina());
+//            disciplinaChamada.recuperarDisciplinasTurma(gradeCursos.get(i).getDisciplina());
         }
     }
 
@@ -131,7 +128,7 @@ public class TurmaChamada {
 
     public void recuerarSeriesDaTurma(List<Turma> turmas) {
         for (int i = 0; i < turmas.size(); i++) {
-            serieChamada.recuperarSerieAPI(turmas.get(i).getSerie());
+//            serieChamada.recuperarSerieAPI(turmas.get(i).getSerie());
         }
     }
 

@@ -3,7 +3,9 @@ package com.android.educar.educar.ui.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.os.SystemClock;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -11,39 +13,36 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.bo.RealmObjectsBO;
 import com.android.educar.educar.mb.SincronizarComAPiMB;
+import com.android.educar.educar.model.Funcionario;
 import com.android.educar.educar.model.FuncionarioEscola;
-import com.android.educar.educar.model.PessoaFisica;
 import com.android.educar.educar.model.Unidade;
-import com.android.educar.educar.network.chamadas.PessoaChamada;
-import com.android.educar.educar.network.chamadas.SerieChamada;
-import com.android.educar.educar.network.chamadas.TurmaChamada;
+import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
 import android.app.ProgressDialog;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
+import io.realm.RealmObject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UnidadeActivity extends AppCompatActivity {
 
@@ -53,9 +52,12 @@ public class UnidadeActivity extends AppCompatActivity {
     private ArrayAdapter<Unidade> unidadeArrayAdapter;
     private FloatingActionButton sincronizarDados;
     private Realm realm;
+    private Funcionario funcionario;
+    private APIService apiService;
     private SincronizarComAPiMB sincronizarComAPiMB;
     private TextView professorLogado;
     private ProgressDialog progressDialog;
+    private List<Unidade> listaDeUnidades;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,31 +66,20 @@ public class UnidadeActivity extends AppCompatActivity {
         bindind();
         setupInit();
         onClickItem();
-    }
-
-    public void mensagemInicial() {
-        Toast.makeText(getApplicationContext(), "Selecione uma Turma para Continuar...", Toast.LENGTH_LONG).show();
+        Realm.init(this);
+        realm = Realm.getDefaultInstance();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         configRealm();
-        settings();
-        atualizarAdapterListaUnidades();
-        mensagemInicial();
-        alertaInformacaoPrimeiraUtilizacao();
-        atualizarDadosTela();
+        verificarPrimeiroAcesso();
     }
 
     public void configRealm() {
-        Realm.init(this);
-        realm = Realm.getDefaultInstance();
-        realm.refresh();
-    }
 
-    public void settings() {
-//        getSupportActionBar().setTitle(Html.fromHtml("Unidades"));
+
     }
 
     public void bindind() {
@@ -98,7 +89,7 @@ public class UnidadeActivity extends AppCompatActivity {
     }
 
     public void atualizarDadosTela() {
-        professorLogado.setText(realm.where(PessoaFisica.class).equalTo("id", preferences.getSavedLong("id_pessoafisica")).findFirst().getNome());
+        professorLogado.setText(funcionario.getPessoaFisica().getNome());
     }
 
     @Override
@@ -134,7 +125,7 @@ public class UnidadeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Unidade unidade = (Unidade) unidades.getItemAtPosition(position);
                 preferences.saveLong(messages.ID_UNIDADE, unidade.getId());
-                nextAcivity();
+                nextAcivity(unidade);
             }
         });
 
@@ -143,8 +134,9 @@ public class UnidadeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (UtilsFunctions.isConnect(getApplicationContext())) {
                     progressDialog.show();
-                    sincronizarComAPiMB.recuperarDadosDaAPISalvarBancoDeDadosRealm();
-                    sincronizarComAPiMB.enviarDadosDoBancoDeDadosParaAPI();
+//                    sincronizarComAPiMB.recuperarDadosDaAPISalvarBancoDeDadosRealm();
+//                    sincronizarComAPiMB.enviarDadosDoBancoDeDadosParaAPI();
+                    recuperarDadosFuncionario();
                     progressDialog.hide();
                 } else {
                     Snackbar.make(findViewById(android.R.id.content), "SEM CONEXÃO", Snackbar.LENGTH_LONG).show();
@@ -153,22 +145,25 @@ public class UnidadeActivity extends AppCompatActivity {
         });
     }
 
-    public void nextAcivity() {
+    public void nextAcivity(Unidade unidade) {
         Intent intent = new Intent(getApplicationContext(), TurmaActivity.class);
         ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeCustomAnimation(UnidadeActivity.this, R.anim.mover_esquerda, R.anim.fade_out);
         ActivityCompat.startActivity(UnidadeActivity.this, intent, activityOptionsCompat.toBundle());
     }
 
     public void setupInit() {
+        this.funcionario = new Funcionario();
+        apiService = new APIService("");
         preferences = new Preferences(this);
         messages = new Messages();
         sincronizarComAPiMB = new SincronizarComAPiMB(getApplicationContext());
-        progressDialog = UtilsFunctions.progressDialog(this, "Carregando...");
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Carregando");
+        progressDialog.setMessage("Recuperando seus dados...");
     }
 
     public void atualizarAdapterListaUnidades() {
-        List<Unidade> unidades = realm.where(Unidade.class).sort("nome").findAll();
-        unidadeArrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, unidades);
+        unidadeArrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, this.listaDeUnidades);
         this.unidades.setAdapter(unidadeArrayAdapter);
     }
 
@@ -226,6 +221,62 @@ public class UnidadeActivity extends AppCompatActivity {
                 }
             }).show();
             preferences.saveBoolean("alerta_info_primeiro_acesso", true);
+        }
+    }
+
+
+    public void recuperarDadosFuncionario() {
+        progressDialog.show();
+        Call<List<Funcionario>> funcionarioCall = apiService.getCorpoEndPoint().getFuncionario(preferences.getSavedString("cpf"));
+        funcionarioCall.enqueue(new Callback<List<Funcionario>>() {
+            @Override
+            public void onResponse(Call<List<Funcionario>> call, Response<List<Funcionario>> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().size() > 0) {
+                        recuperarFuncionario(response.body().get(0));
+                    }
+                }
+                progressDialog.hide();
+            }
+
+            @Override
+            public void onFailure(Call<List<Funcionario>> call, Throwable t) {
+                Log.i("erro_api", t.getMessage());
+                Snackbar.make(findViewById(android.R.id.content), "Ocorreu um Erro, Solicite Administrador.", Snackbar.LENGTH_LONG).show();
+                progressDialog.hide();
+            }
+        });
+    }
+
+    private void recuperarFuncionario(Funcionario body) {
+        this.funcionario = body;
+
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(this.funcionario);
+        realm.commitTransaction();
+
+        atualizarDadosTela();
+        recuperarUnidadesFuncionario();
+        atualizarAdapterListaUnidades();
+        alertaInformacaoPrimeiraUtilizacao();
+    }
+
+    public void recuperarUnidadesFuncionario() {
+        this.listaDeUnidades = new ArrayList<>();
+        for (FuncionarioEscola funcionarioEscola : funcionario.getFuncionarioEscolas()) {
+            this.listaDeUnidades.add(funcionarioEscola.getUnidade());
+        }
+    }
+
+    public void verificarPrimeiroAcesso() {
+        if (!preferences.getSavedBoolean("alerta_info_primeiro_acesso")) {
+            recuperarDadosFuncionario();
+        } else {
+            Funcionario f = realm.where(Funcionario.class).findFirst();
+            this.funcionario = realm.copyFromRealm(f);
+            atualizarDadosTela();
+            recuperarUnidadesFuncionario();
+            atualizarAdapterListaUnidades();
         }
     }
 }

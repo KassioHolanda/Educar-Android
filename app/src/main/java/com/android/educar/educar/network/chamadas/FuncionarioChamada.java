@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.model.Funcionario;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.network.service.ListaFuncionariosAPI;
@@ -22,7 +21,6 @@ public class FuncionarioChamada {
     private APIService apiService;
     private Context context;
     private Preferences preferences;
-    private RealmObjectsDAO realmObjectsDAO;
     private Realm realm;
 
     public void configRealm() {
@@ -35,7 +33,6 @@ public class FuncionarioChamada {
         apiService = new APIService("");
         this.context = context;
         preferences = new Preferences(context);
-        realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
     }
 
@@ -73,7 +70,7 @@ public class FuncionarioChamada {
         try {
             preferences.saveBoolean("funcionario_encontrado", true);
             preferences.saveLong("id_funcionario", funcionarios.get(0).getId());
-            preferences.saveLong("funcionario_cargo", funcionarios.get(0).getCargo());
+//            preferences.saveLong("funcionario_cargo", funcionarios.get(0).getCargo());
         } catch (IndexOutOfBoundsException e) {
             Log.i("ERRO_API", e.getMessage());
         }

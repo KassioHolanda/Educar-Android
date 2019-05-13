@@ -2,7 +2,10 @@ package com.android.educar.educar.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import io.realm.Realm;
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -14,19 +17,18 @@ public class Usuario extends RealmObject {
     private String matricula;
     private String senha;
     @SerializedName("pessoafisica")
-    private Long pessoaFisica;
-    private Long perfil;
+    private PessoaFisica pessoaFisica;
+    private Perfil perfil;
 
     public Usuario() {
     }
 
-    public Usuario(boolean ativo, String login, String matricula, String senha, Long pessoaFisica, Long perfil) {
-        this.ativo = ativo;
-        this.login = login;
-        this.matricula = matricula;
-        this.senha = senha;
-        this.pessoaFisica = pessoaFisica;
-        this.perfil = perfil;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public boolean isAtivo() {
@@ -61,27 +63,19 @@ public class Usuario extends RealmObject {
         this.senha = senha;
     }
 
-    public Long getPessoaFisica() {
+    public PessoaFisica getPessoaFisica() {
         return pessoaFisica;
     }
 
-    public void setPessoaFisica(Long pessoaFisica) {
+    public void setPessoaFisica(PessoaFisica pessoaFisica) {
         this.pessoaFisica = pessoaFisica;
     }
 
-    public Long getPerfil() {
+    public Perfil getPerfil() {
         return perfil;
     }
 
-    public void setPerfil(Long perfil) {
+    public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }

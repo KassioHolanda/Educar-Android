@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.bo.RealmObjectsBO;
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.Frequencia;
 import com.android.educar.educar.model.Matricula;
@@ -41,7 +40,6 @@ public class FrequenciaAdapterLista extends BaseAdapter {
     private Context context;
     private TextView nomeAlunoFrequencia;
     private final List<PessoaFisica> selecionados;
-    private RealmObjectsBO realmObjectsBO;
     private Realm realm;
     private Preferences preferences;
     private Frequencia frequencia2;
@@ -50,7 +48,6 @@ public class FrequenciaAdapterLista extends BaseAdapter {
         this.pessoaFisicas = pessoaFisicas;
         this.context = context;
         selecionados = new ArrayList<>();
-        realmObjectsBO = new RealmObjectsBO(context);
         configRealm();
         preferences = new Preferences(context);
     }

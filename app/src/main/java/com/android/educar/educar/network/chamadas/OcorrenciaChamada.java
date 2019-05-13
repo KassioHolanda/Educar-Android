@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.model.Ocorrencia;
 import com.android.educar.educar.model.TipoOcorrencia;
 import com.android.educar.educar.network.service.APIService;
@@ -22,7 +21,6 @@ import retrofit2.Response;
 
 public class OcorrenciaChamada {
     private Context context;
-    private RealmObjectsDAO realmObjectsDAO;
     private APIService apiService;
     private Realm realm;
     private int paginaAtualOcorrencia;
@@ -33,7 +31,6 @@ public class OcorrenciaChamada {
     public OcorrenciaChamada(Context context) {
         this.context = context;
         apiService = new APIService("");
-        realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
         preferences = new Preferences(context);
         paginaAtualOcorrencia = 1;

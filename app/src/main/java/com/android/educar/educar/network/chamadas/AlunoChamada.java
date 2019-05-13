@@ -3,7 +3,6 @@ package com.android.educar.educar.network.chamadas;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.AlunoNotaMes;
 import com.android.educar.educar.model.Disciplina;
@@ -35,7 +34,6 @@ public class AlunoChamada {
     private Realm realm;
     private Context context;
     private APIService apiService;
-    private RealmObjectsDAO realmObjectsDAO;
     private PessoaChamada pessoaChamada;
     private OcorrenciaChamada ocorrenciaChamada;
     private Preferences preferences;
@@ -43,7 +41,6 @@ public class AlunoChamada {
     public AlunoChamada(Context context) {
         this.context = context;
         apiService = new APIService("");
-        realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
         pessoaChamada = new PessoaChamada(context);
         ocorrenciaChamada = new OcorrenciaChamada(context);

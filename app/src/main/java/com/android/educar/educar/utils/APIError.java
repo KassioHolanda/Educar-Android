@@ -1,3 +1,4 @@
+
 package com.android.educar.educar.utils;
 
 public class APIError {

@@ -21,6 +21,9 @@ public interface FuncionarioEndPoint {
     @GET("funcionario/pessoafisica={pessoafisica}/")
     Call<List<Funcionario>> getFuncionarioPessoaFisica(@Path("pessoafisica") Long pessoafisica);
 
+    @GET("funcionario/cpf={cpf}/")
+    Call<List<Funcionario>> getFuncionarioPessoaFisica(@Path("cpf") String cpf);
+
     @GET("funcionario/")
     Call<ListaFuncionariosAPI> funcionarios(@Query("page") int page);
 }

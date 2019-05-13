@@ -1,9 +1,15 @@
 package com.android.educar.educar.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -14,21 +20,21 @@ public class Funcionario extends RealmObject {
     @SerializedName("escolaridade")
     private String escolaridade;
     @SerializedName("pessoafisica")
-    private Long pessoaFisicaId;
+    private PessoaFisica pessoaFisica;
     @SerializedName("cargo")
-    private Long cargo;
+    private Cargo cargo;
     @SerializedName("cargahoraria")
     private String cargaHoraria;
     @SerializedName("dataadmissao")
-    private Date dataAdmissao;
+    private String dataAdmissao;
     @SerializedName("statusfuncionario")
     private String statusFuncionario;
     @SerializedName("situacaofuncional")
     private String situacaoFuncional;
-
-
-    public Funcionario() {
-    }
+    @SerializedName("funcionario_escolas")
+    private RealmList<FuncionarioEscola> funcionarioEscolas;
+    @SerializedName("grade_curso")
+    private RealmList<GradeCurso> gradeCursos;
 
     public Long getId() {
         return id;
@@ -46,19 +52,19 @@ public class Funcionario extends RealmObject {
         this.escolaridade = escolaridade;
     }
 
-    public Long getPessoaFisicaId() {
-        return pessoaFisicaId;
+    public PessoaFisica getPessoaFisicaId() {
+        return pessoaFisica;
     }
 
-    public void setPessoaFisicaId(Long pessoaFisicaId) {
-        this.pessoaFisicaId = pessoaFisicaId;
+    public void setPessoaFisicaId(PessoaFisica pessoaFisica) {
+        this.pessoaFisica = pessoaFisica;
     }
 
-    public Long getCargo() {
+    public Cargo getCargo() {
         return cargo;
     }
 
-    public void setCargo(Long cargo) {
+    public void setCargo(Cargo cargo) {
         this.cargo = cargo;
     }
 
@@ -70,11 +76,11 @@ public class Funcionario extends RealmObject {
         this.cargaHoraria = cargaHoraria;
     }
 
-    public Date getDataAdmissao() {
+    public String getDataAdmissao() {
         return dataAdmissao;
     }
 
-    public void setDataAdmissao(Date dataAdmissao) {
+    public void setDataAdmissao(String dataAdmissao) {
         this.dataAdmissao = dataAdmissao;
     }
 
@@ -92,5 +98,29 @@ public class Funcionario extends RealmObject {
 
     public void setSituacaoFuncional(String situacaoFuncional) {
         this.situacaoFuncional = situacaoFuncional;
+    }
+
+    public PessoaFisica getPessoaFisica() {
+        return pessoaFisica;
+    }
+
+    public void setPessoaFisica(PessoaFisica pessoaFisica) {
+        this.pessoaFisica = pessoaFisica;
+    }
+
+    public RealmList<FuncionarioEscola> getFuncionarioEscolas() {
+        return funcionarioEscolas;
+    }
+
+    public void setFuncionarioEscolas(RealmList<FuncionarioEscola> funcionarioEscolas) {
+        this.funcionarioEscolas = funcionarioEscolas;
+    }
+
+    public RealmList<GradeCurso> getGradeCursos() {
+        return gradeCursos;
+    }
+
+    public void setGradeCursos(RealmList<GradeCurso> gradeCursos) {
+        this.gradeCursos = gradeCursos;
     }
 }

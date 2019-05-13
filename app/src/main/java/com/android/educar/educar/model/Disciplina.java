@@ -5,10 +5,13 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
 
+import java.io.Serializable;
+
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Disciplina extends RealmObject implements Comparable<Disciplina>{
+public class Disciplina extends RealmObject implements Comparable<Disciplina> {
 
     @PrimaryKey
     private Long id;

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.android.educar.educar.bo.RealmObjectsBO;
 import com.android.educar.educar.model.AlunoFrequenciaMes;
 import com.android.educar.educar.model.DisciplinaAluno;
 import com.android.educar.educar.model.Frequencia;
@@ -26,7 +25,6 @@ public class FrequenciaMB {
     private Context context;
     private Realm realm;
     private Preferences preferences;
-    private RealmObjectsBO realmObjectsBO;
     private NotaMB notaMB;
     private AlunoFrequenciaMes alunoFrequenciaMes;
 
@@ -34,7 +32,6 @@ public class FrequenciaMB {
         this.context = context;
         configRealm();
         preferences = new Preferences(context);
-        realmObjectsBO = new RealmObjectsBO(context);
         notaMB = new NotaMB(context);
     }
 

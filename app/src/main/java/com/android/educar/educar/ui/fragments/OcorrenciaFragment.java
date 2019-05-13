@@ -273,9 +273,9 @@ public class OcorrenciaFragment extends Fragment {
         Aluno aluno = realm.where(Aluno.class).equalTo("pessoaFisica", idPessoaFisica).findFirst();
         Matricula matricula = realm.where(Matricula.class).equalTo("aluno", aluno.getId()).findFirst();
         Turma turma = realm.where(Turma.class).equalTo("id", preferences.getSavedLong("id_turma")).findFirst();
-        AnoLetivo anoLetivo = realm.where(AnoLetivo.class).equalTo("id", turma.getAnoLetivo()).findFirst();
+//        AnoLetivo anoLetivo = realm.where(AnoLetivo.class).equalTo("id", turma.getAnoLetivo()).findFirst();
 
-        preferences.saveLong("id_anoletivo", anoLetivo.getId());
+//        preferences.saveLong("id_anoletivo", anoLetivo.getId());
         preferences.saveLong("id_aluno", aluno.getId());
         preferences.saveLong("id_matricula", matricula.getId());
     }

@@ -5,9 +5,12 @@ import android.renderscript.Short3;
 import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmList;
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -17,17 +20,15 @@ public class Turma extends RealmObject {
     private Long id;
     private String descricao;
     private String turno;
-    private Long sala;
+//    private LocalEscola sala;
     @SerializedName("anoletivo")
-    private Long anoLetivo;
-    private Long serie;
+    private AnoLetivo anoLetivo;
+    private Serie serie;
     private String nivel;
     @SerializedName("statusturma")
     private String statusTurma;
-
-    public Turma() {
-
-    }
+    @SerializedName("grade_curso")
+    private RealmList<GradeCurso> gradeCursos;
 
     public Long getId() {
         return id;
@@ -53,27 +54,19 @@ public class Turma extends RealmObject {
         this.turno = turno;
     }
 
-    public Long getSala() {
-        return sala;
-    }
-
-    public void setSala(Long sala) {
-        this.sala = sala;
-    }
-
-    public Long getAnoLetivo() {
+    public AnoLetivo getAnoLetivo() {
         return anoLetivo;
     }
 
-    public void setAnoLetivo(Long anoLetivo) {
+    public void setAnoLetivo(AnoLetivo anoLetivo) {
         this.anoLetivo = anoLetivo;
     }
 
-    public Long getSerie() {
+    public Serie getSerie() {
         return serie;
     }
 
-    public void setSerie(Long serie) {
+    public void setSerie(Serie serie) {
         this.serie = serie;
     }
 
@@ -85,16 +78,19 @@ public class Turma extends RealmObject {
         this.nivel = nivel;
     }
 
-    @Override
-    public String toString() {
-        return this.getDescricao();
-    }
-
     public String getStatusTurma() {
         return statusTurma;
     }
 
     public void setStatusTurma(String statusTurma) {
         this.statusTurma = statusTurma;
+    }
+
+    public RealmList<GradeCurso> getGradeCursos() {
+        return gradeCursos;
+    }
+
+    public void setGradeCursos(RealmList<GradeCurso> gradeCursos) {
+        this.gradeCursos = gradeCursos;
     }
 }

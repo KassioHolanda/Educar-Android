@@ -3,47 +3,30 @@ package com.android.educar.educar.ui.fragments;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.adapter.FrequenciaAdapter;
 import com.android.educar.educar.adapter.FrequenciaAdapterLista;
 import com.android.educar.educar.mb.FrequenciaMB;
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.Bimestre;
 import com.android.educar.educar.model.Disciplina;
-import com.android.educar.educar.model.Frequencia;
 import com.android.educar.educar.model.Matricula;
-import com.android.educar.educar.model.Perfil;
 import com.android.educar.educar.model.PessoaFisica;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
-import com.android.educar.educar.network.chamadas.PessoaChamada;
-import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import io.realm.Realm;
 import io.realm.RealmResults;

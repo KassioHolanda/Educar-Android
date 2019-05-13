@@ -1,5 +1,8 @@
 package com.android.educar.educar.model;
 
+import java.io.Serializable;
+
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -7,16 +10,8 @@ public class SerieDisciplina extends RealmObject{
 
     @PrimaryKey
     private Long id;
-    private Long disciplina;
-    private Long serie;
-
-    public SerieDisciplina() {
-    }
-
-    public SerieDisciplina(Long disciplina, Long serie) {
-        this.disciplina = disciplina;
-        this.serie = serie;
-    }
+    private Disciplina disciplina;
+    private Serie serie;
 
     public Long getId() {
         return id;
@@ -26,19 +21,19 @@ public class SerieDisciplina extends RealmObject{
         this.id = id;
     }
 
-    public Long getDisciplina() {
+    public Disciplina getDisciplina() {
         return disciplina;
     }
 
-    public void setDisciplina(Long disciplina) {
+    public void setDisciplina(Disciplina disciplina) {
         this.disciplina = disciplina;
     }
 
-    public Long getSerie() {
+    public Serie getSerie() {
         return serie;
     }
 
-    public void setSerie(Long serie) {
+    public void setSerie(Serie serie) {
         this.serie = serie;
     }
 }

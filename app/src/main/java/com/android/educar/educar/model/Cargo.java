@@ -1,5 +1,8 @@
 package com.android.educar.educar.model;
 
+import java.io.Serializable;
+
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 
 public class Cargo extends RealmObject {

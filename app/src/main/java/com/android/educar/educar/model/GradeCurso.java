@@ -1,5 +1,8 @@
 package com.android.educar.educar.model;
 
+import java.io.Serializable;
+
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -7,21 +10,10 @@ public class GradeCurso extends RealmObject {
 
     @PrimaryKey
     private Long id;
-    private Long professor;
-    private Long turma;
-    private Long seriedisciplina;
-    private Long disciplina;
-
-    public GradeCurso() {
-    }
-
-    public Long getDisciplina() {
-        return disciplina;
-    }
-
-    public void setDisciplina(Long disciplina) {
-        this.disciplina = disciplina;
-    }
+//    private Long professor;
+    private Turma turma;
+    private SerieDisciplina seriedisciplina;
+    private Disciplina disciplina;
 
     public Long getId() {
         return id;
@@ -31,27 +23,27 @@ public class GradeCurso extends RealmObject {
         this.id = id;
     }
 
-    public Long getProfessor() {
-        return professor;
-    }
-
-    public void setProfessor(Long professor) {
-        this.professor = professor;
-    }
-
-    public Long getTurma() {
+    public Turma getTurma() {
         return turma;
     }
 
-    public void setTurma(Long turma) {
+    public void setTurma(Turma turma) {
         this.turma = turma;
     }
 
-    public Long getSeriedisciplina() {
+    public SerieDisciplina getSeriedisciplina() {
         return seriedisciplina;
     }
 
-    public void setSeriedisciplina(Long seriedisciplina) {
+    public void setSeriedisciplina(SerieDisciplina seriedisciplina) {
         this.seriedisciplina = seriedisciplina;
+    }
+
+    public Disciplina getDisciplina() {
+        return disciplina;
+    }
+
+    public void setDisciplina(Disciplina disciplina) {
+        this.disciplina = disciplina;
     }
 }

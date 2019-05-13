@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.bo.RealmObjectsBO;
 import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.AlunoNotaMes;
 import com.android.educar.educar.model.Disciplina;
@@ -35,7 +34,6 @@ import okhttp3.internal.Util;
 public class NotaMB {
 
     private Realm realm;
-    private RealmObjectsBO realmObjectsBO;
     private Context context;
     private Preferences preferences;
     private DisciplinaAluno disciplinaAluno;
@@ -51,7 +49,6 @@ public class NotaMB {
     public NotaMB(Context context) {
         preferences = new Preferences(context);
         this.context = context;
-        this.realmObjectsBO = new RealmObjectsBO(context);
         this.disciplinaAluno = new DisciplinaAluno();
         this.serieDisciplina = new SerieDisciplina();
         this.idBimestreAtual = Long.valueOf(0);
@@ -96,7 +93,9 @@ public class NotaMB {
                 alunoNotaMes.setDisciplinaAluno(disciplinaAluno.getId());
                 alunoNotaMes.setNovo(true);
                 alunoNotaMes.setAlterado(false);
-                realmObjectsBO.salvarObjetoRealm(alunoNotaMes);
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(alunoNotaMes);
+                realm.commitTransaction();
 //                atualizarDadosDisciplinaAluno(Float.parseFloat(descricao));
                 Toast.makeText(context, "Nota Inserida com Sucesso!", Toast.LENGTH_LONG).show();
             } else {
@@ -189,7 +188,9 @@ public class NotaMB {
                 preferences.getSavedLong("id_turma"), 0, 0, idBimestre);
         situacaoTurmaMes1.setNovo(true);
 
-        realmObjectsBO.salvarObjetoRealm(situacaoTurmaMes1);
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(situacaoTurmaMes1);
+        realm.commitTransaction();
         preferences.saveLong("id_bimestre", idBimestreAtual);
         idBimestreAtual = situacaoTurmaMes1.getBimestre();
 

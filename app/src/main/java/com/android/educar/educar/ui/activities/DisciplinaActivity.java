@@ -82,17 +82,17 @@ public class DisciplinaActivity extends AppCompatActivity {
         List<SerieDisciplina> serieDisciplinas = new ArrayList<>();
 
         for (GradeCurso gradeCurso : gradeCursos) {
-            SerieDisciplina serieDisciplina = realm.where(SerieDisciplina.class).equalTo("id", gradeCurso.getSeriedisciplina()).findFirst();
-            if (serieDisciplina != null) {
-                serieDisciplinas.add(serieDisciplina);
-            }
+//            SerieDisciplina serieDisciplina = realm.where(SerieDisciplina.class).equalTo("id", gradeCurso.getSeriedisciplina()).findFirst();
+//            if (serieDisciplina != null) {
+//                serieDisciplinas.add(serieDisciplina);
+//            }
         }
 
         for (SerieDisciplina serieDisciplina : serieDisciplinas) {
-            Disciplina disciplina = realm.where(Disciplina.class).equalTo("id", serieDisciplina.getDisciplina()).findFirst();
-            if (disciplina != null) {
-                disciplinasLista.add(disciplina);
-            }
+//            Disciplina disciplina = realm.where(Disciplina.class).equalTo("id", serieDisciplina.getDisciplina()).findFirst();
+//            if (disciplina != null) {
+//                disciplinasLista.add(disciplina);
+//            }
         }
 
         RealmResults<Disciplina> disciplinas = realm.where(Disciplina.class).findAll().sort("descricao");

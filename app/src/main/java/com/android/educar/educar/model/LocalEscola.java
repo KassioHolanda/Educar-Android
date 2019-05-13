@@ -1,5 +1,10 @@
 package com.android.educar.educar.model;
 
+import java.io.Serializable;
+
+import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -8,15 +13,7 @@ public class LocalEscola extends RealmObject {
     @PrimaryKey
     private Long id;
     private String descricao;
-    private Long unidade;
-
-    public LocalEscola(String descricao, Long unidade) {
-        this.descricao = descricao;
-        this.unidade = unidade;
-    }
-
-    public LocalEscola() {
-    }
+    private RealmList<Turma> turmas;
 
     public Long getId() {
         return id;
@@ -34,11 +31,11 @@ public class LocalEscola extends RealmObject {
         this.descricao = descricao;
     }
 
-    public Long getUnidade() {
-        return unidade;
+    public RealmList<Turma> getTurmas() {
+        return turmas;
     }
 
-    public void setUnidade(Long unidade) {
-        this.unidade = unidade;
+    public void setTurmas(RealmList<Turma> turmas) {
+        this.turmas = turmas;
     }
 }

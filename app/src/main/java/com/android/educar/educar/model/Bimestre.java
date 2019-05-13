@@ -1,9 +1,12 @@
 package com.android.educar.educar.model;
 
+import java.io.Serializable;
+
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Bimestre extends RealmObject {
+public class Bimestre extends RealmObject{
     @PrimaryKey
     private Long id;
     private String descricao;

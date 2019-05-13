@@ -3,8 +3,6 @@ package com.android.educar.educar.network.chamadas;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
-
-import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.model.FuncionarioEscola;
 import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.network.service.APIService;
@@ -22,7 +20,6 @@ public class FuncionarioEscolaChamada {
 
     private APIService apiService;
     private Context context;
-    private RealmObjectsDAO realmObjectsDAO;
     private Realm realm;
 
     private UnidadeChamada unidadeChamada;
@@ -36,7 +33,6 @@ public class FuncionarioEscolaChamada {
     public FuncionarioEscolaChamada(Context context) {
         apiService = new APIService("");
         this.context = context;
-        realmObjectsDAO = new RealmObjectsDAO(context);
         unidadeChamada = new UnidadeChamada(context);
         configRealm();
     }
@@ -69,7 +65,7 @@ public class FuncionarioEscolaChamada {
 
     public void recuperarUnidades(List<FuncionarioEscola> funcionarioEscolas) {
         for (int i = 0; i < funcionarioEscolas.size(); i++) {
-            unidadeChamada.recuperarUnidadesDoProfessorAPI(funcionarioEscolas.get(i).getUnidade());
+//            unidadeChamada.recuperarUnidadesDoProfessorAPI(funcionarioEscolas.get(i).getUnidade());
         }
     }
 }

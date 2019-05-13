@@ -4,9 +4,11 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Date;
 
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -24,9 +26,6 @@ public class PessoaFisica extends RealmObject implements Comparable<PessoaFisica
     private String dataNascimento;
     private String rg;
     private String nome;
-
-    public PessoaFisica() {
-    }
 
     public Long getId() {
         return id;
@@ -99,12 +98,6 @@ public class PessoaFisica extends RealmObject implements Comparable<PessoaFisica
     public void setNome(String nome) {
         this.nome = nome;
     }
-
-    @Override
-    public String toString() {
-        return this.nome;
-    }
-
 
     @Override
     public int compareTo(@NonNull PessoaFisica pessoaFisica) {

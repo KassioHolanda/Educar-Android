@@ -3,7 +3,6 @@ package com.android.educar.educar.network.chamadas;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.model.AnoLetivo;
 import com.android.educar.educar.model.Bimestre;
 import com.android.educar.educar.network.service.APIService;
@@ -19,7 +18,6 @@ import retrofit2.Response;
 
 public class AnoLetivoChamada {
 
-    private RealmObjectsDAO realmObjectsDAO;
     private Context context;
     private APIService apiService;
     private Realm realm;
@@ -34,7 +32,6 @@ public class AnoLetivoChamada {
     public AnoLetivoChamada(Context context) {
         this.context = context;
         apiService = new APIService("");
-        realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
         paginaAtualAnoLetivo = 1;
         paginaAtualBimetre = 1;

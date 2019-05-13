@@ -3,7 +3,6 @@ package com.android.educar.educar.network.chamadas;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.educar.educar.dao.RealmObjectsDAO;
 import com.android.educar.educar.model.LocalEscola;
 import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.network.service.APIService;
@@ -20,7 +19,6 @@ import retrofit2.Response;
 public class LocalEscolaChamada {
     private Context context;
     private APIService apiService;
-    private RealmObjectsDAO realmObjectsDAO;
     private Realm realm;
     private TurmaChamada turmaChamada;
 
@@ -32,7 +30,6 @@ public class LocalEscolaChamada {
     public LocalEscolaChamada(Context context) {
         this.context = context;
         apiService = new APIService("");
-        realmObjectsDAO = new RealmObjectsDAO(context);
         configRealm();
         turmaChamada = new TurmaChamada(context);
     }

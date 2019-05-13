@@ -3,9 +3,12 @@ package com.android.educar.educar.model;
 import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmList;
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -16,6 +19,8 @@ public class Unidade extends RealmObject {
     private String abreviacao;
     private String cnpj;
     private String nome;
+    @SerializedName("locais_escola")
+    private RealmList<LocalEscola> localEscolas;
 
     public Unidade() {
     }
@@ -55,5 +60,13 @@ public class Unidade extends RealmObject {
     @Override
     public String toString() {
         return this.nome;
+    }
+
+    public List<LocalEscola> getLocalEscolas() {
+        return localEscolas;
+    }
+
+    public void setLocalEscolas(RealmList<LocalEscola> localEscolas) {
+        this.localEscolas = localEscolas;
     }
 }

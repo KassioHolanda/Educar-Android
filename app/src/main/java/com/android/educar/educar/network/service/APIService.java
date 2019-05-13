@@ -5,6 +5,7 @@ import com.android.educar.educar.network.helpers.AlunoFrequenciaMesEndPoint;
 import com.android.educar.educar.network.helpers.AlunoNotaMesEndPoint;
 import com.android.educar.educar.network.helpers.AnoLetivoEndPoint;
 import com.android.educar.educar.network.helpers.BimestreEndPoint;
+import com.android.educar.educar.network.helpers.CorpoEndPoint;
 import com.android.educar.educar.network.helpers.DisciplinaEndPoint;
 import com.android.educar.educar.network.helpers.DisciplinaAlunoEndPoint;
 import com.android.educar.educar.network.helpers.FuncionarioEndPoint;
@@ -24,6 +25,8 @@ import com.android.educar.educar.network.helpers.TurmaEndPoint;
 import com.android.educar.educar.network.helpers.UnidadeEndPoint;
 import com.android.educar.educar.network.helpers.UsuarioEndPoint;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -35,8 +38,9 @@ public class APIService {
     public static String TAG = APIService.class.getSimpleName();
 
 
-    public static final String BASE_URL = "http://10.20.30.205:8000/";
-//    public static final String BASE_URL = "http:/192.168.0.110:8000/";
+        public static final String BASE_URL = "http://10.20.30.79:8000/";
+//    public static final String BASE_URL = "http:/172.16.0.149:8000/";
+//        public static final String BASE_URL = "http:/192.168.0.107:8000/";
     private Retrofit retrofit;
 
     private Interceptor interceptor;
@@ -66,6 +70,8 @@ public class APIService {
     private SerieTurmaEndPoint serieTurmaEndPoint;
     private SerieEndPoint serieEndPoint;
 
+    private CorpoEndPoint corpoEndPoint;
+
     public APIService(String token) {
 
         this.interceptor = new InterceptadorMuralAPI("token " + token);
@@ -76,8 +82,11 @@ public class APIService {
 //        OkHttpClient httpClient = builderCliente.build();
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-//        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient httpClient = new OkHttpClient.Builder()
+                .connectTimeout(240, TimeUnit.SECONDS)
+                .readTimeout(240, TimeUnit.SECONDS)
+                .writeTimeout(240, TimeUnit.SECONDS)
                 .addInterceptor(logging)
                 .build();
 
@@ -114,6 +123,7 @@ public class APIService {
         bimestreEndPoint = retrofit.create(BimestreEndPoint.class);
         serieTurmaEndPoint = retrofit.create(SerieTurmaEndPoint.class);
         serieEndPoint = retrofit.create(SerieEndPoint.class);
+        corpoEndPoint = retrofit.create(CorpoEndPoint.class);
     }
 
     public AlunoEndPoint getAlunoEndPoint() {
@@ -212,4 +222,7 @@ public class APIService {
         return retrofit;
     }
 
+    public CorpoEndPoint getCorpoEndPoint() {
+        return corpoEndPoint;
+    }
 }
