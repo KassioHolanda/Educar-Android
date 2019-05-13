@@ -62,10 +62,10 @@ public class NotaFragment extends Fragment {
         binding(view);
         setupInit();
         configRealm();
-        recuperarDadosRealm();
-        atualizarDadosTela();
-        onClickItem();
-        recuperarAlunosRealm();
+//        recuperarDadosRealm();
+//        atualizarDadosTela();
+//        onClickItem();
+//        recuperarAlunosRealm();
         return view;
     }
 

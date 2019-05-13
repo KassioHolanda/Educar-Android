@@ -83,9 +83,9 @@ public class OcorrenciaFragment extends Fragment {
         setupInit();
         configRealm();
         onClickItem();
-        recuperarDadosRealm();
-        atualizarDadosTela();
-        recuperarAlunosRealm();
+//        recuperarDadosRealm();
+//        atualizarDadosTela();
+//        recuperarAlunosRealm();
         return view;
     }
 

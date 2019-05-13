@@ -62,10 +62,10 @@ public class FrequenciaFragment extends Fragment {
         bindind(view);
         setupInit();
         configRealm();
-        onClickItem();
-        recuperarDadosRealm();
-        atualizarDadosTela();
-        recuperarAlunosRealm();
+//        onClickItem();
+//        recuperarDadosRealm();
+//        atualizarDadosTela();
+//        recuperarAlunosRealm();
         return view;
     }
 

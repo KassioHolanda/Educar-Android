@@ -133,11 +133,12 @@ public class UnidadeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (UtilsFunctions.isConnect(getApplicationContext())) {
-                    progressDialog.show();
+//                    progressDialog.show();
 //                    sincronizarComAPiMB.recuperarDadosDaAPISalvarBancoDeDadosRealm();
 //                    sincronizarComAPiMB.enviarDadosDoBancoDeDadosParaAPI();
-                    recuperarDadosFuncionario();
-                    progressDialog.hide();
+//                    recuperarDadosFuncionario();
+//                    progressDialog.hide();
+                    startActivity(new Intent(getApplicationContext(), SincronizacaoActivity.class));
                 } else {
                     Snackbar.make(findViewById(android.R.id.content), "SEM CONEXÃO", Snackbar.LENGTH_LONG).show();
                 }
