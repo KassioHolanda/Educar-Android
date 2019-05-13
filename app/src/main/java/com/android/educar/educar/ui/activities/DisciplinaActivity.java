@@ -103,10 +103,6 @@ public class DisciplinaActivity extends AppCompatActivity {
         realm = Realm.getDefaultInstance();
     }
 
-    public void recuperarDadosRealm() {
-        unidadeSelecionada = realm.where(Unidade.class).equalTo("id", preferences.getSavedLong(messages.ID_UNIDADE)).findFirst();
-        turmaSelecionada = realm.where(Turma.class).equalTo("id", preferences.getSavedLong(messages.ID_TURMA)).findFirst();
-    }
 
     public void recuperarDisciplinas() {
         for (int i = 0; i < turmaSelecionada.getGradeCursos().size(); i++) {
@@ -117,13 +113,7 @@ public class DisciplinaActivity extends AppCompatActivity {
 
             }
         }
-//        this.disciplinasLista = turmaSelecionada.getGradeCursos() {
 
-//        RealmResults<Disciplina> disciplinas = realm.where(Disciplina.class).findAll().sort("descricao");
-//        for (Disciplina disciplina : disciplinas) {
-//            disciplinasLista.add(disciplina);
-//        }
-//
         List<Disciplina> disciplinasOrdem = new ArrayList<>();
         disciplinasOrdem.addAll(disciplinasLista);
         Collections.sort(disciplinasOrdem);
