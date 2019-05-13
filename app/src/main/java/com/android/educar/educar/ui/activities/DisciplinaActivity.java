@@ -194,8 +194,8 @@ public class DisciplinaActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         configRealm();
-        recuperarDadosRealm();
-        atualizarDadosTela();
-        recuperarDisciplinasRealm();
+//        recuperarDadosRealm();
+//        atualizarDadosTela();
+//        recuperarDisciplinasRealm();
     }
 }
