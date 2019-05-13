@@ -13,7 +13,7 @@
         android:id="@+id/unidade_professor_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#f7f7f7"
+        android:background="#EEEEEE"
         android:orientation="vertical"
         android:padding="4dp">
 
@@ -65,9 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/unidade_professor_id"
-        android:layout_marginTop="4dp"
-        android:footerDividersEnabled="true"
-        android:headerDividersEnabled="true" />
+        android:layout_marginTop="4dp"/>
 
 
     <android.support.design.widget.FloatingActionButton
