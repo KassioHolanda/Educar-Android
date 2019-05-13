@@ -116,10 +116,6 @@ public class TurmaActivity extends AppCompatActivity {
         realm = Realm.getDefaultInstance();
     }
 
-    public void recuperarDadosRealm() {
-        unidadeSelecionada = realm.where(Unidade.class).equalTo("id", preferences.getSavedLong(messages.ID_UNIDADE)).findFirst();
-    }
-
     public void setupInit() {
         turmaList = new ArrayList<>();
         preferences = new Preferences(this);
