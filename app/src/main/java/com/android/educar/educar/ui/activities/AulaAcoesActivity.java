@@ -16,12 +16,14 @@ import com.android.educar.educar.R;
 import com.android.educar.educar.mb.NotaMB;
 import com.android.educar.educar.model.Bimestre;
 import com.android.educar.educar.model.Disciplina;
+import com.android.educar.educar.model.Funcionario;
 import com.android.educar.educar.model.Serie;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.network.chamadas.AlunoChamada;
 import com.android.educar.educar.network.chamadas.OcorrenciaChamada;
 import com.android.educar.educar.network.chamadas.PessoaChamada;
+import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 
 import io.realm.Realm;
@@ -39,21 +41,40 @@ public class AulaAcoesActivity extends AppCompatActivity {
     private LinearLayout paginaFrequenciaMensal;
     private LinearLayout paginaFrequencia;
     private FloatingActionButton floatingActionButton;
+    private LinearLayout linearSerie;
 
     private Realm realm;
+
+    private Funcionario funcionario;
+    private Unidade unidadeSelecionada;
+    private Turma turmaSelecionada;
+    private Disciplina disciplinaSelecionada;
+    private Serie serieSelecionada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aula_acoes);
         binding();
+        configRealm();
         setupInit();
         settings();
         clickOnItem();
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        recuperarUnidade();
+        recuperarTurma();
+        recuperarDisciplina();
+        atualizarDados();
+    }
+
     public void setupInit() {
         preferences = new Preferences(getApplicationContext());
+        funcionario = realm.copyFromRealm(realm.where(Funcionario.class).findFirst());
     }
 
 
@@ -62,17 +83,53 @@ public class AulaAcoesActivity extends AppCompatActivity {
         realm = Realm.getDefaultInstance();
     }
 
+    public void recuperarUnidade() {
+        for (int i = 0; i < funcionario.getFuncionarioEscolas().size(); i++) {
+            if (funcionario.getFuncionarioEscolas().get(i).getUnidade().getId() == preferences.getSavedLong(Messages.ID_UNIDADE) && funcionario.getFuncionarioEscolas().get(i).getAtivo()) {
+                this.unidadeSelecionada = funcionario.getFuncionarioEscolas().get(i).getUnidade();
+            }
+        }
+    }
+
+    public void recuperarTurma() {
+        for (int i = 0; i < unidadeSelecionada.getLocalEscolas().size(); i++) {
+            for (int j = 0; j < unidadeSelecionada.getLocalEscolas().get(i).getTurmas().size(); j++) {
+                if (unidadeSelecionada.getLocalEscolas().get(i).getTurmas().get(j).getId() == preferences.getSavedLong(Messages.ID_TURMA)) {
+                    this.turmaSelecionada = (unidadeSelecionada.getLocalEscolas().get(i).getTurmas().get(j));
+                }
+            }
+        }
+    }
+
+    public void recuperarDisciplina() {
+        for (int i = 0; i < turmaSelecionada.getGradeCursos().size(); i++) {
+            try {
+                if (turmaSelecionada.getGradeCursos().get(i).getSeriedisciplina().getDisciplina().getId() == preferences.getSavedLong("id_disciplina")) {
+                    disciplinaSelecionada = turmaSelecionada.getGradeCursos().get(i).getDisciplina();
+                } else if (turmaSelecionada.getGradeCursos().get(i).getSeriedisciplina().getSerie().getId() == preferences.getSavedLong("id_serie")) {
+                    serieSelecionada = turmaSelecionada.getGradeCursos().get(i).getSeriedisciplina().getSerie();
+                }
+            } catch (NullPointerException e) {
+
+            }
+            if (turmaSelecionada.getGradeCursos().get(i).getDisciplina().getId() == preferences.getSavedLong("id_disciplina")) {
+                disciplinaSelecionada = turmaSelecionada.getGradeCursos().get(i).getDisciplina();
+            }
+        }
+    }
+
     public void atualizarDados() {
-        unidade.setText(realm.where(Unidade.class).equalTo("id", preferences.getSavedLong("id_unidade")).findFirst().getNome());
-        turma.setText(realm.where(Turma.class).equalTo("id", preferences.getSavedLong("id_turma")).findFirst().getDescricao());
-        disciplina.setText(realm.where(Disciplina.class).equalTo("id", preferences.getSavedLong("id_disciplina")).findFirst().getDescricao());
+        unidade.setText(unidadeSelecionada.getNome());
+        turma.setText(turmaSelecionada.getDescricao());
+        disciplina.setText(disciplinaSelecionada.getDescricao());
         try {
-            serieacoes.setText(realm.where(Serie.class).equalTo("id", preferences.getSavedLong("id_serie")).findFirst().getDescricao());
+            serieacoes.setText(serieSelecionada.getDescricao());
         } catch (Exception e) {
+            linearSerie.setVisibility(View.GONE);
             serieacoes.setText("");
         }
 
-        bimestre.setText(realm.where(Bimestre.class).equalTo("id", new NotaMB(getApplicationContext()).verificarBimestreAtual()).findFirst().getDescricao());
+//        bimestre.setText(realm.where(Bimestre.class).equalTo("id", new NotaMB(getApplicationContext()).verificarBimestreAtual()).findFirst().getDescricao());
     }
 
     public void clickOnItem() {
@@ -123,6 +180,7 @@ public class AulaAcoesActivity extends AppCompatActivity {
         paginaOcorrencia = findViewById(R.id.ocorrencias_id);
         serieacoes = findViewById(R.id.serieacoes_id);
         floatingActionButton = findViewById(R.id.fab_home_id);
+        linearSerie = findViewById(R.id.serie_acoes_id);
     }
 
     public void settings() {
@@ -158,10 +216,4 @@ public class AulaAcoesActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        configRealm();
-        atualizarDados();
-    }
 }
