@@ -29,6 +29,7 @@ public class Turma extends RealmObject {
     private String statusTurma;
     @SerializedName("grade_curso")
     private RealmList<GradeCurso> gradeCursos;
+    private RealmList<Matricula> matriculas;
 
     public Long getId() {
         return id;
@@ -92,5 +93,13 @@ public class Turma extends RealmObject {
 
     public void setGradeCursos(RealmList<GradeCurso> gradeCursos) {
         this.gradeCursos = gradeCursos;
+    }
+
+    public RealmList<Matricula> getMatriculas() {
+        return matriculas;
+    }
+
+    public void setMatriculas(RealmList<Matricula> matriculas) {
+        this.matriculas = matriculas;
     }
 }

@@ -73,7 +73,7 @@ public class TurmaActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 //        recuperarDadosRealm();
-        mensagemInicial();
+//        mensagemInicial();
         recuperarUnidade();
         atualizarDadosTela();
         recuperarTurmas();
@@ -93,8 +93,17 @@ public class TurmaActivity extends AppCompatActivity {
 
     public void recuperarUnidade() {
         for (int i = 0; i < funcionario.getFuncionarioEscolas().size(); i++) {
-            if (funcionario.getFuncionarioEscolas().get(i).getUnidade().getId() == preferences.getSavedLong(Messages.ID_UNIDADE) && funcionario.getFuncionarioEscolas().get(i).getAtivo()) {
-                this.unidadeSelecionada = funcionario.getFuncionarioEscolas().get(i).getUnidade();
+            if (funcionario.getFuncionarioEscolas().get(i).getAtivo()) {
+                if (funcionario.getFuncionarioEscolas().get(i).getUnidade().getId() == preferences.getSavedLong(Messages.ID_UNIDADE)) {
+                    this.unidadeSelecionada = funcionario.getFuncionarioEscolas().get(i).getUnidade();
+                }
+            } else {
+                Snackbar.make(findViewById(R.id.parent), "FUNCIONARIO INATIVO", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                }).show();
             }
         }
     }
@@ -103,6 +112,7 @@ public class TurmaActivity extends AppCompatActivity {
         for (int i = 0; i < unidadeSelecionada.getLocalEscolas().size(); i++) {
             for (int j = 0; j < unidadeSelecionada.getLocalEscolas().get(i).getTurmas().size(); j++) {
                 try {
+
                     if (unidadeSelecionada.getLocalEscolas().get(i).getTurmas().get(j).getNivel().equals("FUNDAMENTAL") && unidadeSelecionada.getLocalEscolas().get(i).getTurmas().get(j).getStatusTurma().equals("CADASTRADA")) {
                         this.turmaList.add(unidadeSelecionada.getLocalEscolas().get(i).getTurmas().get(j));
                     }

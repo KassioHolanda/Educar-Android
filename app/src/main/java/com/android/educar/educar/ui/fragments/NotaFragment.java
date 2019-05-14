@@ -92,10 +92,10 @@ public class NotaFragment extends Fragment {
         RealmResults<Matricula> matriculas = realm.where(Matricula.class).equalTo("turma", preferences.getSavedLong("id_turma")).findAll();
 
         for (Matricula matricula : matriculas) {
-            Aluno aluno = realm.where(Aluno.class).equalTo("id", matricula.getAluno()).findFirst();
-            if (aluno != null) {
-                alunos.add(aluno);
-            }
+//            Aluno aluno = realm.where(Aluno.class).equalTo("id", matricula.getAluno()).findFirst();
+//            if (aluno != null) {
+//                alunos.add(aluno);
+//            }
         }
 
         for (Aluno aluno : alunos) {

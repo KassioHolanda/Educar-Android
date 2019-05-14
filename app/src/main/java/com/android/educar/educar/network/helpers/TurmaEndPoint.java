@@ -15,7 +15,7 @@ public interface TurmaEndPoint {
     @GET("turma/")
     Call<ListaTurmaAPI> turmas();
 
-    @GET("turma/{pk}")
+    @GET("turma/id={id}")
     Call<Turma> getTurma(@Path("id") Long id);
 
     @GET("turma/")

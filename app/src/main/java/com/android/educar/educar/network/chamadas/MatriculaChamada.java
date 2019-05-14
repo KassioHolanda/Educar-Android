@@ -117,7 +117,7 @@ public class MatriculaChamada {
 
     public void recuperarAlunosMatricula(List<Matricula> matriculas) {
         for (int i = 0; i < matriculas.size(); i++) {
-            alunoChamada.recuperarAlunosMatricula(matriculas.get(i).getAluno());
+//            alunoChamada.recuperarAlunosMatricula(matriculas.get(i).getAluno());
             alunoChamada.recuperarDisciplinaAlunoMatricula(matriculas.get(i).getId());
             recuperarAlunoFrequenciaMesAPI(matriculas.get(i).getId());
         }

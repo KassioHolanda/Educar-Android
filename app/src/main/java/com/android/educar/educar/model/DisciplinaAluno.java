@@ -15,15 +15,15 @@ public class DisciplinaAluno extends RealmObject {
     private Long id;
     @SerializedName("statusdisciplinaaluno")
     private String statusDisciplinaAluno;
-    private Long matricula;
+//    private Long matricula;
     @SerializedName("seriedisciplina")
-    private Long serieDisciplina;
+    private SerieDisciplina serieDisciplina;
     @SerializedName("mesesfechadosnota")
     private int mesesFechadosNota;
     @SerializedName("notaacumulada")
     private Float notaAcumulada;
     @SerializedName("datacadastroprovafinal")
-    private Date datacadastroprovafinal;
+    private String datacadastroprovafinal;
     @SerializedName("notaprovafinal")
     private Float notaProvaFinal;
     @SerializedName("fechadoprovafinal")
@@ -33,7 +33,7 @@ public class DisciplinaAluno extends RealmObject {
     @SerializedName("notaantigaprovafinal")
     private Float notaAntigaProvaFinal;
     @SerializedName("usuarioatualizacaoprovafinal")
-    private Long usuarioAtualizacaoProvaFinal;
+    private Usuario usuarioAtualizacaoProvaFinal;
     @SerializedName("statusatual")
     private String statusAtual;
     private boolean alterado;
@@ -41,39 +41,6 @@ public class DisciplinaAluno extends RealmObject {
     private double mediaAculumada;
     @SerializedName("cargahoraria")
     private Long cargaHoraria;
-
-    public DisciplinaAluno() {
-    }
-
-    public Long getCargaHoraria() {
-        return cargaHoraria;
-    }
-
-    public void setCargaHoraria(Long cargaHoraria) {
-        this.cargaHoraria = cargaHoraria;
-    }
-
-    public double getMediaAculumada() {
-        return mediaAculumada;
-    }
-
-    public void setMediaAculumada(double mediaAculumada) {
-        this.mediaAculumada = mediaAculumada;
-    }
-
-    public DisciplinaAluno(String statusDisciplinaAluno, Long matricula, Long serieDisciplina, int mesesFechadosNota, Float notaAcumulada, Date datacadastroprovafinal, Float notaProvaFinal, Boolean fechadoProvaFInal, Date dataCadastroAtualizacaoProvaFinal, Float notaAntigaProvaFinal, Long usuarioAtualizacaoProvaFinal) {
-        this.statusDisciplinaAluno = statusDisciplinaAluno;
-        this.matricula = matricula;
-        this.serieDisciplina = serieDisciplina;
-        this.mesesFechadosNota = mesesFechadosNota;
-        this.notaAcumulada = notaAcumulada;
-        this.datacadastroprovafinal = datacadastroprovafinal;
-        this.notaProvaFinal = notaProvaFinal;
-        this.fechadoProvaFInal = fechadoProvaFInal;
-        this.dataCadastroAtualizacaoProvaFinal = dataCadastroAtualizacaoProvaFinal;
-        this.notaAntigaProvaFinal = notaAntigaProvaFinal;
-        this.usuarioAtualizacaoProvaFinal = usuarioAtualizacaoProvaFinal;
-    }
 
     public Long getId() {
         return id;
@@ -91,19 +58,11 @@ public class DisciplinaAluno extends RealmObject {
         this.statusDisciplinaAluno = statusDisciplinaAluno;
     }
 
-    public Long getMatricula() {
-        return matricula;
-    }
-
-    public void setMatricula(Long matricula) {
-        this.matricula = matricula;
-    }
-
-    public Long getSerieDisciplina() {
+    public SerieDisciplina getSerieDisciplina() {
         return serieDisciplina;
     }
 
-    public void setSerieDisciplina(Long serieDisciplina) {
+    public void setSerieDisciplina(SerieDisciplina serieDisciplina) {
         this.serieDisciplina = serieDisciplina;
     }
 
@@ -123,11 +82,11 @@ public class DisciplinaAluno extends RealmObject {
         this.notaAcumulada = notaAcumulada;
     }
 
-    public Date getDatacadastroprovafinal() {
+    public String getDatacadastroprovafinal() {
         return datacadastroprovafinal;
     }
 
-    public void setDatacadastroprovafinal(Date datacadastroprovafinal) {
+    public void setDatacadastroprovafinal(String datacadastroprovafinal) {
         this.datacadastroprovafinal = datacadastroprovafinal;
     }
 
@@ -163,11 +122,11 @@ public class DisciplinaAluno extends RealmObject {
         this.notaAntigaProvaFinal = notaAntigaProvaFinal;
     }
 
-    public Long getUsuarioAtualizacaoProvaFinal() {
+    public Usuario getUsuarioAtualizacaoProvaFinal() {
         return usuarioAtualizacaoProvaFinal;
     }
 
-    public void setUsuarioAtualizacaoProvaFinal(Long usuarioAtualizacaoProvaFinal) {
+    public void setUsuarioAtualizacaoProvaFinal(Usuario usuarioAtualizacaoProvaFinal) {
         this.usuarioAtualizacaoProvaFinal = usuarioAtualizacaoProvaFinal;
     }
 
@@ -187,4 +146,19 @@ public class DisciplinaAluno extends RealmObject {
         this.alterado = alterado;
     }
 
+    public double getMediaAculumada() {
+        return mediaAculumada;
+    }
+
+    public void setMediaAculumada(double mediaAculumada) {
+        this.mediaAculumada = mediaAculumada;
+    }
+
+    public Long getCargaHoraria() {
+        return cargaHoraria;
+    }
+
+    public void setCargaHoraria(Long cargaHoraria) {
+        this.cargaHoraria = cargaHoraria;
+    }
 }

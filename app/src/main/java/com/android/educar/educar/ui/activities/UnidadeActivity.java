@@ -25,8 +25,11 @@ import com.android.educar.educar.R;
 import com.android.educar.educar.mb.SincronizarComAPiMB;
 import com.android.educar.educar.model.Funcionario;
 import com.android.educar.educar.model.FuncionarioEscola;
+import com.android.educar.educar.model.GradeCurso;
+import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.network.service.APIService;
+import com.android.educar.educar.network.service.ListaTurmaAPI;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
@@ -64,22 +67,20 @@ public class UnidadeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unidade);
         bindind();
+        configRealm();
         setupInit();
         onClickItem();
-        Realm.init(this);
-        realm = Realm.getDefaultInstance();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        configRealm();
         verificarPrimeiroAcesso();
     }
 
     public void configRealm() {
-
-
+        Realm.init(this);
+        realm = Realm.getDefaultInstance();
     }
 
     public void bindind() {
@@ -125,7 +126,7 @@ public class UnidadeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Unidade unidade = (Unidade) unidades.getItemAtPosition(position);
                 preferences.saveLong(messages.ID_UNIDADE, unidade.getId());
-                nextAcivity(unidade);
+                nextAcivity();
             }
         });
 
@@ -146,7 +147,7 @@ public class UnidadeActivity extends AppCompatActivity {
         });
     }
 
-    public void nextAcivity(Unidade unidade) {
+    public void nextAcivity() {
         Intent intent = new Intent(getApplicationContext(), TurmaActivity.class);
         ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeCustomAnimation(UnidadeActivity.this, R.anim.mover_esquerda, R.anim.fade_out);
         ActivityCompat.startActivity(UnidadeActivity.this, intent, activityOptionsCompat.toBundle());
@@ -235,6 +236,7 @@ public class UnidadeActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body().size() > 0) {
                         recuperarFuncionario(response.body().get(0));
+//                        recuperarDadosTurmarecuperarDadosTurma(response.body().get(0));
                     }
                 }
                 progressDialog.hide();
@@ -249,8 +251,33 @@ public class UnidadeActivity extends AppCompatActivity {
         });
     }
 
+    public void recuperarDadosTurmarecuperarDadosTurma(List<Turma> turmas) {
+
+    }
+
+    public void recuperarTurmas(Turma turma) {
+        Call<Turma> listaTurmaAPICall = apiService.getTurmaEndPoint().getTurma(turma.getId());
+        listaTurmaAPICall.enqueue(new Callback<Turma>() {
+            @Override
+            public void onResponse(Call<Turma> call, Response<Turma> response) {
+                if (response.isSuccessful()) {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Turma> call, Throwable t) {
+
+            }
+        });
+    }
+
     private void recuperarFuncionario(Funcionario body) {
         this.funcionario = body;
+
+//        for (GradeCurso gradeCurso : body.getGradeCursos()) {
+//            recuperarTurmas(gradeCurso.getTurma());
+//        }
 
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(this.funcionario);

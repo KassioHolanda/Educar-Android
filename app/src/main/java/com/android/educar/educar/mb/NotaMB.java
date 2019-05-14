@@ -87,7 +87,7 @@ public class NotaMB {
                 alunoNotaMes.setNota(Float.parseFloat(descricao));
                 alunoNotaMes.setUsuario(preferences.getSavedLong("id_usuario"));
                 alunoNotaMes.setBimestre(verificarBimestreAtual());
-                alunoNotaMes.setAnoLetivo(matricula.getAnoLetivo());
+//                alunoNotaMes.setAnoLetivo(matricula.getAnoLetivo());
                 alunoNotaMes.setTipoLancamentoNota("LANCADO_APP");
                 alunoNotaMes.setInseridoFechamento(false);
                 alunoNotaMes.setDisciplinaAluno(disciplinaAluno.getId());

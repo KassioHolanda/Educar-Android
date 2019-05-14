@@ -201,7 +201,7 @@ public class AlunoChamada {
     public void recuperarAlunosMatricula() {
         RealmResults<Matricula> matriculas = realm.where(Matricula.class).findAll();
         for (int i = 0; i < matriculas.size(); i++) {
-            recuperarAlunosMatricula(matriculas.get(i).getAluno());
+//            recuperarAlunosMatricula(matriculas.get(i).getAluno());
         }
     }
 

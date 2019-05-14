@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.Date;
 
+import io.realm.RealmList;
 import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -13,22 +14,19 @@ public class Matricula extends RealmObject{
 
     @PrimaryKey
     private Long id;
-    private Long aluno;
+    private Aluno aluno;
     @SerializedName("statusmatricula")
     private String statusMatricula;
     @SerializedName("datamatricula")
     private Date dataMatricula;
-    private Long turma;
+    private Turma turma;
     @SerializedName("statusatual")
     private String statusAtual;
-    private Long serie;
+    private Serie serie;
     @SerializedName("anoletivo")
-    private long anoLetivo;
-
-
-
-    public Matricula() {
-    }
+    private AnoLetivo anoLetivo;
+    @SerializedName("todas_disciplinas_aluno")
+    private RealmList<DisciplinaAluno> disciplinaAlunos;
 
     public Long getId() {
         return id;
@@ -38,19 +36,11 @@ public class Matricula extends RealmObject{
         this.id = id;
     }
 
-    public Long getTurma() {
-        return turma;
-    }
-
-    public void setTurma(Long turma) {
-        this.turma = turma;
-    }
-
-    public Long getAluno() {
+    public Aluno getAluno() {
         return aluno;
     }
 
-    public void setAluno(Long aluno) {
+    public void setAluno(Aluno aluno) {
         this.aluno = aluno;
     }
 
@@ -70,6 +60,14 @@ public class Matricula extends RealmObject{
         this.dataMatricula = dataMatricula;
     }
 
+    public Turma getTurma() {
+        return turma;
+    }
+
+    public void setTurma(Turma turma) {
+        this.turma = turma;
+    }
+
     public String getStatusAtual() {
         return statusAtual;
     }
@@ -78,19 +76,27 @@ public class Matricula extends RealmObject{
         this.statusAtual = statusAtual;
     }
 
-    public Long getSerie() {
+    public Serie getSerie() {
         return serie;
     }
 
-    public long getAnoLetivo() {
+    public void setSerie(Serie serie) {
+        this.serie = serie;
+    }
+
+    public AnoLetivo getAnoLetivo() {
         return anoLetivo;
     }
 
-    public void setAnoLetivo(long anoLetivo) {
+    public void setAnoLetivo(AnoLetivo anoLetivo) {
         this.anoLetivo = anoLetivo;
     }
 
-    public void setSerie(Long serie) {
-        this.serie = serie;
+    public RealmList<DisciplinaAluno> getDisciplinaAlunos() {
+        return disciplinaAlunos;
+    }
+
+    public void setDisciplinaAlunos(RealmList<DisciplinaAluno> disciplinaAlunos) {
+        this.disciplinaAlunos = disciplinaAlunos;
     }
 }
