@@ -70,10 +70,10 @@ public class FrequenciaMensalActivityAlunos extends AppCompatActivity {
         }
 
         for (Aluno aluno : alunos) {
-            PessoaFisica pessoaFisica = realm.where(PessoaFisica.class).equalTo("id", aluno.getPessoaFisica()).findFirst();
-            if (pessoaFisica != null) {
-                this.pessoaFisicas.add(pessoaFisica);
-            }
+//            PessoaFisica pessoaFisica = realm.where(PessoaFisica.class).equalTo("id", aluno.getPessoaFisica()).findFirst();
+//            if (pessoaFisica != null) {
+//                this.pessoaFisicas.add(pessoaFisica);
+//            }
         }
 
         Collections.sort(pessoaFisicas);

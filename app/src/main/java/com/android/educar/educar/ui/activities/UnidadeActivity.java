@@ -26,6 +26,8 @@ import com.android.educar.educar.mb.SincronizarComAPiMB;
 import com.android.educar.educar.model.Funcionario;
 import com.android.educar.educar.model.FuncionarioEscola;
 import com.android.educar.educar.model.GradeCurso;
+import com.android.educar.educar.model.LocalEscola;
+import com.android.educar.educar.model.Matricula;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.network.service.APIService;
@@ -161,6 +163,8 @@ public class UnidadeActivity extends AppCompatActivity {
         sincronizarComAPiMB = new SincronizarComAPiMB(getApplicationContext());
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Carregando");
+        progressDialog.setCancelable(false);
+//        progressDialog.setIcon(R.drawable.sync);
         progressDialog.setMessage("Recuperando seus dados...");
     }
 
@@ -183,7 +187,7 @@ public class UnidadeActivity extends AppCompatActivity {
     public void alertaInformacaoSincronizar() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Alerta!");
-        builder.setMessage("Antes de Sair sincronize seus dados, ao sair seus dadaos serão apagados!");
+        builder.setMessage("Antes de sair sincronize seus dados, ao sair seus dadaos serão apagados!");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -239,50 +243,73 @@ public class UnidadeActivity extends AppCompatActivity {
 //                        recuperarDadosTurmarecuperarDadosTurma(response.body().get(0));
                     }
                 }
-                progressDialog.hide();
+//                progressDialog.hide();
             }
 
             @Override
             public void onFailure(Call<List<Funcionario>> call, Throwable t) {
+//                progressDialog.hide();
                 Log.i("erro_api", t.getMessage());
-                Snackbar.make(findViewById(android.R.id.content), "Ocorreu um Erro, Solicite Administrador.", Snackbar.LENGTH_LONG).show();
-                progressDialog.hide();
+                Snackbar.make(findViewById(android.R.id.content), "Ocorreu um Erro, Solicite Administrador.", Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                }).show();
             }
         });
     }
 
-    public void recuperarDadosTurmarecuperarDadosTurma(List<Turma> turmas) {
-
+    public void recuperarDadosTurmas() {
+        for (FuncionarioEscola funcionarioEscola : this.funcionario.getFuncionarioEscolas()) {
+            for (LocalEscola localEscola : funcionarioEscola.getUnidade().getLocalEscolas()) {
+                for (Turma turma : localEscola.getTurmas()) {
+                    recuperarTurmas(turma);
+                }
+            }
+        }
     }
 
     public void recuperarTurmas(Turma turma) {
-        Call<Turma> listaTurmaAPICall = apiService.getTurmaEndPoint().getTurma(turma.getId());
+        Call<Turma> listaTurmaAPICall = apiService.getTurmaEndPoint().getTurmaCompleta(turma.getId());
         listaTurmaAPICall.enqueue(new Callback<Turma>() {
             @Override
             public void onResponse(Call<Turma> call, Response<Turma> response) {
                 if (response.isSuccessful()) {
-
+                    recuperarTurma(response.body(), turma.getId());
                 }
+                progressDialog.hide();
             }
 
             @Override
             public void onFailure(Call<Turma> call, Throwable t) {
+                progressDialog.hide();
+                Snackbar.make(findViewById(android.R.id.content), "Ocorreu um Erro, Solicite Administrador, ao salvar as turmas.", Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
+                    }
+                }).show();
             }
         });
+    }
+
+    private void recuperarTurma(Turma body, Long turmaId) {
+        realm.beginTransaction();
+        Turma turma = realm.copyFromRealm(realm.where(Turma.class).equalTo("id", turmaId).findFirst());
+        turma.setMatriculas(body.getMatriculas());
+        realm.copyToRealmOrUpdate(turma);
+        realm.commitTransaction();
     }
 
     private void recuperarFuncionario(Funcionario body) {
         this.funcionario = body;
 
-//        for (GradeCurso gradeCurso : body.getGradeCursos()) {
-//            recuperarTurmas(gradeCurso.getTurma());
-//        }
-
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(this.funcionario);
         realm.commitTransaction();
 
+        recuperarDadosTurmas();
         atualizarDadosTela();
         recuperarUnidadesFuncionario();
         atualizarAdapterListaUnidades();

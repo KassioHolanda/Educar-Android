@@ -84,8 +84,8 @@ public class FrequenciaAdapterLista extends BaseAdapter {
             row = view;
         }
 
-        Aluno aluno = realm.where(Aluno.class).equalTo("pessoaFisica", pessoaFisicas.get(i).getId()).findFirst();
-        final Matricula matricula = realm.where(Matricula.class).equalTo("aluno", aluno.getId()).findFirst();
+//        Aluno aluno = realm.where(Aluno.class).equalTo("pessoaFisica", pessoaFisicas.get(i).getId()).findFirst();
+//        final Matricula matricula = realm.where(Matricula.class).equalTo("aluno", aluno.getId()).findFirst();
 
         nomeAlunoFrequencia = row.findViewById(R.id.nomealuno_frequencia_id);
         CheckBox chk = row.findViewById(R.id.presenca_id);
@@ -113,14 +113,14 @@ public class FrequenciaAdapterLista extends BaseAdapter {
                 CheckBox checkBox = (CheckBox) view;
                 PessoaFisica pessoaFisica1 = (PessoaFisica) checkBox.getTag();
                 if (checkBox.isChecked()) {
-                    atualizarPresenca(pessoaFisicaSelecionada, matricula, true);
+//                    atualizarPresenca(pessoaFisicaSelecionada, matricula, true);
                     Toast.makeText(context, "O Aluno " + pessoaFisica1.getNome() + " está Presente.", Toast.LENGTH_SHORT).show();
                     if (!selecionados.contains(pessoaFisica1)) {
                         selecionados.add(pessoaFisica1);
                     }
 
                 } else {
-                    atualizarPresenca(pessoaFisicaSelecionada, matricula, false);
+//                    atualizarPresenca(pessoaFisicaSelecionada, matricula, false);
                     Toast.makeText(context, "O Aluno " + pessoaFisica1.getNome() + " não está Presente.", Toast.LENGTH_SHORT).show();
                     if (selecionados.contains(pessoaFisica1)) {
                         selecionados.remove(pessoaFisica1);

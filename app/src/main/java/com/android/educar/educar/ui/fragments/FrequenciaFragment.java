@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,6 +18,8 @@ import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.Bimestre;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.Funcionario;
+import com.android.educar.educar.model.FuncionarioEscola;
+import com.android.educar.educar.model.LocalEscola;
 import com.android.educar.educar.model.Matricula;
 import com.android.educar.educar.model.PessoaFisica;
 import com.android.educar.educar.model.Serie;
@@ -72,7 +75,7 @@ public class FrequenciaFragment extends Fragment {
         recuperarDisciplina();
 //        onClickItem();
         atualizarDadosTela();
-//        recuperarAlunosRealm();
+        recuperarAlunosRealm();
         return view;
     }
 
@@ -137,22 +140,19 @@ public class FrequenciaFragment extends Fragment {
     }
 
     public void recuperarAlunosRealm() {
-        List<Aluno> alunos = new ArrayList<>();
-
-        RealmResults<Matricula> matriculas = realm.where(Matricula.class).equalTo("turma", preferences.getSavedLong("id_turma")).findAll();
-
-        for (Matricula matricula : matriculas) {
-//            Aluno aluno = realm.where(Aluno.class).equalTo("id", matricula.getAluno()).findFirst();
-//            if (aluno != null) {
-//                alunos.add(aluno);
+        Turma turma = realm.copyFromRealm(realm.where(Turma.class).equalTo("id", preferences.getSavedLong("id_turma")).findFirst());
+//        for (FuncionarioEscola funcionarioEscola : this.funcionario.getFuncionarioEscolas()) {
+//            for (LocalEscola localEscola : funcionarioEscola.getUnidade().getLocalEscolas()) {
+//                for (Turma turma : localEscola.getTurmas()) {
+//                    for (Matricula matricula : turma.getMatriculas()) {
+//                        pessoaFisicas.add(matricula.getAluno().getPessoaFisica());
+//                    }
+//                }
 //            }
-        }
+//        }
 
-        for (Aluno aluno : alunos) {
-            PessoaFisica pessoaFisica = realm.where(PessoaFisica.class).equalTo("id", aluno.getPessoaFisica()).findFirst();
-            if (pessoaFisica != null) {
-                this.pessoaFisicas.add(pessoaFisica);
-            }
+        for (Matricula matricula : turma.getMatriculas()) {
+            this.pessoaFisicas.add(matricula.getAluno().getPessoaFisica());
         }
 
         Collections.sort(pessoaFisicas);

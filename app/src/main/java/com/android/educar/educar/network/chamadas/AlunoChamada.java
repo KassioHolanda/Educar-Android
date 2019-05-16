@@ -214,8 +214,8 @@ public class AlunoChamada {
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body());
                     realm.commitTransaction();
-                    pessoaChamada.recuperarPessoaFisicaAluno(response.body().getPessoaFisica());
-                    ocorrenciaChamada.recuperarOcorrenciasAluno(response.body().getId());
+//                    pessoaChamada.recuperarPessoaFisicaAluno(response.body().getPessoaFisica());
+//                    ocorrenciaChamada.recuperarOcorrenciasAluno(response.body().getId());
                 }
             }
 

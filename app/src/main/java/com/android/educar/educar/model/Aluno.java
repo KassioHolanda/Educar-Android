@@ -15,9 +15,9 @@ public class Aluno extends RealmObject {
     @PrimaryKey
     private Long id;
     @SerializedName("pessoafisica")
-    private Long pessoaFisica;
+    private PessoaFisica pessoaFisica;
     @SerializedName("datacadastro")
-    private Date dataCadastro;
+    private String dataCadastro;
 
     public Aluno() {
     }
@@ -30,19 +30,19 @@ public class Aluno extends RealmObject {
         this.id = id;
     }
 
-    public Long getPessoaFisica() {
+    public PessoaFisica getPessoaFisica() {
         return pessoaFisica;
     }
 
-    public void setPessoaFisica(Long pessoaFisica) {
+    public void setPessoaFisica(PessoaFisica pessoaFisica) {
         this.pessoaFisica = pessoaFisica;
     }
 
-    public Date getDataCadastro() {
+    public String getDataCadastro() {
         return dataCadastro;
     }
 
-    public void setDataCadastro(Date dataCadastro) {
+    public void setDataCadastro(String dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
 }
