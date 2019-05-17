@@ -1,5 +1,7 @@
 package com.android.educar.educar.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -10,7 +12,7 @@ import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Matricula extends RealmObject{
+public class Matricula extends RealmObject implements Comparable<Matricula> {
 
     @PrimaryKey
     private Long id;
@@ -18,7 +20,7 @@ public class Matricula extends RealmObject{
     @SerializedName("statusmatricula")
     private String statusMatricula;
     @SerializedName("datamatricula")
-    private Date dataMatricula;
+    private String dataMatricula;
     private Turma turma;
     @SerializedName("statusatual")
     private String statusAtual;
@@ -52,11 +54,11 @@ public class Matricula extends RealmObject{
         this.statusMatricula = statusMatricula;
     }
 
-    public Date getDataMatricula() {
+    public String getDataMatricula() {
         return dataMatricula;
     }
 
-    public void setDataMatricula(Date dataMatricula) {
+    public void setDataMatricula(String dataMatricula) {
         this.dataMatricula = dataMatricula;
     }
 
@@ -98,5 +100,15 @@ public class Matricula extends RealmObject{
 
     public void setDisciplinaAlunos(RealmList<DisciplinaAluno> disciplinaAlunos) {
         this.disciplinaAlunos = disciplinaAlunos;
+    }
+
+    @Override
+    public String toString() {
+        return this.getAluno().getPessoaFisica().getNome();
+    }
+
+    @Override
+    public int compareTo(@NonNull Matricula matricula) {
+        return getAluno().getPessoaFisica().getNome().compareToIgnoreCase(matricula.getAluno().getPessoaFisica().getNome());
     }
 }

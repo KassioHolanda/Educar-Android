@@ -68,7 +68,7 @@ public class FrequenciaMensalActivityAlunos extends AppCompatActivity {
 //        }
 
         pessoaFisicas = turma.getMatriculas();
-//        Collections.sort(pessoaFisicas);
+        Collections.sort(pessoaFisicas);
     }
 
     private void atualizarLista(List<Matricula> results) {
