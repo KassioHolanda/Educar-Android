@@ -5,106 +5,310 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp"
+    android:background="#FFF"
     tools:context=".ui.activities.FrequenciaMensalActivity">
 
-    <android.support.v7.widget.CardView
+    <!--<android.support.v7.widget.CardView-->
+    <!--android:id="@+id/cardview_unidade_id"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="5dp"-->
+    <!--android:layout_marginBottom="4dp"-->
+    <!--android:backgroundTint="@color/colorEdit"-->
+    <!--app:cardCornerRadius="4dp">-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical">-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="10dp"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:padding="5dp">-->
+
+
+    <!--<ImageView-->
+    <!--android:layout_width="20dp"-->
+    <!--android:layout_height="20dp"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:background="@drawable/calendar_week" />-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="5"-->
+    <!--android:gravity="center|left"-->
+    <!--android:orientation="vertical"-->
+    <!--android:padding="10dp">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Turma"-->
+    <!--android:textColor="@color/colorTextTabs"-->
+    <!--android:textSize="13sp"></TextView>-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/turma2_notificacoes_aluno_id"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="turma"-->
+    <!--android:textColor="@color/colorTextTabs"-->
+    <!--android:textSize="13sp"-->
+    <!--android:textStyle="bold"></TextView>-->
+
+    <!--</LinearLayout>-->
+
+    <!--<ImageView-->
+    <!--android:layout_width="20dp"-->
+    <!--android:layout_height="20dp"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:background="@drawable/book_open" />-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="5"-->
+    <!--android:gravity="center|left"-->
+    <!--android:orientation="vertical"-->
+    <!--android:padding="10dp">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Disciplina"-->
+    <!--android:textColor="@color/colorTextTabs"-->
+    <!--android:textSize="13sp"></TextView>-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/disciplina2_notificacao_aluno_id"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="disciplina"-->
+    <!--android:textColor="@color/colorTextTabs"-->
+    <!--android:textSize="13sp"-->
+    <!--android:textStyle="bold"></TextView>-->
+    <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+    <!--</android.support.v7.widget.CardView>-->
+
+    <LinearLayout
         android:id="@+id/cardview_unidade_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="4dp"
-        android:backgroundTint="@color/colorEdit"
-        app:cardCornerRadius="4dp">
+        android:background="#EEEEEE"
+        android:orientation="vertical"
+        android:padding="6dp">
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<ImageView-->
+        <!--android:layout_width="20dp"-->
+        <!--android:layout_height="20dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:background="@drawable/domain" />-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="5"-->
+        <!--android:gravity="center|left"-->
+        <!--android:orientation="vertical"-->
+        <!--android:padding="10dp">-->
+
+
+        <!--<TextView-->
+        <!--android:id="@+id/unidadeselecionada_aula_id"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:fontFamily="sans-serif-condensed"-->
+        <!--android:text="unidade"-->
+        <!--android:textSize="16sp"-->
+        <!--android:textStyle="italic"></TextView>-->
+        <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:background="@drawable/calendar_week" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:orientation="horizontal"
-                android:padding="5dp">
+                android:layout_weight="5"
+                android:gravity="center|left"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Turma"-->
+                <!--android:textColor="@color/colorTextTabs"-->
+                <!--android:textSize="16sp"-->
+                <!--android:textStyle="bold"></TextView>-->
 
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/calendar_week" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/turma2_notificacoes_aluno_id"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:gravity="center|left"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="turma"
+                    android:textSize="16sp"
+                    android:textStyle="italic"></TextView>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Turma"
-                        android:textColor="@color/colorTextTabs"
-                        android:textSize="13sp"></TextView>
-
-                    <TextView
-                        android:id="@+id/turma2_notificacoes_aluno_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="turma"
-                        android:textColor="@color/colorTextTabs"
-                        android:textSize="13sp"
-                        android:textStyle="bold"></TextView>
-
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/book_open" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:gravity="center|left"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Disciplina"
-                        android:textColor="@color/colorTextTabs"
-                        android:textSize="13sp"></TextView>
-
-                    <TextView
-                        android:id="@+id/disciplina2_notificacao_aluno_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="disciplina"
-                        android:textColor="@color/colorTextTabs"
-                        android:textSize="13sp"
-                        android:textStyle="bold"></TextView>
-                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:background="@drawable/calendar_week" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:gravity="center|left"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Disciplina"-->
+                <!--android:textColor="@color/colorTextTabs"-->
+                <!--android:textSize="16sp"-->
+                <!--android:textStyle="bold"></TextView>-->
+
+                <TextView
+                    android:id="@+id/disciplina2_notificacao_aluno_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="disciplina"
+                    android:textSize="16sp"
+                    android:textStyle="italic"></TextView>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<ImageView-->
+        <!--android:layout_width="20dp"-->
+        <!--android:layout_height="20dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:background="@drawable/calendar_week" />-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="5"-->
+        <!--android:gravity="center|left"-->
+        <!--android:orientation="vertical"-->
+        <!--android:padding="10dp">-->
+
+        <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:text="Bimestre"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:textColor="@color/colorTextTabs"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:textSize="16sp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:textStyle="bold"></TextView>&ndash;&gt;-->
+
+
+        <!--<TextView-->
+        <!--android:id="@+id/bimestre_fragment_frequencia_id"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:fontFamily="sans-serif-condensed"-->
+        <!--android:text="bimestre"-->
+        <!--android:textSize="16sp"-->
+        <!--android:textStyle="italic"></TextView>-->
+
+        <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/cardview_unidade_id"
+        android:background="#fff"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:paddingLeft="14dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="10dp">
+
+        <!--<LinearLayout-->
+        <!--android:id="@+id/data_id"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/cardview_unidade_id"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:background="#fff"-->
+        <!--android:orientation="vertical">-->
+
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="12dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginBottom="4dp"-->
+        <!--android:layout_weight="2"-->
+        <!--android:text="Data da Frequeência "-->
+        <!--android:textColor="#222"-->
+        <!--android:textSize="14sp" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/data_frequencia_id"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="12dp"-->
+        <!--android:layout_marginBottom="4dp"-->
+        <!--android:layout_weight="3"-->
+        <!--android:fontFamily="sans-serif-condensed"-->
+        <!--android:text="Data da Frequencia "-->
+        <!--android:textColor="#222"-->
+        <!--android:textSize="16sp"-->
+        <!--android:textStyle="bold" />-->
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_marginRight="6dp"
             android:background="@drawable/user" />
@@ -122,7 +326,7 @@
                 android:layout_height="wrap_content"
                 android:text="Aluno"
                 android:textColor="@color/colorTextTabs"
-                android:textSize="13sp"></TextView>
+                android:textSize="14sp"></TextView>
 
             <TextView
                 android:id="@+id/aluno2_notificacoes_id"
@@ -130,10 +334,94 @@
                 android:layout_height="wrap_content"
                 android:text="aluno"
                 android:textColor="@color/colorTextTabs"
-                android:textSize="13sp"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-condensed"
                 android:textStyle="bold"></TextView>
+
         </LinearLayout>
+
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/cardview_unidade_id"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:background="#fff"-->
+        <!--android:orientation="vertical">-->
+
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="12dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginBottom="4dp"-->
+        <!--android:layout_weight="2"-->
+        <!--android:text="Bimestre"-->
+        <!--android:textColor="#222"-->
+        <!--android:textSize="14sp" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/bimestre_fragment_frequencia_id"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="12dp"-->
+        <!--android:layout_marginBottom="4dp"-->
+        <!--android:layout_weight="3"-->
+        <!--android:fontFamily="sans-serif-condensed"-->
+        <!--android:text="Bimestre"-->
+        <!--android:textColor="#222"-->
+        <!--android:textSize="16sp"-->
+        <!--android:textStyle="bold" />-->
+
+        <!--</LinearLayout>-->
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="#999999"
+        tools:ignore="Suspicious0dp" />
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:padding="8dp">-->
+
+    <!--<ImageView-->
+    <!--android:layout_width="20dp"-->
+    <!--android:layout_height="20dp"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_marginRight="6dp"-->
+    <!--android:background="@drawable/user" />-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="5"-->
+    <!--android:gravity="center|left"-->
+    <!--android:orientation="vertical"-->
+    <!--android:padding="6dp">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Aluno"-->
+    <!--android:textColor="@color/colorTextTabs"-->
+    <!--android:textSize="13sp"></TextView>-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/aluno2_notificacoes_id"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="aluno"-->
+    <!--android:textColor="@color/colorTextTabs"-->
+    <!--android:textSize="13sp"-->
+    <!--android:textStyle="bold"></TextView>-->
+    <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
 
     <!--<com.applandeo.materialcalendarview.CalendarView-->
     <!--android:id="@+id/calendarView"-->
@@ -150,13 +438,12 @@
     <!--app:mcv_showOtherDates="all" />-->
 
     <TextView
-        android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:fontFamily="sans-serif-condensed"
         android:text="Registro de Faltas"
-        android:textSize="16sp"
-         />
+        android:textSize="16sp" />
 
     <ListView
         android:id="@+id/lista_de_faltas_id"

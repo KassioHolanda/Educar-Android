@@ -106,30 +106,28 @@ public class FrequenciaMensalActivity extends AppCompatActivity {
     }
 
     public void recuperarDadosRealm() {
-        pessoaFisica = realm.where(PessoaFisica.class).equalTo("id", preferences.getSavedLong("id_pessoafisica_aluno")).findFirst();
-        aluno = realm.where(Aluno.class).equalTo("pessoaFisica", pessoaFisica.getId()).findFirst();
-        matricula = realm.where(Matricula.class).equalTo("aluno", aluno.getId()).findFirst();
+        matricula = realm.where(Matricula.class).equalTo("id", preferences.getSavedLong("id_matricula_lista")).findFirst();
         turma = realm.where(Turma.class).equalTo("id", preferences.getSavedLong("id_turma")).findFirst();
         disciplina = realm.where(Disciplina.class).equalTo("id", preferences.getSavedLong("id_disciplina")).findFirst();
     }
 
     public void atualizarDadosTela() {
         turmaDetalhe.setText(turma.getDescricao());
-        alunoDetalhe.setText(pessoaFisica.getNome());
+        alunoDetalhe.setText(matricula.getAluno().getPessoaFisica().getNome());
         disciplinaDetalhe.setText(disciplina.getDescricao());
     }
 
     public void atualizandoListaDePresenca() {
-        List<Frequencia> frequenciasLista = realm.where(Frequencia.class).equalTo("presenca", false).equalTo("matricula", matricula.getId()).findAll();
-        ArrayAdapter<Frequencia> frequencias = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, frequenciasLista);
-        listaDeFaltas.setAdapter(frequencias);
-
-        listaDeFaltas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                alterarPresenca(frequenciasLista.get(i));
-            }
-        });
+//        List<Frequencia> frequenciasLista = realm.where(Frequencia.class).equalTo("presenca", false).equalTo("matricula", matricula.getId()).findAll();
+//        ArrayAdapter<Frequencia> frequencias = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, frequenciasLista);
+//        listaDeFaltas.setAdapter(frequencias);
+//
+//        listaDeFaltas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                alterarPresenca(frequenciasLista.get(i));
+//            }
+//        });
     }
 
     public void alterarPresenca(Frequencia frequencia) {
