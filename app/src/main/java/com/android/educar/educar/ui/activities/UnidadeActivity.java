@@ -30,6 +30,7 @@ import com.android.educar.educar.model.LocalEscola;
 import com.android.educar.educar.model.Matricula;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
+import com.android.educar.educar.network.chamadas.AnoLetivoChamada;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.network.service.ListaTurmaAPI;
 import com.android.educar.educar.utils.Messages;
@@ -63,6 +64,7 @@ public class UnidadeActivity extends AppCompatActivity {
     private TextView professorLogado;
     private ProgressDialog progressDialog;
     private List<Unidade> listaDeUnidades;
+    private AnoLetivoChamada anoLetivoChamada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,6 +168,7 @@ public class UnidadeActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
 //        progressDialog.setIcon(R.drawable.sync);
         progressDialog.setMessage("Recuperando seus dados...");
+        anoLetivoChamada = new AnoLetivoChamada(getApplicationContext());
     }
 
     public void atualizarAdapterListaUnidades() {
@@ -240,7 +243,6 @@ public class UnidadeActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body().size() > 0) {
                         recuperarFuncionario(response.body().get(0));
-//                        recuperarDadosTurmarecuperarDadosTurma(response.body().get(0));
                     }
                 }
 //                progressDialog.hide();
@@ -248,7 +250,7 @@ public class UnidadeActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Funcionario>> call, Throwable t) {
-//                progressDialog.hide();
+                progressDialog.hide();
                 Log.i("erro_api", t.getMessage());
                 Snackbar.make(findViewById(android.R.id.content), "Ocorreu um Erro, Solicite Administrador.", Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
                     @Override
@@ -294,6 +296,7 @@ public class UnidadeActivity extends AppCompatActivity {
         });
     }
 
+
     private void recuperarTurma(Turma body, Long turmaId) {
         realm.beginTransaction();
         Turma turma = realm.copyFromRealm(realm.where(Turma.class).equalTo("id", turmaId).findFirst());
@@ -304,6 +307,9 @@ public class UnidadeActivity extends AppCompatActivity {
 
     private void recuperarFuncionario(Funcionario body) {
         this.funcionario = body;
+
+        anoLetivoChamada.recuperarBimestreAPI();
+        anoLetivoChamada.recuperarAlunoLetivoAPI(1);
 
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(this.funcionario);
