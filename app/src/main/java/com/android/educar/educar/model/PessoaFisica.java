@@ -103,4 +103,9 @@ public class PessoaFisica extends RealmObject implements Comparable<PessoaFisica
     public int compareTo(@NonNull PessoaFisica pessoaFisica) {
         return getNome().compareToIgnoreCase(pessoaFisica.getNome());
     }
+
+    @Override
+    public String toString() {
+        return this.getNome();
+    }
 }
