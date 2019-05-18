@@ -10,12 +10,8 @@ import com.android.educar.educar.model.Frequencia;
 import com.android.educar.educar.model.Matricula;
 import com.android.educar.educar.model.SerieDisciplina;
 import com.android.educar.educar.utils.Preferences;
-import com.google.gson.annotations.SerializedName;
 
-import java.lang.ref.PhantomReference;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -25,14 +21,14 @@ public class FrequenciaMB {
     private Context context;
     private Realm realm;
     private Preferences preferences;
-    private NotaMB notaMB;
+    private BimestreMB bimestreMB;
     private AlunoFrequenciaMes alunoFrequenciaMes;
 
     public FrequenciaMB(Context context) {
         this.context = context;
         configRealm();
         preferences = new Preferences(context);
-        notaMB = new NotaMB(context);
+        bimestreMB = new BimestreMB(context);
     }
 
     public void configRealm() {
@@ -41,7 +37,7 @@ public class FrequenciaMB {
     }
 
     public void salvarFrequencia() {
-        Long idBimestreAtual = notaMB.verificarBimestreAtual();
+        Long idBimestreAtual = bimestreMB.getBimestreAtual();
 
         RealmResults<Frequencia> frequencias = realm.where(Frequencia.class).findAll();
 
