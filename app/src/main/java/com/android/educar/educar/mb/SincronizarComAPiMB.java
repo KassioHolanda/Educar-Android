@@ -41,7 +41,7 @@ public class SincronizarComAPiMB {
         turmaChamada.recuperarGradeCurso(preferences.getSavedLong("id_funcionario"));
         ocorrenciaChamada.recuperarTodosTiposOcorrenciaAPI();
         anoLetivoChamada.recuperarBimestreAPI();
-        anoLetivoChamada.anoLetivoAPI();
+//        anoLetivoChamada.anoLetivoAPI();
     }
 
     public void enviarDadosDoBancoDeDadosParaAPI() {
