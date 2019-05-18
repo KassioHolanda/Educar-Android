@@ -15,25 +15,20 @@ public class SituacaoTurmaMes extends RealmObject{
     @SerializedName("datahora")
     private String dataHora;
     private String status;
-    private Long turma;
+//    private Turma turma;
     @SerializedName("quantidadeaproados")
     private int quantidadeAprovados;
     @SerializedName("quantidadereprovados")
     private int quantidadeReprovados;
-    private Long bimestre;
+    private Bimestre bimestre;
     private boolean novo;
 
-    public SituacaoTurmaMes() {
+    public Long getId() {
+        return id;
     }
 
-    public SituacaoTurmaMes(String dataHora, String status, Long tuma, int quantidadeAprovados, int quantidadeReprovados, Long bimestre) {
-        this.dataHora = dataHora;
-        this.status = status;
-        this.turma = tuma;
-        this.quantidadeAprovados = quantidadeAprovados;
-        this.quantidadeReprovados = quantidadeReprovados;
-        this.bimestre = bimestre;
-        this.novo = false;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDataHora() {
@@ -52,6 +47,13 @@ public class SituacaoTurmaMes extends RealmObject{
         this.status = status;
     }
 
+//    public Turma getTurma() {
+//        return turma;
+//    }
+//
+//    public void setTurma(Turma turma) {
+//        this.turma = turma;
+//    }
 
     public int getQuantidadeAprovados() {
         return quantidadeAprovados;
@@ -69,28 +71,12 @@ public class SituacaoTurmaMes extends RealmObject{
         this.quantidadeReprovados = quantidadeReprovados;
     }
 
-    public Long getBimestre() {
+    public Bimestre getBimestre() {
         return bimestre;
     }
 
-    public void setBimestre(Long bimestre) {
+    public void setBimestre(Bimestre bimestre) {
         this.bimestre = bimestre;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getTurma() {
-        return turma;
-    }
-
-    public void setTurma(Long turma) {
-        this.turma = turma;
     }
 
     public boolean isNovo() {

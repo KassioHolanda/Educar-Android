@@ -30,6 +30,8 @@ public class Turma extends RealmObject {
     @SerializedName("grade_curso")
     private RealmList<GradeCurso> gradeCursos;
     private RealmList<Matricula> matriculas;
+    @SerializedName("situacao_turma_mes")
+    private RealmList<SituacaoTurmaMes> situacoesTurmaMes;
 
     public Long getId() {
         return id;
@@ -101,5 +103,13 @@ public class Turma extends RealmObject {
 
     public void setMatriculas(RealmList<Matricula> matriculas) {
         this.matriculas = matriculas;
+    }
+
+    public RealmList<SituacaoTurmaMes> getSituacoesTurmaMes() {
+        return situacoesTurmaMes;
+    }
+
+    public void setSituacoesTurmaMes(RealmList<SituacaoTurmaMes> situacoesTurmaMes) {
+        this.situacoesTurmaMes = situacoesTurmaMes;
     }
 }
