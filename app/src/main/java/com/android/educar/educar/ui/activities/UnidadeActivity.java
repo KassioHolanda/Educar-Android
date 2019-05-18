@@ -23,6 +23,8 @@ import android.widget.ListView;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.mb.SincronizarComAPiMB;
+import com.android.educar.educar.model.AnoLetivo;
+import com.android.educar.educar.model.Bimestre;
 import com.android.educar.educar.model.Funcionario;
 import com.android.educar.educar.model.FuncionarioEscola;
 import com.android.educar.educar.model.GradeCurso;
@@ -79,7 +81,15 @@ public class UnidadeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        recuperarDadosIndependentesAPI();
         verificarPrimeiroAcesso();
+    }
+
+    public void recuperarDadosIndependentesAPI() {
+//        if (realm.where(AnoLetivo.class).findAll().size() == 0 && realm.where(Bimestre.class).findAll().size() == 0) {
+        anoLetivoChamada.recuperarBimestreAPI();
+        anoLetivoChamada.recuperarAlunoLetivoAPI(1);
+//        }
     }
 
     public void configRealm() {
@@ -245,24 +255,34 @@ public class UnidadeActivity extends AppCompatActivity {
                         recuperarFuncionario(response.body().get(0));
                     }
                 }
-//                progressDialog.hide();
+                progressDialog.hide();
             }
 
             @Override
             public void onFailure(Call<List<Funcionario>> call, Throwable t) {
                 progressDialog.hide();
                 Log.i("erro_api", t.getMessage());
-                Snackbar.make(findViewById(android.R.id.content), "Ocorreu um Erro, Solicite Administrador.", Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                }).show();
+//                Snackbar.make(findViewById(android.R.id.content), "Ocorreu um Erro, Solicite Administrador.", Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                    }
+//                }).show();
             }
         });
     }
 
+    public void novaThreadTurma() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                recuperarDadosTurmas();
+            }
+        }).start();
+    }
+
     public void recuperarDadosTurmas() {
+//        progressDialog.setMessage("Recuperando turmas");
         for (FuncionarioEscola funcionarioEscola : this.funcionario.getFuncionarioEscolas()) {
             for (LocalEscola localEscola : funcionarioEscola.getUnidade().getLocalEscolas()) {
                 for (Turma turma : localEscola.getTurmas()) {
@@ -270,9 +290,12 @@ public class UnidadeActivity extends AppCompatActivity {
                 }
             }
         }
+//        progressDialog.hide();
     }
 
     public void recuperarTurmas(Turma turma) {
+//        progressDialog.show();
+        progressDialog.setMessage("Recuperando Turmas");
         Call<Turma> listaTurmaAPICall = apiService.getTurmaEndPoint().getTurmaCompleta(turma.getId());
         listaTurmaAPICall.enqueue(new Callback<Turma>() {
             @Override
@@ -280,18 +303,23 @@ public class UnidadeActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     recuperarTurma(response.body(), turma.getId());
                 }
-                progressDialog.hide();
+                if (response.code() == 500) {
+                    Log.i("erro_api", response.message());
+                }
+
+//                progressDialog.hide();
             }
 
             @Override
             public void onFailure(Call<Turma> call, Throwable t) {
-                progressDialog.hide();
-                Snackbar.make(findViewById(android.R.id.content), "Ocorreu um Erro, Solicite Administrador, ao salvar as turmas.", Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                }).show();
+//                progressDialog.hide();
+                Log.i("erro_api", t.getMessage());
+//                Snackbar.make(findViewById(android.R.id.content), "Ocorreu um Erro, Solicite Administrador, ao salvar as turmas.", Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                    }
+//                }).show();
             }
         });
     }
@@ -308,18 +336,15 @@ public class UnidadeActivity extends AppCompatActivity {
     private void recuperarFuncionario(Funcionario body) {
         this.funcionario = body;
 
-        anoLetivoChamada.recuperarBimestreAPI();
-        anoLetivoChamada.recuperarAlunoLetivoAPI(1);
-
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(this.funcionario);
         realm.commitTransaction();
 
-        recuperarDadosTurmas();
+        novaThreadTurma();
         atualizarDadosTela();
         recuperarUnidadesFuncionario();
         atualizarAdapterListaUnidades();
-        alertaInformacaoPrimeiraUtilizacao();
+//        alertaInformacaoPrimeiraUtilizacao();
     }
 
     public void recuperarUnidadesFuncionario() {
@@ -332,6 +357,7 @@ public class UnidadeActivity extends AppCompatActivity {
     public void verificarPrimeiroAcesso() {
         if (!preferences.getSavedBoolean("alerta_info_primeiro_acesso")) {
             recuperarDadosFuncionario();
+            preferences.saveBoolean("alerta_info_primeiro_acesso", true);
         } else {
             Funcionario f = realm.where(Funcionario.class).findFirst();
             this.funcionario = realm.copyFromRealm(f);
