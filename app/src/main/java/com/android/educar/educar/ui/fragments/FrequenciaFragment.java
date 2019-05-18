@@ -6,23 +6,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.adapter.FrequenciaAdapterLista;
+import com.android.educar.educar.mb.BimestreMB;
 import com.android.educar.educar.mb.FrequenciaMB;
-import com.android.educar.educar.model.Aluno;
 import com.android.educar.educar.model.Bimestre;
 import com.android.educar.educar.model.Disciplina;
 import com.android.educar.educar.model.Funcionario;
-import com.android.educar.educar.model.FuncionarioEscola;
-import com.android.educar.educar.model.LocalEscola;
 import com.android.educar.educar.model.Matricula;
-import com.android.educar.educar.model.PessoaFisica;
-import com.android.educar.educar.model.Serie;
 import com.android.educar.educar.model.Turma;
 import com.android.educar.educar.model.Unidade;
 import com.android.educar.educar.utils.Messages;
@@ -35,7 +30,6 @@ import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class FrequenciaFragment extends Fragment {
 
@@ -54,15 +48,16 @@ public class FrequenciaFragment extends Fragment {
     private LinearLayout turmaFrequencia;
     private LinearLayout disciplinaFrequencia;
 
-    private List<PessoaFisica> pessoaFisicas;
+    private List<Matricula> pessoaFisicas;
 
     private FrequenciaMB frequenciaMB;
+    private BimestreMB bimestreMB;
 
     private Realm realm;
     private TextView bimestreFragmentFrequencia;
 
     private Funcionario funcionario;
-
+    private Bimestre bimestre;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -135,25 +130,16 @@ public class FrequenciaFragment extends Fragment {
     public void setupInit() {
         preferences = new Preferences(getContext());
         frequenciaMB = new FrequenciaMB(getContext());
+        bimestreMB = new BimestreMB(getContext());
         pessoaFisicas = new ArrayList<>();
         funcionario = realm.copyFromRealm(realm.where(Funcionario.class).findFirst());
+        bimestre = realm.copyFromRealm(realm.where(Bimestre.class).equalTo("id", bimestreMB.getBimestreAtual()).findFirst());
     }
 
     public void recuperarAlunosRealm() {
         Turma turma = realm.copyFromRealm(realm.where(Turma.class).equalTo("id", preferences.getSavedLong("id_turma")).findFirst());
-//        for (FuncionarioEscola funcionarioEscola : this.funcionario.getFuncionarioEscolas()) {
-//            for (LocalEscola localEscola : funcionarioEscola.getUnidade().getLocalEscolas()) {
-//                for (Turma turma : localEscola.getTurmas()) {
-//                    for (Matricula matricula : turma.getMatriculas()) {
-//                        pessoaFisicas.add(matricula.getAluno().getPessoaFisica());
-//                    }
-//                }
-//            }
-//        }
 
-        for (Matricula matricula : turma.getMatriculas()) {
-            this.pessoaFisicas.add(matricula.getAluno().getPessoaFisica());
-        }
+        this.pessoaFisicas = turma.getMatriculas();
 
         Collections.sort(pessoaFisicas);
         atualizarAdapterFrequencia(pessoaFisicas);
@@ -191,7 +177,7 @@ public class FrequenciaFragment extends Fragment {
         });
     }
 
-    public void atualizarAdapterFrequencia(List<PessoaFisica> pessoaFisicas) {
+    public void atualizarAdapterFrequencia(List<Matricula> pessoaFisicas) {
         FrequenciaAdapterLista frequenciaAdapterLista = new FrequenciaAdapterLista(getContext(), pessoaFisicas);
         alunosFrequencia.setAdapter(frequenciaAdapterLista);
     }
@@ -200,7 +186,7 @@ public class FrequenciaFragment extends Fragment {
         unidadeSelecionadaAula.setText(unidadeSelecionada.getAbreviacao());
         turmaSelecionadaAula.setText(turmaSelecionada.getDescricao());
         disciplinaSelecionadaAula.setText(disciplinaSelecionada.getDescricao());
-//        bimestreFragmentFrequencia.setText(realm.where(Bimestre.class).equalTo("id", preferences.getSavedLong("id_bimestre")).findFirst().getDescricao());
+        bimestreFragmentFrequencia.setText(bimestre.getDescricao());
         dataFrequencia.setText("" + UtilsFunctions.apenasData().format(new Date()));
     }
 }
