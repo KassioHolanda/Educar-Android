@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.educar.educar.R;
+import com.android.educar.educar.mb.BimestreMB;
 import com.android.educar.educar.mb.NotaMB;
 import com.android.educar.educar.model.Bimestre;
 import com.android.educar.educar.model.Disciplina;
@@ -50,6 +51,9 @@ public class AulaAcoesActivity extends AppCompatActivity {
     private Turma turmaSelecionada;
     private Disciplina disciplinaSelecionada;
     private Serie serieSelecionada;
+    private Bimestre bimestreSelecionado;
+
+    private BimestreMB bimestreMB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +79,8 @@ public class AulaAcoesActivity extends AppCompatActivity {
     public void setupInit() {
         preferences = new Preferences(getApplicationContext());
         funcionario = realm.copyFromRealm(realm.where(Funcionario.class).findFirst());
+        bimestreMB = new BimestreMB(getApplicationContext());
+        bimestreSelecionado = realm.copyFromRealm(realm.where(Bimestre.class).equalTo("id", bimestreMB.getBimestreAtual()).findFirst());
     }
 
 
@@ -128,8 +134,7 @@ public class AulaAcoesActivity extends AppCompatActivity {
             linearSerie.setVisibility(View.GONE);
             serieacoes.setText("");
         }
-
-//        bimestre.setText(realm.where(Bimestre.class).equalTo("id", new NotaMB(getApplicationContext()).verificarBimestreAtual()).findFirst().getDescricao());
+        bimestre.setText(bimestreSelecionado.getDescricao());
     }
 
     public void clickOnItem() {
