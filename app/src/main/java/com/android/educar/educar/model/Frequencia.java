@@ -15,7 +15,6 @@ public class Frequencia extends RealmObject {
     @PrimaryKey
     private Long id;
     private Long matricula;
-    private long pessoaFisica;
     private long turma;
     private long disciplina;
     private long unidade;
@@ -34,14 +33,6 @@ public class Frequencia extends RealmObject {
 
     public boolean isAlterado() {
         return alterado;
-    }
-
-    public long getPessoafisica() {
-        return pessoaFisica;
-    }
-
-    public void setPessoafisica(long pessoafisica) {
-        this.pessoaFisica = pessoafisica;
     }
 
     public void setAlterado(boolean alterado) {
@@ -102,6 +93,10 @@ public class Frequencia extends RealmObject {
 
     public void setUnidade(long unidade) {
         this.unidade = unidade;
+    }
+
+    public void setMatricula(long matricula) {
+        this.matricula = matricula;
     }
 
     @Override
