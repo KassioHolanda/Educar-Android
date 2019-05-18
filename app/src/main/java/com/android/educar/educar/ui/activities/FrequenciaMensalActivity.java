@@ -140,7 +140,7 @@ public class FrequenciaMensalActivity extends AppCompatActivity {
         final EditText data = viewDialog.findViewById(R.id.data_presenca_mensal_id);
         final CheckBox preseca = viewDialog.findViewById(R.id.presenca_id_mensal);
 
-        aluno.setText(realm.where(PessoaFisica.class).equalTo("id", frequencia.getPessoafisica()).findFirst().getNome());
+//        aluno.setText(realm.where(PessoaFisica.class).equalTo("id", frequencia.getPessoafisica()).findFirst().getNome());
         aluno.setEnabled(false);
         data.setText(frequencia.getDate());
         data.setEnabled(false);
