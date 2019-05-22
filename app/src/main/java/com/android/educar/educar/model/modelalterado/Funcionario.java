@@ -1,15 +1,8 @@
-package com.android.educar.educar.model;
+package com.android.educar.educar.model.modelalterado;
 
 import com.google.gson.annotations.SerializedName;
-import com.orm.dsl.Ignore;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
-import io.realm.Realm;
 import io.realm.RealmList;
-import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 

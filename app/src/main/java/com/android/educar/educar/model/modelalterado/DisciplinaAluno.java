@@ -1,11 +1,9 @@
-package com.android.educar.educar.model;
+package com.android.educar.educar.model.modelalterado;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.Date;
 
-import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -15,7 +13,6 @@ public class DisciplinaAluno extends RealmObject {
     private Long id;
     @SerializedName("statusdisciplinaaluno")
     private String statusDisciplinaAluno;
-//    private Long matricula;
     @SerializedName("seriedisciplina")
     private SerieDisciplina serieDisciplina;
     @SerializedName("mesesfechadosnota")
@@ -41,6 +38,16 @@ public class DisciplinaAluno extends RealmObject {
     private double mediaAculumada;
     @SerializedName("cargahoraria")
     private Long cargaHoraria;
+    private Long matricula;
+    private Aluno aluno;
+
+    public Aluno getAluno() {
+        return aluno;
+    }
+
+    public void setAluno(Aluno aluno) {
+        this.aluno = aluno;
+    }
 
     public Long getId() {
         return id;
@@ -56,14 +63,6 @@ public class DisciplinaAluno extends RealmObject {
 
     public void setStatusDisciplinaAluno(String statusDisciplinaAluno) {
         this.statusDisciplinaAluno = statusDisciplinaAluno;
-    }
-
-    public SerieDisciplina getSerieDisciplina() {
-        return serieDisciplina;
-    }
-
-    public void setSerieDisciplina(SerieDisciplina serieDisciplina) {
-        this.serieDisciplina = serieDisciplina;
     }
 
     public int getMesesFechadosNota() {
@@ -160,5 +159,21 @@ public class DisciplinaAluno extends RealmObject {
 
     public void setCargaHoraria(Long cargaHoraria) {
         this.cargaHoraria = cargaHoraria;
+    }
+
+    public SerieDisciplina getSerieDisciplina() {
+        return serieDisciplina;
+    }
+
+    public void setSerieDisciplina(SerieDisciplina serieDisciplina) {
+        this.serieDisciplina = serieDisciplina;
+    }
+
+    public Long getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(Long matricula) {
+        this.matricula = matricula;
     }
 }

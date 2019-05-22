@@ -1,21 +1,19 @@
-package com.android.educar.educar.model;
+package com.android.educar.educar.model.modelalterado;
 
 import java.io.Serializable;
 
 import io.realm.RealmModel;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-public class Cargo extends RealmObject {
+public class TipoOcorrencia extends RealmObject {
+
+    @PrimaryKey
     private Long id;
-    private String abreviacao;
     private String descricao;
+    private int codigo;
 
-    public Cargo() {
-    }
-
-    public Cargo(String abreviacao, String descricao) {
-        this.abreviacao = abreviacao;
-        this.descricao = descricao;
+    public TipoOcorrencia() {
     }
 
     public Long getId() {
@@ -26,14 +24,6 @@ public class Cargo extends RealmObject {
         this.id = id;
     }
 
-    public String getAbreviacao() {
-        return abreviacao;
-    }
-
-    public void setAbreviacao(String abreviacao) {
-        this.abreviacao = abreviacao;
-    }
-
     public String getDescricao() {
         return descricao;
     }
@@ -41,6 +31,14 @@ public class Cargo extends RealmObject {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
+//    public int getCodigo() {
+//        return codigo;
+//    }
+//
+//    public void setCodigo(int codigo) {
+//        this.codigo = codigo;
+//    }
 
     @Override
     public String toString() {

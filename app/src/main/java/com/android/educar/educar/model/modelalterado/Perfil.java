@@ -1,4 +1,4 @@
-package com.android.educar.educar.model;
+package com.android.educar.educar.model.modelalterado;
 
 import com.google.gson.annotations.SerializedName;
 

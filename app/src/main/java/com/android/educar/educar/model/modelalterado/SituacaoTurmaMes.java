@@ -1,11 +1,7 @@
-package com.android.educar.educar.model;
+package com.android.educar.educar.model.modelalterado;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -15,13 +11,27 @@ public class SituacaoTurmaMes extends RealmObject{
     @SerializedName("datahora")
     private String dataHora;
     private String status;
-//    private Turma turma;
+    private Long turma;
     @SerializedName("quantidadeaproados")
     private int quantidadeAprovados;
     @SerializedName("quantidadereprovados")
     private int quantidadeReprovados;
     private Bimestre bimestre;
     private boolean novo;
+
+    public SituacaoTurmaMes() {
+
+    }
+
+    public SituacaoTurmaMes(String dataHora, String status, int quantidadeAprovados, int quantidadeReprovados, Bimestre bimestre, boolean novo, Long turma) {
+        this.dataHora = dataHora;
+        this.status = status;
+        this.quantidadeAprovados = quantidadeAprovados;
+        this.quantidadeReprovados = quantidadeReprovados;
+        this.bimestre = bimestre;
+        this.novo = novo;
+        this.turma = turma;
+    }
 
     public Long getId() {
         return id;
@@ -46,14 +56,6 @@ public class SituacaoTurmaMes extends RealmObject{
     public void setStatus(String status) {
         this.status = status;
     }
-
-//    public Turma getTurma() {
-//        return turma;
-//    }
-//
-//    public void setTurma(Turma turma) {
-//        this.turma = turma;
-//    }
 
     public int getQuantidadeAprovados() {
         return quantidadeAprovados;

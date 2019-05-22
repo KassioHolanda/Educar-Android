@@ -1,14 +1,10 @@
-package com.android.educar.educar.model;
+package com.android.educar.educar.model.modelalterado;
 
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import io.realm.RealmList;
-import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -29,9 +25,29 @@ public class Matricula extends RealmObject implements Comparable<Matricula> {
     private AnoLetivo anoLetivo;
     @SerializedName("todas_disciplinas_aluno")
     private RealmList<DisciplinaAluno> disciplinaAlunos;
+    @SerializedName("aluno_frequencia_mes")
+    private RealmList<AlunoFrequenciaMes> alunoFrequenciasMes;
+    @SerializedName("aluno_nota_mes")
+    private RealmList<AlunoNotaMes> alunosNotaMes;
 
     public Long getId() {
         return id;
+    }
+
+    public RealmList<AlunoFrequenciaMes> getAlunoFrequenciasMes() {
+        return alunoFrequenciasMes;
+    }
+
+    public void setAlunoFrequenciasMes(RealmList<AlunoFrequenciaMes> alunoFrequenciasMes) {
+        this.alunoFrequenciasMes = alunoFrequenciasMes;
+    }
+
+    public RealmList<AlunoNotaMes> getAlunosNotaMes() {
+        return alunosNotaMes;
+    }
+
+    public void setAlunosNotaMes(RealmList<AlunoNotaMes> alunosNotaMes) {
+        this.alunosNotaMes = alunosNotaMes;
     }
 
     public void setId(Long id) {

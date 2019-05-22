@@ -1,4 +1,4 @@
-package com.android.educar.educar.model;
+package com.android.educar.educar.model.modelalterado;
 
 import java.io.Serializable;
 
@@ -6,14 +6,15 @@ import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class TipoOcorrencia extends RealmObject {
+public class Serie extends RealmObject{
 
     @PrimaryKey
     private Long id;
     private String descricao;
-    private int codigo;
+    private String nivel;
 
-    public TipoOcorrencia() {
+
+    public Serie() {
     }
 
     public Long getId() {
@@ -32,16 +33,11 @@ public class TipoOcorrencia extends RealmObject {
         this.descricao = descricao;
     }
 
-//    public int getCodigo() {
-//        return codigo;
-//    }
-//
-//    public void setCodigo(int codigo) {
-//        this.codigo = codigo;
-//    }
+    public String getNivel() {
+        return nivel;
+    }
 
-    @Override
-    public String toString() {
-        return this.descricao;
+    public void setNivel(String nivel) {
+        this.nivel = nivel;
     }
 }

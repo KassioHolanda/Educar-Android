@@ -1,13 +1,7 @@
-package com.android.educar.educar.model;
-
-import android.support.annotation.NonNull;
+package com.android.educar.educar.model.modelalterado;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -16,20 +10,16 @@ public class AlunoNotaMes extends RealmObject {
     @PrimaryKey
     private long id;
     private Float nota;
-    @SerializedName("disciplinaaluno")
-    private Long disciplinaAluno;
     @SerializedName("inseridoFechamento")
     private boolean inseridoFechamento;
     @SerializedName("tipolancamentonota")
     private String tipoLancamentoNota;
     @SerializedName("anoletivo")
-    private Long anoLetivo;
-    private Long matricula;
-    private Long bimestre;
-    private Long unidade;
-    private Long disciplina;
+    private AnoLetivo anoLetivo;
+    @SerializedName("bimestre")
+    private Bimestre bimestre;
+    private Disciplina disciplina;
     private String datahora;
-    private Long usuario;
     private boolean novo;
     private boolean alterado;
     private int sequencia;
@@ -49,16 +39,8 @@ public class AlunoNotaMes extends RealmObject {
         return nota;
     }
 
-    public void setNota(float nota) {
+    public void setNota(Float nota) {
         this.nota = nota;
-    }
-
-    public Long getDisciplinaAluno() {
-        return disciplinaAluno;
-    }
-
-    public void setDisciplinaAluno(Long disciplinaAluno) {
-        this.disciplinaAluno = disciplinaAluno;
     }
 
     public boolean isInseridoFechamento() {
@@ -77,35 +59,27 @@ public class AlunoNotaMes extends RealmObject {
         this.tipoLancamentoNota = tipoLancamentoNota;
     }
 
-    public Long getAnoLetivo() {
+    public AnoLetivo getAnoLetivo() {
         return anoLetivo;
     }
 
-    public void setAnoLetivo(Long anoLetivo) {
+    public void setAnoLetivo(AnoLetivo anoLetivo) {
         this.anoLetivo = anoLetivo;
     }
 
-    public Long getMatricula() {
-        return matricula;
+    public Bimestre getBimestre() {
+        return bimestre;
     }
 
-    public void setMatricula(Long matricula) {
-        this.matricula = matricula;
+    public void setBimestre(Bimestre bimestre) {
+        this.bimestre = bimestre;
     }
 
-    public Long getUnidade() {
-        return unidade;
-    }
-
-    public void setUnidade(Long unidade) {
-        this.unidade = unidade;
-    }
-
-    public Long getDisciplina() {
+    public Disciplina getDisciplina() {
         return disciplina;
     }
 
-    public void setDisciplina(Long disciplina) {
+    public void setDisciplina(Disciplina disciplina) {
         this.disciplina = disciplina;
     }
 
@@ -117,14 +91,6 @@ public class AlunoNotaMes extends RealmObject {
         this.datahora = datahora;
     }
 
-    public Long getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Long usuario) {
-        this.usuario = usuario;
-    }
-
     public boolean isNovo() {
         return novo;
     }
@@ -133,12 +99,12 @@ public class AlunoNotaMes extends RealmObject {
         this.novo = novo;
     }
 
-    public Long getBimestre() {
-        return bimestre;
+    public boolean isAlterado() {
+        return alterado;
     }
 
-    public void setBimestre(Long bimestre) {
-        this.bimestre = bimestre;
+    public void setAlterado(boolean alterado) {
+        this.alterado = alterado;
     }
 
     public int getSequencia() {
@@ -147,14 +113,6 @@ public class AlunoNotaMes extends RealmObject {
 
     public void setSequencia(int sequencia) {
         this.sequencia = sequencia;
-    }
-
-    public boolean isAlterado() {
-        return alterado;
-    }
-
-    public void setAlterado(boolean alterado) {
-        this.alterado = alterado;
     }
 }
 

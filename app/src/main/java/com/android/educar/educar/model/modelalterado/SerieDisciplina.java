@@ -1,8 +1,5 @@
-package com.android.educar.educar.model;
+package com.android.educar.educar.model.modelalterado;
 
-import java.io.Serializable;
-
-import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
