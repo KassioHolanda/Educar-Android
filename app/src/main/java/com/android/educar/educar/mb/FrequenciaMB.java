@@ -51,12 +51,24 @@ public class FrequenciaMB {
 
             Matricula matricula = realm.copyFromRealm(realm.where(Matricula.class).equalTo("id", frequencia.getMatricula()).findFirst());
             disciplinaAluno = realm.copyFromRealm(realm.where(DisciplinaAluno.class).equalTo("serieDisciplina.id", serieDisciplina.getId()).findFirst());
-            if (disciplinaAluno != null) {
-                alunoFrequenciaMes = realm.copyFromRealm(realm.where(AlunoFrequenciaMes.class).equalTo("bimestre.id", idBimestreAtual)
-                        .equalTo("disciplinaAluno", disciplinaAluno.getId()).findFirst());
-            } else {
-                alunoFrequenciaMes = realm.copyFromRealm(realm.where(AlunoFrequenciaMes.class).equalTo("bimestre.id", idBimestreAtual)
-                        .equalTo("matricula", matricula.getId()).findFirst());
+            disciplinaAluno = null;
+            for (DisciplinaAluno discAluno : matricula.getDisciplinaAlunos()) {
+                if (discAluno.getSerieDisciplina().getId() == serieDisciplina.getId()) {
+                    disciplinaAluno = discAluno;
+                    for (AlunoFrequenciaMes alunoFreq : matricula.getAlunoFrequenciasMes()) {
+                        if (alunoFreq.getBimestre().getId() == idBimestreAtual && alunoFreq.getDisciplinaAluno().equals(disciplinaAluno.getId())) {
+                            alunoFrequenciaMes = alunoFreq;
+                        }
+                    }
+                }
+            }
+
+            if (disciplinaAluno == null) {
+                for (AlunoFrequenciaMes alunoFreq : matricula.getAlunoFrequenciasMes()) {
+                    if (alunoFreq.getBimestre().getId() == idBimestreAtual && alunoFreq.getMatricula() == matricula.getId()) {
+                        alunoFrequenciaMes = alunoFreq;
+                    }
+                }
             }
             if (frequencia.isNovo()) {
                 if (alunoFrequenciaMes != null) {
