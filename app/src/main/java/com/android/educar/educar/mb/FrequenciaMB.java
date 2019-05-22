@@ -4,11 +4,12 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.android.educar.educar.model.AlunoFrequenciaMes;
-import com.android.educar.educar.model.DisciplinaAluno;
-import com.android.educar.educar.model.Frequencia;
-import com.android.educar.educar.model.Matricula;
-import com.android.educar.educar.model.SerieDisciplina;
+import com.android.educar.educar.model.modelalterado.AlunoFrequenciaMes;
+import com.android.educar.educar.model.modelalterado.DisciplinaAluno;
+import com.android.educar.educar.model.modelalterado.Frequencia;
+import com.android.educar.educar.model.modelalterado.Matricula;
+import com.android.educar.educar.model.modelalterado.SerieDisciplina;
+import com.android.educar.educar.model.modelalterado.Turma;
 import com.android.educar.educar.utils.Preferences;
 
 import java.util.Date;
@@ -23,12 +24,15 @@ public class FrequenciaMB {
     private Preferences preferences;
     private BimestreMB bimestreMB;
     private AlunoFrequenciaMes alunoFrequenciaMes;
+    private Turma turma;
+    private DisciplinaAluno disciplinaAluno;
 
     public FrequenciaMB(Context context) {
         this.context = context;
         configRealm();
         preferences = new Preferences(context);
         bimestreMB = new BimestreMB(context);
+        turma = realm.copyFromRealm(realm.where(Turma.class).equalTo("id", preferences.getSavedLong("id_turma")).findFirst());
     }
 
     public void configRealm() {
@@ -37,42 +41,28 @@ public class FrequenciaMB {
     }
 
     public void salvarFrequencia() {
-        Long idBimestreAtual = bimestreMB.getBimestreAtual();
 
+        Long idBimestreAtual = bimestreMB.getBimestreAtual();
         RealmResults<Frequencia> frequencias = realm.where(Frequencia.class).findAll();
+
+        SerieDisciplina serieDisciplina = realm.copyFromRealm(realm.where(SerieDisciplina.class).equalTo("disciplina.id", preferences.getSavedLong("id_disciplina")).findFirst());
 
         for (Frequencia frequencia : frequencias) {
 
-            Long idSerieDisciplina = realm.where(SerieDisciplina.class).equalTo("disciplina", preferences.getSavedLong("id_disciplina")).findFirst().getId();
-            Long idMatricula = realm.where(Matricula.class).equalTo("id", frequencia.getMatricula()).findFirst().getId();
-            Long idDisciplinaAluno = null;
-
-            try {
-                idDisciplinaAluno = (realm.where(DisciplinaAluno.class).equalTo("matricula", idMatricula)
-                        .equalTo("serieDisciplina", idSerieDisciplina)
-                        .equalTo("matricula", frequencia.getMatricula()).findFirst()).getId();
-            } catch (Exception e) {
-                Log.i("ERRO", "DISCIPLINA ALUNO NULLL");
-            }
-
-
-            alunoFrequenciaMes = null;
-            if (idDisciplinaAluno != null) {
-                alunoFrequenciaMes = realm.where(AlunoFrequenciaMes.class)
-                        .equalTo("bimestre", idBimestreAtual)
-                        .equalTo("disciplinaAluno", idDisciplinaAluno).findFirst();
-
+            Matricula matricula = realm.copyFromRealm(realm.where(Matricula.class).equalTo("id", frequencia.getMatricula()).findFirst());
+            disciplinaAluno = realm.copyFromRealm(realm.where(DisciplinaAluno.class).equalTo("serieDisciplina.id", serieDisciplina.getId()).findFirst());
+            if (disciplinaAluno != null) {
+                alunoFrequenciaMes = realm.copyFromRealm(realm.where(AlunoFrequenciaMes.class).equalTo("bimestre.id", idBimestreAtual)
+                        .equalTo("disciplinaAluno", disciplinaAluno.getId()).findFirst());
             } else {
-                alunoFrequenciaMes = realm.where(AlunoFrequenciaMes.class)
-                        .equalTo("bimestre", idBimestreAtual)
-                        .equalTo("matricula", idMatricula).findFirst();
+                alunoFrequenciaMes = realm.copyFromRealm(realm.where(AlunoFrequenciaMes.class).equalTo("bimestre.id", idBimestreAtual)
+                        .equalTo("matricula", matricula.getId()).findFirst());
             }
-
             if (frequencia.isNovo()) {
                 if (alunoFrequenciaMes != null) {
                     realm.beginTransaction();
 
-                    if(!frequencia.isPresenca()){
+                    if (!frequencia.isPresenca()) {
                         alunoFrequenciaMes.setTotalFaltas(alunoFrequenciaMes.getTotalFaltas() + 1);
                     }
 
