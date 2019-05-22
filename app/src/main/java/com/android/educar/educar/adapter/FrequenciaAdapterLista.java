@@ -1,51 +1,41 @@
 package com.android.educar.educar.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.model.Aluno;
-import com.android.educar.educar.model.Frequencia;
-import com.android.educar.educar.model.Matricula;
-import com.android.educar.educar.model.PessoaFisica;
+import com.android.educar.educar.model.modelalterado.Frequencia;
+import com.android.educar.educar.model.modelalterado.Matricula;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 
 public class FrequenciaAdapterLista extends BaseAdapter {
 
     private Frequencia frequencia;
-    private List<PessoaFisica> pessoaFisicas;
+    private List<Matricula> matriculas;
     private Context context;
     private TextView nomeAlunoFrequencia;
-    private final List<PessoaFisica> selecionados;
+    private final List<Matricula> selecionados;
     private Realm realm;
     private Preferences preferences;
     private Frequencia frequencia2;
 
-    public FrequenciaAdapterLista(Context context, List<PessoaFisica> pessoaFisicas) {
-        this.pessoaFisicas = pessoaFisicas;
+    public FrequenciaAdapterLista(Context context, List<Matricula> matriculas) {
+        this.matriculas = matriculas;
         this.context = context;
         selecionados = new ArrayList<>();
         configRealm();
@@ -59,12 +49,12 @@ public class FrequenciaAdapterLista extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return pessoaFisicas.size();
+        return matriculas.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return pessoaFisicas.get(i);
+        return matriculas.get(i);
     }
 
     @Override
@@ -84,9 +74,6 @@ public class FrequenciaAdapterLista extends BaseAdapter {
             row = view;
         }
 
-//        Aluno aluno = realm.where(Aluno.class).equalTo("pessoaFisica", pessoaFisicas.get(i).getId()).findFirst();
-//        final Matricula matricula = realm.where(Matricula.class).equalTo("aluno", aluno.getId()).findFirst();
-
         nomeAlunoFrequencia = row.findViewById(R.id.nomealuno_frequencia_id);
         CheckBox chk = row.findViewById(R.id.presenca_id);
         TextView idAluno = row.findViewById(R.id.idalunonota_id);
@@ -95,41 +82,41 @@ public class FrequenciaAdapterLista extends BaseAdapter {
         ordem = ordem + 1;
         idAluno.setText("" + ordem);
 
-        final PessoaFisica pessoaFisicaSelecionada = pessoaFisicas.get(i);
+        final Matricula matriculaSelecionada = matriculas.get(i);
 
-        frequencia2 = recuperarFrequencia(pessoaFisicaSelecionada);
+        frequencia2 = recuperarFrequencia(matriculaSelecionada);
         if (frequencia2 != null) {
             if (frequencia2.isPresenca()) {
-                selecionados.add(pessoaFisicaSelecionada);
+                selecionados.add(matriculaSelecionada);
             }
         }
 
-        nomeAlunoFrequencia.setText(pessoaFisicaSelecionada.getNome());
-        chk.setTag(pessoaFisicaSelecionada);
+        nomeAlunoFrequencia.setText(matriculaSelecionada.getAluno().getPessoaFisica().getNome());
+        chk.setTag(matriculaSelecionada);
 
         chk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CheckBox checkBox = (CheckBox) view;
-                PessoaFisica pessoaFisica1 = (PessoaFisica) checkBox.getTag();
+                Matricula matricula1 = (Matricula) checkBox.getTag();
                 if (checkBox.isChecked()) {
-//                    atualizarPresenca(pessoaFisicaSelecionada, matricula, true);
-                    Toast.makeText(context, "O Aluno " + pessoaFisica1.getNome() + " está Presente.", Toast.LENGTH_SHORT).show();
-                    if (!selecionados.contains(pessoaFisica1)) {
-                        selecionados.add(pessoaFisica1);
+                    atualizarPresenca(matricula1, true);
+                    Toast.makeText(context, "O Aluno " + matricula1.getAluno().getPessoaFisica().getNome() + " está Presente.", Toast.LENGTH_SHORT).show();
+                    if (!selecionados.contains(matricula1)) {
+                        selecionados.add(matricula1);
                     }
 
                 } else {
-//                    atualizarPresenca(pessoaFisicaSelecionada, matricula, false);
-                    Toast.makeText(context, "O Aluno " + pessoaFisica1.getNome() + " não está Presente.", Toast.LENGTH_SHORT).show();
-                    if (selecionados.contains(pessoaFisica1)) {
-                        selecionados.remove(pessoaFisica1);
+                    atualizarPresenca(matricula1, false);
+                    Toast.makeText(context, "O Aluno " + matricula1.getAluno().getPessoaFisica().getNome() + " não está Presente.", Toast.LENGTH_SHORT).show();
+                    if (selecionados.contains(matricula1)) {
+                        selecionados.remove(matricula1);
                     }
                 }
             }
         });
 
-        if (selecionados.contains(pessoaFisicaSelecionada)) {
+        if (selecionados.contains(matriculaSelecionada)) {
             chk.setChecked(true);
         } else {
             chk.setChecked(false);
@@ -137,9 +124,9 @@ public class FrequenciaAdapterLista extends BaseAdapter {
         return row;
     }
 
-    public void atualizarPresenca(PessoaFisica pessoaFisica, Matricula matricula, boolean presenca) {
+    public void atualizarPresenca(Matricula matricula, boolean presenca) {
 
-        Frequencia frequenciaConsulta = recuperarFrequencia(pessoaFisica);
+        Frequencia frequenciaConsulta = recuperarFrequencia(matricula);
 
         if (frequenciaConsulta != null) {
             realm.beginTransaction();
@@ -159,20 +146,21 @@ public class FrequenciaAdapterLista extends BaseAdapter {
             frequencia.setDisciplina(preferences.getSavedLong("id_disciplina"));
             frequencia.setPresenca(presenca);
             frequencia.setDate(UtilsFunctions.apenasData().format(new Date()));
-            frequencia.setPessoafisica(pessoaFisica.getId());
             frequencia.setNovo(true);
             realm.copyToRealmOrUpdate(frequencia);
             realm.commitTransaction();
         }
     }
 
-    public Frequencia recuperarFrequencia(PessoaFisica pessoaFisica) {
+    public Frequencia recuperarFrequencia(Matricula matricula) {
         Frequencia frequencia2 = realm.where(Frequencia.class)
                 .equalTo("disciplina", preferences.getSavedLong("id_disciplina"))
-                .equalTo("pessoaFisica", pessoaFisica.getId())
+                .equalTo("matricula", matricula.getId())
                 .equalTo("date", UtilsFunctions.apenasData().format(new Date()))
                 .equalTo("turma", preferences.getSavedLong("id_turma"))
                 .equalTo("unidade", preferences.getSavedLong("id_unidade")).findFirst();
-        return frequencia2;
+        if (frequencia2 != null)
+            return realm.copyFromRealm(frequencia2);
+        return null;
     }
 }
