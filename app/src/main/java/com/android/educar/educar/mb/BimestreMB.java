@@ -2,9 +2,9 @@ package com.android.educar.educar.mb;
 
 import android.content.Context;
 
-import com.android.educar.educar.model.Bimestre;
-import com.android.educar.educar.model.SituacaoTurmaMes;
-import com.android.educar.educar.model.Turma;
+import com.android.educar.educar.model.modelalterado.Bimestre;
+import com.android.educar.educar.model.modelalterado.SituacaoTurmaMes;
+import com.android.educar.educar.model.modelalterado.Turma;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
@@ -23,6 +23,7 @@ public class BimestreMB {
     private Turma turma;
 
     public BimestreMB(Context context) {
+        preferences = new Preferences(context);
         this.context = context;
         this.idBimestreAtual = Long.valueOf(0);
         this.ultimoIdBimestre = Long.valueOf(0);
@@ -49,7 +50,7 @@ public class BimestreMB {
             return criarNovaSituacaoTurmaMes();
         }
 
-        preferences.saveLong("id_bimestre", idBimestreAtual);
+//        preferences.saveLong("id_bimestre", idBimestreAtual);
         return idBimestreAtual;
     }
 
