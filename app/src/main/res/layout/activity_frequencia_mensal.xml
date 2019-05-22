@@ -171,7 +171,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
                     android:text="turma"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="italic"></TextView>
 
             </LinearLayout>
@@ -211,7 +211,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
                     android:text="disciplina"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="italic"></TextView>
 
             </LinearLayout>
@@ -334,7 +334,7 @@
                 android:layout_height="wrap_content"
                 android:text="aluno"
                 android:textColor="@color/colorTextTabs"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:fontFamily="sans-serif-condensed"
                 android:textStyle="bold"></TextView>
 
@@ -443,7 +443,7 @@
         android:layout_margin="8dp"
         android:fontFamily="sans-serif-condensed"
         android:text="Registro de Faltas"
-        android:textSize="16sp" />
+        android:textSize="12sp" />
 
     <ListView
         android:id="@+id/lista_de_faltas_id"

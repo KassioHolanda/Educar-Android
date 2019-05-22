@@ -119,7 +119,7 @@
                             android:layout_height="match_parent"
                             android:fontFamily="sans-serif-condensed"
                             android:text="unidade"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="italic"></TextView>
                     </LinearLayout>
                 </LinearLayout>
@@ -151,7 +151,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-condensed"
                             android:text="turma"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="italic"></TextView>
 
                     </LinearLayout>
@@ -183,7 +183,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-condensed"
                             android:text="disciplina"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="italic"></TextView>
 
                     </LinearLayout>
@@ -216,7 +216,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-condensed"
                             android:text="bimestre"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="italic"></TextView>
 
                     </LinearLayout>
@@ -249,7 +249,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-condensed"
                             android:text="serie"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="italic"></TextView>
 
                     </LinearLayout>
@@ -303,7 +303,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="Frequência Diária"
                                     android:textColor="#222"
-                                    android:textSize="18sp"
+                                    android:textSize="16sp"
                                     android:textStyle="bold" />
 
                                 <TextView
@@ -311,7 +311,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="sans-serif-condensed"
                                     android:text="Realize a frequência de suas aulas!"
-                                    android:textSize="16sp"
+                                    android:textSize="14sp"
                                     android:textStyle="italic" />
                             </LinearLayout>
                         </LinearLayout>
@@ -347,7 +347,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="Frequência Mensal"
                                     android:textColor="#222"
-                                    android:textSize="18sp"
+                                    android:textSize="16sp"
                                     android:textStyle="bold" />
 
                                 <TextView
@@ -355,7 +355,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="sans-serif-condensed"
                                     android:text="Realize a frequência de suas aulas!"
-                                    android:textSize="16sp"
+                                    android:textSize="14sp"
                                     android:textStyle="italic" />
                             </LinearLayout>
                         </LinearLayout>
@@ -393,7 +393,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="Notas"
                                     android:textColor="#222"
-                                    android:textSize="18sp"
+                                    android:textSize="16sp"
                                     android:textStyle="bold" />
 
                                 <TextView
@@ -401,7 +401,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="sans-serif-condensed"
                                     android:text="Insira as notas do semestre!"
-                                    android:textSize="16sp"
+                                    android:textSize="14sp"
                                     android:textStyle="italic" />
                             </LinearLayout>
                         </LinearLayout>
@@ -437,7 +437,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="Notificações"
                                     android:textColor="#222"
-                                    android:textSize="18sp"
+                                    android:textSize="16sp"
                                     android:textStyle="bold" />
 
                                 <TextView
@@ -445,7 +445,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="sans-serif-condensed"
                                     android:text="Adicione uma notificação ao aluno!"
-                                    android:textSize="16sp"
+                                    android:textSize="14sp"
                                     android:textStyle="italic" />
                             </LinearLayout>
                         </LinearLayout>

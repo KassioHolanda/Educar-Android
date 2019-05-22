@@ -175,7 +175,7 @@
                     android:layout_height="match_parent"
                     android:fontFamily="sans-serif-condensed"
                     android:text="unidade"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="italic"></TextView>
             </LinearLayout>
         </LinearLayout>
@@ -215,7 +215,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
                     android:text="turma"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="italic"></TextView>
 
             </LinearLayout>
@@ -255,7 +255,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
                     android:text="disciplina"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="italic"></TextView>
 
             </LinearLayout>
@@ -345,7 +345,7 @@
                 android:fontFamily="sans-serif-condensed"
                 android:text="Data da Frequencia "
                 android:textColor="#222"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -381,7 +381,7 @@
                 android:fontFamily="sans-serif-condensed"
                 android:text="Bimestre"
                 android:textColor="#222"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
         </LinearLayout>

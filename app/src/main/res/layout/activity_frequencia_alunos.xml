@@ -174,7 +174,7 @@
                     android:layout_height="match_parent"
                     android:fontFamily="sans-serif-condensed"
                     android:text="unidade"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="italic"></TextView>
             </LinearLayout>
         </LinearLayout>
@@ -214,7 +214,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
                     android:text="turma"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="italic"></TextView>
 
             </LinearLayout>
@@ -254,7 +254,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
                     android:text="disciplina"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="italic"></TextView>
 
             </LinearLayout>
@@ -295,7 +295,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
                     android:text="bimestre"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="italic"></TextView>
 
             </LinearLayout>
