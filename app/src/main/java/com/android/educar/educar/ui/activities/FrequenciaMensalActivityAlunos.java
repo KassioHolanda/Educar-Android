@@ -6,29 +6,22 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.mb.FrequenciaMB;
-import com.android.educar.educar.model.Aluno;
-import com.android.educar.educar.model.Bimestre;
-import com.android.educar.educar.model.Disciplina;
-import com.android.educar.educar.model.Funcionario;
-import com.android.educar.educar.model.Matricula;
-import com.android.educar.educar.model.PessoaFisica;
-import com.android.educar.educar.model.Turma;
-import com.android.educar.educar.model.Unidade;
+import com.android.educar.educar.model.modelalterado.Disciplina;
+import com.android.educar.educar.model.modelalterado.Funcionario;
+import com.android.educar.educar.model.modelalterado.Matricula;
+import com.android.educar.educar.model.modelalterado.Turma;
+import com.android.educar.educar.model.modelalterado.Unidade;
 import com.android.educar.educar.utils.Preferences;
-import com.android.educar.educar.utils.UtilsFunctions;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class FrequenciaMensalActivityAlunos extends AppCompatActivity {
 
@@ -62,11 +55,6 @@ public class FrequenciaMensalActivityAlunos extends AppCompatActivity {
 
     public void recuperarAlunosRealm() {
         Turma turma = realm.copyFromRealm(realm.where(Turma.class).equalTo("id", preferences.getSavedLong("id_turma")).findFirst());
-
-//        for (Matricula matricula : turma.getMatriculas()) {
-//            this.pessoaFisicas.add(matricula.getAluno().getPessoaFisica());
-//        }
-
         pessoaFisicas = turma.getMatriculas();
         Collections.sort(pessoaFisicas);
     }
@@ -82,10 +70,6 @@ public class FrequenciaMensalActivityAlunos extends AppCompatActivity {
         unidadeSelecionadaAula = findViewById(R.id.unidadeselecionada6_aula_id);
         disciplinaSelecionadaAula = findViewById(R.id.disciplinaselecionada6_aula_id);
         turmaSelecionadaAula = findViewById(R.id.turmaselecionada6_aula_id);
-//        salvarFrequencia = view.findViewById(R.id.button_salvarfrequencia_id);
-//        unidadeFrequecia = findViewById(R.id.frequencia6_unidade_id);
-//        turmaFrequencia = findViewById(R.id.frequencia6_turma_id);
-//        disciplinaFrequencia = findViewById(R.id.frequencia6_disciplina_id);
         bimestreFragmentFrequencia = findViewById(R.id.bimestre6_fragment_frequencia_id);
     }
 

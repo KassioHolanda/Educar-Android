@@ -1,8 +1,6 @@
 package com.android.educar.educar.ui.activities;
 
 import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,42 +12,19 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.model.Aluno;
-import com.android.educar.educar.model.Bimestre;
-import com.android.educar.educar.model.Disciplina;
-import com.android.educar.educar.model.Frequencia;
-import com.android.educar.educar.model.Matricula;
-import com.android.educar.educar.model.PessoaFisica;
-import com.android.educar.educar.model.TipoOcorrencia;
-import com.android.educar.educar.model.Turma;
-import com.android.educar.educar.network.chamadas.PessoaChamada;
+import com.android.educar.educar.model.modelalterado.Aluno;
+import com.android.educar.educar.model.modelalterado.Disciplina;
+import com.android.educar.educar.model.modelalterado.Frequencia;
+import com.android.educar.educar.model.modelalterado.Matricula;
+import com.android.educar.educar.model.modelalterado.PessoaFisica;
+import com.android.educar.educar.model.modelalterado.Turma;
 import com.android.educar.educar.utils.Preferences;
-import com.android.educar.educar.utils.UtilsFunctions;
-import com.annimon.stream.Stream;
-import com.applandeo.materialcalendarview.CalendarView;
-import com.applandeo.materialcalendarview.DatePicker;
-import com.applandeo.materialcalendarview.EventDay;
-import com.applandeo.materialcalendarview.builders.DatePickerBuilder;
-import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
-import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
-import com.applandeo.materialcalendarview.listeners.OnSelectDateListener;
-import com.applandeo.materialcalendarview.utils.DateUtils;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.squareup.timessquare.CalendarPickerView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
-import okhttp3.internal.Util;
 
 public class FrequenciaMensalActivity extends AppCompatActivity {
 
@@ -118,16 +93,16 @@ public class FrequenciaMensalActivity extends AppCompatActivity {
     }
 
     public void atualizandoListaDePresenca() {
-//        List<Frequencia> frequenciasLista = realm.where(Frequencia.class).equalTo("presenca", false).equalTo("matricula", matricula.getId()).findAll();
-//        ArrayAdapter<Frequencia> frequencias = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, frequenciasLista);
-//        listaDeFaltas.setAdapter(frequencias);
-//
-//        listaDeFaltas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                alterarPresenca(frequenciasLista.get(i));
-//            }
-//        });
+        List<Frequencia> frequenciasLista = realm.where(Frequencia.class).equalTo("presenca", false).equalTo("matricula", matricula.getId()).findAll();
+        ArrayAdapter<Frequencia> frequencias = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, frequenciasLista);
+        listaDeFaltas.setAdapter(frequencias);
+
+        listaDeFaltas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                alterarPresenca(frequenciasLista.get(i));
+            }
+        });
     }
 
     public void alterarPresenca(Frequencia frequencia) {
@@ -140,7 +115,7 @@ public class FrequenciaMensalActivity extends AppCompatActivity {
         final EditText data = viewDialog.findViewById(R.id.data_presenca_mensal_id);
         final CheckBox preseca = viewDialog.findViewById(R.id.presenca_id_mensal);
 
-//        aluno.setText(realm.where(PessoaFisica.class).equalTo("id", frequencia.getPessoafisica()).findFirst().getNome());
+        aluno.setText(realm.copyFromRealm(realm.where(Matricula.class).equalTo("id", frequencia.getMatricula()).findFirst()).getAluno().getPessoaFisica().getNome());
         aluno.setEnabled(false);
         data.setText(frequencia.getDate());
         data.setEnabled(false);

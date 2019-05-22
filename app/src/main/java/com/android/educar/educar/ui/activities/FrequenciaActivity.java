@@ -9,16 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.mb.FrequenciaMB;
 import com.android.educar.educar.ui.fragments.FrequenciaFragment;
-import com.android.educar.educar.model.PessoaFisica;
-
-import java.util.List;
-
-import io.realm.Realm;
 
 public class FrequenciaActivity extends AppCompatActivity {
 
