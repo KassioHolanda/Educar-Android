@@ -18,12 +18,30 @@ public class AlunoFrequenciaMes extends RealmObject {
     private String tipoLancamentoFrequencia;
     private boolean alterado;
     private Long matricula;
-//    @SerializedName("disciplinaaluno")
-//    private Long disciplinaAluno;
+    @SerializedName("disciplinaaluno")
+    private Long disciplinaAluno;
 
     public Long getId() {
         return id;
     }
+
+    public Long getDisciplinaAluno() {
+        return disciplinaAluno;
+    }
+
+    public void setDisciplinaAluno(Long disciplinaAluno) {
+        this.disciplinaAluno = disciplinaAluno;
+    }
+
+    //    public DisciplinaAluno getDisciplinaAluno() {
+//        return disciplinaAluno;
+//    }
+//
+//    public void setDisciplinaAluno(DisciplinaAluno disciplinaAluno) {
+//        this.disciplinaAluno = disciplinaAluno;
+//    }
+
+
 
     public void setId(Long id) {
         this.id = id;
