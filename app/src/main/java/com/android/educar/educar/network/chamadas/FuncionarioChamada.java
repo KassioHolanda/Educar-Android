@@ -2,11 +2,9 @@ package com.android.educar.educar.network.chamadas;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.android.educar.educar.model.Funcionario;
+import com.android.educar.educar.model.modelalterado.Funcionario;
 import com.android.educar.educar.network.service.APIService;
-import com.android.educar.educar.network.service.ListaFuncionariosAPI;
 import com.android.educar.educar.utils.Preferences;
 
 import java.util.List;

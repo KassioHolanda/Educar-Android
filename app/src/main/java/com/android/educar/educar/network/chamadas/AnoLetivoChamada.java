@@ -3,13 +3,9 @@ package com.android.educar.educar.network.chamadas;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.educar.educar.model.AnoLetivo;
-import com.android.educar.educar.model.Bimestre;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.network.service.ListaAnoLetivoAPI;
 import com.android.educar.educar.network.service.ListaBimestreAPI;
-
-import java.util.List;
 
 import io.realm.Realm;
 import retrofit2.Call;
@@ -37,7 +33,7 @@ public class AnoLetivoChamada {
         paginaAtualBimetre = 1;
     }
 
-    public void anoLetivoAPI() {
+    public void recuperarAlunoLetivoAPI(int paginaAtual) {
         Call<ListaAnoLetivoAPI> listaAnoLetivoAPICall = apiService.getAnoLetivoEndPoint().anosLetivos();
         listaAnoLetivoAPICall.enqueue(new Callback<ListaAnoLetivoAPI>() {
             @Override
@@ -46,8 +42,14 @@ public class AnoLetivoChamada {
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(response.body().getResults());
                     realm.commitTransaction();
+                    int pagina = paginaAtual;
+                    if (response.body().getNext()!=null) {
+                        pagina = pagina + 1;
+                        recuperarAlunoLetivoAPI(pagina);
+                    }
                     Log.i("RESPONSE", "ANOLETIVO RECUPERADOS");
                 }
+//                verificarAnoLetivoAtual();
             }
 
             @Override

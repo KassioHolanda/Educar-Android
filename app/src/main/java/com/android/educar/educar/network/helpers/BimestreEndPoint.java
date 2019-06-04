@@ -1,9 +1,7 @@
 package com.android.educar.educar.network.helpers;
 
-import com.android.educar.educar.model.Bimestre;
-import com.android.educar.educar.model.Disciplina;
+import com.android.educar.educar.model.modelalterado.Bimestre;
 import com.android.educar.educar.network.service.ListaBimestreAPI;
-import com.android.educar.educar.network.service.ListaDisciplinasAPI;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

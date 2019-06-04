@@ -1,8 +1,6 @@
 package com.android.educar.educar.network.helpers;
 
-import com.android.educar.educar.model.Unidade;
-import com.android.educar.educar.model.Usuario;
-import com.android.educar.educar.network.service.ListaUnidadesAPI;
+import com.android.educar.educar.model.modelalterado.Usuario;
 import com.android.educar.educar.network.service.ListaUsuariosAPI;
 
 import java.util.List;

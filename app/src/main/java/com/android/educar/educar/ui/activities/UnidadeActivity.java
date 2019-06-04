@@ -2,10 +2,6 @@ package com.android.educar.educar.ui.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.PersistableBundle;
-import android.os.SystemClock;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -23,31 +19,28 @@ import android.widget.ListView;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.mb.SincronizarComAPiMB;
-import com.android.educar.educar.model.AnoLetivo;
-import com.android.educar.educar.model.Bimestre;
-import com.android.educar.educar.model.Funcionario;
-import com.android.educar.educar.model.FuncionarioEscola;
-import com.android.educar.educar.model.GradeCurso;
-import com.android.educar.educar.model.LocalEscola;
-import com.android.educar.educar.model.Matricula;
-import com.android.educar.educar.model.Turma;
-import com.android.educar.educar.model.Unidade;
+import com.android.educar.educar.model.modelalterado.AnoLetivo;
+import com.android.educar.educar.model.modelalterado.Funcionario;
+import com.android.educar.educar.model.modelalterado.FuncionarioEscola;
+import com.android.educar.educar.model.modelalterado.LocalEscola;
+import com.android.educar.educar.model.modelalterado.Matricula;
+import com.android.educar.educar.model.modelalterado.TipoOcorrencia;
+import com.android.educar.educar.model.modelalterado.Turma;
+import com.android.educar.educar.model.modelalterado.Unidade;
 import com.android.educar.educar.network.chamadas.AnoLetivoChamada;
 import com.android.educar.educar.network.service.APIService;
-import com.android.educar.educar.network.service.ListaTurmaAPI;
+import com.android.educar.educar.network.service.ListaTipoOcorrenciaAPI;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 import com.android.educar.educar.utils.UtilsFunctions;
 
 import android.app.ProgressDialog;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -67,6 +60,8 @@ public class UnidadeActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private List<Unidade> listaDeUnidades;
     private AnoLetivoChamada anoLetivoChamada;
+    private TextView anoletivo;
+    private AnoLetivo anoLetivo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,15 +76,12 @@ public class UnidadeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        recuperarDadosIndependentesAPI();
         verificarPrimeiroAcesso();
     }
 
     public void recuperarDadosIndependentesAPI() {
-//        if (realm.where(AnoLetivo.class).findAll().size() == 0 && realm.where(Bimestre.class).findAll().size() == 0) {
-        anoLetivoChamada.recuperarBimestreAPI();
         anoLetivoChamada.recuperarAlunoLetivoAPI(1);
-//        }
+        anoLetivoChamada.recuperarBimestreAPI();
     }
 
     public void configRealm() {
@@ -101,9 +93,11 @@ public class UnidadeActivity extends AppCompatActivity {
         unidades = findViewById(R.id.unidades_list_view_id);
         sincronizarDados = findViewById(R.id.sincronizar_dados);
         professorLogado = findViewById(R.id.professorlogado_id);
+        anoletivo = findViewById(R.id.bimestre_atual_unidade_id);
     }
 
     public void atualizarDadosTela() {
+        anoletivo.setText(realm.where(AnoLetivo.class).findFirst().getDescricao());
         professorLogado.setText(funcionario.getPessoaFisica().getNome());
     }
 
@@ -162,6 +156,7 @@ public class UnidadeActivity extends AppCompatActivity {
     }
 
     public void nextAcivity() {
+        verificarAnoLetivoAtual();
         Intent intent = new Intent(getApplicationContext(), TurmaActivity.class);
         ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeCustomAnimation(UnidadeActivity.this, R.anim.mover_esquerda, R.anim.fade_out);
         ActivityCompat.startActivity(UnidadeActivity.this, intent, activityOptionsCompat.toBundle());
@@ -273,12 +268,85 @@ public class UnidadeActivity extends AppCompatActivity {
     }
 
     public void novaThreadTurma() {
-        new Thread(new Runnable() {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+        recuperarDadosTurmas();
+//            }
+//        }).start();
+    }
+
+
+    public void novaThreadAlunoFrequenciaENotaMes(Long matriculaId) {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+        recuperarDadosDaMatricula(matriculaId);
+//            }
+//        }).start();
+    }
+
+    public void recuperarTipoOcorrencia(int numero) {
+        Call<ListaTipoOcorrenciaAPI> tipoOcorrenciaCall = apiService.getTipoOcorrenciaEndPoint().tiposOcorrencia(numero);
+        tipoOcorrenciaCall.enqueue(new Callback<ListaTipoOcorrenciaAPI>() {
             @Override
-            public void run() {
-                recuperarDadosTurmas();
+            public void onResponse(Call<ListaTipoOcorrenciaAPI> call, Response<ListaTipoOcorrenciaAPI> response) {
+                if (response.isSuccessful()) {
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(response.body().getResults());
+                    realm.commitTransaction();
+                    int num = numero;
+                    if (response.body().getNext() != null) {
+                        num = numero + 1;
+                        recuperarTipoOcorrencia(num);
+                    }
+                }
             }
-        }).start();
+
+            @Override
+            public void onFailure(Call<ListaTipoOcorrenciaAPI> call, Throwable t) {
+                progressDialog.hide();
+                Log.i("erro_api", t.getMessage());
+            }
+        });
+    }
+
+    private void recuperarDadosDaMatricula(Long matriculaId) {
+        progressDialog.show();
+        progressDialog.setMessage("Recuperando Matriculas");
+        Call<Matricula> matriculaCall = apiService.getMatriculaEndPoint().getAlunoNotaMesEAlunoFrequenciaMes(matriculaId);
+        matriculaCall.enqueue(new Callback<Matricula>() {
+            @Override
+            public void onResponse(Call<Matricula> call, Response<Matricula> response) {
+                if (response.isSuccessful()) {
+                    salvarDados(response.body(), matriculaId);
+                }
+                progressDialog.hide();
+            }
+
+            @Override
+            public void onFailure(Call<Matricula> call, Throwable t) {
+                progressDialog.hide();
+                Log.i("erro_api", t.getMessage());
+            }
+        });
+    }
+
+    private void salvarDados(Matricula body, Long matriculaId) {
+        realm.beginTransaction();
+        Matricula matricula = realm.copyFromRealm(realm.where(Matricula.class).equalTo("id", matriculaId).findFirst());
+        matricula.setAlunoFrequenciasMes(body.getAlunoFrequenciasMes());
+        matricula.setAlunosNotaMes(body.getAlunosNotaMes());
+        matricula.setOcorrencias(body.getOcorrencias());
+        realm.copyToRealmOrUpdate(matricula);
+        realm.commitTransaction();
+    }
+
+
+    private void recuperarAlunosFrequenciaMes(List<Matricula> matriculas) {
+        for (Matricula matricula : matriculas) {
+            novaThreadAlunoFrequenciaENotaMes(matricula.getId());
+        }
     }
 
     public void recuperarDadosTurmas() {
@@ -294,7 +362,7 @@ public class UnidadeActivity extends AppCompatActivity {
     }
 
     public void recuperarTurmas(Turma turma) {
-//        progressDialog.show();
+        progressDialog.show();
         progressDialog.setMessage("Recuperando Turmas");
         Call<Turma> listaTurmaAPICall = apiService.getTurmaEndPoint().getTurmaCompleta(turma.getId());
         listaTurmaAPICall.enqueue(new Callback<Turma>() {
@@ -307,12 +375,12 @@ public class UnidadeActivity extends AppCompatActivity {
                     Log.i("erro_api", response.message());
                 }
 
-//                progressDialog.hide();
+                progressDialog.hide();
             }
 
             @Override
             public void onFailure(Call<Turma> call, Throwable t) {
-//                progressDialog.hide();
+                progressDialog.hide();
                 Log.i("erro_api", t.getMessage());
 //                Snackbar.make(findViewById(android.R.id.content), "Ocorreu um Erro, Solicite Administrador, ao salvar as turmas.", Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
 //                    @Override
@@ -324,6 +392,9 @@ public class UnidadeActivity extends AppCompatActivity {
         });
     }
 
+    public void verificarAnoLetivoAtual() {
+        preferences.saveLong("id_anoletivo", realm.copyFromRealm(realm.where(AnoLetivo.class).findFirst()).getId());
+    }
 
     private void recuperarTurma(Turma body, Long turmaId) {
         realm.beginTransaction();
@@ -331,6 +402,7 @@ public class UnidadeActivity extends AppCompatActivity {
         turma.setMatriculas(body.getMatriculas());
         realm.copyToRealmOrUpdate(turma);
         realm.commitTransaction();
+        recuperarAlunosFrequenciaMes(turma.getMatriculas());
     }
 
     private void recuperarFuncionario(Funcionario body) {
@@ -344,18 +416,21 @@ public class UnidadeActivity extends AppCompatActivity {
         atualizarDadosTela();
         recuperarUnidadesFuncionario();
         atualizarAdapterListaUnidades();
+        recuperarTipoOcorrencia(1);
 //        alertaInformacaoPrimeiraUtilizacao();
     }
 
     public void recuperarUnidadesFuncionario() {
         this.listaDeUnidades = new ArrayList<>();
         for (FuncionarioEscola funcionarioEscola : funcionario.getFuncionarioEscolas()) {
-            this.listaDeUnidades.add(funcionarioEscola.getUnidade());
+            if (funcionarioEscola.getDataFinal() != null)
+                this.listaDeUnidades.add(funcionarioEscola.getUnidade());
         }
     }
 
     public void verificarPrimeiroAcesso() {
         if (!preferences.getSavedBoolean("alerta_info_primeiro_acesso")) {
+            recuperarDadosIndependentesAPI();
             recuperarDadosFuncionario();
             preferences.saveBoolean("alerta_info_primeiro_acesso", true);
         } else {
@@ -364,6 +439,7 @@ public class UnidadeActivity extends AppCompatActivity {
             atualizarDadosTela();
             recuperarUnidadesFuncionario();
             atualizarAdapterListaUnidades();
+            verificarAnoLetivoAtual();
         }
     }
 }

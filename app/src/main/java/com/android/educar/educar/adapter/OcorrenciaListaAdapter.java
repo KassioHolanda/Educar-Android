@@ -5,16 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.educar.educar.model.Ocorrencia;
+import com.android.educar.educar.model.modelalterado.Ocorrencia;
 import com.android.educar.educar.R;
-import com.android.educar.educar.utils.UtilsFunctions;
 
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

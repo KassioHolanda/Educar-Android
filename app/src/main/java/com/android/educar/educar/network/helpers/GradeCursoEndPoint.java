@@ -1,8 +1,6 @@
 package com.android.educar.educar.network.helpers;
 
-import com.android.educar.educar.model.Funcionario;
-import com.android.educar.educar.model.GradeCurso;
-import com.android.educar.educar.network.service.ListaFuncionariosAPI;
+import com.android.educar.educar.model.modelalterado.GradeCurso;
 import com.android.educar.educar.network.service.ListaGradeCursoAPI;
 
 import java.util.List;

@@ -29,6 +29,8 @@ public class Matricula extends RealmObject implements Comparable<Matricula> {
     private RealmList<AlunoFrequenciaMes> alunoFrequenciasMes;
     @SerializedName("aluno_nota_mes")
     private RealmList<AlunoNotaMes> alunosNotaMes;
+    @SerializedName("ocorrencias")
+    private RealmList<Ocorrencia> ocorrencias;
 
     public Long getId() {
         return id;
@@ -121,6 +123,14 @@ public class Matricula extends RealmObject implements Comparable<Matricula> {
     @Override
     public String toString() {
         return this.getAluno().getPessoaFisica().getNome();
+    }
+
+    public RealmList<Ocorrencia> getOcorrencias() {
+        return ocorrencias;
+    }
+
+    public void setOcorrencias(RealmList<Ocorrencia> ocorrencias) {
+        this.ocorrencias = ocorrencias;
     }
 
     @Override

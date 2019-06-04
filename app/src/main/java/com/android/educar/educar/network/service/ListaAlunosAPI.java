@@ -1,6 +1,6 @@
 package com.android.educar.educar.network.service;
 
-import com.android.educar.educar.model.Aluno;
+import com.android.educar.educar.model.modelalterado.Aluno;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,6 @@
 package com.android.educar.educar.network.service;
 
-import com.android.educar.educar.model.AlunoFrequenciaMes;
-import com.android.educar.educar.model.Bimestre;
+import com.android.educar.educar.model.modelalterado.Bimestre;
 
 import java.util.ArrayList;
 import java.util.List;

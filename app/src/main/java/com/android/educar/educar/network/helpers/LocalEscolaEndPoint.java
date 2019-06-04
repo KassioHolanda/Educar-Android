@@ -1,8 +1,6 @@
 package com.android.educar.educar.network.helpers;
 
-import com.android.educar.educar.model.LocalEscola;
-import com.android.educar.educar.model.Nota;
-import com.android.educar.educar.network.service.ListaGradeCursoAPI;
+import com.android.educar.educar.model.modelalterado.LocalEscola;
 import com.android.educar.educar.network.service.ListaLocalEscolaAPI;
 
 import java.util.List;

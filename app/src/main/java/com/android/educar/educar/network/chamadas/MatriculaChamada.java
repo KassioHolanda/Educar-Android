@@ -3,17 +3,10 @@ package com.android.educar.educar.network.chamadas;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.educar.educar.model.AlunoFrequenciaMes;
-import com.android.educar.educar.model.AlunoNotaMes;
-import com.android.educar.educar.model.Disciplina;
-import com.android.educar.educar.model.DisciplinaAluno;
-import com.android.educar.educar.model.Matricula;
-import com.android.educar.educar.model.SerieDisciplina;
-import com.android.educar.educar.model.Turma;
+import com.android.educar.educar.model.modelalterado.AlunoFrequenciaMes;
+import com.android.educar.educar.model.modelalterado.AlunoNotaMes;
+import com.android.educar.educar.model.modelalterado.Matricula;
 import com.android.educar.educar.network.service.APIService;
-import com.android.educar.educar.network.service.ListaMatriculaAPI;
-import com.android.educar.educar.utils.Preferences;
-import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -131,8 +124,8 @@ public class MatriculaChamada {
                 alunoFrequenciaMes1.setId(alunoFrequenciaMes.get(i).getId());
                 alunoFrequenciaMes1.setTotalFaltas(alunoFrequenciaMes.get(i).getTotalFaltas());
                 alunoFrequenciaMes1.setBimestre(alunoFrequenciaMes.get(i).getBimestre());
-                alunoFrequenciaMes1.setMatricula(alunoFrequenciaMes.get(i).getMatricula());
-                alunoFrequenciaMes1.setDisciplinaAluno(alunoFrequenciaMes.get(i).getDisciplinaAluno());
+//                alunoFrequenciaMes1.setMatricula(alunoFrequenciaMes.get(i).getMatricula());
+//                alunoFrequenciaMes1.setDisciplinaAluno(alunoFrequenciaMes.get(i).getDisciplinaAluno());
                 alunoFrequenciaMes1.setTipoLancamentoFrequencia(alunoFrequenciaMes.get(i).getTipoLancamentoFrequencia());
                 alunoFrequenciaMes1.setDisciplina(alunoFrequenciaMes.get(i).getDisciplina());
 

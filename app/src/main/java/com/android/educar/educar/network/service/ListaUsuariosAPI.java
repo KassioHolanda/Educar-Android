@@ -1,7 +1,6 @@
 package com.android.educar.educar.network.service;
 
-import com.android.educar.educar.model.DisciplinaAluno;
-import com.android.educar.educar.model.Usuario;
+import com.android.educar.educar.model.modelalterado.Usuario;
 
 import java.util.ArrayList;
 import java.util.List;

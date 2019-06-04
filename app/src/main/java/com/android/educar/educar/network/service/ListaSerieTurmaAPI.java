@@ -1,7 +1,6 @@
 package com.android.educar.educar.network.service;
 
-import com.android.educar.educar.model.SerieTurma;
-import com.android.educar.educar.model.SituacaoTurmaMes;
+import com.android.educar.educar.model.modelalterado.SerieTurma;
 
 import java.util.ArrayList;
 import java.util.List;

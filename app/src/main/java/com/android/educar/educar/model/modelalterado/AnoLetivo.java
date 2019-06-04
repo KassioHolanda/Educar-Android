@@ -1,5 +1,7 @@
 package com.android.educar.educar.model.modelalterado;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -75,4 +77,5 @@ public class AnoLetivo extends RealmObject {
     public String toString() {
         return this.descricao;
     }
+
 }

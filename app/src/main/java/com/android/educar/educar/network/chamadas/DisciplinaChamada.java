@@ -3,16 +3,10 @@ package com.android.educar.educar.network.chamadas;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.educar.educar.model.Disciplina;
-import com.android.educar.educar.model.GradeCurso;
-import com.android.educar.educar.model.SerieDisciplina;
+import com.android.educar.educar.model.modelalterado.Disciplina;
 import com.android.educar.educar.network.service.APIService;
-import com.android.educar.educar.network.service.ListaDisciplinasAPI;
-
-import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

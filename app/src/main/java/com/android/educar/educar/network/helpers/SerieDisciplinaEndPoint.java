@@ -1,9 +1,7 @@
 package com.android.educar.educar.network.helpers;
 
-import com.android.educar.educar.model.SerieDisciplina;
-import com.android.educar.educar.model.Turma;
+import com.android.educar.educar.model.modelalterado.SerieDisciplina;
 import com.android.educar.educar.network.service.ListaSerieDisciplinaAPI;
-import com.android.educar.educar.network.service.ListaTurmaAPI;
 
 import java.util.List;
 

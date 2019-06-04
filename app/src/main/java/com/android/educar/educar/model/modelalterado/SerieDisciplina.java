@@ -1,9 +1,10 @@
 package com.android.educar.educar.model.modelalterado;
 
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class SerieDisciplina extends RealmObject{
+public class SerieDisciplina extends RealmObject implements RealmModel {
 
     @PrimaryKey
     private Long id;

@@ -1,30 +1,19 @@
 package com.android.educar.educar.network.chamadas;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.ListView;
 import android.widget.Toast;
-import com.android.educar.educar.mb.FuncionarioMB;
-import com.android.educar.educar.mb.PessoaFisicaMB;
-import com.android.educar.educar.model.Aluno;
-import com.android.educar.educar.model.Perfil;
-import com.android.educar.educar.model.PessoaFisica;
-import com.android.educar.educar.model.Usuario;
+
+import com.android.educar.educar.model.modelalterado.Perfil;
+import com.android.educar.educar.model.modelalterado.PessoaFisica;
+import com.android.educar.educar.model.modelalterado.Usuario;
 import com.android.educar.educar.network.service.APIService;
-import com.android.educar.educar.network.service.ListaPerfilAPI;
-import com.android.educar.educar.network.service.ListaPessoaFisicaAPI;
-import com.android.educar.educar.network.service.ListaUsuariosAPI;
 import com.android.educar.educar.utils.Preferences;
 
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

@@ -38,9 +38,9 @@ public class APIService {
     public static String TAG = APIService.class.getSimpleName();
 
 
-        public static final String BASE_URL = "http://10.20.30.79:8000/";
-//    public static final String BASE_URL = "http:/172.16.0.149:8000/";
-//        public static final String BASE_URL = "http:/192.168.0.106:8000/";
+    //    public static final String BASE_URL = "http://10.20.30.79:8000/";
+    //    public static final String BASE_URL = "http:/172.16.0.149:8000/";
+    public static final String BASE_URL = "http:/192.168.0.106:8000/";
     private Retrofit retrofit;
 
     private Interceptor interceptor;

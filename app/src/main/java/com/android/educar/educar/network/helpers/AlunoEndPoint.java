@@ -1,12 +1,10 @@
 package com.android.educar.educar.network.helpers;
 
-import com.android.educar.educar.model.Aluno;
-import com.android.educar.educar.model.Matricula;
+import com.android.educar.educar.model.modelalterado.Aluno;
 import com.android.educar.educar.network.service.ListaAlunosAPI;
 
 import java.util.List;
 
-import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

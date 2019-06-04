@@ -23,8 +23,38 @@ public class AlunoNotaMes extends RealmObject {
     private boolean novo;
     private boolean alterado;
     private int sequencia;
+    @SerializedName("disciplinaaluno")
+    private Long disciplinaAluno;
+    private Long matricula;
+    private Long usuario;
+
+    public Long getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Long usuario) {
+        this.usuario = usuario;
+    }
 
     public AlunoNotaMes() {
+    }
+
+    public Long getDisciplinaAluno() {
+        return disciplinaAluno;
+    }
+
+    public void setDisciplinaAluno(Long disciplinAluno) {
+        this.disciplinaAluno = disciplinAluno;
+    }
+
+    public Long getMatricula() {
+        return matricula;
+    }
+
+
+
+    public void setMatricula(Long matricula) {
+        this.matricula = matricula;
     }
 
     public long getId() {

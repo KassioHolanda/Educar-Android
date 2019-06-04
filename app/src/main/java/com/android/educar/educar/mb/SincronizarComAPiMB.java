@@ -2,7 +2,6 @@ package com.android.educar.educar.mb;
 
 import android.content.Context;
 
-import com.android.educar.educar.model.Matricula;
 import com.android.educar.educar.network.chamadas.AlunoChamada;
 import com.android.educar.educar.network.chamadas.AnoLetivoChamada;
 import com.android.educar.educar.network.chamadas.FuncionarioChamada;

@@ -1,12 +1,14 @@
 package com.android.educar.educar.model.modelalterado;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 
 import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class TipoOcorrencia extends RealmObject {
+public class TipoOcorrencia extends RealmObject implements Comparable<TipoOcorrencia> {
 
     @PrimaryKey
     private Long id;
@@ -43,5 +45,10 @@ public class TipoOcorrencia extends RealmObject {
     @Override
     public String toString() {
         return this.descricao;
+    }
+
+    @Override
+    public int compareTo(@NonNull TipoOcorrencia tipoOcorrencia) {
+        return getDescricao().compareToIgnoreCase(tipoOcorrencia.getDescricao());
     }
 }

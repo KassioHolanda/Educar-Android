@@ -1,9 +1,7 @@
 package com.android.educar.educar.network.helpers;
 
-import com.android.educar.educar.model.Serie;
-import com.android.educar.educar.model.SerieTurma;
+import com.android.educar.educar.model.modelalterado.Serie;
 import com.android.educar.educar.network.service.ListaSerieAPI;
-import com.android.educar.educar.network.service.ListaSerieTurmaAPI;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

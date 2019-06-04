@@ -1,8 +1,6 @@
 package com.android.educar.educar.network.helpers;
 
-import com.android.educar.educar.model.SerieDisciplina;
-import com.android.educar.educar.model.TipoOcorrencia;
-import com.android.educar.educar.network.service.ListaSerieDisciplinaAPI;
+import com.android.educar.educar.model.modelalterado.TipoOcorrencia;
 import com.android.educar.educar.network.service.ListaTipoOcorrenciaAPI;
 
 import retrofit2.Call;

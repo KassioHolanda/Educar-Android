@@ -2,10 +2,8 @@ package com.android.educar.educar.network.chamadas;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.android.educar.educar.model.Ocorrencia;
-import com.android.educar.educar.model.TipoOcorrencia;
+import com.android.educar.educar.model.modelalterado.Ocorrencia;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.network.service.ListaOcorrenciaAPI;
 import com.android.educar.educar.network.service.ListaTipoOcorrenciaAPI;

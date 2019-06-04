@@ -1,14 +1,10 @@
 package com.android.educar.educar.network.chamadas;
 
-import android.app.Application;
 import android.content.Context;
 import android.util.Log;
-import com.android.educar.educar.model.FuncionarioEscola;
-import com.android.educar.educar.model.Unidade;
+import com.android.educar.educar.model.modelalterado.FuncionarioEscola;
 import com.android.educar.educar.network.service.APIService;
-import com.android.educar.educar.network.service.ListaFuncionarioEscolaAPI;
 
-import java.time.Clock;
 import java.util.List;
 
 import io.realm.Realm;

@@ -1,7 +1,6 @@
 package com.android.educar.educar.network.service;
 
-import com.android.educar.educar.model.Matricula;
-import com.android.educar.educar.model.Ocorrencia;
+import com.android.educar.educar.model.modelalterado.Ocorrencia;
 
 import java.util.ArrayList;
 import java.util.List;

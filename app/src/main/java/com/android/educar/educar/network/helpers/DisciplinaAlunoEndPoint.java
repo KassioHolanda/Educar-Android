@@ -1,10 +1,7 @@
 package com.android.educar.educar.network.helpers;
 
-import com.android.educar.educar.model.Disciplina;
-import com.android.educar.educar.model.DisciplinaAluno;
-import com.android.educar.educar.model.Unidade;
+import com.android.educar.educar.model.modelalterado.DisciplinaAluno;
 import com.android.educar.educar.network.service.ListaDisciplinaAlunoAPI;
-import com.android.educar.educar.network.service.ListaUnidadesAPI;
 
 import java.util.List;
 

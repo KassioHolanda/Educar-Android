@@ -1,7 +1,6 @@
 package com.android.educar.educar.network.service;
 
-import com.android.educar.educar.model.GradeCurso;
-import com.android.educar.educar.model.LocalEscola;
+import com.android.educar.educar.model.modelalterado.LocalEscola;
 
 import java.util.ArrayList;
 import java.util.List;

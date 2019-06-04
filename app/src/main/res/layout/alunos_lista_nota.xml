@@ -43,7 +43,7 @@
 
         <TextView
             android:id="@+id/nota_aluno_id"
-            android:layout_width="40dp"
+            android:layout_width="50dp"
             android:layout_height="30dp"
             android:gravity="center"
             android:padding="4dp"

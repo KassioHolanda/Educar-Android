@@ -1,8 +1,6 @@
 package com.android.educar.educar.network.helpers;
 
-import com.android.educar.educar.model.LocalEscola;
-import com.android.educar.educar.model.Matricula;
-import com.android.educar.educar.network.service.ListaLocalEscolaAPI;
+import com.android.educar.educar.model.modelalterado.Matricula;
 import com.android.educar.educar.network.service.ListaMatriculaAPI;
 
 import java.util.List;
@@ -18,6 +16,9 @@ public interface MatriculaEndPoint {
 
     @GET("matricula/id={id}/")
     Call<Matricula> getMatricula(@Path("id") Long id);
+
+    @GET("matriculaSerializadaCompleta/id={id}/")
+    Call<Matricula> getAlunoNotaMesEAlunoFrequenciaMes(@Path("id") Long id);
 
     @GET("matricula/")
     Call<ListaMatriculaAPI> matriculas(@Query("page") int page);

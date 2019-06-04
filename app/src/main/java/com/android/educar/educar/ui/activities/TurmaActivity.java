@@ -8,41 +8,27 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.adapter.FrequenciaAdapterLista;
 import com.android.educar.educar.adapter.TurmaAdapter;
-import com.android.educar.educar.model.Funcionario;
-import com.android.educar.educar.model.GradeCurso;
-import com.android.educar.educar.model.LocalEscola;
-import com.android.educar.educar.model.Matricula;
-import com.android.educar.educar.model.Serie;
-import com.android.educar.educar.model.SerieTurma;
-import com.android.educar.educar.model.Turma;
-import com.android.educar.educar.model.Unidade;
-import com.android.educar.educar.network.chamadas.DisciplinaChamada;
-import com.android.educar.educar.network.chamadas.MatriculaChamada;
-import com.android.educar.educar.network.chamadas.SerieChamada;
+import com.android.educar.educar.model.modelalterado.Funcionario;
+import com.android.educar.educar.model.modelalterado.Turma;
+import com.android.educar.educar.model.modelalterado.Unidade;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
-import com.android.educar.educar.utils.UtilsFunctions;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class TurmaActivity extends AppCompatActivity {
 
@@ -141,7 +127,12 @@ public class TurmaActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Turma turma = (Turma) turmas.getItemAtPosition(position);
                 preferences.saveLong("id_turma", turma.getId());
-                preferences.saveLong("id_serie", turma.getSerie().getId());
+                try {
+                    preferences.saveLong("id_serie", turma.getSerie().getId());
+                } catch (NullPointerException e) {
+
+                }
+
                 nextAcitivity();
             }
         });

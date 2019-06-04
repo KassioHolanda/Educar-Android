@@ -8,17 +8,13 @@ import android.widget.TextView;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.adapter.OcorrenciaListaAdapter;
-import com.android.educar.educar.model.Aluno;
-import com.android.educar.educar.model.Disciplina;
-import com.android.educar.educar.model.Matricula;
-import com.android.educar.educar.model.Ocorrencia;
-import com.android.educar.educar.model.PessoaFisica;
-import com.android.educar.educar.model.Turma;
+import com.android.educar.educar.model.modelalterado.Aluno;
+import com.android.educar.educar.model.modelalterado.Disciplina;
+import com.android.educar.educar.model.modelalterado.Matricula;
+import com.android.educar.educar.model.modelalterado.Ocorrencia;
+import com.android.educar.educar.model.modelalterado.PessoaFisica;
+import com.android.educar.educar.model.modelalterado.Turma;
 import com.android.educar.educar.utils.Preferences;
-
-import org.w3c.dom.Text;
-
-import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -77,23 +73,19 @@ public class NotificacoesAlunoAcitivity extends AppCompatActivity {
     }
 
     public void recuperarDadosRealm() {
-        pessoaFisica = realm.where(PessoaFisica.class).equalTo("id", preferences.getSavedLong("id_pessoafisica_aluno")).findFirst();
-        aluno = realm.where(Aluno.class).equalTo("pessoaFisica", pessoaFisica.getId()).findFirst();
-        matricula = realm.where(Matricula.class).equalTo("aluno", aluno.getId()).findFirst();
+        matricula = realm.where(Matricula.class).equalTo("id", preferences.getSavedLong("id_matricula_aluno")).findFirst();
         turma = realm.where(Turma.class).equalTo("id", preferences.getSavedLong("id_turma")).findFirst();
         disciplina = realm.where(Disciplina.class).equalTo("id", preferences.getSavedLong("id_disciplina")).findFirst();
     }
 
     public void atualizarListaDeNotificacoes() {
-        RealmResults<Ocorrencia> ocorrencias = realm.where(Ocorrencia.class).equalTo("matriculaAluno", matricula.getId()).findAll();
-
-        OcorrenciaListaAdapter ocorrenciaListaAdapter = new OcorrenciaListaAdapter(this, ocorrencias);
+        OcorrenciaListaAdapter ocorrenciaListaAdapter = new OcorrenciaListaAdapter(this, matricula.getOcorrencias());
         notificacoes.setAdapter(ocorrenciaListaAdapter);
     }
 
     public void atualizarDadosTela() {
         turmaDetalhe.setText(turma.getDescricao());
-        alunoDetalhe.setText(pessoaFisica.getNome());
+        alunoDetalhe.setText(matricula.getAluno().getPessoaFisica().getNome());
         disciplinaDetalhe.setText(disciplina.getDescricao());
     }
 }

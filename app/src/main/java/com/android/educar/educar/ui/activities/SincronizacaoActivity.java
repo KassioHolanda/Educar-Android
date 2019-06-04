@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.educar.educar.R;
+import com.android.educar.educar.network.chamadas.ChamadasDePublicacao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,8 @@ public class SincronizacaoActivity extends AppCompatActivity {
 
     private ListView menuSincronizacao;
     private List<String> menus;
+
+    private ChamadasDePublicacao chamadasDePublicacao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,7 @@ public class SincronizacaoActivity extends AppCompatActivity {
     }
 
     public void setupInit() {
+        chamadasDePublicacao = new ChamadasDePublicacao(getApplicationContext());
         this.menus = new ArrayList<>();
         menus.add("Frequência");
         menus.add("Notas");
@@ -74,7 +78,7 @@ public class SincronizacaoActivity extends AppCompatActivity {
                     Snackbar.make(findViewById(android.R.id.content), "Notificação", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-
+                            chamadasDePublicacao.verificarOcorrenciasParaPublicar();
                         }
                     }).show();
 

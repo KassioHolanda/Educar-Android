@@ -9,14 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.model.Serie;
-import com.android.educar.educar.model.SerieTurma;
-import com.android.educar.educar.model.Turma;
+import com.android.educar.educar.model.modelalterado.Turma;
 
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class TurmaAdapter extends BaseAdapter {
 

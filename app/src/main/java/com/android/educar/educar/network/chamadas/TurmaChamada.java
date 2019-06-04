@@ -3,19 +3,12 @@ package com.android.educar.educar.network.chamadas;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.educar.educar.model.GradeCurso;
-import com.android.educar.educar.model.LocalEscola;
-import com.android.educar.educar.model.SerieTurma;
-import com.android.educar.educar.model.SituacaoTurmaMes;
-import com.android.educar.educar.model.Turma;
+import com.android.educar.educar.model.modelalterado.GradeCurso;
+import com.android.educar.educar.model.modelalterado.SerieTurma;
+import com.android.educar.educar.model.modelalterado.SituacaoTurmaMes;
+import com.android.educar.educar.model.modelalterado.Turma;
 import com.android.educar.educar.network.service.APIService;
-import com.android.educar.educar.network.service.ListaGradeCursoAPI;
-import com.android.educar.educar.network.service.ListaSituacaoTurmaMesAPI;
-import com.android.educar.educar.network.service.ListaTurmaAPI;
-import com.android.educar.educar.utils.Preferences;
-import com.android.educar.educar.utils.UtilsFunctions;
 
-import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
@@ -202,7 +195,7 @@ public class TurmaChamada {
                 situacaoTurmaMes1.setDataHora(situacaoTurmaMes.get(i).getDataHora());
                 situacaoTurmaMes1.setStatus(situacaoTurmaMes.get(i).getStatus());
                 situacaoTurmaMes1.setQuantidadeAprovados(situacaoTurmaMes.get(i).getQuantidadeAprovados());
-                situacaoTurmaMes1.setTurma(situacaoTurmaMes.get(i).getTurma());
+//                situacaoTurmaMes1.setTurma(situacaoTurmaMes.get(i).getTurma());
                 situacaoTurmaMes1.setQuantidadeReprovados(situacaoTurmaMes.get(i).getQuantidadeReprovados());
                 situacaoTurmaMes1.getBimestre();
 

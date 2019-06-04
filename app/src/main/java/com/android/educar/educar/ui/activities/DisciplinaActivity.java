@@ -23,13 +23,11 @@ import com.android.educar.educar.R;
 //import com.android.educar.educar.dao.ProfessorDAO;
 //import com.android.educar.educar.dao.TurmaDAO;
 //import com.android.educar.educar.dao.UnidadeDAO;
-import com.android.educar.educar.model.Disciplina;
-import com.android.educar.educar.model.Funcionario;
-import com.android.educar.educar.model.GradeCurso;
-import com.android.educar.educar.model.SerieDisciplina;
-import com.android.educar.educar.model.Turma;
-import com.android.educar.educar.model.Unidade;
-import com.android.educar.educar.network.chamadas.AlunoChamada;
+import com.android.educar.educar.mb.BimestreMB;
+import com.android.educar.educar.model.modelalterado.Disciplina;
+import com.android.educar.educar.model.modelalterado.Funcionario;
+import com.android.educar.educar.model.modelalterado.Turma;
+import com.android.educar.educar.model.modelalterado.Unidade;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 
@@ -40,7 +38,6 @@ import java.util.List;
 import java.util.Set;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class DisciplinaActivity extends AppCompatActivity {
 
@@ -60,6 +57,8 @@ public class DisciplinaActivity extends AppCompatActivity {
     private Set<Disciplina> disciplinasLista;
     private Funcionario funcionario;
 
+    private BimestreMB bimestreMB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +77,7 @@ public class DisciplinaActivity extends AppCompatActivity {
 //        recuperarDadosRealm();
         atualizarDadosTela();
         recuperarDisciplinas();
+        bimestreMB.getBimestreAtual();
     }
 
     public void recuperarUnidade() {
@@ -161,6 +161,7 @@ public class DisciplinaActivity extends AppCompatActivity {
 
     public void setupInit() {
         preferences = new Preferences(this);
+        bimestreMB = new BimestreMB(this);
         messages = new Messages();
         disciplinasLista = new HashSet<>();
         funcionario = realm.copyFromRealm(realm.where(Funcionario.class).findFirst());

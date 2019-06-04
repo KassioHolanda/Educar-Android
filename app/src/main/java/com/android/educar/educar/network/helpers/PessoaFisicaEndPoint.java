@@ -1,16 +1,12 @@
 package com.android.educar.educar.network.helpers;
 
-import com.android.educar.educar.model.Funcionario;
-import com.android.educar.educar.model.PessoaFisica;
-import com.android.educar.educar.network.service.ListaFuncionariosAPI;
+import com.android.educar.educar.model.modelalterado.PessoaFisica;
 import com.android.educar.educar.network.service.ListaPessoaFisicaAPI;
 
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.http.Field;
 import retrofit2.http.GET;
-import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 

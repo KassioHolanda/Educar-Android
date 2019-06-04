@@ -1,6 +1,6 @@
 package com.android.educar.educar.network.helpers;
 
-import com.android.educar.educar.model.Turma;
+import com.android.educar.educar.model.modelalterado.Turma;
 import com.android.educar.educar.network.service.ListaTurmaAPI;
 
 import java.util.List;

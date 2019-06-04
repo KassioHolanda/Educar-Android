@@ -2,17 +2,9 @@ package com.android.educar.educar.mb;
 
 import android.content.Context;
 
-import com.android.educar.educar.model.Funcionario;
-import com.android.educar.educar.model.Perfil;
-import com.android.educar.educar.model.PessoaFisica;
-import com.android.educar.educar.model.Usuario;
-import com.android.educar.educar.network.chamadas.FuncionarioChamada;
 import com.android.educar.educar.network.chamadas.PessoaChamada;
 
-import java.io.IOException;
-
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class PessoaFisicaMB {
     private PessoaChamada pessoaChamada;

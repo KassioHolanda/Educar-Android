@@ -2,27 +2,15 @@ package com.android.educar.educar.ui.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.educar.educar.R;
-import com.android.educar.educar.mb.FuncionarioMB;
-import com.android.educar.educar.mb.PessoaFisicaMB;
-import com.android.educar.educar.model.Funcionario;
-import com.android.educar.educar.model.Perfil;
-import com.android.educar.educar.model.PessoaFisica;
-import com.android.educar.educar.model.Unidade;
-import com.android.educar.educar.model.Usuario;
-import com.android.educar.educar.network.chamadas.FuncionarioChamada;
-import com.android.educar.educar.network.chamadas.PessoaChamada;
+import com.android.educar.educar.model.modelalterado.Funcionario;
 import com.android.educar.educar.network.service.APIService;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
@@ -31,8 +19,6 @@ import com.android.educar.educar.utils.UtilsFunctions;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-import io.realm.Realm;
-import io.realm.internal.IOException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

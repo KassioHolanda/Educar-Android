@@ -1,11 +1,6 @@
 package com.android.educar.educar.network.helpers;
 
-import com.android.educar.educar.model.Aluno;
-import com.android.educar.educar.model.AlunoFrequenciaMes;
-import com.android.educar.educar.model.AlunoNotaMes;
-import com.android.educar.educar.model.DisciplinaAluno;
-import com.android.educar.educar.model.Ocorrencia;
-import com.android.educar.educar.network.service.ListaAlunoFrequenciaMesAPI;
+import com.android.educar.educar.model.modelalterado.AlunoNotaMes;
 import com.android.educar.educar.network.service.ListaAlunoNotaMesAPI;
 
 import java.util.List;

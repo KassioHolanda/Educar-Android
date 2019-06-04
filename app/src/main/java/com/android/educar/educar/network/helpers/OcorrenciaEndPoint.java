@@ -1,7 +1,6 @@
 package com.android.educar.educar.network.helpers;
 
-import com.android.educar.educar.model.Nota;
-import com.android.educar.educar.model.Ocorrencia;
+import com.android.educar.educar.model.modelalterado.Ocorrencia;
 import com.android.educar.educar.network.service.ListaOcorrenciaAPI;
 
 import java.util.List;

@@ -1,8 +1,6 @@
 package com.android.educar.educar.network.helpers;
 
-import com.android.educar.educar.model.Aluno;
-import com.android.educar.educar.model.AnoLetivo;
-import com.android.educar.educar.network.service.ListaAlunosAPI;
+import com.android.educar.educar.model.modelalterado.AnoLetivo;
 import com.android.educar.educar.network.service.ListaAnoLetivoAPI;
 
 import retrofit2.Call;

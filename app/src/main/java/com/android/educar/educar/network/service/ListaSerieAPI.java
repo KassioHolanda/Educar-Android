@@ -1,7 +1,6 @@
 package com.android.educar.educar.network.service;
 
-import com.android.educar.educar.model.Serie;
-import com.android.educar.educar.model.SerieDisciplina;
+import com.android.educar.educar.model.modelalterado.Serie;
 
 import java.util.ArrayList;
 import java.util.List;

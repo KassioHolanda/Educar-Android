@@ -14,16 +14,13 @@ import android.widget.TextView;
 
 import com.android.educar.educar.R;
 import com.android.educar.educar.mb.BimestreMB;
-import com.android.educar.educar.mb.NotaMB;
-import com.android.educar.educar.model.Bimestre;
-import com.android.educar.educar.model.Disciplina;
-import com.android.educar.educar.model.Funcionario;
-import com.android.educar.educar.model.Serie;
-import com.android.educar.educar.model.Turma;
-import com.android.educar.educar.model.Unidade;
-import com.android.educar.educar.network.chamadas.AlunoChamada;
-import com.android.educar.educar.network.chamadas.OcorrenciaChamada;
-import com.android.educar.educar.network.chamadas.PessoaChamada;
+import com.android.educar.educar.model.modelalterado.AnoLetivo;
+import com.android.educar.educar.model.modelalterado.Bimestre;
+import com.android.educar.educar.model.modelalterado.Disciplina;
+import com.android.educar.educar.model.modelalterado.Funcionario;
+import com.android.educar.educar.model.modelalterado.Serie;
+import com.android.educar.educar.model.modelalterado.Turma;
+import com.android.educar.educar.model.modelalterado.Unidade;
 import com.android.educar.educar.utils.Messages;
 import com.android.educar.educar.utils.Preferences;
 
@@ -66,12 +63,11 @@ public class AulaAcoesActivity extends AppCompatActivity {
         clickOnItem();
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
-        recuperarUnidade();
-        recuperarTurma();
+//        recuperarUnidade();
+//        recuperarTurma();
         recuperarDisciplina();
         atualizarDados();
     }
@@ -80,47 +76,50 @@ public class AulaAcoesActivity extends AppCompatActivity {
         preferences = new Preferences(getApplicationContext());
         funcionario = realm.copyFromRealm(realm.where(Funcionario.class).findFirst());
         bimestreMB = new BimestreMB(getApplicationContext());
-        bimestreSelecionado = realm.copyFromRealm(realm.where(Bimestre.class).equalTo("id", bimestreMB.getBimestreAtual()).findFirst());
+        bimestreSelecionado = realm.copyFromRealm(realm.where(Bimestre.class).equalTo("id", preferences.getSavedLong("id_bimestre")).findFirst());
+        unidadeSelecionada = realm.copyFromRealm(realm.where(Unidade.class).equalTo("id", preferences.getSavedLong("id_unidade")).findFirst());
+        turmaSelecionada = realm.copyFromRealm(realm.where(Turma.class).equalTo("id", preferences.getSavedLong("id_turma")).findFirst());
+        disciplinaSelecionada = realm.copyFromRealm(realm.where(Disciplina.class).equalTo("id", preferences.getSavedLong("id_disciplina")).findFirst());
     }
-
 
     public void configRealm() {
         Realm.init(this);
         realm = Realm.getDefaultInstance();
     }
 
-    public void recuperarUnidade() {
-        for (int i = 0; i < funcionario.getFuncionarioEscolas().size(); i++) {
-            if (funcionario.getFuncionarioEscolas().get(i).getUnidade().getId() == preferences.getSavedLong(Messages.ID_UNIDADE) && funcionario.getFuncionarioEscolas().get(i).getAtivo()) {
-                this.unidadeSelecionada = funcionario.getFuncionarioEscolas().get(i).getUnidade();
-            }
-        }
-    }
+//    public void recuperarUnidade() {
+//        for (int i = 0; i < funcionario.getFuncionarioEscolas().size(); i++) {
+//            if (funcionario.getFuncionarioEscolas().get(i).getUnidade().getId() == preferences.getSavedLong(Messages.ID_UNIDADE) && funcionario.getFuncionarioEscolas().get(i).getAtivo()) {
+//                this.unidadeSelecionada = funcionario.getFuncionarioEscolas().get(i).getUnidade();
+//            }
+//        }
+//    }
 
-    public void recuperarTurma() {
-        for (int i = 0; i < unidadeSelecionada.getLocalEscolas().size(); i++) {
-            for (int j = 0; j < unidadeSelecionada.getLocalEscolas().get(i).getTurmas().size(); j++) {
-                if (unidadeSelecionada.getLocalEscolas().get(i).getTurmas().get(j).getId() == preferences.getSavedLong(Messages.ID_TURMA)) {
-                    this.turmaSelecionada = (unidadeSelecionada.getLocalEscolas().get(i).getTurmas().get(j));
-                }
-            }
-        }
-    }
+//    public void recuperarTurma() {
+//        for (int i = 0; i < unidadeSelecionada.getLocalEscolas().size(); i++) {
+//            for (int j = 0; j < unidadeSelecionada.getLocalEscolas().get(i).getTurmas().size(); j++) {
+//                if (unidadeSelecionada.getLocalEscolas().get(i).getTurmas().get(j).getId() == preferences.getSavedLong(Messages.ID_TURMA)) {
+//                    this.turmaSelecionada = (unidadeSelecionada.getLocalEscolas().get(i).getTurmas().get(j));
+//                }
+//            }
+//        }
+//    }
 
     public void recuperarDisciplina() {
         for (int i = 0; i < turmaSelecionada.getGradeCursos().size(); i++) {
             try {
-                if (turmaSelecionada.getGradeCursos().get(i).getSeriedisciplina().getDisciplina().getId() == preferences.getSavedLong("id_disciplina")) {
-                    disciplinaSelecionada = turmaSelecionada.getGradeCursos().get(i).getDisciplina();
-                } else if (turmaSelecionada.getGradeCursos().get(i).getSeriedisciplina().getSerie().getId() == preferences.getSavedLong("id_serie")) {
+//                if (turmaSelecionada.getGradeCursos().get(i).getSeriedisciplina().getDisciplina().getId() == preferences.getSavedLong("id_disciplina")) {
+//                    disciplinaSelecionada = turmaSelecionada.getGradeCursos().get(i).getDisciplina();
+                if (turmaSelecionada.getGradeCursos().get(i).getSeriedisciplina().getSerie().getId() == preferences.getSavedLong("id_serie")) {
                     serieSelecionada = turmaSelecionada.getGradeCursos().get(i).getSeriedisciplina().getSerie();
                 }
+
             } catch (NullPointerException e) {
 
             }
-            if (turmaSelecionada.getGradeCursos().get(i).getDisciplina().getId() == preferences.getSavedLong("id_disciplina")) {
-                disciplinaSelecionada = turmaSelecionada.getGradeCursos().get(i).getDisciplina();
-            }
+//            if (turmaSelecionada.getGradeCursos().get(i).getDisciplina().getId() == preferences.getSavedLong("id_disciplina")) {
+//                disciplinaSelecionada = turmaSelecionada.getGradeCursos().get(i).getDisciplina();
+//            }
         }
     }
 
@@ -190,8 +189,8 @@ public class AulaAcoesActivity extends AppCompatActivity {
 
     public void settings() {
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setElevation(0);
-        actionBar.setTitle("2019");
+        AnoLetivo anoLetivo = realm.copyFromRealm(realm.where(AnoLetivo.class).findFirst());
+        actionBar.setTitle(anoLetivo.getDescricao());
     }
 
     public void alertaInformacao() {
@@ -219,6 +218,4 @@ public class AulaAcoesActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_dados_alunos, menu);
         return true;
     }
-
-
 }

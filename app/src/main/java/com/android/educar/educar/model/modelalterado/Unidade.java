@@ -17,6 +17,8 @@ public class Unidade extends RealmObject {
     private String nome;
     @SerializedName("locais_escola")
     private RealmList<LocalEscola> localEscolas;
+    @SerializedName("fechamento_unidade")
+    private RealmList<FechamentoUnidade> fechamentoUnidades;
 
     public Unidade() {
     }
@@ -64,5 +66,13 @@ public class Unidade extends RealmObject {
 
     public void setLocalEscolas(RealmList<LocalEscola> localEscolas) {
         this.localEscolas = localEscolas;
+    }
+
+    public RealmList<FechamentoUnidade> getFechamentoUnidades() {
+        return fechamentoUnidades;
+    }
+
+    public void setFechamentoUnidades(RealmList<FechamentoUnidade> fechamentoUnidades) {
+        this.fechamentoUnidades = fechamentoUnidades;
     }
 }
